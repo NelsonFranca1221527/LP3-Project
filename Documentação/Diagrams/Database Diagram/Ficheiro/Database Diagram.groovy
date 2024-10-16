@@ -16,13 +16,13 @@ Table athletes {
   altura_cm INT
   peso_kg DECIMAL
   pais VARCHAR
-  user_id INT
+  
 }
 
 Table manager {
   id INT [primary key]
   nome VARCHAR
-  user_id INT
+  
 }
 
 Table sports {
@@ -99,10 +99,10 @@ Table athlete_teams {
 /* Definição das chaves estrangeiras e relações */
 
 /* Associação entre um atleta e um utilizador (User-Atleta) */
-Ref: athletes.user_id > users.id
+Ref: athletes.id > users.id
 
 /* Associação entre um gestor e um utilizador (User-Gestor) */
-Ref: manager.user_id > users.id
+Ref: manager.id > users.id
 
 /* Associação entre modalidades (sports) e locais (venues) */
 Ref: sports.venue_id > venues.id
