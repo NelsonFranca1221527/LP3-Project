@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Atleta {
 
+    private int id;
+
     private String nome;
 
     private String pais;
@@ -19,7 +21,16 @@ public class Atleta {
 
     private List<ParticipaçõesAtleta> participaçõesAtletas;
 
-    public Atleta(String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas) {
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public List<ParticipaçõesAtleta> getParticipaçõesOlimps() {
+        return participaçõesAtletas;
+    }
+
+    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas) {
+        this.id = id;
         this.nome = nome;
         this.pais = pais;
         this.genero = genero;
@@ -27,6 +38,14 @@ public class Atleta {
         this.peso = peso;
         this.dataNascimento = dataNascimento;
         this.participaçõesAtletas = participaçõesAtletas;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -73,15 +92,11 @@ public class Atleta {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public List<ParticipaçõesAtleta> getParticipaçõesOlimps() {
+    public List<ParticipaçõesAtleta> getParticipaçõesAtletas() {
         return participaçõesAtletas;
     }
 
-    public void setParticipaçõesOlimps(List<ParticipaçõesAtleta> participaçõesAtletas) {
+    public void setParticipaçõesAtletas(List<ParticipaçõesAtleta> participaçõesAtletas) {
         this.participaçõesAtletas = participaçõesAtletas;
     }
 }

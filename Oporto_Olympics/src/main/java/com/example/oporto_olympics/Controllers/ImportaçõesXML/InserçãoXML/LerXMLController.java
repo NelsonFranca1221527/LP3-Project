@@ -1,9 +1,13 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
-import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.Equipa;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
-import com.example.oporto_olympics.Models.ParticipaçõesEquipa;
+import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.DAO.AtletaDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.EquipaDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.ModalidadeDAOImp;
+import com.example.oporto_olympics.Models.*;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoOlimpico;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,8 +19,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
@@ -33,7 +43,7 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public void LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException {
+    public void LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(XMLFile);
@@ -66,7 +76,13 @@ public class LerXMLController {
                 participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
             }
 
-            AtletaList.add(new Atleta(nome, pais, genero, altura, peso, dataNascimento, participaçõesAtletaList));
+            ConnectionBD conexaoBD = ConnectionBD.getInstance();
+            Connection conexao = conexaoBD.getConexao();
+
+            AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
+
+            atletaDAOImp.save(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
+
         }
     }
 
@@ -78,7 +94,7 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public void LerXMLEquipa(File XMLFile) throws ParserConfigurationException, IOException, SAXException {
+    public void LerXMLEquipa(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(XMLFile);
@@ -108,7 +124,15 @@ public class LerXMLController {
                 participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
             }
 
-            EquipaList.add(new Equipa(nome, pais, genero, desporto, anoFundacao, participaçõesEquipaList));
+            int modalidade = 0;
+
+            ConnectionBD conexaoBD = ConnectionBD.getInstance();
+            Connection conexao = conexaoBD.getConexao();
+
+            EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+
+            equipaDAOImp.save(new Equipa(0,nome,pais,genero,desporto, modalidade,anoFundacao,participaçõesEquipaList));
+
         }
     }
 
@@ -118,7 +142,104 @@ public class LerXMLController {
      *
      * @param XMLFile O ficheiro XML que contém os dados das modalidades.
      */
-    public void LerXMLModalidade(File XMLFile) {
+    public void LerXMLModalidade(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(XMLFile);
+
+        NodeList lineItemNodes = doc.getElementsByTagName("sport");
+
+        List<Modalidade> ModalidadeList = new ArrayList<Modalidade>();
+
+        for (int i = 0; i < lineItemNodes.getLength(); i++) {
+            Element lineItemElement = (Element) lineItemNodes.item(i);
+
+            Element parentElement = (Element) lineItemElement.getParentNode();
+
+            String tipo = getElementTextContent(parentElement, "type");
+            String genero = getElementTextContent(parentElement, "genre");
+            String nome = getElementTextContent(parentElement, "name");
+            String descricao = getElementTextContent(parentElement, "description");
+            int minParticipantes = getIntValueFromElement(parentElement, "minParticipants");
+            String medida = getElementTextContent(parentElement, "scoringMeasure");
+            String oneGame = getElementTextContent(parentElement, "oneGame");
+
+            NodeList Rules = lineItemElement.getElementsByTagName("rules");
+
+            String regras = "";
+
+            for (int j = 0; j < Rules.getLength(); j++) {
+
+                Element rule = (Element) Rules.item(j);
+
+                regras = regras + ", " + getElementTextContent(rule, "rule");
+            }
+
+            NodeList olympicRecords = lineItemElement.getElementsByTagName("olympicRecord");
+            NodeList olympicWinners = lineItemElement.getElementsByTagName("winnerOlympic");
+
+            int anoRecorde = 0;
+            String vencedorRecorde = "";
+
+            int anoOlimpico = 0;
+            String vencedorOlimpico = "";
+
+            LocalTime tempoRecorde = null;
+            LocalTime tempoVencedor = null;
+
+                    Element olympicRecord = (Element) olympicRecords.item(0);
+                    Element olympicWinner = (Element) olympicWinners.item(0);
+
+                    Modalidade modalidade = null;
+
+                    if (olympicRecord != null) {
+                        anoRecorde = getIntValueFromElement(olympicRecord, "year");
+                        vencedorRecorde = getElementTextContent(olympicRecord, "holder");
+                        String tempoRecordeString = getElementTextContent(olympicRecord, "time");
+
+                        if (tempoRecordeString != null && !tempoRecordeString.trim().isEmpty()) {
+                            tempoRecorde = parseTime(tempoRecordeString);
+                        } else {
+                            System.out.println("Erro: tempoRecordeString está vazio ou nulo");
+                        }
+                    }
+
+                    if (olympicWinner != null) {
+                        anoOlimpico = getIntValueFromElement(olympicWinner, "year");
+                        vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
+                        String tempoVencedorString = getElementTextContent(olympicWinner, "time");
+
+                        if (tempoVencedorString != null && !tempoVencedorString.trim().isEmpty()) {
+                            tempoVencedor = parseTime(tempoVencedorString);
+                        } else {
+                            System.out.println("Erro: tempoVencedorString está vazio ou nulo");
+                        }
+                    }
+
+            switch (medida) {
+                case "Time":
+                    RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
+                    RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
+                    modalidade = new Modalidade(tipo, genero, nome, descricao, minParticipantes, medida, oneGame, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
+                    break;
+
+                case "Points":
+                    int medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
+                    String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
+                    RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
+                    RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
+                    modalidade = new Modalidade(tipo, genero, nome, descricao, minParticipantes, medida, oneGame, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
+                    break;
+            }
+
+            ConnectionBD conexaoBD = ConnectionBD.getInstance();
+            Connection conexao = conexaoBD.getConexao();
+
+            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+            modalidadeDAOImp.save(modalidade);
+        }
     }
 
     /**
@@ -155,27 +276,6 @@ public class LerXMLController {
     }
 
     /**
-     * Obtém o valor double de um elemento XML com base no nome da tag.
-     *
-     * @param parentElement O elemento pai que contém a tag.
-     * @param tagName O nome da tag cujo valor double será obtido.
-     * @return O valor double da tag, ou 0.0 se houver erro na conversão.
-     */
-    private double getDoubleValueFromElement(Element parentElement, String tagName) {
-        NodeList nodeList = parentElement.getElementsByTagName(tagName);
-        if (nodeList.getLength() > 0) {
-            String textContent = nodeList.item(0).getTextContent().trim();
-            try {
-                return Double.parseDouble(textContent);
-            } catch (NumberFormatException e) {
-                return 0.0;
-            }
-        } else {
-            return 0.0;
-        }
-    }
-
-    /**
      * Obtém o valor de data de um elemento XML com base no nome da tag.
      *
      * @param parentElement O elemento pai que contém a tag.
@@ -194,5 +294,21 @@ public class LerXMLController {
             }
         }
         return null;
+    }
+
+    private LocalTime parseTime(String timeString) {
+        DateTimeFormatter formatterWithMillis = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
+        DateTimeFormatter formatterWithoutMillis = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        try {
+            return LocalTime.parse(timeString, formatterWithMillis);
+        } catch (DateTimeParseException e) {
+            try {
+                return LocalTime.parse(timeString, formatterWithoutMillis);
+            } catch (DateTimeParseException ex) {
+                System.out.println("Erro ao analisar o tempo: " + timeString);
+                return null;
+            }
+        }
     }
 }

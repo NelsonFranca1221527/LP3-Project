@@ -19,6 +19,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Controlador responsável pela inserção de ficheiros XML
@@ -81,7 +82,7 @@ public class InserçãoXMLController {
      * @throws SAXException Se ocorrer um erro durante a validação do XML.
      */
     @FXML
-    void OnClickInserirXMLButton(ActionEvent event) throws ParserConfigurationException, IOException, SAXException {
+    void OnClickInserirXMLButton(ActionEvent event) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione o seu Ficheiro XML!");

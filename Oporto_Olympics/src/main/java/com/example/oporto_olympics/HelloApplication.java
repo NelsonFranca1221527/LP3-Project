@@ -2,15 +2,15 @@ package com.example.oporto_olympics;
 
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class    HelloApplication extends Application {
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         RedirecionarHelper.GotoSeleçãoXML().switchScene(stage);
     }
 
