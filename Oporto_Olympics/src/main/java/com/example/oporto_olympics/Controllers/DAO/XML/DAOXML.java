@@ -1,10 +1,10 @@
-package com.example.oporto_olympics.Controllers.DAO;
+package com.example.oporto_olympics.Controllers.DAO.XML;
 
 
 import java.util.List;
 import java.util.Optional;
 
-public interface DAO<T> {
+public interface DAOXML<T> {
     List<T> getAll();
 
     void save(T t);
@@ -13,6 +13,6 @@ public interface DAO<T> {
 
     void delete(T t);
 
-    Optional<T> get(int i);
+    Optional<T> get(String i);
 
 }

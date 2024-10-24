@@ -1,13 +1,14 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.EquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.ModalidadeDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.*;
-import com.example.oporto_olympics.Models.RegistoModalidades.RegistoOlimpico;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
+import javafx.scene.control.Alert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -29,10 +29,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-/**
- * Controlador responsável pela leitura de ficheiros XML relacionados com
- * atletas, equipas e modalidades.
- */
 public class LerXMLController {
 
     /**
@@ -44,6 +40,9 @@ public class LerXMLController {
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
     public void LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+
+        AlertHandler alertHandler;
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(XMLFile);
@@ -81,8 +80,10 @@ public class LerXMLController {
 
             atletaDAOImp.save(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
 
-            System.out.println(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
         }
+
+        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,"Sucesso","Atleta/s insirado/s com Sucesso!");
+        alertHandler.getAlert().showAndWait();
     }
 
     /**
@@ -93,7 +94,10 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public void LerXMLEquipa(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public void LerXMLEquipa(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
+
+        AlertHandler alertHandler;
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(XMLFile);
@@ -120,25 +124,50 @@ public class LerXMLController {
                 participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
             }
 
-            int modalidade = 0;
-
             ConnectionBD conexaoBD = ConnectionBD.getInstance();
             Connection conexao = conexaoBD.getConexao();
 
-            EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
-            equipaDAOImp.save(new Equipa(0,nome,pais,genero,desporto, modalidade,anoFundacao,participaçõesEquipaList));
+            List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
 
+            int modalidade = 0;
+
+            for (int k = 0; k < modalidadeList.size(); k++) {
+
+                Modalidade modalidadeAtual = modalidadeList.get(k);
+
+                if (modalidadeAtual.getNome().equals(desporto) && modalidadeAtual.getGenero().equals(genero) && modalidadeAtual.getLocalID() == IdLocal) {
+                    modalidade = modalidadeAtual.getId();
+                    break;
+                }
+
+                if (modalidade == 0) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "Não foi encontra uma modalidade em que esta equipa possa competir: " + nome + ", Género: " + genero + ", Desporto: " + desporto);
+                    alertHandler.getAlert().showAndWait();
+                    break;
+                } else {
+
+                    EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+
+                    equipaDAOImp.save(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
+
+                }
+            }
+
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
+            alertHandler.getAlert().showAndWait();
         }
     }
-
     /**
      * Lê e processa o ficheiro XML de modalidades.
      *
      *
      * @param XMLFile O ficheiro XML que contém os dados das modalidades.
      */
-    public void LerXMLModalidade(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public void LerXMLModalidade(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
+
+        AlertHandler alertHandler;
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -150,6 +179,11 @@ public class LerXMLController {
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
             String tipo = getElementTextContent(lineItemElement, "type");
+
+            if(tipo.equals("Collective")){
+                tipo = "Coletivo";
+            }
+
             String genero = getElementTextContent(lineItemElement, "genre");
             String nome = getElementTextContent(lineItemElement, "name");
             String descricao = getElementTextContent(lineItemElement, "description");
@@ -157,15 +191,19 @@ public class LerXMLController {
             String medida = getElementTextContent(lineItemElement, "scoringMeasure");
             String oneGame = getElementTextContent(lineItemElement, "oneGame");
 
-            NodeList Rules = lineItemElement.getElementsByTagName("rules");
+            NodeList Rules = lineItemElement.getElementsByTagName("rule");
 
             String regras = "";
 
             for (int j = 0; j < Rules.getLength(); j++) {
 
-                Element rule = (Element) Rules.item(j);
+                Node rule = Rules.item(j);
+                String ruleText = rule.getTextContent().trim();
 
-                regras = regras + ", " + getElementTextContent(rule, "rule");
+                    if (regras.length() > 0) {  // Só adiciona vírgula se já houver algo na string
+                        regras = regras + " ";
+                    }
+                    regras = regras + ruleText;
             }
 
             NodeList olympicRecords = lineItemElement.getElementsByTagName("olympicRecord");
@@ -192,36 +230,32 @@ public class LerXMLController {
 
                         if (tempoRecordeString != null && !tempoRecordeString.trim().isEmpty()) {
                             tempoRecorde = parseTime(tempoRecordeString);
-                        } else {
-                            System.out.println("Erro: tempoRecordeString está vazio ou nulo");
                         }
-                    }
 
-                    if (olympicWinner != null) {
                         anoOlimpico = getIntValueFromElement(olympicWinner, "year");
                         vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
                         String tempoVencedorString = getElementTextContent(olympicWinner, "time");
 
                         if (tempoVencedorString != null && !tempoVencedorString.trim().isEmpty()) {
                             tempoVencedor = parseTime(tempoVencedorString);
-                        } else {
-                            System.out.println("Erro: tempoVencedorString está vazio ou nulo");
                         }
                     }
 
             switch (medida) {
                 case "Time":
+                    medida = "Tempo";
                     RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
                     RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
-                    modalidade = new Modalidade(tipo, genero, nome, descricao, minParticipantes, medida, oneGame, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdLocal, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
                     break;
 
                 case "Points":
+                    medida = "Pontos";
                     int medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
                     String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
                     RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
                     RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
-                    modalidade = new Modalidade(tipo, genero, nome, descricao, minParticipantes, medida, oneGame, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdLocal, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
                     break;
             }
 
@@ -232,6 +266,9 @@ public class LerXMLController {
 
             modalidadeDAOImp.save(modalidade);
         }
+
+        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,"Sucesso","Modalidade/s insirada/s com Sucesso!");
+        alertHandler.getAlert().showAndWait();
     }
 
     /**

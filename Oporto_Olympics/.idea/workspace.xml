@@ -5,9 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EventosDAOImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/LocaisDAOImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/DAOXML.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Misc/AlertHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Evento.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Local.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +92,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.oporto_olympics.Controllers.DAO" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Helper" />
@@ -86,14 +102,23 @@
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ImportaçõesXML\SeleçãoXML" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Misc" />
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Models" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\ConnectBD" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ImportaçõesXML\SeleçãoXML" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ImportaçõesXML\InserçãoXML" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.example.oporto_olympics.Controllers" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.oporto_olympics.Controllers.DAO.XML" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value=";" />
+    </option>
   </component>
   <component name="RunManager">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -144,6 +169,7 @@
       <workItem from="1729640219846" duration="10044000" />
       <workItem from="1729694619528" duration="25390000" />
       <workItem from="1729722891484" duration="11217000" />
+      <workItem from="1729776473306" duration="30326000" />
     </task>
     <servers />
   </component>

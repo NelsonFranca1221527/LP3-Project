@@ -1,10 +1,19 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
+import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.DAO.EventosDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.LocaisDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Controllers.Singleton.InserçãoXMLSingleton;
+import com.example.oporto_olympics.Models.Evento;
+import com.example.oporto_olympics.Models.Local;
+import com.example.oporto_olympics.Models.Modalidade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -19,15 +28,16 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Controlador responsável pela inserção de ficheiros XML
- */
 public class InserçãoXMLController {
 
     @FXML
-    private ChoiceBox<?> EventoChoice;
+    private ChoiceBox<String> EventoChoice;
 
     @FXML
     private Group EventoGroup;
@@ -36,39 +46,62 @@ public class InserçãoXMLController {
     private Button InserirXMLButton;
 
     @FXML
-    private ChoiceBox<?> ModalidadeChoice;
-
-    @FXML
-    private Group ModalidadeGroup;
-
-    @FXML
     private Button VoltarButton;
 
     @FXML
     private Label tituloTipoXML;
 
+    private Map<String, Integer> itemMap = new HashMap<>();
+
     /**
      * Inicializa o controlador, ajustando a interface com base no tipo de XML
      * a ser inserido (Atleta, Equipa ou Modalidade).
      */
-    public void initialize() {
+    public void initialize() throws SQLException {
+
+        itemMap.clear();
+
+        ConnectionBD conexaoBD = ConnectionBD.getInstance();
+        Connection conexao = conexaoBD.getConexao();
+
         InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+        EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+        List<Evento> eventoList = eventosDAOImp.getAll();
+
+        LocaisDAOImp locaisDAOImp = new LocaisDAOImp(conexao);
+        List<Local> localList = locaisDAOImp.getAll();
 
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
-                ModalidadeGroup.setVisible(false);
                 EventoGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " um Atleta");
                 break;
             case "Equipa":
-                EventoGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Equipa");
                 break;
             case "Modalidade":
-                ModalidadeGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Modalidade");
                 break;
         }
+
+
+        EventoChoice.getItems().add("-------");
+
+        for (int i = 0; i < localList.size(); i++) {
+            Local local = localList.get(i);
+            for (int j = 0; j < eventoList.size(); j++) {
+                Evento evento = eventoList.get(j);
+
+                if(local.getId() == evento.getLocal_id()){
+                    EventoChoice.getItems().add(local.getNome() + " - " + evento.getAno_edicao());
+                    itemMap.put(local.getNome() + " - " + evento.getAno_edicao(), local.getId());
+                }
+
+            }
+        }
+
+        EventoChoice.setValue("-------");
     }
 
     /**
@@ -83,6 +116,8 @@ public class InserçãoXMLController {
      */
     @FXML
     void OnClickInserirXMLButton(ActionEvent event) throws ParserConfigurationException, IOException, SAXException, SQLException {
+
+        AlertHandler alertHandler;
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione o seu Ficheiro XML!");
@@ -105,28 +140,65 @@ public class InserçãoXMLController {
 
         boolean valido = false;
 
+        Stage s = (Stage) InserirXMLButton.getScene().getWindow();
+
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
                 valido = VerificarXML(selectedFile, AtletaXSDPath);
                 if (valido) {
                     lerXMLController.LerXMLAtleta(selectedFile);
+
+                    RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
+                }else {
+
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Modalidades Válido!!");
+                    alertHandler.getAlert().showAndWait();
                 }
+
+
                 break;
             case "Equipa":
                 valido = VerificarXML(selectedFile, EquipaXSDPath);
                 if (valido) {
-                    lerXMLController.LerXMLEquipa(selectedFile);
+
+                    if(EventoChoice.getValue().equals("-------")){
+                        alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
+                        alertHandler.getAlert().showAndWait();
+                        return;
+                    }
+
+                    int IDEvento = itemMap.get(EventoChoice.getValue());
+
+                    lerXMLController.LerXMLEquipa(selectedFile, IDEvento);
+
+                    RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
+                }else {
+
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Modalidades Válido!!");
+                    alertHandler.getAlert().showAndWait();
                 }
                 break;
             case "Modalidade":
                 valido = VerificarXML(selectedFile, ModalidadeXSDPath);
                 if (valido) {
-                    lerXMLController.LerXMLModalidade(selectedFile);
+
+                    if(EventoChoice.getValue().equals("-------")){
+                        alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
+                        alertHandler.getAlert().showAndWait();
+                        return;
+                    }
+
+                    int IDEvento = itemMap.get(EventoChoice.getValue());
+
+                    lerXMLController.LerXMLModalidade(selectedFile, IDEvento);
+
+                    RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
+                }else {
+
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Modalidades Válido!!");
+                    alertHandler.getAlert().showAndWait();
                 }
         }
-
-        Stage s = (Stage) InserirXMLButton.getScene().getWindow();
-        RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
     }
 
     /**

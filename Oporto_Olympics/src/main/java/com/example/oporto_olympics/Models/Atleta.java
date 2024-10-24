@@ -21,14 +21,6 @@ public class Atleta {
 
     private List<ParticipaçõesAtleta> participaçõesAtletas;
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public List<ParticipaçõesAtleta> getParticipaçõesOlimps() {
-        return participaçõesAtletas;
-    }
-
     public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas) {
         this.id = id;
         this.nome = nome;
@@ -90,6 +82,10 @@ public class Atleta {
 
     public Date getDataNascimento() {
         return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public List<ParticipaçõesAtleta> getParticipaçõesAtletas() {

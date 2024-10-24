@@ -4,6 +4,8 @@ import com.example.oporto_olympics.Models.RegistoModalidades.RegistoOlimpico;
 
 public class Modalidade {
 
+    private int id;
+
     private String tipo;
 
     private String genero;
@@ -18,13 +20,16 @@ public class Modalidade {
 
     private String OneGame;
 
+    private int LocalID;
+
     private RegistoOlimpico recordeOlimpico;
 
     private RegistoOlimpico vencedorOlimpico;
 
     private String regras;
 
-    public Modalidade(String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
+    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, int localID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
+        this.id = id;
         this.tipo = tipo;
         this.genero = genero;
         this.nome = nome;
@@ -32,9 +37,18 @@ public class Modalidade {
         this.minParticipantes = minParticipantes;
         this.medida = medida;
         OneGame = oneGame;
+        LocalID = localID;
         this.recordeOlimpico = recordeOlimpico;
         this.vencedorOlimpico = vencedorOlimpico;
         this.regras = regras;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTipo() {
@@ -91,6 +105,14 @@ public class Modalidade {
 
     public void setOneGame(String oneGame) {
         OneGame = oneGame;
+    }
+
+    public int getLocalID() {
+        return LocalID;
+    }
+
+    public void setLocalID(int localID) {
+        LocalID = localID;
     }
 
     public RegistoOlimpico getRecordeOlimpico() {
