@@ -35,7 +35,7 @@ javafx {
 }
 
 dependencies {
-
+  implementation("com.microsoft.sqlserver:mssql-jdbc:10.2.0.jre8")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
