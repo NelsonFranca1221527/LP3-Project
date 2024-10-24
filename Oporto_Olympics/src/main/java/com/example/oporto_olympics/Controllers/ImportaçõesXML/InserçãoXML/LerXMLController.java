@@ -50,20 +50,18 @@ public class LerXMLController {
 
         NodeList lineItemNodes = doc.getElementsByTagName("athlete");
 
-        List<Atleta> AtletaList = new ArrayList<>();
-        List<ParticipaçõesAtleta> participaçõesAtletaList = new ArrayList<>();
-
         for (int i = 0; i < lineItemNodes.getLength(); i++) {
+
+            List<ParticipaçõesAtleta> participaçõesAtletaList = new ArrayList<>();
+
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
-            Element parentElement = (Element) lineItemElement.getParentNode();
-
-            String nome = getElementTextContent(parentElement, "name");
-            String pais = getElementTextContent(parentElement, "country");
-            String genero = getElementTextContent(parentElement, "genre");
-            int altura = getIntValueFromElement(parentElement, "height");
-            int peso = getIntValueFromElement(parentElement, "weight");
-            Date dataNascimento = getDateValueFromElement(parentElement, "dateOfBirth");
+            String nome = getElementTextContent(lineItemElement, "name");
+            String pais = getElementTextContent(lineItemElement, "country");
+            String genero = getElementTextContent(lineItemElement, "genre");
+            int altura = getIntValueFromElement(lineItemElement, "height");
+            int peso = getIntValueFromElement(lineItemElement, "weight");
+            Date dataNascimento = getDateValueFromElement(lineItemElement, "dateOfBirth");
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
             for (int j = 0; j < participations.getLength(); j++) {
@@ -83,6 +81,7 @@ public class LerXMLController {
 
             atletaDAOImp.save(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
 
+            System.out.println(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
         }
     }
 
@@ -101,19 +100,16 @@ public class LerXMLController {
 
         NodeList lineItemNodes = doc.getElementsByTagName("team");
 
-        List<Equipa> EquipaList = new ArrayList<>();
         List<ParticipaçõesEquipa> participaçõesEquipaList = new ArrayList<>();
 
         for (int i = 0; i < lineItemNodes.getLength(); i++) {
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
-            Element parentElement = (Element) lineItemElement.getParentNode();
-
-            String nome = getElementTextContent(parentElement, "name");
-            String pais = getElementTextContent(parentElement, "country");
-            String genero = getElementTextContent(parentElement, "genre");
-            String desporto = getElementTextContent(parentElement, "sport");
-            int anoFundacao = getIntValueFromElement(parentElement, "foundationYear");
+            String nome = getElementTextContent(lineItemElement, "name");
+            String pais = getElementTextContent(lineItemElement, "country");
+            String genero = getElementTextContent(lineItemElement, "genre");
+            String desporto = getElementTextContent(lineItemElement, "sport");
+            int anoFundacao = getIntValueFromElement(lineItemElement, "foundationYear");
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
             for (int j = 0; j < participations.getLength(); j++) {
@@ -150,20 +146,16 @@ public class LerXMLController {
 
         NodeList lineItemNodes = doc.getElementsByTagName("sport");
 
-        List<Modalidade> ModalidadeList = new ArrayList<Modalidade>();
-
         for (int i = 0; i < lineItemNodes.getLength(); i++) {
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
-            Element parentElement = (Element) lineItemElement.getParentNode();
-
-            String tipo = getElementTextContent(parentElement, "type");
-            String genero = getElementTextContent(parentElement, "genre");
-            String nome = getElementTextContent(parentElement, "name");
-            String descricao = getElementTextContent(parentElement, "description");
-            int minParticipantes = getIntValueFromElement(parentElement, "minParticipants");
-            String medida = getElementTextContent(parentElement, "scoringMeasure");
-            String oneGame = getElementTextContent(parentElement, "oneGame");
+            String tipo = getElementTextContent(lineItemElement, "type");
+            String genero = getElementTextContent(lineItemElement, "genre");
+            String nome = getElementTextContent(lineItemElement, "name");
+            String descricao = getElementTextContent(lineItemElement, "description");
+            int minParticipantes = getIntValueFromElement(lineItemElement, "minParticipants");
+            String medida = getElementTextContent(lineItemElement, "scoringMeasure");
+            String oneGame = getElementTextContent(lineItemElement, "oneGame");
 
             NodeList Rules = lineItemElement.getElementsByTagName("rules");
 

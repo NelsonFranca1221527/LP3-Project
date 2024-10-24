@@ -5,25 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/PasswordBD.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ConnectBD/ConnectionBD.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EquipaDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/ModalidadeDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/RegistoModalidades/RegistoOlimpico.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/RegistoModalidades/RegistoPontos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/RegistoModalidades/RegistoTempo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Equipa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Equipa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +143,7 @@
       <workItem from="1729635183430" duration="3039000" />
       <workItem from="1729640219846" duration="10044000" />
       <workItem from="1729694619528" duration="25390000" />
-      <workItem from="1729722891484" duration="2941000" />
+      <workItem from="1729722891484" duration="11217000" />
     </task>
     <servers />
   </component>
