@@ -30,6 +30,10 @@ public class RedirecionarHelper {
         }
     }
 
+    public static RedirecionarHelper GotoLogin() {
+        return new RedirecionarHelper("Views/Login.fxml", "Login");
+    }
+
     public static RedirecionarHelper GotoInserirEventosOlimpicos() {
         return new RedirecionarHelper("Views/EventosOlimpicos/InserirEventosOlimpicos.fxml", "Criar Eventos Olímpicos");
     }
