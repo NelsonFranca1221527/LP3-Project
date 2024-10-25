@@ -65,13 +65,10 @@ public class LocaisDAOImp implements DAO<Local> {
     public boolean existsByLocal(String nome, String tipo, String morada, String cidade, String pais) {
         try {
             PreparedStatement ps = connection.prepareStatement(
-                    "SELECT COUNT(*) FROM locais WHERE nome = ? AND tipo = ? AND morada = ? AND cidade = ? AND pais_sigla = ?"
+                    "SELECT COUNT(*) FROM locais WHERE nome = ? AND tipo = ?"
             );
             ps.setString(1, nome);
             ps.setString(2, tipo);
-            ps.setString(3, morada);
-            ps.setString(4, cidade);
-            ps.setString(5, pais);
             ResultSet rs = ps.executeQuery();
             rs.next();
             int count = rs.getInt(1);
