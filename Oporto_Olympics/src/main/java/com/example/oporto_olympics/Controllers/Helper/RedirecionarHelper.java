@@ -30,12 +30,19 @@ public class RedirecionarHelper {
         }
     }
 
+    public static RedirecionarHelper GotoInserirEventosOlimpicos() {
+        return new RedirecionarHelper("Views/EventosOlimpicos/InserirEventosOlimpicos.fxml", "Criar Eventos Olímpicos");
+    }
+
     public static RedirecionarHelper GotoInserçãoXML() {
         return new RedirecionarHelper("Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml", "Inserir XML");
+    }
+
+    public static RedirecionarHelper GotoInserirLocal() {
+        return new RedirecionarHelper("Views/EventosOlimpicos/InserirLocal.fxml", "Inserir Local");
     }
 
     public static RedirecionarHelper GotoSeleçãoXML() {
         return new RedirecionarHelper("Views/ImportaçõesXML/SeleçãoXML/SeleçãoXML.fxml", "Selecionar XML");
     }
-
 }

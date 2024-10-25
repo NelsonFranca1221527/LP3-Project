@@ -30,7 +30,7 @@ public class ConnectionBD {
             String url = "jdbc:sqlserver://" + serverName + ";databaseName=" + databaseName + ";encrypt=true;trustServerCertificate=true";
 
             conexao = DriverManager.getConnection(url, user, password);
-
+            System.out.println("Conexão estabelecida com sucesso.");
         } catch (SQLException ex) {
 
             System.out.println("SQLException: " + ex.getMessage());

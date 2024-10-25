@@ -1,6 +1,6 @@
 package com.example.oporto_olympics.Controllers.DAO;
 
-
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
