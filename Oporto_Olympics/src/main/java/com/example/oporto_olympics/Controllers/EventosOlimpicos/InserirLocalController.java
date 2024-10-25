@@ -135,7 +135,6 @@ public class InserirLocalController {
     void OnClickInserirLocalButton(ActionEvent event) throws IOException, SQLException {
 
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
-
         Connection conexao = conexaoBD.getConexao();
 
         if (conexao == null || conexao.isClosed()) {
@@ -154,36 +153,38 @@ public class InserirLocalController {
         Integer Capacidade = capacidadeField.getText().isEmpty() ? 0 : Integer.valueOf(capacidadeField.getText());
         Integer Ano_construcao = anoconstrucaoField.getText().isEmpty() ? 0 : Integer.valueOf(anoconstrucaoField.getText());
 
-        Local L1 = new Local(0,Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
+        Local L1 = new Local(0, Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
 
         LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
 
-        if ( ( Tipo.equals("") || Nome.equals("") || Morada.equals("") ) || Cidade.equals("") || Pais.equals("") || ( Tipo.equals(" ") || Nome.equals(" ") || Morada.equals(" ") || Cidade.equals(" ") || Pais.equals(" "))) {
+        if ((Tipo.equals("") || Nome.equals("") || Morada.equals("") || Cidade.equals("") || Pais.equals("")) ||
+                (Tipo.equals(" ") || Nome.equals(" ") || Morada.equals(" ") || Cidade.equals(" ") || Pais.equals(" "))) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados, para que possa inserir um novo Local.");
             AH1.getAlert().show();
-        } else {
-            AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
-            Optional<ButtonType> result = AH2.getAlert().showAndWait();
-            if (result.get() == ButtonType.OK){
-                try {
-                    LDI1.save(L1);
-                    AlertHandler AH3 = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso !!", "Local Inserido com Sucesso !");
-                    AH3.getAlert().show();
-                } catch (RuntimeException e) {
-                    AlertHandler erro = new AlertHandler(Alert.AlertType.ERROR, "Erro ao inserir Local", e.getMessage());
-                    erro.getAlert().show();
-                    System.out.println(L1);
-                    System.out.println(Tipo);
-                    System.out.println(Nome);
-                    System.out.println(Morada);
-                    System.out.println(Cidade);
-                    System.out.println(Pais);
-                    System.out.println(Capacidade);
-                    System.out.println(Ano_construcao);
-                }
+            return;
+        }
+
+        // Verificar se o local já existe
+        if (LDI1.existsByLocal(Nome, Tipo, Morada, Cidade, Pais)) {
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Local Duplicado", "Este local já existe.");
+            AH1.getAlert().show();
+            return;
+        }
+
+        AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
+        Optional<ButtonType> result = AH2.getAlert().showAndWait();
+        if (result.get() == ButtonType.OK) {
+            try {
+                LDI1.save(L1);
+                AlertHandler AH3 = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso !!", "Local Inserido com Sucesso !");
+                AH3.getAlert().show();
+            } catch (RuntimeException e) {
+                AlertHandler erro = new AlertHandler(Alert.AlertType.ERROR, "Erro ao inserir Local", e.getMessage());
+                erro.getAlert().show();
             }
         }
     }
+
 
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
