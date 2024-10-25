@@ -598,9 +598,9 @@
 														"$ref": "AAAAAAGSc+aKrCnTppE="
 													},
 													"font": "Arial;13;0",
-													"left": 207,
+													"left": 201,
 													"top": 152,
-													"width": 91.7744140625,
+													"width": 102.6162109375,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -608,7 +608,7 @@
 														"$ref": "AAAAAAGSc+aKrCnUboE="
 													},
 													"edgePosition": 1,
-													"text": "2 : Envia Dados"
+													"text": "1.1 : Envia Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -709,9 +709,9 @@
 														"$ref": "AAAAAAGSh6BmNmWfVGg="
 													},
 													"font": "Arial;13;0",
-													"left": 380,
+													"left": 369,
 													"top": 178,
-													"width": 109.1162109375,
+													"width": 130.7998046875,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -719,7 +719,7 @@
 														"$ref": "AAAAAAGSh6BmNmWgWqY="
 													},
 													"edgePosition": 1,
-													"text": "3 : Envia os Dados"
+													"text": "1.1.1 : Envia os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -820,9 +820,9 @@
 														"$ref": "AAAAAAGSh6CeW2W1RF0="
 													},
 													"font": "Arial;13;0",
-													"left": 536,
+													"left": 526,
 													"top": 202,
-													"width": 130.076171875,
+													"width": 151.759765625,
 													"height": 13,
 													"alpha": 0.5585990344448123,
 													"distance": 18.867962264113206,
@@ -830,7 +830,7 @@
 														"$ref": "AAAAAAGSh6CeW2W2J5U="
 													},
 													"edgePosition": 1,
-													"text": "4 : Pesquisa os Dados"
+													"text": "1.1.2 : Pesquisa os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -931,9 +931,9 @@
 														"$ref": "AAAAAAGSh6C9PWXLqqg="
 													},
 													"font": "Arial;13;0",
-													"left": 688,
+													"left": 677,
 													"top": 243,
-													"width": 123.58251953125,
+													"width": 145.26611328125,
 													"height": 13,
 													"alpha": 1.5866670072677953,
 													"distance": 63.00793600809346,
@@ -941,7 +941,7 @@
 														"$ref": "AAAAAAGSh6C9PWXMTBE="
 													},
 													"edgePosition": 1,
-													"text": "5 : Efetua a Pesquisa"
+													"text": "1.1.3 : Efetua a Pesquisa"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1042,9 +1042,9 @@
 														"$ref": "AAAAAAGSh6IfgWX3+5o="
 													},
 													"font": "Arial;13;0",
-													"left": 533,
+													"left": 522,
 													"top": 294,
-													"width": 105.50439453125,
+													"width": 127.18798828125,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -1052,7 +1052,7 @@
 														"$ref": "AAAAAAGSh6IfgWX4JsU="
 													},
 													"edgePosition": 1,
-													"text": "6 : Retorna Dados"
+													"text": "1.1.4 : Retorna Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1154,9 +1154,9 @@
 														"$ref": "AAAAAAGSh6JjvWYN05U="
 													},
 													"font": "Arial;13;0",
-													"left": 382,
+													"left": 371,
 													"top": 308,
-													"width": 105.50439453125,
+													"width": 127.18798828125,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -1164,7 +1164,7 @@
 														"$ref": "AAAAAAGSh6JjvWYOHUg="
 													},
 													"edgePosition": 1,
-													"text": "7 : Retorna Dados"
+													"text": "1.1.5 : Retorna Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1614,9 +1614,9 @@
 														"$ref": "AAAAAAGSh6K4tWYkv2w="
 													},
 													"font": "Arial;13;0",
-													"left": 176,
+													"left": 171,
 													"top": 404,
-													"width": 226.9287109375,
+													"width": 237.7705078125,
 													"height": 13,
 													"alpha": 2.819842190102217,
 													"distance": 34.785054261852174,
@@ -1624,7 +1624,7 @@
 														"$ref": "AAAAAAGSh6K4tmYlG2A="
 													},
 													"edgePosition": 1,
-													"text": "8 : Redireciona para a Página do Atleta"
+													"text": "1.2 : Redireciona para a Página do Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1726,9 +1726,9 @@
 														"$ref": "AAAAAAGSh6b4FmandQ4="
 													},
 													"font": "Arial;13;0",
-													"left": 178,
+													"left": 173,
 													"top": 532,
-													"width": 154.62255859375,
+													"width": 165.46435546875,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -1736,7 +1736,7 @@
 														"$ref": "AAAAAAGSh6b4F2aokPQ="
 													},
 													"edgePosition": 1,
-													"text": "9 : Solicita Nova Password"
+													"text": "1.3 : Solicita Nova Password"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1848,7 +1848,7 @@
 														"$ref": "AAAAAAGSh6chj2a+Zqk="
 													},
 													"edgePosition": 1,
-													"text": "10 : Insere Nova Password"
+													"text": "2 : Insere Nova Password"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1949,9 +1949,9 @@
 														"$ref": "AAAAAAGSh6djAmbUB9o="
 													},
 													"font": "Arial;13;0",
-													"left": 360,
+													"left": 358,
 													"top": 576,
-													"width": 241.12841796875,
+													"width": 245.705078125,
 													"height": 13,
 													"alpha": 0.21406063843747708,
 													"distance": 47.07440918375928,
@@ -1959,7 +1959,7 @@
 														"$ref": "AAAAAAGSh6djAmbV0J8="
 													},
 													"edgePosition": 1,
-													"text": "11 : Envia os Dados Atualizados do Atleta"
+													"text": "2.1 : Envia os Dados Atualizados do Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2060,9 +2060,9 @@
 														"$ref": "AAAAAAGSh6iDn2cLU8o="
 													},
 													"font": "Arial;13;0",
-													"left": 536,
+													"left": 529,
 													"top": 592,
-													"width": 242.09326171875,
+													"width": 256.546875,
 													"height": 13,
 													"alpha": 0.21866891646218115,
 													"distance": 73.7563556583431,
@@ -2070,7 +2070,7 @@
 														"$ref": "AAAAAAGSh6iDn2cM6C8="
 													},
 													"edgePosition": 1,
-													"text": "12 : Envia os Dados Atualizados do Atleta"
+													"text": "2.1.1 : Envia os Dados Atualizados do Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2171,9 +2171,9 @@
 														"$ref": "AAAAAAGSh6iszmciIvQ="
 													},
 													"font": "Arial;13;0",
-													"left": 696,
+													"left": 689,
 													"top": 643,
-													"width": 119.24072265625,
+													"width": 133.6943359375,
 													"height": 13,
 													"alpha": 1.585287063760439,
 													"distance": 69.00724599634447,
@@ -2181,7 +2181,7 @@
 														"$ref": "AAAAAAGSh6isz2cjYvI="
 													},
 													"edgePosition": 1,
-													"text": "13 : Atualiza o Atleta"
+													"text": "2.1.2 : Atualiza o Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2282,9 +2282,9 @@
 														"$ref": "AAAAAAGSh6kNgGc6j5c="
 													},
 													"font": "Arial;13;0",
-													"left": 528,
+													"left": 521,
 													"top": 687,
-													"width": 161.14794921875,
+													"width": 175.6015625,
 													"height": 13,
 													"alpha": 2.7091850243606723,
 													"distance": 28.635642126552707,
@@ -2292,7 +2292,7 @@
 														"$ref": "AAAAAAGSh6kNgGc7Mow="
 													},
 													"edgePosition": 1,
-													"text": "14 : Mensagem de Sucesso"
+													"text": "2.1.3 : Mensagem de Sucesso"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2394,9 +2394,9 @@
 														"$ref": "AAAAAAGSh6kwZWdQaaI="
 													},
 													"font": "Arial;13;0",
-													"left": 354,
+													"left": 347,
 													"top": 708,
-													"width": 161.14794921875,
+													"width": 175.6015625,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -2404,7 +2404,7 @@
 														"$ref": "AAAAAAGSh6kwZmdRdAE="
 													},
 													"edgePosition": 1,
-													"text": "15 : Mensagem de Sucesso"
+													"text": "2.1.4 : Mensagem de Sucesso"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2506,9 +2506,9 @@
 														"$ref": "AAAAAAGSh6lMamdmlHk="
 													},
 													"font": "Arial;13;0",
-													"left": 138,
+													"left": 107,
 													"top": 725,
-													"width": 234.15869140625,
+													"width": 296.30859375,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -2516,7 +2516,7 @@
 														"$ref": "AAAAAAGSh6lMa2dnWR0="
 													},
 													"edgePosition": 1,
-													"text": "16 : Redireciona para a Página do Atleta"
+													"text": "2.1.5 : Redireciona para a Página de Login"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2618,9 +2618,9 @@
 														"$ref": "AAAAAAGSh6oyP2d/ll0="
 													},
 													"font": "Arial;13;0",
-													"left": 158,
+													"left": 150,
 													"top": 821,
-													"width": 195.8251953125,
+													"width": 210.27880859375,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -2628,7 +2628,7 @@
 														"$ref": "AAAAAAGSh6oyP2eAOFM="
 													},
 													"edgePosition": 1,
-													"text": "17 : Solicita Novamente os Dados"
+													"text": "2.2 : Solicita Novamente os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2710,7 +2710,8 @@
 												"$ref": "AAAAAAGSh6oyP2eEJpU="
 											}
 										}
-									]
+									],
+									"sequenceNumbering": "custom"
 								}
 							],
 							"messages": [
@@ -2727,7 +2728,8 @@
 									"target": {
 										"$ref": "AAAAAAGSc91xhyky+ac="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2741,7 +2743,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh57+PGUtY0A="
-									}
+									},
+									"sequenceNumber": "1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2755,7 +2758,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh59CQ2VOneE="
-									}
+									},
+									"sequenceNumber": "1.1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2769,7 +2773,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh59bpGVubdo="
-									}
+									},
+									"sequenceNumber": "1.1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2783,7 +2788,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh59bpGVubdo="
-									}
+									},
+									"sequenceNumber": "1.1.3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2798,7 +2804,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh59CQ2VOneE="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "1.1.4"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2813,7 +2820,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh57+PGUtY0A="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "1.1.5"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2828,7 +2836,8 @@
 									"target": {
 										"$ref": "AAAAAAGSc91xhyky+ac="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2843,7 +2852,8 @@
 									"target": {
 										"$ref": "AAAAAAGSc91xhyky+ac="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "1.3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2858,7 +2868,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh57+PGUtY0A="
 									},
-									"messageSort": "asynchCall"
+									"messageSort": "asynchCall",
+									"sequenceNumber": "2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2872,7 +2883,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh59CQ2VOneE="
-									}
+									},
+									"sequenceNumber": "2.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2887,7 +2899,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh59bpGVubdo="
 									},
-									"messageSort": "asynchCall"
+									"messageSort": "asynchCall",
+									"sequenceNumber": "2.1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2901,7 +2914,8 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGSh59bpGVubdo="
-									}
+									},
+									"sequenceNumber": "2.1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2916,7 +2930,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh59CQ2VOneE="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "2.1.3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2931,7 +2946,8 @@
 									"target": {
 										"$ref": "AAAAAAGSh57+PGUtY0A="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "2.1.4"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2939,14 +2955,15 @@
 									"_parent": {
 										"$ref": "AAAAAAGSc9zvtCkglhg="
 									},
-									"name": "Redireciona para a Página do Atleta",
+									"name": "Redireciona para a Página de Login",
 									"source": {
 										"$ref": "AAAAAAGSh57+PGUtY0A="
 									},
 									"target": {
 										"$ref": "AAAAAAGSc91xhyky+ac="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "2.1.5"
 								},
 								{
 									"_type": "UMLMessage",
@@ -2961,7 +2978,8 @@
 									"target": {
 										"$ref": "AAAAAAGSc91xhyky+ac="
 									},
-									"messageSort": "reply"
+									"messageSort": "reply",
+									"sequenceNumber": "2.2"
 								}
 							],
 							"participants": [

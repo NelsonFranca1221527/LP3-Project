@@ -33,7 +33,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGSeKYvQVOfNj4="
 									},
-									"name": "Registo do Atleta",
+									"name": "Registo do Atleta - XML",
 									"ownedViews": [
 										{
 											"_type": "UMLFrameView",
@@ -54,9 +54,9 @@
 													"font": "Arial;13;0",
 													"left": 40.72998046875,
 													"top": 21,
-													"width": 99.00439453125,
+													"width": 137.287109375,
 													"height": 13,
-													"text": "Registo do Atleta"
+													"text": "Registo do Atleta - XML"
 												},
 												{
 													"_type": "LabelView",
@@ -333,9 +333,9 @@
 														"$ref": "AAAAAAGSeKgQK1QQV4k="
 													},
 													"font": "Arial;13;0",
-													"left": 254,
+													"left": 259,
 													"top": 117,
-													"width": 161.84619140625,
+													"width": 151.00439453125,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -445,9 +445,9 @@
 														"$ref": "AAAAAAGSeKhUwlQmC98="
 													},
 													"font": "Arial;13;0",
-													"left": 250,
+													"left": 255,
 													"top": 160,
-													"width": 163.2998046875,
+													"width": 152.4580078125,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -556,17 +556,17 @@
 														"$ref": "AAAAAAGSeKj9P1Q92VY="
 													},
 													"font": "Arial;13;0",
-													"left": 472,
+													"left": 466,
 													"top": 203,
 													"width": 161.6240234375,
 													"height": 13,
-													"alpha": 1.5829898427561597,
-													"distance": 82.00609733428362,
+													"alpha": 1.5839524605366504,
+													"distance": 76.00657866263946,
 													"hostEdge": {
 														"$ref": "AAAAAAGSeKj9P1Q++9M="
 													},
 													"edgePosition": 1,
-													"text": "1.1.2 : Valida o ficheiro XML"
+													"text": "1.1.1 : Valida o ficheiro XML"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -943,7 +943,7 @@
 														"$ref": "AAAAAAGSfUISRp6YCWA="
 													},
 													"edgePosition": 1,
-													"text": "1.1.3 : Valida os Dados"
+													"text": "1.1.2 : Valida os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1044,9 +1044,9 @@
 														"$ref": "AAAAAAGSfWydKKFH8Jo="
 													},
 													"font": "Arial;13;0",
-													"left": 442,
+													"left": 448,
 													"top": 295,
-													"width": 130.7998046875,
+													"width": 119.04248046875,
 													"height": 13,
 													"alpha": -3.9269913169874915,
 													"distance": 14.142135623730951,
@@ -1054,7 +1054,7 @@
 														"$ref": "AAAAAAGSfWydKKFIUOw="
 													},
 													"edgePosition": 1,
-													"text": "1.1.4 : Envia os Dados"
+													"text": "2 : Envia os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1527,7 +1527,7 @@
 														"$ref": "AAAAAAGSfW1wG6FiWR4="
 													},
 													"edgePosition": 1,
-													"text": "1.2 : Faz a pesquisa do Atleta"
+													"text": "2.1 : Faz a pesquisa do Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1638,7 +1638,7 @@
 														"$ref": "AAAAAAGSfW5g36F4MZE="
 													},
 													"edgePosition": 1,
-													"text": "1.2.1 : Pesquisa o Atleta"
+													"text": "2.1.1 : Pesquisa o Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1749,7 +1749,7 @@
 														"$ref": "AAAAAAGSfXBioaH0NAA="
 													},
 													"edgePosition": 1,
-													"text": "1.2.2 : Resultado da Pesquisa"
+													"text": "2.1.2 : Resultado da Pesquisa"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1861,7 +1861,7 @@
 														"$ref": "AAAAAAGSfXCX6qIKOUg="
 													},
 													"edgePosition": 1,
-													"text": "1.2.3 : Resultado da Pesquisa"
+													"text": "2.1.3 : Resultado da Pesquisa"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -1973,7 +1973,7 @@
 														"$ref": "AAAAAAGSfXNFn6Irn/E="
 													},
 													"edgePosition": 1,
-													"text": "2 : Envia os Dados"
+													"text": "3 : Envia os Dados"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2074,9 +2074,9 @@
 														"$ref": "AAAAAAGSfXPIfKJAyN0="
 													},
 													"font": "Arial;13;0",
-													"left": 622,
+													"left": 620,
 													"top": 497,
-													"width": 169.81884765625,
+													"width": 173.4306640625,
 													"height": 13,
 													"alpha": 0.367173704952283,
 													"distance": 27.85677655436824,
@@ -2084,7 +2084,7 @@
 														"$ref": "AAAAAAGSfXPIfKJBOq0="
 													},
 													"edgePosition": 1,
-													"text": "2.1 : Faz a Inserção do Atleta"
+													"text": "3.1 : Faz a Inserção do Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2195,7 +2195,7 @@
 														"$ref": "AAAAAAGSfXSFlqJYoUY="
 													},
 													"edgePosition": 1,
-													"text": "2.1.1 : Guarda o Atleta"
+													"text": "3.1.1 : Guarda o Atleta"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2306,7 +2306,7 @@
 														"$ref": "AAAAAAGSfXTBqaJvvRw="
 													},
 													"edgePosition": 1,
-													"text": "2.1.2 : Mensagem De Sucesso"
+													"text": "3.1.2 : Mensagem De Sucesso"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2418,7 +2418,7 @@
 														"$ref": "AAAAAAGSfXTx2KKFiSM="
 													},
 													"edgePosition": 1,
-													"text": "2.1.3 : Mensagem de Sucesso"
+													"text": "3.1.3 : Mensagem de Sucesso"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2530,7 +2530,7 @@
 														"$ref": "AAAAAAGSfXUjqqKcq3w="
 													},
 													"edgePosition": 1,
-													"text": "2.1.4 : Redireciona para a página do Gestor"
+													"text": "3.1.4 : Redireciona para a página do Gestor"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2642,7 +2642,7 @@
 														"$ref": "AAAAAAGSfXWznKK0HEg="
 													},
 													"edgePosition": 1,
-													"text": "2.1.5 : Mensagem de erro"
+													"text": "3.1.5 : Mensagem de erro"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2744,9 +2744,9 @@
 														"$ref": "AAAAAAGSfXXklaLJMlI="
 													},
 													"font": "Arial;13;0",
-													"left": 222,
+													"left": 216,
 													"top": 769,
-													"width": 225.44970703125,
+													"width": 236.29150390625,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -2754,7 +2754,7 @@
 														"$ref": "AAAAAAGSfXXklaLK5nw="
 													},
 													"edgePosition": 1,
-													"text": "2.2 : Solicita novamente o ficheiro XML"
+													"text": "3.2 : Solicita novamente o ficheiro XML"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2866,7 +2866,7 @@
 														"$ref": "AAAAAAGSfXfO7qLpuiM="
 													},
 													"edgePosition": 1,
-													"text": "2.3 : Solicita novamente o ficheiro XML"
+													"text": "3.3 : Solicita novamente o ficheiro XML"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -2997,7 +2997,7 @@
 									"target": {
 										"$ref": "AAAAAAGSeKacklPPHZM="
 									},
-									"sequenceNumber": "1.1.2"
+									"sequenceNumber": "1.1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3012,7 +3012,7 @@
 									"target": {
 										"$ref": "AAAAAAGSeKacklPPHZM="
 									},
-									"sequenceNumber": "1.1.3"
+									"sequenceNumber": "1.1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3027,7 +3027,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT8yyp5i7cA="
 									},
-									"sequenceNumber": "1.1.4"
+									"sequenceNumber": "2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3042,7 +3042,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT53wJ5ACrE="
 									},
-									"sequenceNumber": "1.2"
+									"sequenceNumber": "2.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3057,7 +3057,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT53wJ5ACrE="
 									},
-									"sequenceNumber": "1.2.1"
+									"sequenceNumber": "2.1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3073,7 +3073,7 @@
 										"$ref": "AAAAAAGSfT8yyp5i7cA="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "1.2.2"
+									"sequenceNumber": "2.1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3089,7 +3089,7 @@
 										"$ref": "AAAAAAGSeKacklPPHZM="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "1.2.3"
+									"sequenceNumber": "2.1.3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3104,7 +3104,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT8yyp5i7cA="
 									},
-									"sequenceNumber": "2"
+									"sequenceNumber": "3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3119,7 +3119,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT53wJ5ACrE="
 									},
-									"sequenceNumber": "2.1"
+									"sequenceNumber": "3.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3134,7 +3134,7 @@
 									"target": {
 										"$ref": "AAAAAAGSfT53wJ5ACrE="
 									},
-									"sequenceNumber": "2.1.1"
+									"sequenceNumber": "3.1.1"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3150,7 +3150,7 @@
 										"$ref": "AAAAAAGSfT8yyp5i7cA="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.1.2"
+									"sequenceNumber": "3.1.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3166,7 +3166,7 @@
 										"$ref": "AAAAAAGSeKacklPPHZM="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.1.3"
+									"sequenceNumber": "3.1.3"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3182,7 +3182,7 @@
 										"$ref": "AAAAAAGSeKaBVlOvxS4="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.1.4"
+									"sequenceNumber": "3.1.4"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3198,7 +3198,7 @@
 										"$ref": "AAAAAAGSeKaBVlOvxS4="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.1.5"
+									"sequenceNumber": "3.1.5"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3214,7 +3214,7 @@
 										"$ref": "AAAAAAGSeKaBVlOvxS4="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.2"
+									"sequenceNumber": "3.2"
 								},
 								{
 									"_type": "UMLMessage",
@@ -3230,7 +3230,7 @@
 										"$ref": "AAAAAAGSeKaBVlOvxS4="
 									},
 									"messageSort": "reply",
-									"sequenceNumber": "2.3"
+									"sequenceNumber": "3.3"
 								}
 							],
 							"participants": [
