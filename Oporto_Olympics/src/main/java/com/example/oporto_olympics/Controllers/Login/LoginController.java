@@ -3,6 +3,7 @@ package com.example.oporto_olympics.Controllers.Login;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Misc.Encriptação;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -36,8 +37,9 @@ public class LoginController {
             return;
         }
 
+        Encriptação Encrypt = new Encriptação();
         UserDAOImp UserDAO = new UserDAOImp(conexao);
-        String SenhaHash = StringtoHash(SenhaField.getText());
+        String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
         String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
 
 
@@ -62,18 +64,4 @@ public class LoginController {
         }
     }
 
-    public String StringtoHash(String dado) throws NoSuchAlgorithmException {
-
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        byte[] hashdado = md.digest(dado.getBytes());
-
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashdado) {
-            hexString.append(String.format("%02x", b));
-        }
-
-        return hexString.toString();
-
-    }
 }
