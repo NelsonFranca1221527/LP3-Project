@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.EventosOlimpicos.InserirLocalController">
+   <children>
+      <ImageView fitHeight="768.0" fitWidth="1280.0" layoutX="-38.0" layoutY="-12.0">
+         <image>
+            <Image url="@../../Assets/Images/Aneis.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#808080bf" height="562.0" layoutX="85.0" layoutY="128.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1110.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="SKYBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
+      <Button fx:id="InserirLocalButton" layoutX="522.0" layoutY="607.0" mnemonicParsing="false" onAction="#OnClickInserirLocalButton" prefHeight="50.0" prefWidth="200.0" text="Inserir Local" />
+      <Label fx:id="tituloLocal" alignment="CENTER" layoutX="517.0" layoutY="99.0" prefHeight="58.0" style="-fx-background-color: #D9D9D9;" text="Inserir Local" textAlignment="CENTER">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="VoltarButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#OnClickVoltarButton" text="Voltar" />
+      <Label layoutX="161.0" layoutY="257.0" text="Local">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="tipolocalCombo" layoutX="211.0" layoutY="318.0" prefWidth="150.0" />
+      <Label layoutX="164.0" layoutY="316.0" text="Tipo:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="165.0" layoutY="386.0" text="Morada:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="moradaField" layoutX="239.0" layoutY="388.0" />
+      <Label layoutX="442.0" layoutY="386.0" text="Cidade:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="cidadeField" layoutX="508.0" layoutY="388.0" />
+      <Label fx:id="capacidadeLabel" layoutX="166.0" layoutY="458.0" text="Capacidade:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="capacidadeField" layoutX="270.0" layoutY="460.0" />
+      <Label fx:id="anoconstrucaoLabel" layoutX="441.0" layoutY="459.0" text="Ano de Construção:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="anoconstrucaoField" layoutX="607.0" layoutY="463.0" />
+      <Label layoutX="441.0" layoutY="317.0" text="Nome:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nomeField" layoutX="501.0" layoutY="319.0" />
+      <Label layoutX="709.0" layoutY="387.0" text="Sigla País:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="paisField" layoutX="796.0" layoutY="390.0" prefHeight="25.0" prefWidth="82.0" />
+   </children>
+</AnchorPane>
