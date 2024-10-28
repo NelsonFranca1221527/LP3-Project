@@ -91,6 +91,11 @@ public class InserirEventosOlimpicosController {
         ));
     }
 
+    // Função que verifica se o campo é vazio ou contém apenas espaços
+    private boolean isBlankOrEmpty(String text) {
+        return text == null || text.trim().isEmpty();
+    }
+
     /**
      * Metodo chamado quando o botão "Criar Evento" é clicado.
      * Valida os dados de entrada e cria um novo evento se tudo estiver correto.
@@ -150,6 +155,12 @@ public class InserirEventosOlimpicosController {
 
         // Criar o evento
         Evento evento = new Evento(0, anoEdicao, pais, logo, mascote, localId);
+
+        if (isBlankOrEmpty(String.valueOf(anoEdicao)) || isBlankOrEmpty(pais)) {
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados, para que possa criar um novo Evento.");
+            AH1.getAlert().show();
+            return;
+        }
 
         AlertHandler confirmacao = new AlertHandler(Alert.AlertType.CONFIRMATION, "Criar um Evento?", "Tem a certeza que deseja criar este Evento?");
         Optional<ButtonType> result = confirmacao.getAlert().showAndWait();
