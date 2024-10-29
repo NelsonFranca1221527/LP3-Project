@@ -1,8 +1,6 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.*;
@@ -39,9 +37,9 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public void LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public List<Atleta> LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
-        AlertHandler alertHandler;
+        List<Atleta> lst = new ArrayList<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -73,17 +71,10 @@ public class LerXMLController {
                 participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
             }
 
-            ConnectionBD conexaoBD = ConnectionBD.getInstance();
-            Connection conexao = conexaoBD.getConexao();
-
-            AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
-
-            atletaDAOImp.save(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
-
+            lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
         }
 
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,"Sucesso","Atleta/s insirado/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+        return lst;
     }
 
     /**
@@ -94,9 +85,11 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public void LerXMLEquipa(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public List<Equipa> LerXMLEquipa(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
         AlertHandler alertHandler;
+
+        List<Equipa> lst = new ArrayList<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -139,25 +132,18 @@ public class LerXMLController {
 
                 if (modalidadeAtual.getNome().equals(desporto) && modalidadeAtual.getGenero().equals(genero) && modalidadeAtual.getLocalID() == IdLocal) {
                     modalidade = modalidadeAtual.getId();
-                    break;
-                }
-
-                if (modalidade == 0) {
-                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "Não foi encontra uma modalidade em que esta equipa possa competir: " + nome + ", Género: " + genero + ", Desporto: " + desporto);
-                    alertHandler.getAlert().showAndWait();
-                    break;
-                } else {
-
-                    EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
-
-                    equipaDAOImp.save(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
-
                 }
             }
 
-            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
-            alertHandler.getAlert().showAndWait();
+            if (modalidade == 0) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "" + nome + ", Género: " + genero + ", Desporto: " + desporto);
+                alertHandler.getAlert().showAndWait();
+            } else {
+                lst.add(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
+            }
         }
+
+        return lst;
     }
     /**
      * Lê e processa o ficheiro XML de modalidades.
@@ -165,9 +151,9 @@ public class LerXMLController {
      *
      * @param XMLFile O ficheiro XML que contém os dados das modalidades.
      */
-    public void LerXMLModalidade(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public List<Modalidade> LerXMLModalidade(File XMLFile, int IdLocal) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
-        AlertHandler alertHandler;
+        List<Modalidade> lst = new ArrayList<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -200,7 +186,7 @@ public class LerXMLController {
                 Node rule = Rules.item(j);
                 String ruleText = rule.getTextContent().trim();
 
-                    if (regras.length() > 0) {  // Só adiciona vírgula se já houver algo na string
+                    if (regras.length() > 0) {
                         regras = regras + " ";
                     }
                     regras = regras + ruleText;
@@ -258,17 +244,10 @@ public class LerXMLController {
                     modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdLocal, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
                     break;
             }
-
-            ConnectionBD conexaoBD = ConnectionBD.getInstance();
-            Connection conexao = conexaoBD.getConexao();
-
-            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
-
-            modalidadeDAOImp.save(modalidade);
+                    lst.add(modalidade);
         }
 
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,"Sucesso","Modalidade/s insirada/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+        return lst;
     }
 
     /**
@@ -314,15 +293,18 @@ public class LerXMLController {
     private Date getDateValueFromElement(Element parentElement, String tagName) {
         SimpleDateFormat formatData = new SimpleDateFormat("yyyy-MM-dd");
         NodeList nodeList = parentElement.getElementsByTagName(tagName);
+
         if (nodeList.getLength() > 0) {
             String textContent = nodeList.item(0).getTextContent().trim();
             try {
-                return formatData.parse(textContent);
+                Date date = formatData.parse(textContent);
+                return date;
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
         }
         return null;
+
     }
 
     private LocalTime parseTime(String timeString) {

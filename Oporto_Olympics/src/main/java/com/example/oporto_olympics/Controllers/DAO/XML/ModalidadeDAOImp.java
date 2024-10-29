@@ -1,9 +1,11 @@
 package com.example.oporto_olympics.Controllers.DAO.XML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.time.LocalTime;
@@ -78,9 +80,14 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      */
     @Override
     public void save(Modalidade modalidade) {
+
+        AlertHandler alertHandler;
+
         Optional<Modalidade> ModalidadeExiste = get(modalidade.getNome());
 
-        if (ModalidadeExiste.isPresent() && ModalidadeExiste.get().getGenero().equals(modalidade.getGenero()) && ModalidadeExiste.get().getTipo().equals(modalidade.getTipo())) {
+        if (ModalidadeExiste.isPresent() && ModalidadeExiste.get().getGenero().equals(modalidade.getGenero()) && ModalidadeExiste.get().getTipo().equals(modalidade.getTipo()) && ModalidadeExiste.get().getLocalID() == modalidade.getLocalID()){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + " já encontra-se registada no evento selecionado!");
+            alertHandler.getAlert().showAndWait();
             return;
         }
 

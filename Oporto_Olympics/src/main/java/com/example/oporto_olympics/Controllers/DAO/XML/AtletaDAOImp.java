@@ -2,7 +2,9 @@ package com.example.oporto_olympics.Controllers.DAO.XML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.DAO;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
+import javafx.scene.control.Alert;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -59,9 +61,14 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
      */
     @Override
     public void save(Atleta atleta) {
+
+        AlertHandler alertHandler;
+
         Optional<Atleta> AtletaExiste = get(atleta.getNome());
 
         if (AtletaExiste.isPresent() && atleta.getPais().equals(AtletaExiste.get().getPais()) && atleta.getGenero().equals(AtletaExiste.get().getGenero())) {
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Atleta Existente", "O/A Atleta " + atleta.getNome() + " já encontra-se registado no sistema!");
+            alertHandler.getAlert().showAndWait();
             return;
         }
 
