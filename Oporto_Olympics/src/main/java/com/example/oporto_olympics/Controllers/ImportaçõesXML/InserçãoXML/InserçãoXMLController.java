@@ -137,7 +137,7 @@ public class InserçãoXMLController {
 
                 if(local.getId() == evento.getLocal_id()){
                     EventoChoice.getItems().add(local.getNome() + " - " + evento.getAno_edicao());
-                    itemMap.put(local.getNome() + " - " + evento.getAno_edicao(), local.getId());
+                    itemMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento.getId());
                 }
 
             }

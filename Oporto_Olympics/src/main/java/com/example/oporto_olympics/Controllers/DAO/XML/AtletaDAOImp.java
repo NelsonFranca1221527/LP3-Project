@@ -4,6 +4,7 @@ import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.DAO;
 import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import javafx.scene.control.Alert;
 
 import java.security.MessageDigest;
@@ -43,7 +44,15 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
                 return null;
             } else {
                 while (rs.next()) {
-                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), null));
+
+                    List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
+
+                    ResultSet rs2 = stmt.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
+                        while (rs2.next()) {
+                            lstParticipacoes.add(new ParticipaçõesAtleta(rs.getInt("ano"),rs.getInt("medalha_ouro"),rs.getInt("medalha_prata"),rs.getInt("medalha_bronze")));
+                        }
+
+                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
                 }
             }
 
@@ -88,30 +97,42 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
                 }
             }
 
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, role, criado_em) VALUES(?,?,?,?)");
-            ps.setInt(1, numMecanografico);
-            ps.setString(2, StringtoHash(String.valueOf(numMecanografico)));
-            ps.setString(3, "Atleta");
-            ps.setDate(4, Date.valueOf(LocalDate.now()));
-            ps.executeUpdate();
-            ps.close();
+            PreparedStatement ps2 = conexao.prepareStatement("Select id as \"IdAtleta\" From roles Where nome = ?");
+            ps2.setString(1, "Atleta");
+            ResultSet rs2 = ps2.executeQuery();
+
+            if (!rs2.next()) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Utilizador Não Encontrado", "Tipo de Utilizador não encontrado!!");
+                alertHandler.getAlert().showAndWait();
+                return;
+            }
+
+            int idAtleta = rs2.getInt("IdAtleta");
+
+            PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)");
+            ps3.setInt(1, numMecanografico);
+            ps3.setString(2, StringtoHash(String.valueOf(numMecanografico)));
+            ps3.setDate(3, Date.valueOf(LocalDate.now()));
+            ps3.setInt(4, idAtleta);
+            ps3.executeUpdate();
+            ps3.close();
 
             atleta.setId(numMecanografico);
             update(atleta);
 
             for (int i = 0; i < atleta.getParticipaçõesAtletas().size(); i++) {
-                PreparedStatement ps2 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
+                PreparedStatement ps4 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
 
                 int id_atleta = get(atleta.getNome()).get().getId();
 
-                ps2.setInt(1, id_atleta);
-                ps2.setNull(2, java.sql.Types.INTEGER);
-                ps2.setInt(3, atleta.getParticipaçõesAtletas().get(i).getAno());
-                ps2.setInt(4, atleta.getParticipaçõesAtletas().get(i).getOuro());
-                ps2.setInt(5, atleta.getParticipaçõesAtletas().get(i).getPrata());
-                ps2.setInt(6, atleta.getParticipaçõesAtletas().get(i).getBronze());
-                ps2.executeUpdate();
-                ps2.close();
+                ps4.setInt(1, id_atleta);
+                ps4.setNull(2, java.sql.Types.INTEGER);
+                ps4.setInt(3, atleta.getParticipaçõesAtletas().get(i).getAno());
+                ps4.setInt(4, atleta.getParticipaçõesAtletas().get(i).getOuro());
+                ps4.setInt(5, atleta.getParticipaçõesAtletas().get(i).getPrata());
+                ps4.setInt(6, atleta.getParticipaçõesAtletas().get(i).getBronze());
+                ps4.executeUpdate();
+                ps4.close();
             }
 
         } catch (SQLException ex) {
@@ -168,7 +189,18 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), null));
+
+                List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
+
+                PreparedStatement ps2 = conexao.prepareStatement("Select * from historico_atletas_competicoes where atleta_id = ?");
+                ps2.setInt(1, rs.getInt("user_id"));
+                ResultSet rs2 = ps2.executeQuery();
+
+                while (rs2.next()) {
+                    lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
+                }
+
+                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
