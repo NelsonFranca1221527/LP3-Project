@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Update da Inscrição em Equipa" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +43,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/NelsonFranca1221527/LP3-Project.git",
+    "accountId": "707bbc45-41d3-4f80-af78-7a0650b420d9"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -196,12 +199,25 @@
       <workItem from="1729694619528" duration="25390000" />
       <workItem from="1729722891484" duration="11217000" />
       <workItem from="1729776473306" duration="30326000" />
-      <workItem from="1730496997947" duration="429000" />
+      <workItem from="1730496997947" duration="797000" />
     </task>
+    <task id="LOCAL-00001" summary="Update da Inscrição em Equipa">
+      <option name="closed" value="true" />
+      <created>1730497760188</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730497760188</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update da Inscrição em Equipa" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update da Inscrição em Equipa" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
