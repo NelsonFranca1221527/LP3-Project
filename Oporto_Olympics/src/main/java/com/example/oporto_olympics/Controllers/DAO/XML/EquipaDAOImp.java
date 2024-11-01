@@ -76,6 +76,10 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
             ps.executeUpdate();
             ps.close();
 
+            if(equipa.getParticipaçõesEquipa().isEmpty() || equipa.getParticipaçõesEquipa() == null){
+                return;
+            }
+
             for (int i = 0; i < equipa.getParticipaçõesEquipa().size(); i++) {
                 PreparedStatement ps2 = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
 

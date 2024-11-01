@@ -175,6 +175,16 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         return Optional.empty();
     }
 
+    /**
+     * Obtém uma modalidade na base de dados a partir do nome, género e tipo.
+     *
+     * @param nome   Nome da modalidade a ser pesquisada.
+     * @param genero Género da modalidade (e.g., masculino, feminino).
+     * @param tipo   Tipo de modalidade (e.g., individual, coletivo).
+     * @return A instância da Modalidade correspondente aos critérios fornecidos,
+     *         ou null se não for encontrada nenhuma modalidade correspondente.
+     * @throws RuntimeException Se ocorrer um erro na consulta à base de dados.
+     */
     private Modalidade getModalidadeByNomeGeneroTipo (String nome, String genero, String tipo) {
         try {
             PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE modalidades.nome = ? and modalidades.genero = ? and modalidades.tipo = ?");
@@ -221,6 +231,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
     }
 
+    /**
+     * Obtém o ID do evento associado a uma modalidade específica.
+     *
+     * @param idModalidade ID da modalidade para a qual o ID do evento deve ser recuperado.
+     * @return O ID do evento associado à modalidade, ou 0 se nenhum evento estiver associado.
+     * @throws RuntimeException Se ocorrer um erro na consulta à base de dados.
+     */
     private int getEventoID(int idModalidade) {
         try {
 
@@ -238,6 +255,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
     }
 
+    /**
+     * Guarda a relação entre um evento e uma modalidade na base de dados.
+     *
+     * @param eventoID      ID do evento a ser associado.
+     * @param modalidadeID  ID da modalidade a ser associada ao evento.
+     * @throws RuntimeException Se ocorrer um erro ao inserir a relação na base de dados.
+     */
     private void saveEventos_Modalidades(int eventoID, int modalidadeID){
         try {
             PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id) VALUES(?,?)");

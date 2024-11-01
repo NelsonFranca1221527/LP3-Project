@@ -7,10 +7,8 @@
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,6 +162,7 @@
       <workItem from="1730139057260" duration="17063000" />
       <workItem from="1730251330303" duration="4304000" />
       <workItem from="1730332838834" duration="8666000" />
+      <workItem from="1730420957661" duration="787000" />
     </task>
     <servers />
   </component>

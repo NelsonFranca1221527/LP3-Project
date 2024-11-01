@@ -120,6 +120,10 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
             atleta.setId(numMecanografico);
             update(atleta);
 
+            if(atleta.getParticipaçõesAtletas().isEmpty() || atleta.getParticipaçõesAtletas() == null){
+                return;
+            }
+
             for (int i = 0; i < atleta.getParticipaçõesAtletas().size(); i++) {
                 PreparedStatement ps4 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
 
