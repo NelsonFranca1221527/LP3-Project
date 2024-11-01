@@ -20,7 +20,7 @@ public class Modalidade {
 
     private String OneGame;
 
-    private int LocalID;
+    private int EventoID;
 
     private RegistoOlimpico recordeOlimpico;
 
@@ -28,7 +28,7 @@ public class Modalidade {
 
     private String regras;
 
-    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, int localID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
+    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, int eventoID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
         this.id = id;
         this.tipo = tipo;
         this.genero = genero;
@@ -37,7 +37,7 @@ public class Modalidade {
         this.minParticipantes = minParticipantes;
         this.medida = medida;
         OneGame = oneGame;
-        LocalID = localID;
+        EventoID = eventoID;
         this.recordeOlimpico = recordeOlimpico;
         this.vencedorOlimpico = vencedorOlimpico;
         this.regras = regras;
@@ -107,12 +107,12 @@ public class Modalidade {
         OneGame = oneGame;
     }
 
-    public int getLocalID() {
-        return LocalID;
+    public int getEventoID() {
+        return EventoID;
     }
 
-    public void setLocalID(int localID) {
-        LocalID = localID;
+    public void setEventoID(int eventoID) {
+        EventoID = eventoID;
     }
 
     public RegistoOlimpico getRecordeOlimpico() {

@@ -1,7 +1,9 @@
 package com.example.oporto_olympics.Controllers.DAO.XML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Equipa;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -50,9 +52,14 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
      */
     @Override
     public void save(Equipa equipa) {
+
+        AlertHandler alertHandler;
+
         Optional<Equipa> EquipaExiste = get(equipa.getNome());
 
-        if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID()) {
+        if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID() ) {
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Existente", "A Equipa " + equipa.getNome() + " já encontra-se registada no sistema!");
+            alertHandler.getAlert().showAndWait();
             return;
         }
 
@@ -68,6 +75,10 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
             ps.setString(8, equipa.getDesporto());
             ps.executeUpdate();
             ps.close();
+
+            if(equipa.getParticipaçõesEquipa().isEmpty() || equipa.getParticipaçõesEquipa() == null){
+                return;
+            }
 
             for (int i = 0; i < equipa.getParticipaçõesEquipa().size(); i++) {
                 PreparedStatement ps2 = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
