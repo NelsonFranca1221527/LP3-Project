@@ -49,4 +49,8 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoSeleçãoXML() {
         return new RedirecionarHelper("Views/ImportaçõesXML/SeleçãoXML/SeleçãoXML.fxml", "Selecionar XML");
     }
+
+    public static RedirecionarHelper GotoInserirModalidade() {
+        return new RedirecionarHelper("Views/Modalidades/InserirModalidades.fxml", "Inserir Modalidades");
+    }
 }
