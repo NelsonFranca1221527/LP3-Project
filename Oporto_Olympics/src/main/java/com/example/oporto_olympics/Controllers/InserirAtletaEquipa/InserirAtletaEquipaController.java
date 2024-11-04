@@ -8,12 +8,8 @@ import com.example.oporto_olympics.Controllers.DAO.Equipas.Model.InscricaoEquipa
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.stage.Stage;
@@ -36,52 +32,29 @@ public class InserirAtletaEquipaController {
     private VBox ContainerEquipa;
 
     @FXML
-    private ListView<InscricaoEquipas> ListViewEquipas;
-
-    @FXML
-    private Pane PaneContainer;
-
-    @FXML
     private Button btnBack;
-
-    @FXML
-    private Button btnDetalhes;
-
-    @FXML
-    private Label labelDesporto;
-
-    @FXML
-    private Label labelGenero;
-
-    @FXML
-    private Label labelMedalhas;
-
-    @FXML
-    private Label labelNome;
-
 
     private InscricaoEquipaDAO dao;
 
     @FXML
     public void initialize() {
-        // Tente estabelecer a conexão com o banco de dados
         try {
             ConnectionBD conexaoBD = ConnectionBD.getInstance();
             Connection conexao = conexaoBD.getConexao();
             if (conexao == null) {
-                System.out.println("Conexão com o banco de dados falhou!");
+                System.out.println("Conexão com a base de dados falhou!");
                 return;
             } else {
-                System.out.println("Conexão com o banco de dados bem-sucedida!");
+                System.out.println("Conexão com a base de dados bem-sucedida!");
             }
 
             // Inicialize o DAO com a conexão
             dao = new InscricaonaEquipaDAOImp(conexao);
-            String pais = "USA"; // Troque pela sigla do país que deseja pesquisar
+            String pais = "USA";
             carregarEquipas(pais);
         } catch (SQLException exception) {
             System.out.println("Ligação falhou: " + exception.getMessage());
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao conectar ao banco de dados: " + exception.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao conectar a base de dados: " + exception.getMessage());
             alert.show();
         }
     }
@@ -102,7 +75,7 @@ public class InserirAtletaEquipaController {
             for (InscricaoEquipas equipa : equipas) {
 
                 Pane teamPane = new Pane();
-                teamPane.setPrefHeight(84); // Altura do Pane
+                teamPane.setPrefHeight(84);
                 teamPane.setPrefWidth(ContainerEquipa.getPrefWidth()); // Usar a largura definida do ContainerEquipa
                 teamPane.setStyle("-fx-background-color: #bab8b8; -fx-padding: 10; -fx-border-radius: 5; -fx-border-color: black; -fx-border-width: 1;"); // Estilo do Pane
 
@@ -130,15 +103,41 @@ public class InserirAtletaEquipaController {
                     btnDetalhes.setLayoutX(486.0);
                 }
 
-                // Adiciona um evento ao botão
                 btnDetalhes.setOnAction(event -> {
-                    System.out.println("Detalhes da equipa: " + equipa.getNome());
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setTitle(equipa.getNome());
+
+                    VBox dialogContent = new VBox(10);
+                    dialogContent.setStyle("-fx-padding: 20; -fx-alignment: center-left;");
+
+                    // Adiciona cada campo ao conteúdo do diálogo
+                    dialogContent.getChildren().addAll(
+                            new Label("Nome: " + equipa.getNome()),
+                            new Label("Desporto: " + equipa.getDesporto()),
+                            new Label("País: " + equipa.getPais_sigla()),
+                            new Label("Ano de Fundação: " + equipa.getAno_fundacao()),
+                            new Label("Participações: " + equipa.getParticipacoes()),
+                            new Label("Medalhas: " + equipa.getMedalhas()),
+                            new Label("Gênero: " + equipa.getGenero())
+                    );
+
+                    Button btnInscrever = new Button("Inscrever");
+                    btnInscrever.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-radius: 4;");
+                    btnInscrever.setOnAction(inscricaoEvent -> {
+                        Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição realizada com sucesso para a equipe: " + equipa.getNome());
+                        inscricaoAlert.showAndWait().ifPresent(response -> dialog.close());
+                    });
+
+                    dialogContent.getChildren().add(btnInscrever);
+
+                    dialog.getDialogPane().setContent(dialogContent);
+                    dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+
+                    dialog.showAndWait();
                 });
 
-                // Adiciona as Labels e o botão ao Pane da equipe
                 teamPane.getChildren().addAll(nomeLabel, desportoLabel, generoLabel, medalhasLabel, btnDetalhes);
 
-                // Adiciona o Pane da equipe ao ContainerEquipa (VBox)
                 ContainerEquipa.getChildren().add(teamPane);
             }
 
