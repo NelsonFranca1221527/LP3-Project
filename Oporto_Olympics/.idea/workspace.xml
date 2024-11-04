@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Ver detalhes da equipa para inscrição">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaoEquipaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaoEquipaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaonaEquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaonaEquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/Model/InscricaoEquipas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/InscricaoEquipas.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +110,9 @@
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\resources\org\example\oporto_olympics" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.oporto_olympics.Models" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
@@ -172,6 +178,15 @@
       <workItem from="1729776473306" duration="30326000" />
       <workItem from="1729789949576" duration="332000" />
     </task>
+    <task id="LOCAL-00001" summary="Ver detalhes da equipa para inscrição">
+      <option name="closed" value="true" />
+      <created>1730685306776</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730685306776</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,6 +194,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />
+    <MESSAGE value="Ver detalhes da equipa para inscrição" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ver detalhes da equipa para inscrição" />
   </component>
 </project>

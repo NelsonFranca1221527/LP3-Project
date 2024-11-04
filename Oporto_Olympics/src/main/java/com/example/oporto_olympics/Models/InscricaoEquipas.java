@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.DAO.Equipas.Model;
+package com.example.oporto_olympics.Models;
 
 public class InscricaoEquipas {
 

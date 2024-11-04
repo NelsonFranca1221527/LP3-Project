@@ -1,32 +1,23 @@
 package com.example.oporto_olympics.Controllers.InserirAtletaEquipa;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.DAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaoEquipaDAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaonaEquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.Model.InscricaoEquipas;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.Models.InscricaoEquipas;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import javafx.stage.Stage;
-import org.w3c.dom.events.MouseEvent;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
-import java.util.List;
 public class InserirAtletaEquipaController {
     @FXML
     private VBox ContainerEquipa;
@@ -36,6 +27,18 @@ public class InserirAtletaEquipaController {
 
     private InscricaoEquipaDAO dao;
 
+    /**
+     * Método de inicialização da interface JavaFX, marcado com @FXML para ser automaticamente chamado
+     * pelo JavaFX após o carregar a interface. Este método estabelece a ligação à base de dados
+     * e inicializa o DAO para manipulação de inscrições em equipas. Em seguida, carrega as equipas de
+     * um país específico para mostrar.
+     *
+     * Se a conexão à base de dados falhar, mostra uma mensagem de erro na consola e apresenta um alerta
+     * ao utilizador. Caso a conexão seja bem-sucedida, inicializa o DAO com a conexão, define o ID do
+     * atleta, o país e o género para filtrar as equipas, e invoca o método carregarEquipas para mostrar as equipas.
+     *
+     * @throws SQLException se ocorrer um erro ao estabelecer a ligação com a base de dados.
+     */
     @FXML
     public void initialize() {
         try {
@@ -48,23 +51,31 @@ public class InserirAtletaEquipaController {
                 System.out.println("Conexão com a base de dados bem-sucedida!");
             }
 
-            // Inicialize o DAO com a conexão
             dao = new InscricaonaEquipaDAOImp(conexao);
+            int atleta_id = 148;
+            String genero = "Men";
             String pais = "USA";
-            carregarEquipas(pais);
+            carregarEquipas(pais, atleta_id, genero);
         } catch (SQLException exception) {
             System.out.println("Ligação falhou: " + exception.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao conectar a base de dados: " + exception.getMessage());
             alert.show();
         }
     }
-
-    public void carregarEquipas(String pais) {
+    /**
+     * Carrega e exibe as informações das equipas de um país e género específico num contêiner JavaFX.
+     * O método obtém uma lista de equipas através do DAO e apresenta cada equipa num painel (Pane)
+     * que inclui informações como nome, desporto, género, medalhas e um botão para ver os detalhes.
+     * Ao clicar no botão "Ver Detalhes", abre um diálogo com mais informações da equipa, além de
+     * uma opção para o utilizador se inscrever na equipa, caso não exista um pedido pendente.
+     *
+     * @param pais      O país das equipas a carregar.
+     * @param atleta_id O ID do atleta que pretende inscrever-se numa equipa.
+     */
+    public void carregarEquipas(String pais, int atleta_id, String genero) {
         try {
-            List<InscricaoEquipas> equipas = dao.getEquipas(pais);
+            List<InscricaoEquipas> equipas = dao.getEquipas(pais, genero);
             System.out.println("Número de equipas carregadas: " + equipas.size());
-
-            ContainerEquipa.getChildren().clear();
 
             if (equipas.size() >= 4) {
                 ContainerEquipa.setPrefWidth(574);
@@ -76,8 +87,8 @@ public class InserirAtletaEquipaController {
 
                 Pane teamPane = new Pane();
                 teamPane.setPrefHeight(84);
-                teamPane.setPrefWidth(ContainerEquipa.getPrefWidth()); // Usar a largura definida do ContainerEquipa
-                teamPane.setStyle("-fx-background-color: #bab8b8; -fx-padding: 10; -fx-border-radius: 5; -fx-border-color: black; -fx-border-width: 1;"); // Estilo do Pane
+                teamPane.setPrefWidth(ContainerEquipa.getPrefWidth());
+                teamPane.setStyle("-fx-background-color: #bab8b8; -fx-padding: 10; -fx-border-radius: 5; -fx-border-color: black; -fx-border-width: 1;");
 
                 Label nomeLabel = new Label(equipa.getNome());
                 Label desportoLabel = new Label("Desporto: " + equipa.getDesporto());
@@ -110,7 +121,6 @@ public class InserirAtletaEquipaController {
                     VBox dialogContent = new VBox(10);
                     dialogContent.setStyle("-fx-padding: 20; -fx-alignment: center-left;");
 
-                    // Adiciona cada campo ao conteúdo do diálogo
                     dialogContent.getChildren().addAll(
                             new Label("Nome: " + equipa.getNome()),
                             new Label("Desporto: " + equipa.getDesporto()),
@@ -123,9 +133,26 @@ public class InserirAtletaEquipaController {
 
                     Button btnInscrever = new Button("Inscrever");
                     btnInscrever.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-radius: 4;");
+
                     btnInscrever.setOnAction(inscricaoEvent -> {
-                        Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição realizada com sucesso para a equipe: " + equipa.getNome());
-                        inscricaoAlert.showAndWait().ifPresent(response -> dialog.close());
+                        try {
+                            int modalidadeId = equipa.getModalidade_id();
+                            int equipaId = equipa.getId();
+
+                            if (dao.existePedidoPendente(atleta_id, equipaId)) {
+                                Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para a equipa: " + equipa.getNome());
+                                pendenteAlert.show();
+                            } else {
+                                String status = "Pendente";
+                                dao.inserirInscricao(status, modalidadeId, atleta_id, equipaId);
+
+                                Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada para a equipe: " + equipa.getNome());
+                                inscricaoAlert.showAndWait().ifPresent(response -> dialog.close());
+                            }
+                        } catch (RuntimeException e) {
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
+                            errorAlert.show();
+                        }
                     });
 
                     dialogContent.getChildren().add(btnInscrever);
@@ -151,15 +178,15 @@ public class InserirAtletaEquipaController {
         }
     }
 
+    /**
+     * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
+     * botão, permitindo assim ao utilizador voltar para a página anterior.
+     *
+     * @param event O evento de ação que desencadeia o método, gerado pelo clique no botão.
+     */
     @FXML
     private void onActionBack(ActionEvent event) {
         Stage stage = (Stage) btnBack.getScene().getWindow();
-        // Chame seu método para mudar de cena
-    }
-    @FXML
-    private void onClickDetalhesButton(ActionEvent event) {
-        Stage stage = (Stage) btnBack.getScene().getWindow();
-        // Chame seu método para mudar de cena
     }
 
 }
