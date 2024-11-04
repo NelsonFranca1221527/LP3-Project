@@ -1,10 +1,8 @@
 package com.example.oporto_olympics;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -12,10 +10,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class    HelloApplication extends Application {
+
+public class HelloApplication extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/oporto_olympics/Views/InscreverEquipas.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/oporto_olympics/Views/Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Login");
         stage.setScene(scene);
@@ -23,6 +23,7 @@ public class    HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
+
         try{
 
             ConnectionBD conexaoBD = ConnectionBD.getInstance();
@@ -34,8 +35,6 @@ public class    HelloApplication extends Application {
 
         }
 
-
         launch();
-
     }
 }

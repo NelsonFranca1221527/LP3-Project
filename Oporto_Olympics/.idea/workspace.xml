@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Update da Inscrição em Equipa">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaoEquipaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaoEquipaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaonaEquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaonaEquipaDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,18 +41,23 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;NelsonFranca1221527&quot;
+    &quot;assignee&quot;: &quot;EduPnto&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/NelsonFranca1221527/LP3-Project.git&quot;,
-    &quot;accountId&quot;: &quot;707bbc45-41d3-4f80-af78-7a0650b420d9&quot;
+    &quot;accountId&quot;: &quot;b7c82277-e60c-45bc-abf9-9465fa2e8f42&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -76,38 +72,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    {
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-002-Criação__Eventos__Olimpicos&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/migue/Desktop/LP3-Project/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views/EventosOlimpicos&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-    <component name="PropertiesComponent">{
+  <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-003-Importações__XML&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/feat-001-Login&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics/Controllers/DAO&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -120,39 +94,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-    <component name="RecentsManager">
-      <key name="CopyFile.RECENT_KEYS">
-        <recent name="C:\Users\migue\Desktop\LP3-Project\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\EventosOlimpicos" />
-      </key>
-      <key name="CopyClassDialog.RECENTS_KEY">
-        <recent name="com.example.oporto_olympics.Misc" />
-      </key>
-    </component>
-    }
-  </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.example.oporto_olympics.Controllers.InserirAtletaEquipa" />
-      <recent name="com.example.oporto_olympics.Controllers.DAO" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Helper" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Singleton" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ImportaçõesXML\SeleçãoXML" />
+      <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
+      <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Misc" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Models" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\ConnectBD" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Controllers" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Controllers.DAO.XML" />
+      <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
+      <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\resources\org\example\oporto_olympics" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -161,7 +110,8 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="19" />
       <option name="MAIN_CLASS_NAME" value="com.example.oporto_olympics.HelloApplication" />
       <module name="Oporto_Olympics.main" />
       <option name="VM_PARAMETERS" value="--module-path &quot;./Assets/JavaFX/javafx-sdk-19.0.2/lib&quot; --add-modules javafx.controls,javafx.fxml" />
@@ -177,6 +127,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.HelloApplication" />
         <item itemvalue="Application.HelloApplication" />
       </list>
     </recent_temporary>
@@ -215,31 +166,15 @@
       <workItem from="1729694619528" duration="25390000" />
       <workItem from="1729722891484" duration="11217000" />
       <workItem from="1729776473306" duration="30326000" />
-      <workItem from="1730496997947" duration="797000" />
-      <workItem from="1730547263817" duration="2331000" />
-      <workItem from="1730662416021" duration="662000" />
-      <workItem from="1730663092095" duration="14919000" />
+      <workItem from="1729789949576" duration="332000" />
     </task>
-    <task id="LOCAL-00001" summary="Update da Inscrição em Equipa">
-      <option name="closed" value="true" />
-      <created>1730497760188</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1730497760188</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update da Inscrição em Equipa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update da Inscrição em Equipa" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
+    <MESSAGE value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />
   </component>
 </project>

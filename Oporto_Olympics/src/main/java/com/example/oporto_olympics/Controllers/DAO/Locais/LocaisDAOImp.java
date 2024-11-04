@@ -62,6 +62,25 @@ public class LocaisDAOImp implements DAO<Local> {
 
     }
 
+    public boolean existsByLocal(String nome, String tipo, String morada, String cidade, String pais) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT COUNT(*) FROM locais WHERE nome = ? AND tipo = ?"
+            );
+            ps.setString(1, nome);
+            ps.setString(2, tipo);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            rs.close();
+            ps.close();
+            return count > 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao verificar a existência do local: " + ex.getMessage());
+        }
+    }
+
+
     @Override
     public Optional<Local> get(int i) {
         return Optional.empty();
