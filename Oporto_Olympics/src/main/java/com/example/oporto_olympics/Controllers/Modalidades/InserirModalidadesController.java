@@ -1,8 +1,8 @@
 package com.example.oporto_olympics.Controllers.Modalidades;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.LocaisDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Evento;

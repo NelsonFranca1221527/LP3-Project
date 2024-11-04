@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="160.0" prefWidth="800.0" style="-fx-border-width: 1px; -fx-border-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.ListagemEventos.CardController.ListagemEventosCardController">
+   <children>
+      <Label layoutX="11.0" layoutY="14.0" text="Ano de Edição:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="AnoLabel" layoutX="135.0" layoutY="16.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="11.0" layoutY="41.0" text="País:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="PaisLabel" layoutX="51.0" layoutY="42.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="12.0" layoutY="94.0" text="Local:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="LocalLabel" layoutX="61.0" layoutY="95.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="256.0" layoutY="14.0" text="Logo:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="502.0" layoutY="16.0" text="Mascote:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="304.0" layoutY="17.0" prefHeight="133.0" prefWidth="193.0">
+         <children>
+            <ImageView fx:id="img_logo" fitHeight="133.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <StackPane layoutX="581.0" layoutY="17.0" prefHeight="133.0" prefWidth="193.0">
+         <children>
+            <ImageView fx:id="img_mascote" fitHeight="133.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
