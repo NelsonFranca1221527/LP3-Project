@@ -50,6 +50,10 @@ public class RedirecionarHelper {
         return new RedirecionarHelper("Views/ImportaçõesXML/SeleçãoXML/SeleçãoXML.fxml", "Selecionar XML");
     }
 
+    public static RedirecionarHelper GotoListagemLocais() {
+        return new RedirecionarHelper("Views/ListagemLocais/ListagemLocais.fxml", "Listagem de Locais");
+    }
+
     public static RedirecionarHelper GotoInserirModalidade() {
         return new RedirecionarHelper("Views/Modalidades/InserirModalidades.fxml", "Inserir Modalidades");
     }
