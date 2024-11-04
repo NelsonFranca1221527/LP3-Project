@@ -1,20 +1,41 @@
 package com.example.oporto_olympics;
 
+import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class    HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        RedirecionarHelper.GotoInserirEventosOlimpicos().switchScene(stage);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/oporto_olympics/Views/InscreverEquipas.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
+        try{
+
+            ConnectionBD conexaoBD = ConnectionBD.getInstance();
+            Connection conexao = conexaoBD.getConexao();
+
+        }catch(SQLException exception) {
+
+            System.out.print("Ligação falhou");
+
+        }
+
+
         launch();
+
     }
 }
