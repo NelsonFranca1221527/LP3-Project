@@ -118,4 +118,21 @@ public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {
         return false;
     }
 
+    public boolean existePedidoAprovado(int atletaId, int equipaId) {
+        String query = "SELECT COUNT(*) FROM inscricoes WHERE atleta_id = ? AND equipa_id = ? AND status = 'Aprovado'";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, atletaId);
+            pstmt.setInt(2, equipaId);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Retorna true se o contador for maior que 0, indicando que existe um pedido pendente
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar pedido pendente: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

@@ -12,4 +12,6 @@ public interface InscricaoEquipaDAO {
     void inserirInscricao(String status, int modalidadeId, int atletaId, int equipaId);
 
     boolean existePedidoPendente(int atletaId, int equipaId);
+
+    boolean existePedidoAprovado(int atletaId, int equipaId);
 }

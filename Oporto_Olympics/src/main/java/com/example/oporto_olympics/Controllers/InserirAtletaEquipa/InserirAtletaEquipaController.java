@@ -143,11 +143,17 @@ public class InserirAtletaEquipaController {
                                 Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para a equipa: " + equipa.getNome());
                                 pendenteAlert.show();
                             } else {
-                                String status = "Pendente";
-                                dao.inserirInscricao(status, modalidadeId, atleta_id, equipaId);
 
-                                Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada para a equipe: " + equipa.getNome());
-                                inscricaoAlert.showAndWait().ifPresent(response -> dialog.close());
+                                if(dao.existePedidoAprovado(atleta_id,equipaId)) {
+                                    Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING,"Já está inscrito nesta equipa");
+                                    aprovadoAlert.show();
+                                } else {
+                                    String status = "Pendente";
+                                    dao.inserirInscricao(status, modalidadeId, atleta_id, equipaId);
+
+                                    Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada para a equipe: " + equipa.getNome());
+                                    inscricaoAlert.showAndWait().ifPresent(response -> dialog.close());
+                                }
                             }
                         } catch (RuntimeException e) {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
