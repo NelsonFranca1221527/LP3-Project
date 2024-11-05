@@ -97,9 +97,9 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
      * Método responsável por recuperar as informações de um atleta da base de dados com base no seu ID do utilizador.
      *
      * Este método executa uma consulta SQL utilizando um {@link PreparedStatement} para buscar os dados de um atleta
-     * na tabela "atletas", com base no ID de usuário fornecido como parâmetro.
+     * na tabela "atletas", com base no ID do utilizador fornecido como parâmetro.
      *
-     * @param id O ID do usuário do atleta a ser recuperado da base de dados.
+     * @param id O ID do utilizador do atleta a ser recuperado da base de dados.
      * @return O objeto contendo as informações do atleta correspondente ao ID fornecido.
      *
      * @throws RuntimeException Se ocorrer um erro durante a execução da consulta SQL ou ao processar os dados.
