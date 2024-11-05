@@ -1,9 +1,10 @@
 package com.example.oporto_olympics.Controllers.Login;
 
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Misc.Encriptação;
+import com.example.oporto_olympics.Misc.Encriptacao;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -15,15 +16,27 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class LoginController {
+
+    @FXML
+    private Button loginBtn;
+
     @FXML
     private PasswordField SenhaField;
 
     @FXML
     private TextField UserField;
 
-    @FXML
-    private Button loginBtn;
-
+    /**
+     *
+     * 1. Estabelece a conexão a base de dados com a ConnectionBD.
+     * 2. Verifica se o username (UserField) e password (SenhaField) se estão preenchidos.
+     * 3. Encripta a password usando a classe Encriptacao.
+     * 4. Verifica na base de dados se os dados do utilizador estão corretos.
+     * 5. Redireciona o utilizador para a página correta consoante a sua role (ex.: "Gestor", "Atleta").
+     *
+     * @throws SQLException se o acesso da base de dados der erro.
+     * @throws NoSuchAlgorithmException se o algortimo para a encriptação da password não está disponível.
+     */
     @FXML
     protected void OnLoginButtonClick() throws SQLException, NoSuchAlgorithmException {
 
@@ -37,21 +50,29 @@ public class LoginController {
             return;
         }
 
-        Encriptação Encrypt = new Encriptação();
+        Encriptacao Encrypt = new Encriptacao();
         UserDAOImp UserDAO = new UserDAOImp(conexao);
         String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
         String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
 
 
-        if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash, Role)) {
+        if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash)) {
             Stage s = (Stage) loginBtn.getScene().getWindow();
 
             switch (Role) {
                 case "Gestor":
-                    System.out.println("Entrou como gestor!!");
+                    try {
+                        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case "Atleta":
-                    System.out.println("Entrou como atleta!!");
+                    try {
+                        RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 default:
                     AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Este utilizador não existe.");
