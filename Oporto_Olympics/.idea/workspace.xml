@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="" />
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/InserirEquipasController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Equipas/InserirEquipas.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Helper/RedirecionarHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Helper/RedirecionarHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +55,9 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2ncmlE2hunISMejZ04aaiG4oCXc" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -59,9 +69,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-003-Importações__XML&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat-012-Inserção__de__Equipas&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics/Controllers/DAO&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -79,6 +89,7 @@
       <recent name="com.example.oporto_olympics.Controllers.DAO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Helper" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Singleton" />
@@ -95,6 +106,7 @@
       <recent name="com.example.oporto_olympics.Controllers" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.oporto_olympics.Controllers.Equipas" />
       <recent name="com.example.oporto_olympics.Controllers.DAO.XML" />
     </key>
   </component>
@@ -153,6 +165,8 @@
       <workItem from="1729694619528" duration="25390000" />
       <workItem from="1729722891484" duration="11217000" />
       <workItem from="1729776473306" duration="30326000" />
+      <workItem from="1730684527199" duration="690000" />
+      <workItem from="1730744416062" duration="11648000" />
     </task>
     <servers />
   </component>

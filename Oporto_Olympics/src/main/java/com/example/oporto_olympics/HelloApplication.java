@@ -16,7 +16,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        RedirecionarHelper.GotoInserirModalidade().switchScene(stage);
+        RedirecionarHelper.GotoInserirEquipa().switchScene(stage);
     }
 
     public static void main(String[] args) {
