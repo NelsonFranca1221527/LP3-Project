@@ -89,15 +89,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
         if (ModalidadeExistente != null) {
 
-            boolean mesmoGenero = ModalidadeExistente.getGenero().equals(modalidade.getGenero());
-            boolean mesmoTipo = ModalidadeExistente.getTipo().equals(modalidade.getTipo());
             boolean mesmoEvento = ModalidadeExistente.getEventoID() == modalidade.getEventoID();
 
-            if (mesmoGenero && mesmoTipo && mesmoEvento) {
+            if (mesmoEvento) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
                 alertHandler.getAlert().showAndWait();
                 return;
-            } else if (mesmoGenero && mesmoTipo) {
+            } else {
                 saveEventos_Modalidades(modalidade.getEventoID(), ModalidadeExistente.getId());
                 return;
             }

@@ -1,6 +1,5 @@
 package com.example.oporto_olympics.Controllers.DAO;
 
-import com.example.oporto_olympics.Controllers.DAO.Equipas.Model.InscricaoEquipas;
 
 import java.sql.Connection;
 import java.util.List;

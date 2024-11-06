@@ -53,4 +53,8 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoInserirModalidade() {
         return new RedirecionarHelper("Views/Modalidades/InserirModalidades.fxml", "Inserir Modalidades");
     }
+
+    public static RedirecionarHelper GotoInserirEquipa() {
+        return new RedirecionarHelper("Views/Equipas/InserirEquipas.fxml", "Inserir Equipas");
+    }
 }
