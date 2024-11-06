@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -399,13 +400,37 @@ public class InserçãoXMLController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
+        AlertHandler alertHandler;
+
         EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
         for (Equipa equipa : lst) {
+
+            Optional<Equipa> EquipaExiste = equipaDAOImp.get(equipa.getNome());
+
+            if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID() ) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Existente", "A Equipa " + equipa.getNome() + " já encontra-se registada no sistema!");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            int anoMin = 1000;
+
+            if(equipa.getAnoFundacao() < anoMin || equipa.getAnoFundacao() > LocalDate.now().getYear()) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Ano de Fundação Inválido", "O ano de fundação da equipa " + equipa.getNome() + " - " + equipa.getGenero()  +  " não deve ser inferior a " + anoMin + " e superior a " + LocalDate.now().getYear()+"!");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            if (!equipaDAOImp.getSigla(equipa.getPais())){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Pais Inválido", "Insira a sigla de um País válido para a equipa " + equipa.getNome() + " - " + equipa.getGenero()  + "!");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             equipaDAOImp.save(equipa);
         }
 
-        AlertHandler alertHandler;
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
         alertHandler.getAlert().showAndWait();
     }
