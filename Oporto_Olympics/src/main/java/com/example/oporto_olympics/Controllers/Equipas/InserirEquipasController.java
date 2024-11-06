@@ -212,18 +212,10 @@ public class InserirEquipasController {
 
         EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
-        try {
             equipaDAOImp.save(equipa);
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso!", "Equipa criada com sucesso!");
             alertHandler.getAlert().show();
-        } catch (RuntimeException e) {
-            alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro ao criar equipa: ", e.getMessage());
-            alertHandler.getAlert().show();
-        }
-
-        LimparDados();
-
     }
 
     /**
