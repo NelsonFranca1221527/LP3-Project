@@ -110,6 +110,9 @@ public class InserirEquipasController {
             }
         }
 
+        Tooltip tooltip = new Tooltip("Para selecionar uma modalidade, deve primeiro escolher um género e um evento.");
+        Tooltip.install(ModalidadeChoice, tooltip);
+
         EventoChoice.setItems(FXCollections.observableArrayList(eventoMap.keySet()));
         EventoChoice.setValue("-------");
 
@@ -144,6 +147,7 @@ public class InserirEquipasController {
     private void AtualizarModalidadeChoice(String Evento, String Genero, Connection conexao) throws SQLException {
 
         ModalidadeChoice.getItems().removeIf(item -> !item.equals("-------"));
+        ModalidadeChoice.setValue("-------");
         modalidadeMap.clear();
 
         if (!Evento.equals("-------") && !Genero.equals("-------")) {
@@ -236,7 +240,6 @@ public class InserirEquipasController {
      * Limpa os dados dos campos após a criação da equipa.
      */
     private void LimparDados(){
-        GeneroChoice.setValue("-------");
         EventoChoice.setValue("-------");
         GeneroChoice.setValue("-------");
         ModalidadeChoice.setValue("-------");
