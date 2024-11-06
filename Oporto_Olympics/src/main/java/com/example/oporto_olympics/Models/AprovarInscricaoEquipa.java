@@ -43,6 +43,5 @@ public class AprovarInscricaoEquipa {
     public int getEquipa_id() {
         return equipa_id;
     }
-
-
+    public void setEquipa_id(int equipa_id) {this.equipa_id = equipa_id;}
 }

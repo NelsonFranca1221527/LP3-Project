@@ -78,4 +78,5 @@ public class InscricaoEquipas {
     public void setDesporto(String desporto) {
         this.desporto = desporto;
     }
+
 }
