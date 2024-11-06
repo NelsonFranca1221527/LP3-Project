@@ -54,30 +54,6 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
     @Override
     public void save(Equipa equipa) {
 
-        AlertHandler alertHandler;
-
-        Optional<Equipa> EquipaExiste = get(equipa.getNome());
-
-        if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID() ) {
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Existente", "A Equipa " + equipa.getNome() + " já encontra-se registada no sistema!");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
-
-        int anoMin = 1000;
-
-        if(equipa.getAnoFundacao() < anoMin || equipa.getAnoFundacao() > LocalDate.now().getYear()) {
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Ano de Fundação Inválido", "O ano de fundação não deve ser inferior a " + anoMin + " e superior a " + LocalDate.now().getYear()+"!");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
-
-        if (!getSigla(equipa.getPais())){
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Pais Inválido", "Insira a sigla de um País válido!");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
-
         try {
             PreparedStatement ps = conexao.prepareStatement("INSERT INTO equipas (pais_sigla, ano_fundacao, modalidade_id, participacoes, medalhas, nome, genero, desporto) VALUES(?,?,?,?,?,?,?,?)");
             ps.setString(1, equipa.getPais());
