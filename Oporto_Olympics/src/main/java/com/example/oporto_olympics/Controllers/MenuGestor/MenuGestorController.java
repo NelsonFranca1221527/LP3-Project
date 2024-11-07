@@ -11,6 +11,9 @@ public class MenuGestorController {
     private Button AtletasBtn;
 
     @FXML
+    private Button InscricoesBtn;
+
+    @FXML
     private Button EquipasBtn;
 
     @FXML
@@ -20,17 +23,83 @@ public class MenuGestorController {
     private Button LocalBtn;
 
     @FXML
+    private Button InsertAtletasBtn;
+
+    @FXML
     private Button ModalidadeBtn;
 
     @FXML
     private Button SairBtn;
 
     @FXML
+    private Button InsertEventoBtn;
+
+    @FXML
+    private Button InsertModalidadeBtn;
+
+    @FXML
     private Button XMLBtn;
+
+    @FXML
+    private Button InsertEquipasBtn;
 
     @FXML
     private Button PerfilBtn;
 
+    @FXML
+    protected void OnInsertEquipasButtonClick(){
+        try {
+            Stage s = (Stage) InsertEquipasBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void OnInsertModalidadesButtonClick(){
+        try {
+            Stage s = (Stage) InsertModalidadeBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void OnInsertEventosButtonClick(){
+        try {
+            Stage s = (Stage) InsertEventoBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void OnInsertAtletasButtonClick(){
+        try {
+            Stage s = (Stage) InsertAtletasBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void OnInscricoesButtonClick(){
+        try {
+            Stage s = (Stage) InscricoesBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     protected void OnAtletasButtonClick() {

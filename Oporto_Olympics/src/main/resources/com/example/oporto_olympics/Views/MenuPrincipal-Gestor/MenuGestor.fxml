@@ -22,7 +22,7 @@
          </font>
       </Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#808080" height="562.0" layoutX="85.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 85%;" width="1110.0" />
-      <Button fx:id="AtletasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="176.0" layoutY="410.0" mnemonicParsing="false" onAction="#OnAtletasButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Atletas">
+      <Button fx:id="AtletasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="348.0" layoutY="136.0" mnemonicParsing="false" onAction="#OnAtletasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Atletas">
          <font>
             <Font size="20.0" />
          </font>
@@ -37,7 +37,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="540.0" layoutY="410.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
+      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="650.0" layoutY="502.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
          <font>
             <Font size="20.0" />
          </font>
@@ -52,7 +52,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="EquipasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="176.0" layoutY="152.0" mnemonicParsing="false" onAction="#OnEquipasButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Equipas">
+      <Button fx:id="EquipasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="149.0" layoutY="136.0" mnemonicParsing="false" onAction="#OnEquipasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Equipas">
          <font>
             <Font size="20.0" />
          </font>
@@ -67,7 +67,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="EventoBtn" alignment="CENTER" contentDisplay="TOP" layoutX="540.0" layoutY="152.0" mnemonicParsing="false" onAction="#OnEventosButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Eventos">
+      <Button fx:id="EventoBtn" alignment="CENTER" contentDisplay="TOP" layoutX="550.0" layoutY="136.0" mnemonicParsing="false" onAction="#OnEventosButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Eventos">
          <font>
             <Font size="20.0" />
          </font>
@@ -81,7 +81,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="LocalBtn" alignment="CENTER" contentDisplay="TOP" layoutX="914.0" layoutY="152.0" mnemonicParsing="false" onAction="#OnLocaisButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Locais">
+      <Button fx:id="LocalBtn" alignment="CENTER" contentDisplay="TOP" layoutX="248.0" layoutY="319.0" mnemonicParsing="false" onAction="#OnLocaisButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Locais">
          <font>
             <Font size="20.0" />
          </font>
@@ -95,7 +95,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="ModalidadeBtn" alignment="CENTER" contentDisplay="TOP" layoutX="914.0" layoutY="410.0" mnemonicParsing="false" onAction="#OnModalidadesButtonClick" prefHeight="170.0" prefWidth="200.0" style="-fx-background-color: #87ceeb;" text="Modalidades">
+      <Button fx:id="ModalidadeBtn" alignment="CENTER" contentDisplay="TOP" layoutX="951.0" layoutY="136.0" mnemonicParsing="false" onAction="#OnModalidadesButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Modalidades">
          <font>
             <Font size="20.0" />
          </font>
@@ -118,6 +118,81 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="InsertEquipasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="447.0" layoutY="502.0" mnemonicParsing="false" onAction="#OnInsertEquipasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Equipas">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Equipas-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="InsertAtletasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="447.0" layoutY="319.0" mnemonicParsing="false" onAction="#OnInsertAtletasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Atletas">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Atleta-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="InscricoesBtn" alignment="CENTER" contentDisplay="TOP" layoutX="750.0" layoutY="136.0" mnemonicParsing="false" onAction="#OnInscricoesButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inscrições">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Atleta-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="InsertModalidadeBtn" alignment="CENTER" contentDisplay="TOP" layoutX="851.0" layoutY="319.0" mnemonicParsing="false" onAction="#OnInsertModalidadesButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Modalidades">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Modalidades-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="InsertEventoBtn" alignment="CENTER" contentDisplay="TOP" layoutX="650.0" layoutY="319.0" mnemonicParsing="false" onAction="#OnInsertEventosButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Eventos">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Eventos-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <effect>
+            <DropShadow />
+         </effect>
       </Button>
    </children>
 </Pane>
