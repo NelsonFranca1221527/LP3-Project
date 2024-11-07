@@ -6,10 +6,7 @@ import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +26,16 @@ public class UserDAOImp implements DAO<User> {
      *
      * @param Num_Mecanografico
      * @param senha
-     * @param Role
+     *
      * @return
      * @throws SQLException
      */
-    public boolean getUser(int Num_Mecanografico, String senha, String Role) throws SQLException {
+    public boolean getUser(int Num_Mecanografico, String senha) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            String getUtilizadorQuery = "SELECT * FROM users WHERE num_mecanografico = '" + Num_Mecanografico + "' AND User_password = '" + senha + "'";;
+            String getUtilizadorQuery = "SELECT * FROM users WHERE num_mecanografico = '" + Num_Mecanografico + "' AND User_password = '" + senha + "'";
             Statement statementGetUtilizador = connection.createStatement();
             ResultSet resultSetUtilizador = statementGetUtilizador.executeQuery(getUtilizadorQuery);
 
@@ -70,18 +67,20 @@ public class UserDAOImp implements DAO<User> {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            String getUserTypeQuery = "SELECT role FROM users WHERE num_mecanografico = '" + Num_Mecanografico + "' AND User_password = '" + senha + "'";
-            Statement stmtGetUserType = connection.createStatement();
-            ResultSet resultSetUserType = stmtGetUserType.executeQuery(getUserTypeQuery);
+            PreparedStatement ps = connection.prepareStatement("SELECT r.nome FROM roles r, users u WHERE u.num_mecanografico = ? AND u.User_password = ? AND u.role_id = r.id");
+            ps.setInt(1, Num_Mecanografico);
+            ps.setString(2, senha);
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
 
-            if (!resultSetUserType.next()) {
+            if (!rs.next()) {
                 connection.close();
                 return "";
 
             }
 
             // Obtém o tipo de permissão da DB
-            String UserType = resultSetUserType.getString("role");
+            String UserType = rs.getString("nome");
 
             return UserType;
         } catch (SQLException e) {

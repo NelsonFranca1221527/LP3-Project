@@ -10,8 +10,15 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Equipas/ListarEquipas.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/InserirEquipasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/InserirEquipasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,9 +63,6 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2ncmlE2hunISMejZ04aaiG4oCXc" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -70,9 +74,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-012-Inserção__de__Equipas&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat-003-Importações__XML&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics/Controllers/DAO&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -90,7 +94,6 @@
       <recent name="com.example.oporto_olympics.Controllers.DAO" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Helper" />
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Singleton" />
@@ -107,7 +110,6 @@
       <recent name="com.example.oporto_olympics.Controllers" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Controllers.Equipas" />
       <recent name="com.example.oporto_olympics.Controllers.DAO.XML" />
     </key>
   </component>
@@ -166,11 +168,6 @@
       <workItem from="1729694619528" duration="25390000" />
       <workItem from="1729722891484" duration="11217000" />
       <workItem from="1729776473306" duration="30326000" />
-      <workItem from="1730684527199" duration="690000" />
-      <workItem from="1730744416062" duration="12115000" />
-      <workItem from="1730851341199" duration="3928000" />
-      <workItem from="1730860712071" duration="36000" />
-      <workItem from="1730902925455" duration="2940000" />
     </task>
     <servers />
   </component>

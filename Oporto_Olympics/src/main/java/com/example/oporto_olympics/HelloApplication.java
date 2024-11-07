@@ -23,18 +23,6 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-
-        try{
-
-            ConnectionBD conexaoBD = ConnectionBD.getInstance();
-            Connection conexao = conexaoBD.getConexao();
-
-        }catch(SQLException exception) {
-
-            System.out.print("Ligação falhou");
-
-        }
-
         launch();
     }
 }

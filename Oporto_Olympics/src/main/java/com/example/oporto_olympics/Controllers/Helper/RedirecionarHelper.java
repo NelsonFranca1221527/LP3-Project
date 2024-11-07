@@ -34,6 +34,38 @@ public class RedirecionarHelper {
         return new RedirecionarHelper("Views/Login.fxml", "Login");
     }
 
+    public static RedirecionarHelper GotoListagemEvento() {
+        return new RedirecionarHelper("Views/ListagemEvento/ListagemEvento.fxml", "Lista de Eventos");
+    }
+
+    public static RedirecionarHelper GotoDadosPessoais() {
+        return new RedirecionarHelper("Views/DadosPessoais/DadosPessoais.fxml", "Perfil");
+    }
+
+    public static RedirecionarHelper GotoMenuPrincipalGestor() {
+        return new RedirecionarHelper("Views/MenuPrincipal-Gestor/MenuGestor.fxml", "Menu Principal Gestor");
+    }
+
+    public static RedirecionarHelper GotoMenuPrincipalAtleta() {
+        return new RedirecionarHelper("Views/MenuPrincipal-Atleta/MenuAtleta.fxml", "Menu Principal Atleta");
+    }
+
+    public static RedirecionarHelper GotoListagemAtleta() {
+        return new RedirecionarHelper("Views/ListagemAtleta/ListagemAtleta.fxml", "Lista de Atletas");
+    }
+
+    public static RedirecionarHelper GotoListagemModalidades() {
+        return new RedirecionarHelper("Views/ListagemModalidades/ListagemModalidades.fxml", "Lista de Modalidades");
+    }
+
+    public static RedirecionarHelper GotoListagemLocais() {
+        return new RedirecionarHelper("Views/ListagemLocais/ListagemLocais.fxml", "Lista de Locais");
+    }
+
+    public static RedirecionarHelper GotoListagemEquipas() {
+        return new RedirecionarHelper("Views/ListagemEquipas/ListagemEquipas.fxml", "Lista de Equipas");
+    }
+
     public static RedirecionarHelper GotoInserirEventosOlimpicos() {
         return new RedirecionarHelper("Views/EventosOlimpicos/InserirEventosOlimpicos.fxml", "Criar Eventos Olímpicos");
     }
