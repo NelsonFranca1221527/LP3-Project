@@ -79,4 +79,17 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean getSigla(String sigla) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
+            ps.setString(1, sigla);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
+        }
+    }
 }

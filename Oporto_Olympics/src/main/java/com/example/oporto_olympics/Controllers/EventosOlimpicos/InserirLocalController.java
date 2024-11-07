@@ -176,6 +176,12 @@ public class InserirLocalController {
             return;
         }
 
+        if (!LDI1.getSigla(Pais)){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Pais Inválido", "Insira a sigla de um País válido!");
+            AH1.getAlert().show();
+            return;
+        }
+
         AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
         Optional<ButtonType> result = AH2.getAlert().showAndWait();
         if (result.get() == ButtonType.OK) {

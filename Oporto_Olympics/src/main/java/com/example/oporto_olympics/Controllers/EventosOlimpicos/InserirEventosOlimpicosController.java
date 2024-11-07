@@ -147,6 +147,12 @@ public class InserirEventosOlimpicosController {
             return;
         }
 
+        if (!eventosDAO.getSigla(pais)){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Pais Inválido", "Insira a sigla de um País válido!");
+            AH1.getAlert().show();
+            return;
+        }
+
         // Carregar as imagens
         File fileLogo = new File(logoURL.getText());
         File fileMascote = new File(mascoteURL.getText());

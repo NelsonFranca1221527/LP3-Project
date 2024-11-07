@@ -11,7 +11,7 @@ import java.io.IOException;
 public class    HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        RedirecionarHelper.GotoInserirLocal().switchScene(stage);
+        RedirecionarHelper.GotoInserirEventosOlimpicos().switchScene(stage);
     }
 
     public static void main(String[] args) {
