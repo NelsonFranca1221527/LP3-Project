@@ -122,6 +122,11 @@ public class InserirLocalController {
         textField.setTextFormatter(new TextFormatter<>(filter));
     }
 
+    // Função que verifica se o campo é vazio ou contém apenas espaços
+    private boolean isBlankOrEmpty(String text) {
+        return text == null || text.trim().isEmpty();
+    }
+
     /**
      * Trata o evento de clique no botão para inserir um novo local.
      * Este metodo valida os dados inseridos pelo utilizador e,
@@ -157,8 +162,8 @@ public class InserirLocalController {
 
         LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
 
-        if ((Tipo.equals("") || Nome.equals("") || Morada.equals("") || Cidade.equals("") || Pais.equals("")) ||
-                (Tipo.equals(" ") || Nome.equals(" ") || Morada.equals(" ") || Cidade.equals(" ") || Pais.equals(" "))) {
+        // Verificar se os campos estão vazios ou contêm apenas espaços
+        if (isBlankOrEmpty(Tipo) || isBlankOrEmpty(Nome) || isBlankOrEmpty(Morada) || isBlankOrEmpty(Cidade) || isBlankOrEmpty(Pais) || isBlankOrEmpty(String.valueOf(Capacidade)) || isBlankOrEmpty(String.valueOf(Ano_construcao))) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados, para que possa inserir um novo Local.");
             AH1.getAlert().show();
             return;
@@ -167,6 +172,12 @@ public class InserirLocalController {
         // Verificar se o local já existe
         if (LDI1.existsByLocal(Nome, Tipo, Morada, Cidade, Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Local Duplicado", "Este local já existe.");
+            AH1.getAlert().show();
+            return;
+        }
+
+        if (!LDI1.getSigla(Pais)){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Pais Inválido", "Insira a sigla de um País válido!");
             AH1.getAlert().show();
             return;
         }
