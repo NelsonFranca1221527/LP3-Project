@@ -79,4 +79,46 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException(e);
         }
     }
+
+    public Evento getById(int id) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM eventos WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Evento evento = new Evento(
+                        rs.getInt("id"),
+                        rs.getInt("ano_edicao"),
+                        rs.getString("pais_anfitriao_sigla"),
+                        rs.getBytes("logo"),
+                        rs.getBytes("mascote"),
+                        rs.getInt("local_id")
+                );
+                rs.close();
+                ps.close();
+                return evento;
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o evento pelo ID: " + ex.getMessage());
+        }
+        return null;  // Retorna Optional vazio se o evento não for encontrado
+    }
+
+
+    public boolean getSigla(String sigla) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
+            ps.setString(1, sigla);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
+        }
+    }
 }

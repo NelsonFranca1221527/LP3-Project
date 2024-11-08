@@ -4,6 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Ver detalhes da equipa para inscrição">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAOImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Equipas/ListarEquipas.fxml" afterDir="false" />
 <<<<<<< HEAD
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="" />
 =======

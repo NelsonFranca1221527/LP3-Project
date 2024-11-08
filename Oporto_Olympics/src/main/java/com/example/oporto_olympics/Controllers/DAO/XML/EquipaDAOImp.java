@@ -1,9 +1,12 @@
 package com.example.oporto_olympics.Controllers.DAO.XML;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Equipa;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +53,6 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
      */
     @Override
     public void save(Equipa equipa) {
-        Optional<Equipa> EquipaExiste = get(equipa.getNome());
-
-        if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID()) {
-            return;
-        }
 
         try {
             PreparedStatement ps = conexao.prepareStatement("INSERT INTO equipas (pais_sigla, ano_fundacao, modalidade_id, participacoes, medalhas, nome, genero, desporto) VALUES(?,?,?,?,?,?,?,?)");
@@ -68,6 +66,10 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
             ps.setString(8, equipa.getDesporto());
             ps.executeUpdate();
             ps.close();
+
+            if(equipa.getParticipaçõesEquipa().isEmpty() || equipa.getParticipaçõesEquipa() == null){
+                return;
+            }
 
             for (int i = 0; i < equipa.getParticipaçõesEquipa().size(); i++) {
                 PreparedStatement ps2 = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
@@ -130,5 +132,18 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
         }
 
         return Optional.empty();
+    }
+
+    public boolean getSigla(String sigla) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
+            ps.setString(1, sigla); 
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
+        }
     }
 }
