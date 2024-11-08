@@ -3,6 +3,8 @@ package com.example.oporto_olympics.DAO.UserDAO;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
+import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.AtletaInfo;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 
@@ -18,6 +20,71 @@ public class UserDAOImp implements DAO<User> {
 
     public UserDAOImp(Connection connection) {
         this.connection = connection;
+    }
+
+    public Atleta getAtletaInfo(int id) throws SQLException {
+        try {
+            database = ConnectionBD.getInstance();
+            connection = database.getConexao();
+
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a JOIN users u ON a.user_id = u.id WHERE u.id = ?");
+            ps.setInt(1, id);
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
+
+            System.out.println(id);
+
+            if (rs.next()) {
+
+                System.out.println(rs.getString("nome"));
+                return new Atleta(
+                        rs.getInt("user_id"),
+                        rs.getString("nome"),
+                        rs.getString("pais_sigla"),
+                        rs.getString("genero"),
+                        rs.getInt("altura_cm"),
+                        rs.getInt("peso_kg"),
+                        rs.getDate("data_nascimento"),
+                        null
+                );
+            } else {
+
+                System.err.println("No atleta found with ID: " + id);
+                return null;
+            }
+
+        } catch (SQLException e) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
+            alertHandler.getAlert().show();
+        }
+
+        return null;
+    }
+
+    public int getID(int Num_Mecanografico) throws SQLException {
+        try {
+            database = ConnectionBD.getInstance();
+            connection = database.getConexao();
+
+            PreparedStatement ps = connection.prepareStatement("SELECT id FROM users WHERE num_mecanografico = ?");
+            ps.setInt(1, Num_Mecanografico);
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
+
+            if (!rs.next()) {
+                connection.close();
+                return 0;
+
+            }
+
+            return rs.getInt("id");
+
+        } catch (SQLException e) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
+            alertHandler.getAlert().show();
+        }
+
+        return 0;
     }
 
     /**

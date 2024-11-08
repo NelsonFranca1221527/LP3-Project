@@ -39,7 +39,7 @@ public class RedirecionarHelper {
     }
 
     public static RedirecionarHelper GotoDadosPessoais() {
-        return new RedirecionarHelper("Views/DadosPessoais/DadosPessoais.fxml", "Perfil");
+        return new RedirecionarHelper("Views/DadosPessoais/VerDadosPessoais.fxml", "Dados Pessoais");
     }
 
     public static RedirecionarHelper GotoMenuPrincipalGestor() {
