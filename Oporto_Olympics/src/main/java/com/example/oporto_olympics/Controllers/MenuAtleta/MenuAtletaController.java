@@ -54,7 +54,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) EquipasBtn.getScene().getWindow();
 
-            //Adicionar redirecionar para equipas
+            RedirecionarHelper.GotoInscreverEquipa().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +70,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) ModalidadeBtn.getScene().getWindow();
 
-            //Adicionar redirecionar para equipas
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +86,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) EventoBtn.getScene().getWindow();
 
-            //Adicionar redirecionar para Eventos
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

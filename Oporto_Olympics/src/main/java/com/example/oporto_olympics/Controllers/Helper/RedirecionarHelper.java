@@ -51,7 +51,7 @@ public class RedirecionarHelper {
     }
 
     public static RedirecionarHelper GotoListagemAtleta() {
-        return new RedirecionarHelper("Views/ListagemAtleta/ListagemAtleta.fxml", "Lista de Atletas");
+        return new RedirecionarHelper("Views/ListagemAtletas/ListAtletas.fxml", "Lista de Atletas");
     }
 
     public static RedirecionarHelper GotoListagemModalidades() {
@@ -63,7 +63,7 @@ public class RedirecionarHelper {
     }
 
     public static RedirecionarHelper GotoListagemEquipas() {
-        return new RedirecionarHelper("Views/ListagemEquipas/ListagemEquipas.fxml", "Lista de Equipas");
+        return new RedirecionarHelper("Views/Equipas/ListarEquipas.fxml", "Lista de Equipas");
     }
 
     public static RedirecionarHelper GotoInserirEventosOlimpicos() {
@@ -92,5 +92,17 @@ public class RedirecionarHelper {
 
     public static RedirecionarHelper GotoInserirEquipa() {
         return new RedirecionarHelper("Views/Equipas/InserirEquipas.fxml", "Inserir Equipas");
+    }
+
+    public static RedirecionarHelper GotoInserirAtleta() {
+        return new RedirecionarHelper("Views/Atleta/InserirAtleta.fxml", "Inserir Atletas");
+    }
+
+    public static RedirecionarHelper GotoInscricoesEquipa() {
+        return new RedirecionarHelper("Views/AprovarInscricaoEquipa.fxml", "Inscrições em Equipas");
+    }
+
+    public static RedirecionarHelper GotoInscreverEquipa() {
+        return new RedirecionarHelper("Views/InscreverEquipas.fxml", "Inscrever numa Equipas");
     }
 }

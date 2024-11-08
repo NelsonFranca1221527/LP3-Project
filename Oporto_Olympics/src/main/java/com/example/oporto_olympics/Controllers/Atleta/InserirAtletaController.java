@@ -5,6 +5,7 @@ import com.example.oporto_olympics.Controllers.DAO.Atleta.InserirAtletaDAO;
 import com.example.oporto_olympics.Controllers.DAO.Atleta.InserirAtletaDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.ListarEquipasDAO;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Models.Atleta;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -163,7 +165,9 @@ public class InserirAtletaController {
 
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
+        Stage s = (Stage) VoltarButton.getScene().getWindow();
 
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
     /**
      * Mostra um alerta com o tipo, título e mensagem especificados.

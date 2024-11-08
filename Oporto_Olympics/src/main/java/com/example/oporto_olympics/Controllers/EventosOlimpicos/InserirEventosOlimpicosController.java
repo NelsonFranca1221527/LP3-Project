@@ -255,6 +255,8 @@ public class InserirEventosOlimpicosController {
 
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
+        Stage s = (Stage) VoltarButton.getScene().getWindow();
 
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
 }

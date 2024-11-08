@@ -1,10 +1,11 @@
 package com.example.oporto_olympics.Controllers.Equipas;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.LocaisDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Equipa;
 import com.example.oporto_olympics.Models.Evento;
@@ -14,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -248,7 +250,9 @@ public class InserirEquipasController {
      */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
+        Stage s = (Stage) VoltarButton.getScene().getWindow();
 
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
 
     /**

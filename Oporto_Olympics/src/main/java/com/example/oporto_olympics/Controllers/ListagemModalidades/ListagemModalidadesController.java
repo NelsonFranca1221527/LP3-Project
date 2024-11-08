@@ -2,13 +2,16 @@ package com.example.oporto_olympics.Controllers.ListagemModalidades;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemModalidades.CardController.ListagemModalidadesCardController;
 import com.example.oporto_olympics.Models.Modalidade;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -58,4 +61,16 @@ public class ListagemModalidadesController {
         }
     }
 
+    /**
+     * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
+     * botão, permitindo assim ao utilizador voltar para a página anterior.
+     *
+     * @param event O evento de ação que desencadeia o método, gerado pelo clique no botão.
+     */
+    @FXML
+    private void onActionBack(ActionEvent event) {
+        Stage s = (Stage) VoltarBtn.getScene().getWindow();
+
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+    }
 }

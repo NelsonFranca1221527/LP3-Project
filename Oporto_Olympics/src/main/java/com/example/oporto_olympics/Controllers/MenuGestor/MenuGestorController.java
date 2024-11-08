@@ -51,7 +51,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) InsertEquipasBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoInserirEquipa().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +62,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) InsertModalidadeBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoInserirModalidade().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +73,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) InsertEventoBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoInserirEventosOlimpicos().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -84,7 +84,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) InsertAtletasBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoInserirAtleta().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +95,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) InscricoesBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoInscricoesEquipa().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +128,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) EventoBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoListagemEvento().switchScene(s);
+            RedirecionarHelper.GotoListagemEventos().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

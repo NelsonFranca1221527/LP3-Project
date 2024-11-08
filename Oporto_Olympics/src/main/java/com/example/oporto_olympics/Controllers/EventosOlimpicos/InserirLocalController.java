@@ -2,11 +2,13 @@ package com.example.oporto_olympics.Controllers.EventosOlimpicos;
 
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Local;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -199,7 +201,9 @@ public class InserirLocalController {
 
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
+        Stage s = (Stage) VoltarButton.getScene().getWindow();
 
+        RedirecionarHelper.GotoInserirEventosOlimpicos().switchScene(s);
     }
 
 }

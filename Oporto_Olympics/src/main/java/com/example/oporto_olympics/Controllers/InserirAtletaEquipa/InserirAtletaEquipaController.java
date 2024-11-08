@@ -3,6 +3,7 @@ package com.example.oporto_olympics.Controllers.InserirAtletaEquipa;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaoEquipaDAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaonaEquipaDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 
 import javafx.event.ActionEvent;
@@ -192,7 +193,9 @@ public class InserirAtletaEquipaController {
      */
     @FXML
     private void onActionBack(ActionEvent event) {
-        Stage stage = (Stage) btnBack.getScene().getWindow();
+        Stage s = (Stage) btnBack.getScene().getWindow();
+
+        RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
     }
 
 }

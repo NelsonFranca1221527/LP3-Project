@@ -17,7 +17,7 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="SKYBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-      <Button fx:id="VoltarBtn" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="&lt; Voltar" textFill="WHITE">
+      <Button fx:id="VoltarBtn" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionBack" style="-fx-background-color: transparent;" text="&lt; Voltar" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>

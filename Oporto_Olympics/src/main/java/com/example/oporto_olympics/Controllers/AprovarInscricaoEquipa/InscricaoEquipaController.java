@@ -3,6 +3,7 @@ package com.example.oporto_olympics.Controllers.AprovarInscricaoEquipa;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Models.AprovarInscricaoEquipa;
 import com.example.oporto_olympics.Models.AtletaInfo;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
@@ -242,7 +243,8 @@ public class InscricaoEquipaController {
      */
     @FXML
     private void onActionBack(ActionEvent event) {
-        Stage stage = (Stage) btnBack.getScene().getWindow();
-        stage.close();
+        Stage s = (Stage) btnBack.getScene().getWindow();
+
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
 }

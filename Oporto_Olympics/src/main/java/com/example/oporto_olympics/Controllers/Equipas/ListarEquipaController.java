@@ -5,6 +5,7 @@ import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaoEquipaDAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaonaEquipaDAOImp;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.ListarEquipasDAO;
 import com.example.oporto_olympics.Controllers.DAO.Equipas.ListarEquipasDAOImp;
+import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -140,6 +142,8 @@ public class ListarEquipaController {
 
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
+        Stage s = (Stage) VoltarButton.getScene().getWindow();
 
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
 }
