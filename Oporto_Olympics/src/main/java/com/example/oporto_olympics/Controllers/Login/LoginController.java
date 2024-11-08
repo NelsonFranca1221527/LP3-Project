@@ -1,16 +1,18 @@
 package com.example.oporto_olympics.Controllers.Login;
 
+import com.example.oporto_olympics.Controllers.DadosPessoais.DadosPessoaisController;
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.Controllers.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.Encriptacao;
+import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.AtletaInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -54,6 +56,12 @@ public class LoginController {
         UserDAOImp UserDAO = new UserDAOImp(conexao);
         String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
         String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
+
+        int Id = UserDAO.getID(Integer.parseInt(UserField.getText()));
+        Atleta atleta = UserDAO.getAtletaInfo(Id);
+
+        AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+        AtletaSingle.setAtleta(atleta);
 
 
         if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash)) {

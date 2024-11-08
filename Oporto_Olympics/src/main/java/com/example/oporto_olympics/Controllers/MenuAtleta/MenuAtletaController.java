@@ -1,6 +1,9 @@
 package com.example.oporto_olympics.Controllers.MenuAtleta;
 
+import com.example.oporto_olympics.Controllers.DadosPessoais.DadosPessoaisController;
 import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.Controllers.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Models.Atleta;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -99,7 +102,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) PerfilBtn.getScene().getWindow();
 
-            //Adicionar redirecionar para dados pessoais
+            RedirecionarHelper.GotoDadosPessoais().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
