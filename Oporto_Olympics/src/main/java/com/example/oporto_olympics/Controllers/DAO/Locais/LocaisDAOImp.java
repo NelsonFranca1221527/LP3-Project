@@ -97,6 +97,7 @@ public class LocaisDAOImp implements DAO<Local> {
         }
         return null;  // Retorna null se o local não for encontrado
     }
+
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
