@@ -80,6 +80,23 @@ public class LocaisDAOImp implements DAO<Local> {
         }
     }
 
+    public String getNomeById(int id) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT nome FROM locais WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("nome");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o nome do local: " + ex.getMessage());
+        }
+        return null;  // Retorna null se o local não for encontrado
+    }
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");

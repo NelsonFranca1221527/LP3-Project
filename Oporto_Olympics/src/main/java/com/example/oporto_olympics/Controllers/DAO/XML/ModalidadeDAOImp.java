@@ -236,7 +236,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      * @return O ID do evento associado à modalidade, ou 0 se nenhum evento estiver associado.
      * @throws RuntimeException Se ocorrer um erro na consulta à base de dados.
      */
-    private int getEventoID(int idModalidade) {
+    public int getEventoID(int idModalidade) {
         try {
 
             PreparedStatement ps = conexao.prepareStatement("SELECT * FROM eventos_modalidades WHERE modalidade_id = ?");
@@ -246,7 +246,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
             if (rs.next()) {
                 return rs.getInt("evento_id");
             }
-                return 0;
+            return 0;
 
         } catch(SQLException ex){
             throw new RuntimeException("Erro ao inserir a evento_modalidade: " + ex.getMessage());
