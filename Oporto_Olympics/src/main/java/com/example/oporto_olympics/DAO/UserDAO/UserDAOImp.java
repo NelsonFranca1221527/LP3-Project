@@ -70,12 +70,6 @@ public class UserDAOImp implements DAO<User> {
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
 
-            if (!rs.next()) {
-                connection.close();
-                return 0;
-
-            }
-
             return rs.getInt("id");
 
         } catch (SQLException e) {
