@@ -1,7 +1,7 @@
-package com.example.oporto_olympics.Controllers.DAO.Eventos;
+package com.example.oporto_olympics.DAO.Eventos;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.DAO;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Models.Evento;
 
 import java.sql.*;

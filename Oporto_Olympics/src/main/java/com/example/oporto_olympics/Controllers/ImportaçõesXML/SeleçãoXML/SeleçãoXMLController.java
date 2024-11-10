@@ -1,7 +1,7 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.SeleçãoXML;
 
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Singleton.InserçãoXMLSingleton;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

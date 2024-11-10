@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.DAO.Equipas;
+package com.example.oporto_olympics.DAO.Equipas;
 
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 

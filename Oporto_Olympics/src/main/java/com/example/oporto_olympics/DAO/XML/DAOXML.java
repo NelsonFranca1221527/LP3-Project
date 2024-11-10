@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.DAO.XML;
+package com.example.oporto_olympics.DAO.XML;
 
 
 import java.util.List;

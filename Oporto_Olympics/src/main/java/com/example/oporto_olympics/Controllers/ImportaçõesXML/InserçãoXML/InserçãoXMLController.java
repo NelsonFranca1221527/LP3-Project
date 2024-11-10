@@ -1,17 +1,17 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
+import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.AtletaCardController;
 import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.EquipaCardController;
 import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.ModalidadeCardController;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
-import com.example.oporto_olympics.Controllers.Singleton.InserçãoXMLSingleton;
+import com.example.oporto_olympics.Misc.AlertHandler;
+import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;
 import com.example.oporto_olympics.HelloApplication;
 import com.example.oporto_olympics.Models.*;
 import javafx.event.ActionEvent;

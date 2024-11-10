@@ -1,10 +1,8 @@
-package com.example.oporto_olympics.Controllers.DAO.Equipas;
+package com.example.oporto_olympics.DAO.Equipas;
 
 import com.example.oporto_olympics.Models.AprovarInscricaoEquipa;
-import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.AtletaInfo;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,17 +1,14 @@
 package com.example.oporto_olympics.Controllers.Equipas;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaoEquipaDAO;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaonaEquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.ListarEquipasDAO;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.ListarEquipasDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAO;
+import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

@@ -1,9 +1,9 @@
 package com.example.oporto_olympics.Controllers.AprovarInscricaoEquipa;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAO;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAO;
+import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.AprovarInscricaoEquipa;
 import com.example.oporto_olympics.Models.AtletaInfo;
 import com.example.oporto_olympics.Models.InscricaoEquipas;

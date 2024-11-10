@@ -1,7 +1,7 @@
-package com.example.oporto_olympics.Controllers.DAO.XML;
+package com.example.oporto_olympics.DAO.XML;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;

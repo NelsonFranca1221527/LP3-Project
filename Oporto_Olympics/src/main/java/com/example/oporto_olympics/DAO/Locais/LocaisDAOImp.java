@@ -1,7 +1,7 @@
-package com.example.oporto_olympics.Controllers.DAO.Locais;
+package com.example.oporto_olympics.DAO.Locais;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.DAO;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Models.Local;
 
 import java.sql.*;

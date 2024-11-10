@@ -1,6 +1,6 @@
 package com.example.oporto_olympics.Controllers.MenuGestor;
 
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;

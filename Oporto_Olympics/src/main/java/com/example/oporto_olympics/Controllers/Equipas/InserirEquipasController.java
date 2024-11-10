@@ -1,12 +1,12 @@
 package com.example.oporto_olympics.Controllers.Equipas;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Equipa;
 import com.example.oporto_olympics.Models.Evento;
 import com.example.oporto_olympics.Models.Local;

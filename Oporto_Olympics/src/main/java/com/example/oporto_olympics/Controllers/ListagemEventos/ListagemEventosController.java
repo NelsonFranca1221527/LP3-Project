@@ -1,11 +1,9 @@
 package com.example.oporto_olympics.Controllers.ListagemEventos;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemEventos.CardController.ListagemEventosCardController;
-import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.Evento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

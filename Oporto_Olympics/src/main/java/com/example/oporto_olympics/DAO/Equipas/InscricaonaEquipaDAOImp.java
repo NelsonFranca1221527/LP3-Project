@@ -1,13 +1,10 @@
-package com.example.oporto_olympics.Controllers.DAO.Equipas;
+package com.example.oporto_olympics.DAO.Equipas;
 
-import com.example.oporto_olympics.Controllers.DAO.DAO;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
-import com.example.oporto_olympics.Models.Equipa;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {

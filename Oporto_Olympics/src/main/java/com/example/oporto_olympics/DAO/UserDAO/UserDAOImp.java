@@ -1,10 +1,9 @@
 package com.example.oporto_olympics.DAO.UserDAO;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.AtletaInfo;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 

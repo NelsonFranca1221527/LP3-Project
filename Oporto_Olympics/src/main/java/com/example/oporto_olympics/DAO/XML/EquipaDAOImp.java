@@ -1,12 +1,9 @@
-package com.example.oporto_olympics.Controllers.DAO.XML;
+package com.example.oporto_olympics.DAO.XML;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Models.Equipa;
-import javafx.scene.control.Alert;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

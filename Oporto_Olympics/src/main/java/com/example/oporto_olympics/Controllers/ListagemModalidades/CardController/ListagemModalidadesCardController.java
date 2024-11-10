@@ -1,11 +1,10 @@
 package com.example.oporto_olympics.Controllers.ListagemModalidades.CardController;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Models.Evento;
-import com.example.oporto_olympics.Models.Local;
 import com.example.oporto_olympics.Models.Modalidade;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

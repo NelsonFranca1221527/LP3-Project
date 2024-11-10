@@ -1,8 +1,7 @@
-package com.example.oporto_olympics.Controllers.DAO.Equipas;
+package com.example.oporto_olympics.DAO.Equipas;
 
 import com.example.oporto_olympics.Models.AprovarInscricaoEquipa;
 import com.example.oporto_olympics.Models.AtletaInfo;
-import com.example.oporto_olympics.Models.Equipa;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 
 import java.util.List;

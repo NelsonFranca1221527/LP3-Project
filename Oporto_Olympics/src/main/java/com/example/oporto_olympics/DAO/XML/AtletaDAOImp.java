@@ -1,8 +1,7 @@
-package com.example.oporto_olympics.Controllers.DAO.XML;
+package com.example.oporto_olympics.DAO.XML;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.DAO;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import javafx.scene.control.Alert;
@@ -47,9 +46,10 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
 
                     List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
 
-                    ResultSet rs2 = stmt.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
+                    Statement stmt2 = conexao.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
                         while (rs2.next()) {
-                            lstParticipacoes.add(new ParticipaçõesAtleta(rs.getInt("ano"),rs.getInt("medalha_ouro"),rs.getInt("medalha_prata"),rs.getInt("medalha_bronze")));
+                            lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                         }
 
                     lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));

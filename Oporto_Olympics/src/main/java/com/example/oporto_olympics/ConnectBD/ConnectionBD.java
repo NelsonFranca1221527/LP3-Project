@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.ConnectBD;
+package com.example.oporto_olympics.ConnectBD;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

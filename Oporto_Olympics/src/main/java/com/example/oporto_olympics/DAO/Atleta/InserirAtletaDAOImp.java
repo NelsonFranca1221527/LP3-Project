@@ -1,18 +1,12 @@
-package com.example.oporto_olympics.Controllers.DAO.Atleta;
+package com.example.oporto_olympics.DAO.Atleta;
 
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
-import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import javafx.scene.control.Alert;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 
 
 public class InserirAtletaDAOImp implements InserirAtletaDAO{

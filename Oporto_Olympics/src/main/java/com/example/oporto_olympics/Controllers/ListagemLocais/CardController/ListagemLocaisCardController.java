@@ -1,15 +1,9 @@
 package com.example.oporto_olympics.Controllers.ListagemLocais.CardController;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.Models.Local;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.io.ByteArrayInputStream;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ListagemLocaisCardController {

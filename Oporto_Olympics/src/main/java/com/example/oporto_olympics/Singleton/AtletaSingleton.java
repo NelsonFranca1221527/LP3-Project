@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.Singleton;
+package com.example.oporto_olympics.Singleton;
 
 import com.example.oporto_olympics.Models.Atleta;
 

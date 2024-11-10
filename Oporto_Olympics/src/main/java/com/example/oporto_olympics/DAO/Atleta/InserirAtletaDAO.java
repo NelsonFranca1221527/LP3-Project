@@ -1,9 +1,6 @@
-package com.example.oporto_olympics.Controllers.DAO.Atleta;
-
-import com.example.oporto_olympics.Models.Atleta;
+package com.example.oporto_olympics.DAO.Atleta;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public interface InserirAtletaDAO {
 

@@ -1,19 +1,12 @@
 package com.example.oporto_olympics.Controllers.DadosPessoais;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Singleton.AtletaSingleton;
-import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.AtletaInfo;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public class DadosPessoaisController {
 

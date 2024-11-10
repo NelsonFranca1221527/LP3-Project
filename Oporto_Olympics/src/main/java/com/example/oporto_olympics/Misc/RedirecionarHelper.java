@@ -1,11 +1,9 @@
-package com.example.oporto_olympics.Controllers.Helper;
+package com.example.oporto_olympics.Misc;
 
 import com.example.oporto_olympics.HelloApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class RedirecionarHelper {
 
@@ -32,10 +30,6 @@ public class RedirecionarHelper {
 
     public static RedirecionarHelper GotoLogin() {
         return new RedirecionarHelper("Views/Login.fxml", "Login");
-    }
-
-    public static RedirecionarHelper GotoListagemEvento() {
-        return new RedirecionarHelper("Views/ListagemEvento/ListagemEvento.fxml", "Lista de Eventos");
     }
 
     public static RedirecionarHelper GotoDadosPessoais() {

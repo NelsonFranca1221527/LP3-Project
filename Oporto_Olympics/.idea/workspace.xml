@@ -5,24 +5,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Ver detalhes da equipa para inscrição">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Equipas/ListarEquipas.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ad.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/AprovarInscricaoEquipa/InscricaoEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/AprovarInscricaoEquipa/InscricaoEquipaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Atleta/InserirAtletaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Atleta/InserirAtletaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ConnectBD/ConnectionBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/ConnectBD/ConnectionBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Atleta/InserirAtletaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/InserirAtletaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Atleta/InserirAtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/InserirAtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/DAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/AprovarInscricaoEquipaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/AprovarInscricaoEquipaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/AprovarInscricaoEquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/AprovarInscricaoEquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaoEquipaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/InscricaoEquipaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/InscricaonaEquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/InscricaonaEquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Eventos/EventosDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Eventos/EventosDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Locais/LocaisDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Locais/LocaisDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/AtletaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/AtletaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/DAOXML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/DAOXML.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/EquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/EquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DadosPessoais/DadosPessoaisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DadosPessoais/DadosPessoaisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/InserirEquipasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/InserirEquipasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirEventosOlimpicosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirEventosOlimpicosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirLocalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirLocalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Helper/RedirecionarHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/InserçãoXMLController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/InserçãoXML/LerXMLController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Atleta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Modalidade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/SeleçãoXML/SeleçãoXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportaçõesXML/SeleçãoXML/SeleçãoXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/InserirAtletaEquipa/InserirAtletaEquipaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemAtletas/ListAtletasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemAtletas/ListAtletasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/CardController/ListagemEventosCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/CardController/ListagemEventosCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/ListagemEventosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/ListagemEventosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemLocais/CardController/ListagemLocaisCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemLocais/CardController/ListagemLocaisCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemLocais/ListagemLocaisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemLocais/ListagemLocaisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemModalidades/CardController/ListagemModalidadesCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemModalidades/CardController/ListagemModalidadesCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemModalidades/ListagemModalidadesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemModalidades/ListagemModalidadesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Login/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuAtleta/MenuAtletaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuAtleta/MenuAtletaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Misc/AlertHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Modalidades/InserirModalidadesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Modalidades/InserirModalidadesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Singleton/AtletaSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Singleton/AtletaSingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Singleton/InserçãoXMLSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Singleton/InserçãoXMLSingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/DAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/UserDAO/UserDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/UserDAO/UserDAOImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/oporto_olympics/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/AprovarInscricaoEquipa.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/AprovarInscricaoEquipa/AprovarInscricaoEquipa.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/InscreverEquipas/InscreverEquipas.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,20 +64,6 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
@@ -105,118 +122,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-002-Criação__Eventos__Olimpicos&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/migue/Desktop/LP3-Project/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views/EventosOlimpicos&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat-003-Importações__XML&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics/Controllers/DAO&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor": "Run",
+    "Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "feat-024-Estruturar-Projeto-para-MVC",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.4597701",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\migue\Desktop\LP3-Project\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\EventosOlimpicos" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Misc" />
-    </key>
-  </component>
-}</component>
-  <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.example.oporto_olympics.Controllers.DAO" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Helper" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Singleton" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ImportaçõesXML\SeleçãoXML" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\Misc" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\DAO" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Models" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers\ConnectBD" />
-      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Controllers" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.oporto_olympics.Controllers.DAO.XML" />
-    </key>
-  </component>
-  <component name="RunAnythingCache">
-    <option name="myCommands">
-      <command value=";" />
-    </option>
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/feat-001-Login&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics\Controllers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\" />
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\InscreverEquipas" />
+      <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\AprovarInscricao" />
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\resources\org\example\oporto_olympics" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.oporto_olympics" />
+      <recent name="com.example.oporto_olympics.Misc" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value=";" />
+    </option>
   </component>
   <component name="RunManager">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true">
@@ -276,6 +224,7 @@
       <workItem from="1729722891484" duration="11217000" />
       <workItem from="1729776473306" duration="30326000" />
       <workItem from="1729789949576" duration="332000" />
+      <workItem from="1731196500819" duration="7694000" />
     </task>
     <servers />
   </component>
