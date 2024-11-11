@@ -1,12 +1,9 @@
 package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
 
-import com.example.oporto_olympics.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.*;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
-import javafx.scene.control.Alert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,7 +15,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +36,7 @@ public class LerXMLController {
      * @throws IOException Se ocorrer um erro ao ler o ficheiro.
      * @throws SAXException Se ocorrer um erro durante a análise do XML.
      */
-    public List<Atleta> LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public List<Atleta> LerXMLAtleta(File XMLFile) throws ParserConfigurationException, IOException, SAXException {
 
         List<Atleta> lst = new ArrayList<>();
 
@@ -85,12 +81,10 @@ public class LerXMLController {
      *
      * @param XMLFile O ficheiro XML que contém os dados das equipas.
      * @throws ParserConfigurationException Se houver um erro de configuração no parser.
-     * @throws IOException Se ocorrer um erro ao ler o ficheiro.
-     * @throws SAXException Se ocorrer um erro durante a análise do XML.
+     * @throws IOException                  Se ocorrer um erro ao ler o ficheiro.
+     * @throws SAXException                 Se ocorrer um erro durante a análise do XML.
      */
-    public List<Equipa> LerXMLEquipa(File XMLFile, int IdEvento) throws ParserConfigurationException, IOException, SAXException, SQLException {
-
-        AlertHandler alertHandler;
+    public List<Equipa> LerXMLEquipa(File XMLFile) throws ParserConfigurationException, IOException, SAXException {
 
         List<Equipa> lst = new ArrayList<>();
 
@@ -120,30 +114,7 @@ public class LerXMLController {
                 participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
             }
 
-            ConnectionBD conexaoBD = ConnectionBD.getInstance();
-            Connection conexao = conexaoBD.getConexao();
-
-            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
-
-            List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
-
-            int modalidade = 0;
-
-            for (int k = 0; k < modalidadeList.size(); k++) {
-
-                Modalidade modalidadeAtual = modalidadeList.get(k);
-
-                if (modalidadeAtual.getNome().equals(desporto) && modalidadeAtual.getGenero().equals(genero) && modalidadeAtual.getEventoID() == IdEvento) {
-                    modalidade = modalidadeAtual.getId();
-                }
-            }
-
-            if (modalidade == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + nome + ", Género: " + genero + ", Desporto: " + desporto + ", não possui uma modalidade em que possa participar no evento selecionado!!");
-                alertHandler.getAlert().showAndWait();
-            } else {
-                lst.add(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
-            }
+            lst.add(new Equipa(0, nome, pais, genero, desporto, 0, anoFundacao, participaçõesEquipaList));
         }
 
         return lst;
@@ -151,10 +122,9 @@ public class LerXMLController {
     /**
      * Lê e processa o ficheiro XML de modalidades.
      *
-     *
      * @param XMLFile O ficheiro XML que contém os dados das modalidades.
      */
-    public List<Modalidade> LerXMLModalidade(File XMLFile, int IdEvento) throws ParserConfigurationException, IOException, SAXException, SQLException {
+    public List<Modalidade> LerXMLModalidade(File XMLFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
         List<Modalidade> lst = new ArrayList<>();
 
@@ -235,7 +205,7 @@ public class LerXMLController {
                     medida = "Tempo";
                     RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
                     RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdEvento, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
                     break;
 
                 case "Points":
@@ -244,7 +214,7 @@ public class LerXMLController {
                     String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
                     RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
                     RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdEvento, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
                     break;
             }
                     lst.add(modalidade);

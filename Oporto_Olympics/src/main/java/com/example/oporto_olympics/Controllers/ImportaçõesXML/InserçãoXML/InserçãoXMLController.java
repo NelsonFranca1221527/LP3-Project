@@ -225,7 +225,7 @@ public class InserçãoXMLController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione o seu Ficheiro XML!");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Imagens", "*.xml")
+                new FileChooser.ExtensionFilter("Ficheiros XML", "*.xml")
         );
         File selectedFile = fileChooser.showOpenDialog(null);
 
@@ -239,61 +239,48 @@ public class InserçãoXMLController {
 
         boolean valido = false;
 
+        Container.getChildren().clear();
+
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
                 valido = VerificarXML(selectedFile, AtletaXSDPath);
-                if (valido) {
+                if (!valido) {
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Atletas Válido!!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
 
                     setListaAtletas(lerXMLController.LerXMLAtleta(selectedFile));
 
                     VisualizarAtletas(getListaAtletas());
 
-                }else {
-                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Atletas Válido!!");
-                    alertHandler.getAlert().showAndWait();
-                }
                 break;
             case "Equipa":
                 valido = VerificarXML(selectedFile, EquipaXSDPath);
-                if (valido) {
-                    if(EventoChoice.getValue().equals("-------")){
-                        alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
-                        alertHandler.getAlert().showAndWait();
-                        return;
-                    }
+                if (!valido) {
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Equipas Válido!!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
 
-                    int IDEvento = itemMap.get(EventoChoice.getValue());
-
-                    setListaEquipas(lerXMLController.LerXMLEquipa(selectedFile, IDEvento));
+                    setListaEquipas(lerXMLController.LerXMLEquipa(selectedFile));
 
                     VisualizarEquipas(getListaEquipas());
 
-                }else {
-                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Equipas Válido!!");
-                    alertHandler.getAlert().showAndWait();
-                }
                 break;
             case "Modalidade":
                 valido = VerificarXML(selectedFile, ModalidadeXSDPath);
-                if (valido) {
+                if (!valido) {
+                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Modalidades Válido!!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
 
-                    if(EventoChoice.getValue().equals("-------")){
-                        alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
-                        alertHandler.getAlert().showAndWait();
-                        return;
-                    }
-
-                    int IDEvento = itemMap.get(EventoChoice.getValue());
-
-                    setListaModalidades(lerXMLController.LerXMLModalidade(selectedFile, IDEvento));
+                    setListaModalidades(lerXMLController.LerXMLModalidade(selectedFile));
 
                     VisualizarModalidades(getListaModalidades());
 
-                }else {
-
-                    alertHandler = new AlertHandler(Alert.AlertType.ERROR,"Ficheiro XML Inválido!!!", "Insira um ficheiro XML de Modalidades Válido!!");
-                    alertHandler.getAlert().showAndWait();
-                }
+                break;
         }
     }
 
@@ -316,25 +303,45 @@ public class InserçãoXMLController {
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Atletas por Inserir!!!", "Deseja inserir os atletas?");
                 Optional<ButtonType> rs1 = alertHandler.getAlert().showAndWait();
 
-                if (rs1.isPresent() && rs1.get() == ButtonType.OK) {
-                    InserirAtletas(getListaAtletas());
+                if (rs1.isPresent() && rs1.get() != ButtonType.OK) {
+                    return;
                 }
+                    InserirAtletas(getListaAtletas());
+
                 break;
             case "Equipa":
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Equipas por Inserir!!!", "Deseja inserir as equipas?");
                 Optional<ButtonType> rs2 = alertHandler.getAlert().showAndWait();
 
-                if (rs2.isPresent() && rs2.get() == ButtonType.OK) {
-                    InserirEquipas(getListaEquipas());
+                if (rs2.isPresent() && rs2.get() != ButtonType.OK) {
+                    return;
                 }
+
+                if(EventoChoice.getValue().equals("-------")){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais equipas deve inserir um evento");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
+                InserirEquipas(getListaEquipas(), itemMap.get(EventoChoice.getValue()));
+
                 break;
             case "Modalidade":
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Modalidades por Inserir!!!", "Deseja inserir as modalidades?");
                 Optional<ButtonType> rs3 = alertHandler.getAlert().showAndWait();
 
-                if (rs3.isPresent() && rs3.get() == ButtonType.OK) {
-                    InserirModalidades(getListaModalidades());
+                if (rs3.isPresent() && rs3.get() != ButtonType.OK) {
+                    return;
                 }
+
+                if(EventoChoice.getValue().equals("-------")){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
+                InserirModalidades(getListaModalidades(), itemMap.get(EventoChoice.getValue()));
+
                 break;
         }
 
@@ -381,19 +388,19 @@ public class InserçãoXMLController {
         for (Equipa equipa : lst) {
             try {
                 FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportaçõesXML/InserçãoXML/Cards/EquipasCard.fxml"));
-                Pane PaneAtleta = loader.load();
+                Pane PaneEquipa = loader.load();
                 EquipaCardController cardsController = loader.getController();
                 cardsController.preencherDados(equipa);
 
-                PaneAtleta.setUserData(equipa);
+                PaneEquipa.setUserData(equipa);
 
                 if (equipa.getGenero().equals("Men")) {
-                    PaneAtleta.setStyle("-fx-background-color: #87ceeb; -fx-border-color: #eee; -fx-border-width: 5px;");
+                    PaneEquipa.setStyle("-fx-background-color: #87ceeb; -fx-border-color: #eee; -fx-border-width: 5px;");
                 } else {
-                    PaneAtleta.setStyle("-fx-background-color: #f2a2ee; -fx-border-color: #eee; -fx-border-width: 5px;");
+                    PaneEquipa.setStyle("-fx-background-color: #f2a2ee; -fx-border-color: #eee; -fx-border-width: 5px;");
                 }
 
-                Container.getChildren().add(PaneAtleta);
+                Container.getChildren().add(PaneEquipa);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -410,19 +417,19 @@ public class InserçãoXMLController {
         for (Modalidade modalidade : lst) {
             try {
                 FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportaçõesXML/InserçãoXML/Cards/ModalidadesCard.fxml"));
-                Pane PaneAtleta = loader.load();
+                Pane PaneModalidade = loader.load();
                 ModalidadeCardController cardsController = loader.getController();
                 cardsController.preencherDados(modalidade);
 
-                PaneAtleta.setUserData(modalidade);
+                PaneModalidade.setUserData(modalidade);
 
                 if (modalidade.getGenero().equals("Men")) {
-                    PaneAtleta.setStyle("-fx-background-color: #87ceeb; -fx-border-color: #eee; -fx-border-width: 5px;");
+                    PaneModalidade.setStyle("-fx-background-color: #87ceeb; -fx-border-color: #eee; -fx-border-width: 5px;");
                 } else {
-                    PaneAtleta.setStyle("-fx-background-color: #f2a2ee; -fx-border-color: #eee; -fx-border-width: 5px;");
+                    PaneModalidade.setStyle("-fx-background-color: #f2a2ee; -fx-border-color: #eee; -fx-border-width: 5px;");
                 }
 
-                Container.getChildren().add(PaneAtleta);
+                Container.getChildren().add(PaneModalidade);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -453,10 +460,11 @@ public class InserçãoXMLController {
     /**
      * Insere a lista de equipas na base de dados.
      *
-     * @param lst A lista de equipas a ser inserida.
+     * @param lst      A lista de equipas a ser inserida.
+     * @param IDEvento
      * @throws SQLException Se ocorrer um erro ao acessar a base de dados.
      */
-    private void InserirEquipas(List<Equipa> lst) throws SQLException {
+    private void InserirEquipas(List<Equipa> lst, int IDEvento) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
@@ -488,6 +496,23 @@ public class InserçãoXMLController {
                 continue;
             }
 
+            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+            List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
+
+            for (Modalidade modalidade : modalidadeList) {
+                if (modalidade.getNome().equals(equipa.getDesporto()) && modalidade.getGenero().equals(equipa.getGenero()) && modalidade.getListEventosID().contains(IDEvento)) {
+                    equipa.setModalidadeID(modalidade.getId());
+                    break;
+                }
+
+            }
+
+            if (equipa.getModalidadeID() == 0) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             equipaDAOImp.save(equipa);
         }
 
@@ -498,21 +523,39 @@ public class InserçãoXMLController {
     /**
      * Insere a lista de modalidades na base de dados.
      *
-     * @param lst A lista de modalidades a ser inserida.
+     * @param lst      A lista de modalidades a ser inserida.
+     * @param IDEvento
      * @throws SQLException Se ocorrer um erro ao acessar a base de dados.
      */
-    private void InserirModalidades(List<Modalidade> lst) throws SQLException {
+    private void InserirModalidades(List<Modalidade> lst, int IDEvento) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        AlertHandler alertHandler;
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
         for (Modalidade modalidade : lst) {
+
+            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+
+            if (ModalidadeExistente != null) {
+
+                if (ModalidadeExistente.getListEventosID().contains(IDEvento)) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+                    alertHandler.getAlert().showAndWait();
+                    continue;
+                }
+
+                modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+                continue;
+            }
+
             modalidadeDAOImp.save(modalidade);
+            modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
         }
 
-        AlertHandler alertHandler;
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade/s insirada/s com Sucesso!");
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade/s insirada/s com Sucesso!");
         alertHandler.getAlert().showAndWait();
     }
 

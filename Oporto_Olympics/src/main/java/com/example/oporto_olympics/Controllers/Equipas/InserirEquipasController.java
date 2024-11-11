@@ -184,7 +184,7 @@ public class InserirEquipasController {
 
             for (Modalidade modalidade : lst) {
 
-                if (modalidade.getEventoID() == EventoID && !EventoChoice.getValue().equals("-------") && modalidade.getGenero().equals(generoMap.get(Genero))) {
+                if (modalidade.getListEventosID().contains(EventoID) && !EventoChoice.getValue().equals("-------") && modalidade.getGenero().equals(generoMap.get(Genero))) {
                     modalidadeMap.put(modalidade.getNome() + " - " + modalidade.getGenero(), modalidade.getId());
                     desportoMap.put(modalidade.getId(), modalidade.getNome());
                 }
