@@ -220,10 +220,26 @@ public class InserirModalidadesController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, eventoID, new RegistoPontos("", 0, ""), new RegistoPontos("", 0, ""), regras);
+        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, ""), new RegistoPontos("", 0, ""), regras);
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+        Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+
+        if (ModalidadeExistente != null) {
+
+            if (ModalidadeExistente.getListEventosID().contains(eventoID)) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+                alertHandler.getAlert().showAndWait();
+                return;
+            }
+
+            modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
+            return;
+        }
+
         modalidadeDAOImp.save(modalidade);
+        modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
 
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
         alertHandler.getAlert().showAndWait();

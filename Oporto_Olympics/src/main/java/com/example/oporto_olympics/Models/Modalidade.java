@@ -2,6 +2,8 @@ package com.example.oporto_olympics.Models;
 
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoOlimpico;
 
+import java.util.List;
+
 public class Modalidade {
 
     private int id;
@@ -20,7 +22,7 @@ public class Modalidade {
 
     private String OneGame;
 
-    private int EventoID;
+    private List<Integer> ListEventosID;
 
     private RegistoOlimpico recordeOlimpico;
 
@@ -28,7 +30,7 @@ public class Modalidade {
 
     private String regras;
 
-    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, int eventoID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
+    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, List<Integer> listEventosID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
         this.id = id;
         this.tipo = tipo;
         this.genero = genero;
@@ -37,7 +39,7 @@ public class Modalidade {
         this.minParticipantes = minParticipantes;
         this.medida = medida;
         OneGame = oneGame;
-        EventoID = eventoID;
+        ListEventosID = listEventosID;
         this.recordeOlimpico = recordeOlimpico;
         this.vencedorOlimpico = vencedorOlimpico;
         this.regras = regras;
@@ -107,12 +109,12 @@ public class Modalidade {
         OneGame = oneGame;
     }
 
-    public int getEventoID() {
-        return EventoID;
+    public List<Integer> getListEventosID() {
+        return ListEventosID;
     }
 
-    public void setEventoID(int eventoID) {
-        EventoID = eventoID;
+    public void setListEventosID(List<Integer> listEventosID) {
+        ListEventosID = listEventosID;
     }
 
     public RegistoOlimpico getRecordeOlimpico() {
@@ -139,3 +141,4 @@ public class Modalidade {
         this.regras = regras;
     }
 }
+

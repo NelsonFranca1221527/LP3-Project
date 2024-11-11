@@ -57,10 +57,21 @@ public class ListagemModalidadesCardController {
         DescricaoLabel.setText(modalidade.getDescricao());
         RegrasLabel.setText(modalidade.getRegras());
 
-        int eventoid = modalidadeDAOImp.getEventoID(modalidade.getId());
-        Evento evento = eventosDAOImp.getById(eventoid);
-        String localnome = locaisDAOImp.getNomeById(evento.getLocal_id());
+        String eventosTexto = "";
 
-        EventoLabel.setText(localnome + " - " + evento.getAno_edicao());
+        for (int i = 0; i < modalidadeDAOImp.getListEventoID(modalidade.getId()).size(); i++) {
+            int eventoid = modalidadeDAOImp.getListEventoID(modalidade.getId()).get(i);
+
+            Evento evento = eventosDAOImp.getById(eventoid);
+            String localnome = locaisDAOImp.getNomeById(evento.getLocal_id());
+
+            eventosTexto += localnome + " - " + evento.getAno_edicao();
+
+            if (i < modalidadeDAOImp.getListEventoID(modalidade.getId()).size() - 1) {
+                eventosTexto += ", ";
+            }
+        }
+
+        EventoLabel.setText(eventosTexto);
     }
 }
