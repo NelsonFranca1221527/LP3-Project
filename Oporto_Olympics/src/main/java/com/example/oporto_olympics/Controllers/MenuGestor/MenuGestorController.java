@@ -225,7 +225,7 @@ public class MenuGestorController {
         try {
             Stage s = (Stage) PerfilBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+            RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
