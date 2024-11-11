@@ -8,7 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Implementação da interface {@link ListarEquipasDAO} para listar todas as equipas registradas na base de dados.
+ * Esta classe utiliza uma conexão com a base de dados para recuperar as informações das equipas.
+ */
 public class ListarEquipasDAOImp implements ListarEquipasDAO {
     private Connection connection;
 

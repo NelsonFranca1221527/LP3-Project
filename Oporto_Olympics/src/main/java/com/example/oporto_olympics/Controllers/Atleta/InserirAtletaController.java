@@ -15,32 +15,55 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+/**
+ * Controlador responsável pela criação de um novo atleta.
+ * Esta classe lida com a interface gráfica de inserção de dados de um atleta,
+ * incluindo validação dos campos e armazenamento dos dados na base de dados.
+ */
 public class InserirAtletaController {
+    /**
+     * Campo de texto para introdução da altura.
+     */
     @FXML
     private TextField Altura;
-
+    /**
+     * Botão para criar um novo atleta.
+     */
     @FXML
     private Button CriarAtletaButton;
-
+    /**
+     * Campo de texto para introdução da data de nascimento.
+     */
     @FXML
     private TextField Data_nasc;
-
+    /**
+     * Caixa de seleção para escolher o género.
+     */
     @FXML
     private ChoiceBox<String> GeneroChoice;
-
+    /**
+     * Campo de texto para introdução do nome.
+     */
     @FXML
     private TextField Nome;
-
+    /**
+     * Campo de texto para introdução do país.
+     */
     @FXML
     private TextField Pais;
-
+    /**
+     * Campo de texto para introdução do peso.
+     */
     @FXML
     private TextField Peso;
-
+    /**
+     * Botão para voltar.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Instância do objeto responsável pela inserção de dados do atleta.
+     */
     private InserirAtletaDAOImp dao;
 
     /**

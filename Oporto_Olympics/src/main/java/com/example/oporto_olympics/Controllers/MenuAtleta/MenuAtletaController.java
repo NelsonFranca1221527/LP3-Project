@@ -4,24 +4,40 @@ import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
+/**
+ * Controlador da interface de utilizador do menu do Atleta. Esta classe é responsável por gerir as ações e interações
+ * realizadas no menu do Atleta, incluindo navegação para outras partes da aplicação e manipulação de dados específicos
+ * do atleta.
+ */
 public class MenuAtletaController {
-
+    /**
+     * Botão para visualizar os resultados.
+     */
     @FXML
     private Button ResultadosBtn;
-
+    /**
+     * Botão para aceder à secção de equipas.
+     */
     @FXML
     private Button EquipasBtn;
-
+    /**
+     * Botão para aceder à secção de modalidades.
+     */
     @FXML
     private Button ModalidadeBtn;
-
+    /**
+     * Botão para aceder à secção de eventos.
+     */
     @FXML
     private Button EventoBtn;
-
+    /**
+     * Botão para terminar a sessão e sair.
+     */
     @FXML
     private Button SairBtn;
-
+    /**
+     * Botão para aceder ao perfil do utilizador.
+     */
     @FXML
     private Button PerfilBtn;
 

@@ -7,7 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * A classe {@link EquipaDAOImp} implementa a interface {@link DAOXML} para manipulação de dados de equipas
+ * na base de dados. Ela fornece métodos para realizar operações de CRUD (criação, leitura, atualização e exclusão)
+ * sobre as equipas, bem como o histórico de participações e resultados em competições.
+ */
 public class EquipaDAOImp implements DAOXML<Equipa> {
 
     private Connection conexao;

@@ -18,14 +18,25 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+/**
+ * Controlador responsável pela gestão da inscrição de um atleta em equipas.
+ * Esta classe é responsável por carregar as equipas de um país e género específico,
+ * exibir essas equipas na interface do utilizador, e permitir que o atleta se inscreva em uma equipa.
+ */
 public class InserirAtletaEquipaController {
+    /**
+     * Contêiner de layout para a equipa.
+     */
     @FXML
     private VBox ContainerEquipa;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button btnBack;
-
+    /**
+     * Instância do objeto responsável pela inscrição da equipa.
+     */
     private InscricaoEquipaDAO dao;
 
     /**

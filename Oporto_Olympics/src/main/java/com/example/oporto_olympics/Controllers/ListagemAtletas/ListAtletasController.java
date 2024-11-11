@@ -17,12 +17,20 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por gerir a exibição dos atletas numa lista.
+ * Esta classe estabelece uma conexão com a base de dados, obtém todos os atletas
+ * e popula dinamicamente os cards de atletas num contêiner `VBox`.
+ */
 public class ListAtletasController {
-
+    /**
+     * Contêiner de layout para os atletas.
+     */
     @FXML
     private VBox AtletasContainer;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

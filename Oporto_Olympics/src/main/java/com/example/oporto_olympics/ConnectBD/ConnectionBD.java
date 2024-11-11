@@ -9,8 +9,13 @@ import java.sql.*;
  * Uma classe singleton para gerenciar uma conexão de banco de dados com um banco de dados SQL Server.
  */
 public class ConnectionBD {
-
+    /**
+     * Instância única da classe {@code ConnectionBD}, usada para garantir o padrão Singleton.
+     */
     private static ConnectionBD instancia = null;
+    /**
+     * Conexão com a base de dados.
+     */
     private Connection conexao = null;
 
     /**
@@ -68,12 +73,24 @@ public class ConnectionBD {
 
     }
 
+    /**
+     * A classe representa as informações de conexão para a base de dados.
+     * Ela armazena o nome do servidor, da base e dados o número mecanográfico e a password.
+     */
     private static class DatabaseInfo {
         String svname;
         String dbname;
         String user;
         String pass;
 
+        /**
+         * Construtor para criar uma instância de {@code DatabaseInfo} com as informações fornecidas.
+         *
+         * @param svname Nome do servidor da base de dados.
+         * @param dbname Nome da base de dados.
+         * @param user   Número Mecanográfico para autenticação.
+         * @param pass   Palavra-passe para autenticação.
+         */
         public DatabaseInfo(String svname, String dbname, String user, String pass) {
             this.svname = svname;
             this.dbname = dbname;
@@ -82,6 +99,14 @@ public class ConnectionBD {
         }
     }
 
+    /**
+     * Carrega as informações de conexão da base de dados a partir de um ficheiro de texto e
+     * retorna um objeto {@code DatabaseInfo} com esses dados.
+     *
+     * @return Um objeto {@code DatabaseInfo} que contém o nome do servidor, nome da base de dados,
+     *         número mecanográfico e palavra-passe, tal como lido do ficheiro.
+     * @throws IOException Se ocorrer um erro de leitura do ficheiro.
+     */
     private static DatabaseInfo load() throws IOException {
         String filepath = "./PasswordBD.txt";
         BufferedReader reader = new BufferedReader(new FileReader(filepath));

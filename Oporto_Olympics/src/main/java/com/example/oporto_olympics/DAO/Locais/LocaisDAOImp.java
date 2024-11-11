@@ -8,15 +8,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Implementação do DAO (Data Access Object) para a tabela de locais.
+ * Esta classe fornece métodos para interagir com a base de dados e manipular as informações dos locais.
+ */
 public class LocaisDAOImp implements DAO<Local> {
     private static Connection connection;
     private ConnectionBD database;
-
+    /**
+     * Construtor da classe que inicializa a conexão com a base de dados.
+     *
+     * @param connection a conexão com a base de dados.
+     */
     public LocaisDAOImp(Connection connection) {
         this.connection = connection;
     }
-
+    /**
+     * Obtém todos os locais registados na base de dados.
+     *
+     * @return uma lista de objetos {@link Local} representando todos os locais na base de dados.
+     * @throws RuntimeException se ocorrer um erro ao obter os locais.
+     */
     @Override
     public List<Local> getAll() {
         List<Local> lst = new ArrayList<Local>();
@@ -33,7 +45,12 @@ public class LocaisDAOImp implements DAO<Local> {
             throw new RuntimeException("Erro em mostrar os locais: " + ex.getMessage());
         }
     }
-
+    /**
+     * Guarda um local na base de dados.
+     *
+     * @param local o local a ser guardado.
+     * @throws RuntimeException se ocorrer um erro durante a inserção do local na base de dados.
+     */
     @Override
     public void save(Local local) {
         try {
@@ -51,17 +68,35 @@ public class LocaisDAOImp implements DAO<Local> {
             throw new RuntimeException("Erro ao inserir o local: " + ex.getMessage());
         }
     }
-
+    /**
+     * Atualiza um local na base de dados.
+     *
+     * @param local o local a ser atualizado.
+     */
     @Override
     public void update(Local local) {
 
     }
-
+    /**
+     * Exclui um local da base de dados.
+     *
+     * @param local o local a ser excluído.
+     */
     @Override
     public void delete(Local local) {
 
     }
-
+    /**
+     * Verifica se já existe um local na base de dados com as mesmas informações fornecidas.
+     *
+     * @param nome o nome do local.
+     * @param tipo o tipo do local.
+     * @param morada a morada do local.
+     * @param cidade a cidade do local.
+     * @param pais a sigla do país onde o local está situado.
+     * @return verdadeiro se o local existir, caso contrário falso.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public boolean existsByLocal(String nome, String tipo, String morada, String cidade, String pais) {
         try {
             PreparedStatement ps = connection.prepareStatement(
@@ -79,7 +114,13 @@ public class LocaisDAOImp implements DAO<Local> {
             throw new RuntimeException("Erro ao verificar a existência do local: " + ex.getMessage());
         }
     }
-
+    /**
+     * Obtém o nome de um local com base no seu ID.
+     *
+     * @param id o ID do local.
+     * @return o nome do local correspondente ao ID, ou null se o local não for encontrado.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public String getNomeById(int id) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT nome FROM locais WHERE id = ?");
@@ -97,7 +138,13 @@ public class LocaisDAOImp implements DAO<Local> {
         }
         return null;  // Retorna null se o local não for encontrado
     }
-
+    /**
+     * Verifica se uma sigla de país existe na base de dados.
+     *
+     * @param sigla a sigla do país a ser verificada.
+     * @return verdadeiro se a sigla for encontrada, caso contrário falso.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
@@ -110,7 +157,12 @@ public class LocaisDAOImp implements DAO<Local> {
             throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
         }
     }
-
+    /**
+     * Obtém um local com base no seu ID.
+     *
+     * @param i o ID do local a ser obtido.
+     * @return um objeto {@link Optional} que pode conter o local encontrado ou estar vazio caso não encontrado.
+     */
     @Override
     public Optional<Local> get(int i) {
         return Optional.empty();

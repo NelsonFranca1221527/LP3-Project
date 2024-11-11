@@ -39,60 +39,120 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+/**
+ * Controlador responsável pela inserção de dados de Atletas, Equipas e Modalidades a partir de um arquivo XML.
+ * A classe interage com a interface gráfica para carregar e validar arquivos XML,
+ * e insere os dados na base de dados com base no tipo de XML selecionado.
+ */
 public class InserçãoXMLController {
-
+    /**
+     * Contêiner de layout para agrupar os componentes de evento.
+     */
     @FXML
     private VBox Container;
-
+    /**
+     * Caixa de seleção para escolher o evento.
+     */
     @FXML
     private ChoiceBox<String> EventoChoice;
-
+    /**
+     * Grupo que contém os elementos do evento.
+     */
     @FXML
     private Group EventoGroup;
-
+    /**
+     * Botão para inserir um novo evento.
+     */
     @FXML
     private Button InserirButton;
-
+    /**
+     * Botão para selecionar o arquivo XML.
+     */
     @FXML
     private Button SelecionarXMLButton;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Rótulo para mostrar o título do tipo de XML.
+     */
     @FXML
     private Label tituloTipoXML;
-
+    /**
+     * Mapa que relaciona um item (evento, equipa, etc.) com um valor inteiro.
+     */
     private Map<String, Integer> itemMap = new HashMap<>();
-
+    /**
+     * Caminho do arquivo XSD para a validação dos dados dos atletas.
+     */
     private String AtletaXSDPath = System.getProperty("user.dir") + "/src/main/resources/com/example/oporto_olympics/Assets/XSD/athletes_xsd.xml";
+    /**
+     * Caminho do arquivo XSD para a validação dos dados das equipas.
+     */
     private String EquipaXSDPath = System.getProperty("user.dir") + "/src/main/resources/com/example/oporto_olympics/Assets/XSD/teams_xsd.xml";
+    /**
+     * Caminho do arquivo XSD para a validação dos dados das modalidades.
+     */
     private String ModalidadeXSDPath = System.getProperty("user.dir") + "/src/main/resources/com/example/oporto_olympics/Assets/XSD/sports_xsd.xml";
-
+    /**
+     * Lista de atletas.
+     */
     private List<Atleta> ListaAtletas;
+    /**
+     * Lista de equipas.
+     */
     private List<Equipa> ListaEquipas;
+    /**
+     * Lista de modalidades.
+     */
     private List<Modalidade> ListaModalidades;
-
+    /**
+     * Obtém a lista de atletas.
+     *
+     * @return Lista de atletas.
+     */
     public List<Atleta> getListaAtletas() {
         return ListaAtletas;
     }
-
+    /**
+     * Define a lista de atletas.
+     *
+     * @param listaAtletas Lista de atletas a ser definida.
+     */
     public void setListaAtletas(List<Atleta> listaAtletas) {
         ListaAtletas = listaAtletas;
     }
-
+    /**
+     * Obtém a lista de equipas.
+     *
+     * @return Lista de equipas.
+     */
     public List<Equipa> getListaEquipas() {
         return ListaEquipas;
     }
-
+    /**
+     * Define a lista de equipas.
+     *
+     * @param listaEquipas Lista de equipas a ser definida.
+     */
     public void setListaEquipas(List<Equipa> listaEquipas) {
         ListaEquipas = listaEquipas;
     }
-
+    /**
+     * Obtém a lista de modalidades.
+     *
+     * @return Lista de modalidades.
+     */
     public List<Modalidade> getListaModalidades() {
         return ListaModalidades;
     }
-
+    /**
+     * Define a lista de modalidades.
+     *
+     * @param listaModalidades Lista de modalidades a ser definida.
+     */
     public void setListaModalidades(List<Modalidade> listaModalidades) {
         ListaModalidades = listaModalidades;
     }

@@ -16,14 +16,25 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável pela listagem das equipas.
+ * Esta classe é encarregada de listar as equipas carregadas na base de dados e exibi-las na interface gráfica.
+ * Também permite visualizar detalhes adicionais sobre cada equipa.
+ */
 public class ListarEquipaController {
+    /**
+     * Contêiner de layout para exibição das equipas.
+     */
     @FXML
     private VBox vboxEquipas;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Instância do objeto responsável pela listagem das equipas.
+     */
     private ListarEquipasDAO dao;
 
     /**
@@ -132,11 +143,11 @@ public class ListarEquipaController {
             alert.show();
         }
     }
-
-
-
-
-
+    /**
+     * Ação realizada quando o botão "Voltar" é clicado. Retorna à tela anterior.
+     *
+     * @param event o evento de ação
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();

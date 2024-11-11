@@ -29,37 +29,59 @@ import java.util.Optional;
  * de imagens de logotipos e mascotes.
  */
 public class InserirEventosOlimpicosController {
-
+    /**
+     * Botão para criar um novo evento.
+     */
     @FXML
     private Button CriarEventoButton;
-
+    /**
+     * Botão para redirecionar para o local do evento.
+     */
     @FXML
     private Button LocalRedirectButton;
-
+    /**
+     * Botão para aceder ao logotipo do evento.
+     */
     @FXML
     private Button LogoButton;
-
+    /**
+     * Botão para aceder à mascote do evento.
+     */
     @FXML
     private Button MascoteButton;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Campo de texto para introdução do ano da edição do evento.
+     */
     @FXML
     private TextField anoedicaoField;
-
+    /**
+     * Caixa de combinação para escolher o local do evento.
+     */
     @FXML
     private ComboBox<String> localCombo;
-
+    /**
+     * Rótulo para mostrar o URL do logotipo do evento.
+     */
     @FXML
     private Label logoURL;
-
+    /**
+     * Rótulo para mostrar o URL da mascote do evento.
+     */
     @FXML
     private Label mascoteURL;
-
+    /**
+     * Campo de texto para introdução do país do evento.
+     */
     @FXML
     private TextField paisField;
-
+    /**
+     * Rótulo para mostrar o título do evento.
+     */
     @FXML
     private Label tituloEvento;
 

@@ -13,7 +13,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * A classe {@link AtletaDAOImp} implementa a interface {@link DAOXML} para manipulação de dados de atletas
+ * na base de dados. Fornece métodos para obter, salvar, atualizar e excluir informações de atletas,
+ * incluindo o histórico de participações em competições.
+ */
 public class AtletaDAOImp implements DAOXML<Atleta> {
 
     private Connection conexao;

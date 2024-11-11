@@ -11,35 +11,63 @@ import javafx.scene.control.Label;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Controlador responsável por exibir as informações detalhadas de uma modalidade em uma interface gráfica.
+ * Esta classe preenche os rótulos de uma interface com os dados de uma modalidade, como nome, tipo, gênero,
+ * regras, descrição e informações do evento associado.
+ */
 public class ListagemModalidadesCardController {
+    /**
+     * Rótulo para mostrar a descrição da modalidade.
+     */
     @FXML
     private Label DescricaoLabel;
-
+    /**
+     * Rótulo para mostrar as regras da modalidade.
+     */
     @FXML
     private Label RegrasLabel;
-
+    /**
+     * Rótulo para mostrar o evento associado à modalidade.
+     */
     @FXML
     private Label EventoLabel;
-
+    /**
+     * Rótulo para mostrar o género da modalidade (masculino/feminino/misto).
+     */
     @FXML
     private Label GeneroLabel;
-
+    /**
+     * Rótulo para mostrar se a modalidade é composta por um único jogo.
+     */
     @FXML
     private Label JogosLabel;
-
+    /**
+     * Rótulo para mostrar o nome da modalidade.
+     */
     @FXML
     private Label NomeLabel;
-
+    /**
+     * Rótulo para mostrar o tipo da modalidade.
+     */
     @FXML
     private Label TipoLabel;
-
+    /**
+     * Rótulo para mostrar o número mínimo de participantes exigidos.
+     */
     @FXML
     private Label MinpartLabel;
-
+    /**
+     * Rótulo para mostrar a unidade de medida usada na modalidade.
+     */
     @FXML
     private Label MedidaLabel;
-
+    /**
+     * Preenche os dados da modalidade nos rótulos correspondentes.
+     *
+     * @param modalidade O objeto {@link Modalidade} contendo os dados da modalidade a serem preenchidos.
+     * @throws SQLException Se ocorrer um erro ao obter dados adicionais da base de dados.
+     */
     public void PreencherDados (Modalidade modalidade) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();

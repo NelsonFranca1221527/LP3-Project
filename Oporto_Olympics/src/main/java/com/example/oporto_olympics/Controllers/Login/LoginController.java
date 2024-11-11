@@ -14,15 +14,25 @@ import javafx.stage.Stage;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Controlador da interface de utilizador para a funcionalidade de login. Esta classe é responsável por gerir o fluxo
+ * de autenticação de utilizadores, incluindo a validação das credenciais e o redirecionamento para a página correspondente
+ * ao tipo de utilizador (gestor ou atleta) após um login bem-sucedido.
+ */
 public class LoginController {
-
+    /**
+     * Botão para iniciar sessão.
+     */
     @FXML
     private Button loginBtn;
-
+    /**
+     * Campo de texto para introduzir a senha do utilizador.
+     */
     @FXML
     private PasswordField SenhaField;
-
+    /**
+     * Campo de texto para introduzir o nome de utilizador.
+     */
     @FXML
     private TextField UserField;
 

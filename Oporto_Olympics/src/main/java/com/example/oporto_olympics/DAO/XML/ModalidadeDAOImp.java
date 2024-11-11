@@ -14,7 +14,11 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * A classe {@link ModalidadeDAOImp} implementa a interface {@link DAOXML} para manipulação de dados de modalidades
+ * na base de dados. Ela fornece métodos para realizar operações de CRUD (criação, leitura, atualização e exclusão)
+ * sobre as modalidades, bem como o histórico de recordes olímpicos e vencedores em diferentes modalidades esportivas.
+ */
 public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
     private Connection conexao;

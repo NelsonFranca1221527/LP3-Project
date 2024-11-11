@@ -23,30 +23,51 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Controlador para a inserção de novas equipas.
+ * Permite ao utilizador preencher dados da equipa, como evento, género, modalidade, país e ano de fundação.
+ * Valida os dados inseridos e insere a equipa na base de dados.
+ */
 public class InserirEquipasController {
 
+    /**
+     * Campo para introdução do ano de fundação.
+     */
     @FXML
     private TextField AnoFundacao;
-
+    /**
+     * Botão para criação de uma nova equipa.
+     */
     @FXML
     private Button CriarEquipaButton;
-
+    /**
+     * Caixa de seleção para escolher o evento.
+     */
     @FXML
     private ChoiceBox<String> EventoChoice;
-
+    /**
+     * Caixa de seleção para escolher o género.
+     */
     @FXML
     private ChoiceBox<String> GeneroChoice;
-
+    /**
+     * Caixa de seleção para escolher a modalidade.
+     */
     @FXML
     private ChoiceBox<String> ModalidadeChoice;
-
+    /**
+     * Caixa de seleção para escolher a modalidade.
+     */
     @FXML
     private TextField Nome;
-
+    /**
+     * Campo de texto para introdução do país.
+     */
     @FXML
     private TextField Pais;
-
+    /**
+     * Botão para voltar.
+     */
     @FXML
     private Button VoltarButton;
 

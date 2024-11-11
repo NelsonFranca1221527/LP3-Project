@@ -6,7 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Implementação da interface {@link InscricaoEquipaDAO} para realizar operações de acesso a dados relacionados
+ * com inscrições de equipas, como obter equipas filtradas por país e gênero, inserir inscrições e verificar
+ * o status de inscrições.
+ */
 public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {
     private Connection connection;
 

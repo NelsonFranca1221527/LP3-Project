@@ -17,12 +17,20 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por gerir a exibição de eventos numa lista.
+ * Esta classe estabelece uma conexão com a base de dados, obtém todos os eventos
+ * e popula dinamicamente os cards de eventos num contêiner VBox.
+ */
 public class ListagemEventosController {
-
+    /**
+     * Contêiner de layout para a exibição dos eventos.
+     */
     @FXML
     private VBox EventosContainer;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

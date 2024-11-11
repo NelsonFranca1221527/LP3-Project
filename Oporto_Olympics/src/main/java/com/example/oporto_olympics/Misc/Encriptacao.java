@@ -2,7 +2,11 @@ package com.example.oporto_olympics.Misc;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+/**
+ * A classe {@link Encriptacao} fornece métodos para encriptação de dados utilizando o algoritmo SHA-256.
+ * Esta classe é responsável por transformar um dado de entrada em um valor de hash seguro, utilizando
+ * o método SHA-256 da biblioteca Java.
+ */
 public class Encriptacao {
 
     /**

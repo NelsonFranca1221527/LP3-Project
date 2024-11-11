@@ -20,15 +20,25 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador da interface gráfica responsável pela inserção de um novo atleta.
+ * Esta classe manipula os eventos dos campos de entrada de dados do atleta e gerencia a interação
+ * com a base de dados para criar um novo atleta.
+ */
 public class InscricaoEquipaController {
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button btnBack;
-
+    /**
+     * Contêiner de layout para a secção de inscrição.
+     */
     @FXML
     private VBox ContainerInscricao;
-
+    /**
+     * Instância do objeto responsável pela aprovação de inscrições de equipas.
+     */
     private AprovarInscricaoEquipaDAO dao;
 
     /**
@@ -38,7 +48,6 @@ public class InscricaoEquipaController {
      *
      * @throws SQLException Se ocorrer um erro ao tentar estabelecer a conexão com a base de dados.
      */
-
     @FXML
     public void initialize() {
         try {

@@ -12,16 +12,24 @@ import javafx.stage.Stage;
  * na aplicação dos Jogos Olímpicos do Porto.
  */
 public class SeleçãoXMLController {
-
+    /**
+     * Botão para inserir um novo atleta.
+     */
     @FXML
     private Button InserirAtletaButton;
-
+    /**
+     * Botão para inserir uma nova equipa.
+     */
     @FXML
     private Button InserirEquipaButton;
-
+    /**
+     * Botão para inserir uma nova modalidade.
+     */
     @FXML
     private Button InserirModalidadeButton;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
 

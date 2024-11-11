@@ -1,7 +1,11 @@
 package com.example.oporto_olympics.Singleton;
 
 import com.example.oporto_olympics.Models.Atleta;
-
+/**
+ * A classe {@link AtletaSingleton} implementa o padrão Singleton para garantir que apenas uma instância
+ * da classe seja criada ao longo do ciclo de vida da aplicação.
+ * Esta classe armazena um único objeto {@link Atleta}.
+ */
 public class AtletaSingleton {
     private static volatile AtletaSingleton instance;
     private static final Object mutex = new Object();

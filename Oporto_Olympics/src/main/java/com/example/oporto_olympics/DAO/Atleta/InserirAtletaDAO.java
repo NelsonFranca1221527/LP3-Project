@@ -1,7 +1,10 @@
 package com.example.oporto_olympics.DAO.Atleta;
 
 import java.time.LocalDate;
-
+/**
+ * Implementação da interface {@link InserirAtletaDAO} para inserir e atualizar dados de atletas na base de dados.
+ * Esta classe usa uma conexão com a base de dados para inserir e validar a existência de um país.
+ */
 public interface InserirAtletaDAO {
 
     /**

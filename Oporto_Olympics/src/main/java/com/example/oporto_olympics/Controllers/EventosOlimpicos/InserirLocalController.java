@@ -22,40 +22,64 @@ import java.util.function.UnaryOperator;
  * inserção de novos locais na base de dados.
  */
 public class InserirLocalController {
-
+    /**
+     * Botão para inserir um novo local.
+     */
     @FXML
     private Button InserirLocalButton;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Campo de texto para introdução do ano de construção do local.
+     */
     @FXML
     private TextField anoconstrucaoField;
-
+    /**
+     * Rótulo para mostrar o ano de construção do local.
+     */
     @FXML
     private Label anoconstrucaoLabel;
-
+    /**
+     * Campo de texto para introdução da capacidade do local.
+     */
     @FXML
     private TextField capacidadeField;
-
+    /**
+     * Rótulo para mostrar a capacidade do local.
+     */
     @FXML
     private Label capacidadeLabel;
-
+    /**
+     * Campo de texto para introdução da cidade onde o local está situado.
+     */
     @FXML
     private TextField cidadeField;
-
+    /**
+     * Campo de texto para introdução da morada do local.
+     */
     @FXML
     private TextField moradaField;
-
+    /**
+     * Campo de texto para introdução do nome do local.
+     */
     @FXML
     private TextField nomeField;
-
+    /**
+     * Campo de texto para introdução do país onde o local está situado.
+     */
     @FXML
     private TextField paisField;
-
+    /**
+     * Caixa de combinação para selecionar o tipo de local.
+     */
     @FXML
     private ComboBox<String> tipolocalCombo;
-
+    /**
+     * Rótulo para mostrar o título do local.
+     */
     @FXML
     private Label tituloLocal;
 

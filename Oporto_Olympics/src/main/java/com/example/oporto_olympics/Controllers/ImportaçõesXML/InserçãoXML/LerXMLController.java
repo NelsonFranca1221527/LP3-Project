@@ -26,7 +26,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-
+/**
+ * Controlador responsável por ler e processar ficheiros XML contendo informações sobre atletas, equipas e modalidades.
+ * Cada tipo de XML é lido e convertido em listas de objetos correspondentes (Atleta, Equipa, Modalidade).
+ */
 public class LerXMLController {
 
     /**

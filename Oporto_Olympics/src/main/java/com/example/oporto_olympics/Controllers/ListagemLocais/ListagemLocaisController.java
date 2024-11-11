@@ -17,12 +17,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por gerir a exibição de locais na interface gráfica.
+ * Esta classe conecta-se à base de dados, obtém todos os locais e os exibe dinamicamente
+ * em cards dentro de um contêiner {@link VBox}. Além disso, permite ao utilizador voltar
+ * à tela anterior através de um botão.
+ */
 public class ListagemLocaisController {
-
+    /**
+     * Contêiner de layout para a exibição dos locais.
+     */
     @FXML
     private VBox LocaisContainer;
 
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

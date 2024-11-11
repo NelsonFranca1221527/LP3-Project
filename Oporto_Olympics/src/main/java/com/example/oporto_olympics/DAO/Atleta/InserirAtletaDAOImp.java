@@ -8,7 +8,11 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 
-
+/**
+ * Implementação da interface {@link InserirAtletaDAO} para a gestão de operações de inserção e atualização de dados de atletas na base de dados.
+ * Esta classe é responsável por guardar ou atualizar os dados de um atleta, verificar a existência de um país na tabela {@code paises},
+ * e converter strings para um hash utilizando o algoritmo SHA-256.
+ */
 public class InserirAtletaDAOImp implements InserirAtletaDAO{
 
     private Connection conexao;

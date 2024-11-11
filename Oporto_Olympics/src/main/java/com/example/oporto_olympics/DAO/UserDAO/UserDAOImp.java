@@ -11,16 +11,32 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Classe responsável pela implementação dos métodos da interface {@link DAO} para a entidade {@link User}.
+ * Esta classe realiza operações CRUD (Create, Read, Update, Delete) na base de dados para manipular utilizadores.
+ * A comunicação com a base de dados é feita através de uma conexão {@link Connection}.
+ */
 public class UserDAOImp implements DAO<User> {
 
     private static Connection connection;
     private ConnectionBD database;
-
+    /**
+     * Construtor da classe {@link UserDAOImp}.
+     * Inicializa a conexão com a base de dados para interagir com as tabelas associadas à entidade {@link User}.
+     *
+     * @param connection A conexão com a base de dados a ser utilizada pelas operações DAO.
+     */
     public UserDAOImp(Connection connection) {
         this.connection = connection;
     }
-
+    /**
+     * Obtém as informações de um atleta a partir do seu ID.
+     * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do atleta.
+     *
+     * @param id O ID do utilizador para obter as informações do atleta.
+     * @return O objeto {@link Atleta} contendo as informações do atleta, ou null se não encontrado.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
+     */
     public Atleta getAtletaInfo(int id) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
@@ -59,7 +75,13 @@ public class UserDAOImp implements DAO<User> {
 
         return null;
     }
-
+    /**
+     * Obtém o ID de um utilizador com base no seu número mecanográfico.
+     *
+     * @param Num_Mecanografico O número mecanográfico do utilizador.
+     * @return O ID do utilizador correspondente ao número mecanográfico fornecido.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
+     */
     public int getID(int Num_Mecanografico) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
@@ -81,14 +103,12 @@ public class UserDAOImp implements DAO<User> {
     }
 
     /**
+     * Verifica se um utilizador existe na base de dados, comparando o número mecanográfico e a senha fornecida.
      *
-     * Verifica os dados inseridos com os dados gravados na base de dados
-     *
-     * @param Num_Mecanografico
-     * @param senha
-     *
-     * @return
-     * @throws SQLException
+     * @param Num_Mecanografico O número mecanográfico do utilizador.
+     * @param senha A senha fornecida pelo utilizador.
+     * @return true se o utilizador existir com a senha correta, false caso contrário.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
      */
     public boolean getUser(int Num_Mecanografico, String senha) throws SQLException {
         try {
@@ -115,12 +135,12 @@ public class UserDAOImp implements DAO<User> {
     }
 
     /**
-     * Vai a base de dados a permissão do utizador inserido no Login
+     * Obtém o tipo de permissão (role) de um utilizador, verificando o número mecanográfico e a senha.
      *
-     * @param Num_Mecanografico
-     * @param senha
-     * @return UserType
-     * @throws SQLException
+     * @param Num_Mecanografico O número mecanográfico do utilizador.
+     * @param senha A senha fornecida pelo utilizador.
+     * @return O nome do tipo de permissão do utilizador (por exemplo, "Admin", "Atleta").
+     * @throws SQLException Caso haja erro na consulta à base de dados.
      */
     public String getUserType(int Num_Mecanografico, String senha) throws SQLException {
         try {
@@ -149,7 +169,11 @@ public class UserDAOImp implements DAO<User> {
         }
         return "";
     }
-
+    /**
+     * Obtém todos os utilizadores registrados na base de dados.
+     *
+     * @return Lista de objetos {@link User} representando todos os utilizadores da base de dados.
+     */
     @Override
     public List<User> getAll() {
         List<User> lst = new ArrayList<User>();

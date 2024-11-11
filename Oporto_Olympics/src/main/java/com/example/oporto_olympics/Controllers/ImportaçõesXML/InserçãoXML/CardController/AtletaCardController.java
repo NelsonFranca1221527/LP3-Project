@@ -5,24 +5,41 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 import java.text.SimpleDateFormat;
-
+/**
+ * Controlador responsável pela gestão dos dados do atleta na interface do utilizador.
+ * Esta classe preenche os rótulos com as informações do atleta, como nome, país, peso, altura,
+ * género e data de nascimento.
+ */
 public class AtletaCardController {
-
+    /**
+     * Rótulo para mostrar a altura.
+     */
     @FXML
     private Label Altura;
-
+    /**
+     * Rótulo para mostrar a data de aniversário.
+     */
     @FXML
     private Label DataAniversario;
 
+    /**
+     * Rótulo para mostrar o género.
+     */
     @FXML
     private Label Genero;
-
+    /**
+     * Rótulo para mostrar o nome.
+     */
     @FXML
     private Label Nome;
-
+    /**
+     * Rótulo para mostrar o país.
+     */
     @FXML
     private Label Pais;
-
+    /**
+     * Rótulo para mostrar o peso.
+     */
     @FXML
     private Label Peso;
 

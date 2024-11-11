@@ -7,7 +7,12 @@ import com.example.oporto_olympics.Models.InscricaoEquipas;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * A classe {@link AprovarInscricaoEquipaDAOImp} implementa a interface {@link AprovarInscricaoEquipaDAO},
+ * fornecendo a implementação concreta dos métodos de acesso aos dados das inscrições de equipas, atletas
+ * e o processo de aprovação ou reprovação das inscrições.
+ * Utiliza uma conexão com a base de dados para realizar operações de consulta, inserção, atualização e exclusão.
+ */
 public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
     private Connection connection;
 

@@ -8,15 +8,27 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
-
+/**
+ * Implementação do DAO (Data Access Object) para a tabela de eventos.
+ * Esta classe fornece métodos para interagir com a base de dados e manipular as informações dos eventos.
+ */
 public class EventosDAOImp implements DAO<Evento> {
     private static Connection connection;
     private ConnectionBD database;
-
+    /**
+     * Construtor da classe que inicializa a conexão com a base de dados.
+     *
+     * @param connection a conexão com a base de dados.
+     */
     public EventosDAOImp(Connection connection) {
         this.connection = connection;
     }
-
+    /**
+     * Guarda um evento na base de dados.
+     *
+     * @param evento o evento a ser guardado.
+     * @throws RuntimeException se ocorrer um erro durante a inserção do evento na base de dados.
+     */
     @Override
     public void save(Evento evento) {
         try {
@@ -32,7 +44,13 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException("Erro ao inserir o evento: " + ex.getMessage());
         }
     }
-
+    /**
+     * Verifica se já existe um evento na base de dados com o ano de edição fornecido.
+     *
+     * @param anoEdicao o ano da edição do evento.
+     * @return verdadeiro se o evento existir, caso contrário falso.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public boolean existsByAnoEdicao(int anoEdicao) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM eventos WHERE ano_edicao = ?");
@@ -47,22 +65,40 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException("Erro ao verificar o ano de edição: " + ex.getMessage());
         }
     }
-
+    /**
+     * Atualiza um evento na base de dados.
+     *
+     * @param evento o evento a ser atualizado.
+     */
     @Override
     public void update(Evento evento) {
 
     }
-
+    /**
+     * Exclui um evento da base de dados.
+     *
+     * @param evento o evento a ser excluído.
+     */
     @Override
     public void delete(Evento evento) {
 
     }
-
+    /**
+     * Obtém um evento a partir do seu ID.
+     *
+     * @param i o ID do evento a ser obtido.
+     * @return um objeto {@link Optional} que pode conter o evento encontrado ou estar vazio caso não encontrado.
+     */
     @Override
     public Optional<Evento> get(int i) {
         return Optional.empty();
     }
-
+    /**
+     * Obtém todos os eventos registados na base de dados.
+     *
+     * @return uma lista de objetos {@link Evento} representando todos os eventos na base de dados.
+     * @throws RuntimeException se ocorrer um erro ao obter os eventos.
+     */
     @Override
     public List<Evento> getAll() {
         List<Evento> lst = new ArrayList<Evento>();
@@ -79,7 +115,13 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Obtém um evento pelo seu ID.
+     *
+     * @param id o ID do evento.
+     * @return o evento correspondente ao ID ou null se não for encontrado.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public Evento getById(int id) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM eventos WHERE id = ?");
@@ -108,7 +150,13 @@ public class EventosDAOImp implements DAO<Evento> {
         return null;  // Retorna Optional vazio se o evento não for encontrado
     }
 
-
+    /**
+     * Verifica se uma sigla de país existe na base de dados.
+     *
+     * @param sigla a sigla do país a ser verificada.
+     * @return verdadeiro se a sigla for encontrada, caso contrário falso.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");
