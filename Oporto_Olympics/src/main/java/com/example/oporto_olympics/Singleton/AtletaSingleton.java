@@ -10,7 +10,6 @@ public class AtletaSingleton {
     private static volatile AtletaSingleton instance;
     private static final Object mutex = new Object();
     private Atleta atleta;
-    private int Id;
 
     private AtletaSingleton() {
         // Impede a criação de instâncias através de new
