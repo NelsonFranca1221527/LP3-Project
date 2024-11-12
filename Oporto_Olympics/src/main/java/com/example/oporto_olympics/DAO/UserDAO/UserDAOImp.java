@@ -74,7 +74,7 @@ public class UserDAOImp implements DAO<User> {
 
     /**
      * Obtém as informações de um gestor a partir do seu número mecanográfico e password.
-     * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do gestor.
+     * Esta função faz uma junção entre as tabelas "gestores" e "users" para obter os dados completos do gestor.
      *
      * @param Num_Mecanografico O número mecanográfico do utilizador para obter informações do Gestor.
      * @return O objeto {@link Gestor} contendo as informações do Gestor, ou null se não encontrado.
