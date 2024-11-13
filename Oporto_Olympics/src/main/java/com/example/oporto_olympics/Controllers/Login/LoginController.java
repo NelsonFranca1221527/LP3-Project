@@ -1,12 +1,14 @@
 package com.example.oporto_olympics.Controllers.Login;
 
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Models.Gestor;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.Encriptacao;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -65,12 +67,16 @@ public class LoginController {
         String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
         String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
 
-        int Id = UserDAO.getID(Integer.parseInt(UserField.getText()));
-        Atleta atleta = UserDAO.getAtletaInfo(Id);
-
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
-        AtletaSingle.setAtleta(atleta);
 
+        if(Role == "Gestor") {
+            Gestor gestor = UserDAO.getGestorInfo(Integer.parseInt(UserField.getText()), SenhaHash);
+            GestorSingle.setGestor(gestor);
+        } else {
+            Atleta atleta = UserDAO.getAtletaInfo(Integer.parseInt(UserField.getText()),SenhaHash);
+            AtletaSingle.setAtleta(atleta);
+        }
 
         if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash)) {
             Stage s = (Stage) loginBtn.getScene().getWindow();

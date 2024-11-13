@@ -57,7 +57,10 @@
             <Font size="20.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Eventos-Icon.png" />
+               </image></ImageView>
          </graphic>
          <effect>
             <DropShadow />

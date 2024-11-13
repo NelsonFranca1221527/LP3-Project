@@ -4,6 +4,7 @@ import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.Gestor;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 
@@ -30,28 +31,27 @@ public class UserDAOImp implements DAO<User> {
         this.connection = connection;
     }
     /**
-     * Obtém as informações de um atleta a partir do seu ID.
+     * Obtém as informações de um atleta a partir do seu número mecanográfico e password.
      * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do atleta.
      *
-     * @param id O ID do utilizador para obter as informações do atleta.
+     * @param num_mecanografico O número mecanográfico do utilizador para obter as informações do atleta.
+     * @param senha A senha para obter as informações do atleta.
      * @return O objeto {@link Atleta} contendo as informações do atleta, ou null se não encontrado.
      * @throws SQLException Caso haja erro na consulta à base de dados.
      */
-    public Atleta getAtletaInfo(int id) throws SQLException {
+    public Atleta getAtletaInfo(int num_mecanografico, String senha) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a JOIN users u ON a.user_id = u.id WHERE u.id = ?");
-            ps.setInt(1, id);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
+            ps.setInt(1, num_mecanografico);
+            ps.setString(2, senha);
 
-            System.out.println(id);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
 
-                System.out.println(rs.getString("nome"));
                 return new Atleta(
                         rs.getInt("user_id"),
                         rs.getString("nome"),
@@ -62,10 +62,6 @@ public class UserDAOImp implements DAO<User> {
                         rs.getDate("data_nascimento"),
                         null
                 );
-            } else {
-
-                System.err.println("No atleta found with ID: " + id);
-                return null;
             }
 
         } catch (SQLException e) {
@@ -75,31 +71,40 @@ public class UserDAOImp implements DAO<User> {
 
         return null;
     }
+
     /**
-     * Obtém o ID de um utilizador com base no seu número mecanográfico.
+     * Obtém as informações de um gestor a partir do seu número mecanográfico e password.
+     * Esta função faz uma junção entre as tabelas "gestores" e "users" para obter os dados completos do gestor.
      *
-     * @param Num_Mecanografico O número mecanográfico do utilizador.
-     * @return O ID do utilizador correspondente ao número mecanográfico fornecido.
+     * @param Num_Mecanografico O número mecanográfico do utilizador para obter informações do Gestor.
+     * @return O objeto {@link Gestor} contendo as informações do Gestor, ou null se não encontrado.
      * @throws SQLException Caso haja erro na consulta à base de dados.
      */
-    public int getID(int Num_Mecanografico) throws SQLException {
+    public Gestor getGestorInfo(int Num_Mecanografico, String senha) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT id FROM users WHERE num_mecanografico = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM gestores a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
             ps.setInt(1, Num_Mecanografico);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
+            ps.setString(2, senha);
 
-            return rs.getInt("id");
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                return new Gestor(
+                        rs.getInt("user_id"),
+                        rs.getString("nome")
+                );
+            }
 
         } catch (SQLException e) {
             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
             alertHandler.getAlert().show();
         }
 
-        return 0;
+        return null;
     }
 
     /**
@@ -120,7 +125,6 @@ public class UserDAOImp implements DAO<User> {
             ResultSet resultSetUtilizador = statementGetUtilizador.executeQuery(getUtilizadorQuery);
 
             if(!resultSetUtilizador.next()){
-                connection.close();
                 return false;
             }
 
@@ -154,7 +158,6 @@ public class UserDAOImp implements DAO<User> {
             ResultSet rs = ps.getResultSet();
 
             if (!rs.next()) {
-                connection.close();
                 return "";
 
             }
