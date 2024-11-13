@@ -140,7 +140,16 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return Optional.of(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), null));
+
+                List<ParticipaçõesEquipa> lstParticipacoes = new ArrayList<>();
+
+                Statement stmt2 = conexao.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("Select * from historico_equipas_competicoes where equipa_id = " + rs.getInt("id"));
+                while (rs2.next()) {
+                    lstParticipacoes.add(new ParticipaçõesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
+                }
+
+                return Optional.of(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
