@@ -4,8 +4,10 @@ import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.InscricaoEquipaDAO;
 import com.example.oporto_olympics.DAO.Equipas.InscricaonaEquipaDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -54,6 +56,20 @@ public class InserirAtletaEquipaController {
     @FXML
     public void initialize() {
         try {
+
+            Atleta atleta = AtletaSingleton.getInstance().getAtleta();
+
+            if (atleta == null) {
+                System.out.println("Atleta não foi inicializado no Singleton!");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Atleta não foi inicializado.");
+                alert.show();
+                return;
+            }
+
+            int atleta_id = atleta.getId();
+            String genero = atleta.getGenero();
+            String pais = atleta.getPais();
+
             ConnectionBD conexaoBD = ConnectionBD.getInstance();
             Connection conexao = conexaoBD.getConexao();
             if (conexao == null) {
@@ -64,9 +80,6 @@ public class InserirAtletaEquipaController {
             }
 
             dao = new InscricaonaEquipaDAOImp(conexao);
-            int atleta_id = 148;
-            String genero = "Men";
-            String pais = "USA";
             carregarEquipas(pais, atleta_id, genero);
         } catch (SQLException exception) {
             System.out.println("Ligação falhou: " + exception.getMessage());
