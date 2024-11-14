@@ -57,6 +57,14 @@ public class RedirecionarHelper {
         return new RedirecionarHelper("Views/DadosPessoais/VerDadosPessoais.fxml", "Dados Pessoais");
     }
     /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de dados pessoais.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de dados pessoais.
+     */
+    public static RedirecionarHelper GotoDadosPessoaisGestor() {
+        return new RedirecionarHelper("Views/DadosPessoais/VerDadosPessoaisGestor.fxml", "Dados Pessoais");
+    }
+    /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o menu principal do gestor.
      *
      * @return Um {@link RedirecionarHelper} para o menu principal do gestor.
@@ -183,5 +191,13 @@ public class RedirecionarHelper {
      */
     public static RedirecionarHelper GotoInscreverEquipa() {
         return new RedirecionarHelper("Views/InscreverEquipas/InscreverEquipas.fxml", "Inscrever numa Equipas");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de resultados do atleta.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de resultados do atleta.
+     */
+    public static RedirecionarHelper GotoVerResultadosAtleta() {
+        return new RedirecionarHelper("Views/VerResultados/VerResultadosAtleta.fxml", "Ver Resultados");
     }
 }

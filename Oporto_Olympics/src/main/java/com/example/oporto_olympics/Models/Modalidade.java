@@ -1,11 +1,15 @@
 package com.example.oporto_olympics.Models;
 
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoOlimpico;
+import java.util.List;
+
 /**
  * A classe {@link Modalidade} representa uma modalidade desportiva, incluindo informações como
  * o tipo de modalidade, o género, o nome, a descrição, os participantes mínimos, a medida usada,
  * a regra do "One Game", o evento relacionado, os recordes olímpicos e os vencedores olímpicos.
  */
+
+
 public class Modalidade {
 
     private int id;
@@ -24,13 +28,14 @@ public class Modalidade {
 
     private String OneGame;
 
-    private int EventoID;
+    private List<Integer> ListEventosID;
 
     private RegistoOlimpico recordeOlimpico;
 
     private RegistoOlimpico vencedorOlimpico;
 
     private String regras;
+
     /**
      * Construtor da classe {@link Modalidade} que inicializa todos os campos da modalidade.
      *
@@ -42,12 +47,12 @@ public class Modalidade {
      * @param minParticipantes  Número mínimo de participantes exigido.
      * @param medida            A unidade de medida usada para a modalidade (ex.: metros, minutos, etc.).
      * @param oneGame           Indica se a modalidade é jogada em apenas um jogo.
-     * @param eventoID          Identificador do evento ao qual a modalidade pertence.
+     * @param listEventosID     Lista de Identificadores dos eventos ao qual a modalidade pertence.
      * @param recordeOlimpico   Registo olímpico atual da modalidade.
      * @param vencedorOlimpico  Vencedor olímpico da modalidade.
      * @param regras            Regras da modalidade.
      */
-    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, int eventoID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
+    public Modalidade(int id, String tipo, String genero, String nome, String descricao, int minParticipantes, String medida, String oneGame, List<Integer> listEventosID, RegistoOlimpico recordeOlimpico, RegistoOlimpico vencedorOlimpico, String regras) {
         this.id = id;
         this.tipo = tipo;
         this.genero = genero;
@@ -56,7 +61,7 @@ public class Modalidade {
         this.minParticipantes = minParticipantes;
         this.medida = medida;
         OneGame = oneGame;
-        EventoID = eventoID;
+        ListEventosID = listEventosID;
         this.recordeOlimpico = recordeOlimpico;
         this.vencedorOlimpico = vencedorOlimpico;
         this.regras = regras;
@@ -190,20 +195,20 @@ public class Modalidade {
         OneGame = oneGame;
     }
     /**
-     * Obtém o identificador do evento ao qual a modalidade pertence.
+     * Obtém uma lista de identificadores dos eventos ao qual a modalidade pertence.
      *
-     * @return O identificador do evento.
+     * @return A lista de identificadores dos eventos.
      */
-    public int getEventoID() {
-        return EventoID;
+    public List<Integer> getListEventosID() {
+        return ListEventosID;
     }
     /**
-     * Define o identificador do evento ao qual a modalidade pertence.
+     * Define uma lista de identificadores dos eventos ao qual a modalidade pertence.
      *
-     * @param eventoID O identificador do evento.
+     * @param listEventosID Lista de identificadores dos eventos.
      */
-    public void setEventoID(int eventoID) {
-        EventoID = eventoID;
+    public void setListEventosID(List<Integer> listEventosID) {
+        ListEventosID = listEventosID;
     }
     /**
      * Obtém o recorde olímpico da modalidade.

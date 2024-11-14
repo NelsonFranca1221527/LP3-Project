@@ -1,12 +1,13 @@
 package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
+import com.example.oporto_olympics.Misc.Encriptacao;
 import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import javafx.scene.control.Alert;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ import java.util.Optional;
  * na base de dados. Fornece métodos para obter, salvar, atualizar e excluir informações de atletas,
  * incluindo o histórico de participações em competições.
  */
-public class AtletaDAOImp implements DAOXML<Atleta> {
+public class AtletaDAOImp implements DAO<Atleta> {
 
     private Connection conexao;
     private ConnectionBD database;
@@ -77,14 +78,6 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
 
         AlertHandler alertHandler;
 
-        Optional<Atleta> AtletaExiste = get(atleta.getNome());
-
-        if (AtletaExiste.isPresent() && atleta.getPais().equals(AtletaExiste.get().getPais()) && atleta.getGenero().equals(AtletaExiste.get().getGenero())) {
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Atleta Existente", "O/A Atleta " + atleta.getNome() + " já encontra-se registado no sistema!");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
-
         try {
             int numMecanografico = 0;
 
@@ -111,14 +104,21 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
                 return;
             }
 
-            int idAtleta = rs2.getInt("IdAtleta");
+            Encriptacao encriptacao = new Encriptacao();
 
-            PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)");
+            PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             ps3.setInt(1, numMecanografico);
-            ps3.setString(2, StringtoHash(String.valueOf(numMecanografico)));
+            ps3.setString(2, encriptacao.StringtoHash(String.valueOf(numMecanografico)));
             ps3.setDate(3, Date.valueOf(LocalDate.now()));
-            ps3.setInt(4, idAtleta);
+            ps3.setInt(4, rs2.getInt("IdAtleta"));
             ps3.executeUpdate();
+
+            ResultSet generatedKeys = ps3.getGeneratedKeys();
+                if (!generatedKeys.next()) {
+                    return;
+                }
+
+            atleta.setId(generatedKeys.getInt(1));
             ps3.close();
 
             atleta.setId(numMecanografico);
@@ -131,9 +131,7 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
             for (int i = 0; i < atleta.getParticipaçõesAtletas().size(); i++) {
                 PreparedStatement ps4 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
 
-                int id_atleta = get(atleta.getNome()).get().getId();
-
-                ps4.setInt(1, id_atleta);
+                ps4.setInt(1, atleta.getId());
                 ps4.setNull(2, java.sql.Types.INTEGER);
                 ps4.setInt(3, atleta.getParticipaçõesAtletas().get(i).getAno());
                 ps4.setInt(4, atleta.getParticipaçõesAtletas().get(i).getOuro());
@@ -184,16 +182,16 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
     }
 
     /**
-     * Obtém um atleta com base no seu nome.
+     * Obtém um atleta com base no seu id.
      *
-     * @param nome o nome do atleta.
+     * @param atletaID o id do atleta.
      * @return um Optional contendo o Atleta se encontrado, ou um Optional vazio.
      */
     @Override
-    public Optional<Atleta> get(String nome) {
+    public Optional<Atleta> get(int atletaID) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM atletas WHERE nome = ?");
-            ps.setString(1, nome);
+            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM atletas WHERE user_id = ?");
+            ps.setInt(1, atletaID);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -215,24 +213,5 @@ public class AtletaDAOImp implements DAOXML<Atleta> {
         }
 
         return Optional.empty();
-    }
-
-    /**
-     * Converte uma string para um hash SHA-256.
-     *
-     * @param dado o dado a ser convertido em hash.
-     * @return a string correspondente ao hash.
-     * @throws NoSuchAlgorithmException se o algoritmo SHA-256 não estiver disponível.
-     */
-    public String StringtoHash(String dado) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashdado = md.digest(dado.getBytes());
-
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashdado) {
-            hexString.append(String.format("%02x", b));
-        }
-
-        return hexString.toString();
     }
 }
