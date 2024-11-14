@@ -50,7 +50,7 @@ public class LoginController {
      * @throws NoSuchAlgorithmException se o algortimo para a encriptação da password não está disponível.
      */
     @FXML
-    protected void OnLoginButtonClick() throws SQLException, NoSuchAlgorithmException {
+    public void OnLoginButtonClick() throws SQLException, NoSuchAlgorithmException {
 
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
