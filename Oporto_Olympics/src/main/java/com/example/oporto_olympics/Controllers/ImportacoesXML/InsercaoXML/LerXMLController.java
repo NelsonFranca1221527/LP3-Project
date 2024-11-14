@@ -1,6 +1,5 @@
-package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
+package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML;
 
-import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.*;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;

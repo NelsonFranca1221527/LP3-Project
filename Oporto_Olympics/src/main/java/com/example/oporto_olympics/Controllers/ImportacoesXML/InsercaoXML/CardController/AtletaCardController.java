@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController;
+package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController;
 
 import com.example.oporto_olympics.Models.Atleta;
 import javafx.fxml.FXML;

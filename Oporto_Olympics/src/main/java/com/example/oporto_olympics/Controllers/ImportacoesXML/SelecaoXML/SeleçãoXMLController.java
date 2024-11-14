@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.ImportaçõesXML.SeleçãoXML;
+package com.example.oporto_olympics.Controllers.ImportacoesXML.SelecaoXML;
 
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;

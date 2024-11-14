@@ -1,4 +1,4 @@
-package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML;
+package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
@@ -7,9 +7,9 @@ import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.AtletaCardController;
-import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.EquipaCardController;
-import com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController.ModalidadeCardController;
+import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.AtletaCardController;
+import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.EquipaCardController;
+import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.ModalidadeCardController;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;
 import com.example.oporto_olympics.HelloApplication;
