@@ -174,7 +174,7 @@ public class RedirecionarHelper {
      * @return Um {@link RedirecionarHelper} para a página de inscrições em equipas.
      */
     public static RedirecionarHelper GotoInscricoesEquipa() {
-        return new RedirecionarHelper("Views/AprovarInscricaoEquipa.fxml", "Inscrições em Equipas");
+        return new RedirecionarHelper("Views/AprovarInscricaoEquipa/AprovarInscricaoEquipa.fxml", "Inscrições em Equipas");
     }
     /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inscrição em equipas.
@@ -182,6 +182,6 @@ public class RedirecionarHelper {
      * @return Um {@link RedirecionarHelper} para a página de inscrição em equipas.
      */
     public static RedirecionarHelper GotoInscreverEquipa() {
-        return new RedirecionarHelper("Views/InscreverEquipas.fxml", "Inscrever numa Equipas");
+        return new RedirecionarHelper("Views/InscreverEquipas/InscreverEquipas.fxml", "Inscrever numa Equipas");
     }
 }

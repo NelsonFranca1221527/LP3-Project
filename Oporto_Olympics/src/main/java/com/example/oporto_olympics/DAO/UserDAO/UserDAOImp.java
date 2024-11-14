@@ -4,6 +4,7 @@ import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.Resultados;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 
@@ -189,6 +190,7 @@ public class UserDAOImp implements DAO<User> {
             throw new RuntimeException("Erro em mostrar os utilizadores: " + ex.getMessage());
         }
     }
+
 
     @Override
     public void save(User user) {

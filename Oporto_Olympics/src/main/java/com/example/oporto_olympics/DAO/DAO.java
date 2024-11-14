@@ -1,6 +1,8 @@
 package com.example.oporto_olympics.DAO;
 
 
+import com.example.oporto_olympics.Models.Resultados;
+
 import java.util.List;
 import java.util.Optional;
 /**
@@ -17,6 +19,7 @@ public interface DAO<T> {
      * @return Uma lista de objetos {@code T} que representam todos os dados armazenados.
      */
     List<T> getAll();
+
     /**
      * Guarda um objeto do tipo {@code T} no armazenamento.
      *
