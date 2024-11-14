@@ -262,6 +262,81 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     }
 
     /**
+     * Obtém o nome de uma modalidade com base no seu ID.
+     *
+     * @param id o ID da modalidade.
+     * @return o nome da modalidade correspondente ao ID, ou null se a modalidade não for encontrado.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
+    public String getNomeById(int id) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT nome FROM modalidades WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("nome");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o nome da modalidade: " + ex.getMessage());
+        }
+        return null;  // Retorna null se o local não for encontrado
+    }
+
+    /**
+     * Obtém uma lista de modalidades pelo género.
+     *
+     * @param genero o género.
+     * @return as modalidades correspondentes ao género ou null se não for encontrado.
+     * @throws RuntimeException se ocorrer um erro durante a consulta à base de dados.
+     */
+    public List<Modalidade> getAllIndividualByGenero(String genero) {
+        List<Modalidade> lst = new ArrayList<Modalidade>();
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE tipo = 'Individual' AND genero = ?");
+            ps.setString(1, genero);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Modalidade modalidade = null;
+                String Onegame;
+
+                if (rs.getInt("jogo_unico") == 1) {
+                    Onegame = "One";
+                } else {
+                    Onegame = "Multiple";
+                }
+
+                String pontuacao = rs.getString("pontuacao");
+
+                List<Integer> ListeventoID = getListEventoID(rs.getInt("id"));
+
+                switch (pontuacao) {
+                    case "Tempo":
+
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
+                        break;
+
+                    case "Pontos":
+                        RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
+                        RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                }
+
+                lst.add(modalidade);
+            }
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a lista das modalidades: " + ex.getMessage());
+        }
+    }
+
+    /**
      * Analisa uma string representando um tempo e converte-a para um objeto LocalTime.
      *
      * @param timeString A string representando o tempo a ser analisada.

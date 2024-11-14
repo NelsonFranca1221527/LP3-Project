@@ -51,7 +51,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) ResultadosBtn.getScene().getWindow();
 
-            //Adiocionar redirecionar para resultados
+            RedirecionarHelper.GotoVerResultadosAtleta().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

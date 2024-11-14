@@ -192,4 +192,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoInscreverEquipa() {
         return new RedirecionarHelper("Views/InscreverEquipas.fxml", "Inscrever numa Equipas");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de resultados do atleta.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de resultados do atleta.
+     */
+    public static RedirecionarHelper GotoVerResultadosAtleta() {
+        return new RedirecionarHelper("Views/VerResultados/VerResultadosAtleta.fxml", "Ver Resultados");
+    }
 }
