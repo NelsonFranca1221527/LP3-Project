@@ -567,7 +567,7 @@ public class InsercaoXMLController {
      * @param xsdFilePath O caminho do ficheiro XSD para validação.
      * @return true se o ficheiro XML for válido, false caso contrário.
      */
-    private boolean VerificarXML(File xmlFile, String xsdFilePath) {
+    public boolean VerificarXML(File xmlFile, String xsdFilePath) {
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(new File(xsdFilePath)));
