@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * Controlador responsável pela seleção de tipos de importação XML
  * na aplicação dos Jogos Olímpicos do Porto.
  */
-public class SeleçãoXMLController {
+public class SelecaoXMLController {
     /**
      * Botão para inserir um novo atleta.
      */

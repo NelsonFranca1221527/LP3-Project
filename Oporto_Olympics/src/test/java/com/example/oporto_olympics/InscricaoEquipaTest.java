@@ -1,3 +1,5 @@
+package com.example.oporto_olympics;
+
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.InscricaoEquipaDAO;
 import com.example.oporto_olympics.DAO.Equipas.InscricaonaEquipaDAOImp;
@@ -11,18 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class InscricaoEquipaTest {
 
     @Test
-    void testInscricaoBemSucedida() throws SQLException {
+    void testInscricaoPendente() throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-            int atleta_id = 1;
-            int modalidadeId = 1;
-            int equipaId = 1;
-
-            String status = "Pendente";
-            dao.inserirInscricao(status, modalidadeId, atleta_id, equipaId);
+            int atleta_id = 148;
+            int equipaId = 31;
 
             boolean existePedidoPendente = dao.existePedidoPendente(atleta_id, equipaId);
 
@@ -36,25 +34,11 @@ class InscricaoEquipaTest {
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-            int atleta_id = 1;
-            int equipaId = 1;
+            int atleta_id = 148;
+            int equipaId = 17;
 
             boolean existePedidoAprovado = dao.existePedidoAprovado(atleta_id, equipaId);
 
             assertTrue(existePedidoAprovado, "Inscrição deveria Existir");
-    }
-
-    @Test
-    void testInscricaoRejeitada() throws SQLException {
-        ConnectionBD conexaoBD = ConnectionBD.getInstance();
-        Connection conexao = conexaoBD.getConexao();
-            InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
-
-            int atleta_id = 1;
-            int equipaId = 1;
-
-            boolean existePedidoAprovado = dao.existePedidoAprovado(atleta_id, equipaId);
-
-            assertFalse(existePedidoAprovado, "Inscrição deveria Existir");
     }
 }

@@ -44,7 +44,7 @@ import java.util.Optional;
  * A classe interage com a interface gráfica para carregar e validar arquivos XML,
  * e insere os dados na base de dados com base no tipo de XML selecionado.
  */
-public class InserçãoXMLController {
+public class InsercaoXMLController {
     /**
      * Contêiner de layout para agrupar os componentes de evento.
      */

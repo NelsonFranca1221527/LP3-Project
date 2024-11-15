@@ -118,7 +118,7 @@ public class RedirecionarHelper {
      * @return Um {@link RedirecionarHelper} para a página de inserção de XML.
      */
     public static RedirecionarHelper GotoInserçãoXML() {
-        return new RedirecionarHelper("Views/ImportaçõesXML/InserçãoXML/InserçãoXML.fxml", "Inserir XML");
+        return new RedirecionarHelper("Views/ImportacoesXML/InsercaoXML/InsercaoXML.fxml", "Inserir XML");
     }
     /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inserção de local.
@@ -134,7 +134,7 @@ public class RedirecionarHelper {
      * @return Um {@link RedirecionarHelper} para a página de seleção de XML.
      */
     public static RedirecionarHelper GotoSeleçãoXML() {
-        return new RedirecionarHelper("Views/ImportaçõesXML/SeleçãoXML/SeleçãoXML.fxml", "Selecionar XML");
+        return new RedirecionarHelper("Views/ImportacoesXML/SelecaoXML/SelecaoXML.fxml", "Selecionar XML");
     }
     /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de eventos.
