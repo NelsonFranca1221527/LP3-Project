@@ -22,7 +22,7 @@ class LoginTest {
     @Test
     void VerificarAtleta() throws NoSuchAlgorithmException, SQLException {
 
-        ConnectionBD connectionBD = ConnectionBD.getInstace();
+        ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
 
         String User = "1000000" ;
@@ -37,7 +37,7 @@ class LoginTest {
     @Test
     void VerificarGestor() throws NoSuchAlgorithmException, SQLException {
 
-        ConnectionBD connectionBD = ConnectionBD.getInstace();
+        ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
 
         String User = "1000024" ;
