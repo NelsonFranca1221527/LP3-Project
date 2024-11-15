@@ -113,26 +113,7 @@ public class InsercaoXMLEquipaTest {
                 participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
             }
 
-            ConnectionBD conexaoBD = ConnectionBD.getInstance();
-            Connection conexao = conexaoBD.getConexao();
-
-            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
-
-            List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
-
-            int modalidade = 0;
-
-            for (int k = 0; k < modalidadeList.size(); k++) {
-
-                Modalidade modalidadeAtual = modalidadeList.get(k);
-
-                if (modalidadeAtual.getNome().equals(desporto) && modalidadeAtual.getGenero().equals(genero) && modalidadeAtual.getEventoID() == IdEvento) {
-                    modalidade = modalidadeAtual.getId();
-                }
-            }
-
-            lst.add(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
-
+            lst.add(new Equipa(0, nome, pais, genero, desporto, 0, anoFundacao, participaçõesEquipaList));
         }
 
         return lst;
