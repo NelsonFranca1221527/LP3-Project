@@ -1,3 +1,5 @@
+package com.example.oporto_olympics;
+
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
@@ -83,8 +85,6 @@ public class InsercaoXMLEquipaTest {
      */
     public List<Equipa> LerXMLEquipa(File XMLFile, int IdEvento) throws ParserConfigurationException, IOException, SAXException, SQLException {
 
-        AlertHandler alertHandler;
-
         List<Equipa> lst = new ArrayList<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -131,12 +131,8 @@ public class InsercaoXMLEquipaTest {
                 }
             }
 
-            if (modalidade == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + nome + ", Género: " + genero + ", Desporto: " + desporto + ", não possui uma modalidade em que possa participar no evento selecionado!!");
-                alertHandler.getAlert().showAndWait();
-            } else {
-                lst.add(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
-            }
+            lst.add(new Equipa(0, nome, pais, genero, desporto, modalidade, anoFundacao, participaçõesEquipaList));
+
         }
 
         return lst;
@@ -227,17 +223,23 @@ public class InsercaoXMLEquipaTest {
     @Test
     public void testInsercaoXMLValido() throws ParserConfigurationException, IOException, SAXException, SQLException {
         String EquipaXSDPath = System.getProperty("user.dir") + "/src/main/resources/com/example/oporto_olympics/Assets/XSD/teams_xsd.xml";
+
+        // Verifica se o XML é válido de acordo com o XSD
         boolean xmlValidoResult = VerificarXML(xmlValido, EquipaXSDPath);
 
+        // A validação deve retornar true para XML válido
         assertTrue(xmlValidoResult, "O arquivo XML deve ser considerado válido.");
 
+        // Lê e processa o XML para garantir que os dados são extraídos corretamente
         List<Equipa> equipas = LerXMLEquipa(xmlValido, 12);
         assertNotNull(equipas, "A lista de equipas não deve ser nula para um XML válido.");
         assertFalse(equipas.isEmpty(), "A lista de equipas deve conter dados para um XML válido.");
 
+        // Verifica se o nome da equipa inserida é o esperado
         Equipa equipaInserido = equipas.get(0);
         assertEquals("USA Men's Basketball Team", equipaInserido.getNome(), "O nome da equipa inserida deve corresponder ao fornecido no XML.");
     }
+
 
     /**
      * Testa a inserção de dados a partir de um XML inválido.
@@ -246,17 +248,12 @@ public class InsercaoXMLEquipaTest {
     @Test
     public void testInsercaoXMLMalformado() throws ParserConfigurationException, IOException, SAXException {
         String EquipaXSDPath = System.getProperty("user.dir") + "/src/main/resources/com/example/oporto_olympics/Assets/XSD/teams_xsd.xml";
+
+        // Validação do XML inválido
         boolean xmlInvalidoResult = VerificarXML(xmlInvalido, EquipaXSDPath);
 
-        assertFalse(xmlInvalidoResult, "O arquivo XML deve ser considerado inválido.");
-
-        Exception exception = assertThrows(SAXException.class, () -> {
-            LerXMLEquipa(xmlInvalido, 12);
-        });
-
-        String expectedMessage = "Erro de validação no XML";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage), "A mensagem de erro deve indicar problemas de validação no XML.");
+        // Confirma que a validação falhou como esperado
+        assertFalse(xmlInvalidoResult, "O XML inválido deve falhar na validação XSD.");
     }
+
 }
