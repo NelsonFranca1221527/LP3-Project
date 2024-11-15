@@ -159,7 +159,7 @@ public class InsercaoXMLModalidadesTest {
                     medida = "Tempo";
                     RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
                     RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdEvento, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
                     break;
 
                 case "Points":
@@ -168,7 +168,7 @@ public class InsercaoXMLModalidadesTest {
                     String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
                     RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
                     RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, IdEvento, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
+                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
                     break;
             }
             lst.add(modalidade);
