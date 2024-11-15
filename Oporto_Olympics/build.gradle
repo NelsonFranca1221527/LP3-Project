@@ -39,10 +39,18 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
   implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre11'
+  testImplementation 'org.mockito:mockito-core:5.5.0'
+  testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
 }
 
 test {
-  useJUnitPlatform()}
+  useJUnitPlatform()
+  jvmArgs += [
+          '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+          '--add-opens', 'java.base/java.io=ALL-UNNAMED',
+          '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+  ]
+}
 
 jlink {
   imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
