@@ -1,8 +1,5 @@
-package com.example.oporto_olympics;
-
 import com.example.oporto_olympics.Controllers.Login.LoginController;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +10,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
