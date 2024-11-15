@@ -1,8 +1,6 @@
-package com.example.oporto_olympics.Controllers.ImportaçõesXML.InserçãoXML.CardController;
+package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController;
 
 import com.example.oporto_olympics.Models.Modalidade;
-import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
-import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 /**
