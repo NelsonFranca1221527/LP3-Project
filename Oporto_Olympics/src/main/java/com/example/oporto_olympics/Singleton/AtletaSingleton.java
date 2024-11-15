@@ -7,8 +7,8 @@ import com.example.oporto_olympics.Models.Atleta;
  * Esta classe armazena um único objeto {@link Atleta}.
  */
 public class AtletaSingleton {
-    private static volatile AtletaSingleton instance;
-    private static final Object mutex = new Object();
+    private static AtletaSingleton instance;
+
     private Atleta atleta;
 
     private AtletaSingleton() {
@@ -16,23 +16,20 @@ public class AtletaSingleton {
     }
 
     /**
-     * Obtém a instância única do singleton.
+     * Obtém a instância única do Singleton. Caso a instância ainda não tenha sido criada,
+     * ela será inicializada de forma segura utilizando a sincronização.
      *
-     * @return Instância única do singleton
+     * @return A instância única do Singleton {@link AtletaSingleton}.
      */
     public static AtletaSingleton getInstance() {
-        AtletaSingleton result = instance;
-
-        if (result == null) {
-            synchronized (mutex) {
-                result = instance;
-                if (result == null) {
-                    instance = result = new AtletaSingleton();
+        if (instance == null) {
+            synchronized (AtletaSingleton.class) {
+                if (instance == null) {
+                    instance = new AtletaSingleton();
                 }
             }
         }
-
-        return result;
+        return instance;
     }
 
     /**

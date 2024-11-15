@@ -8,8 +8,8 @@ import com.example.oporto_olympics.Models.Gestor;
  * Esta classe armazena um único objeto {@link Gestor}.
  */
 public class GestorSingleton {
-    private static volatile GestorSingleton instance;
-    private static final Object mutex = new Object();
+    private static GestorSingleton instance;
+
     private Gestor gestor;
 
     private GestorSingleton() {
@@ -17,23 +17,20 @@ public class GestorSingleton {
     }
 
     /**
-    * Obtém a instância única do singleton.
-    *
-    * @return Instância única do singleton
-    */
+     * Obtém a instância única do Singleton. Caso a instância ainda não tenha sido criada,
+     * ela será inicializada de forma segura utilizando a sincronização.
+     *
+     * @return A instância única do Singleton {@link GestorSingleton}.
+     */
     public static GestorSingleton getInstance() {
-        GestorSingleton result = instance;
-
-        if (result == null) {
-            synchronized (mutex) {
-                result = instance;
-                if (result == null) {
-                    instance = result = new GestorSingleton();
+        if (instance == null) {
+            synchronized (GestorSingleton.class) {
+                if (instance == null) {
+                    instance = new GestorSingleton();
                 }
             }
         }
-
-        return result;
+        return instance;
     }
 
     /**
