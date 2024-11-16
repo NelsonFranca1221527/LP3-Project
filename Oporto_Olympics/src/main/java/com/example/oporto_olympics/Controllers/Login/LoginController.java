@@ -1,14 +1,14 @@
 package com.example.oporto_olympics.Controllers.Login;
 
-import com.example.oporto_olympics.Controllers.DadosPessoais.DadosPessoaisController;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Models.Gestor;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.DAO.UserDAO.UserDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.Encriptacao;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.AtletaInfo;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -16,15 +16,25 @@ import javafx.stage.Stage;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Controlador da interface de utilizador para a funcionalidade de login. Esta classe é responsável por gerir o fluxo
+ * de autenticação de utilizadores, incluindo a validação das credenciais e o redirecionamento para a página correspondente
+ * ao tipo de utilizador (gestor ou atleta) após um login bem-sucedido.
+ */
 public class LoginController {
-
+    /**
+     * Botão para iniciar sessão.
+     */
     @FXML
     private Button loginBtn;
-
+    /**
+     * Campo de texto para introduzir a senha do utilizador.
+     */
     @FXML
     private PasswordField SenhaField;
-
+    /**
+     * Campo de texto para introduzir o nome de utilizador.
+     */
     @FXML
     private TextField UserField;
 
@@ -40,7 +50,7 @@ public class LoginController {
      * @throws NoSuchAlgorithmException se o algortimo para a encriptação da password não está disponível.
      */
     @FXML
-    protected void OnLoginButtonClick() throws SQLException, NoSuchAlgorithmException {
+    public void OnLoginButtonClick() throws SQLException, NoSuchAlgorithmException {
 
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
@@ -57,12 +67,16 @@ public class LoginController {
         String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
         String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
 
-        int Id = UserDAO.getID(Integer.parseInt(UserField.getText()));
-        Atleta atleta = UserDAO.getAtletaInfo(Id);
-
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
-        AtletaSingle.setAtleta(atleta);
 
+        if(Role == "Gestor") {
+            Gestor gestor = UserDAO.getGestorInfo(Integer.parseInt(UserField.getText()), SenhaHash);
+            GestorSingle.setGestor(gestor);
+        } else {
+            Atleta atleta = UserDAO.getAtletaInfo(Integer.parseInt(UserField.getText()),SenhaHash);
+            AtletaSingle.setAtleta(atleta);
+        }
 
         if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash)) {
             Stage s = (Stage) loginBtn.getScene().getWindow();

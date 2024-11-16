@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="80.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.AtletaCardController">
+   <children>
+      <Label layoutX="14.0" layoutY="13.0" text="Nome:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="Nome" layoutX="76.0" layoutY="13.0" text="####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="330.0" layoutY="18.0" text="Género:" />
+      <Label fx:id="Genero" layoutX="375.0" layoutY="18.0" text="####" />
+      <Label layoutX="479.0" layoutY="18.0" text="Altura:" />
+      <Label fx:id="Altura" layoutX="518.0" layoutY="18.0" text="####" />
+      <Label layoutX="351.0" layoutY="49.0" text="País:" />
+      <Label fx:id="Pais" layoutX="377.0" layoutY="49.0" text="####" />
+      <Label layoutX="16.0" layoutY="49.0" text="Data de Aniversário:" />
+      <Label fx:id="DataAniversario" layoutX="126.0" layoutY="49.0" text="####" />
+      <Label layoutX="482.0" layoutY="49.0" text="Peso:" />
+      <Label fx:id="Peso" layoutX="514.0" layoutY="49.0" text="####" />
+   </children>
+</AnchorPane>

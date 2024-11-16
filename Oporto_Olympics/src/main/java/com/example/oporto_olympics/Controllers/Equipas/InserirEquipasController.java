@@ -1,12 +1,12 @@
 package com.example.oporto_olympics.Controllers.Equipas;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.EquipaDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Equipa;
 import com.example.oporto_olympics.Models.Evento;
 import com.example.oporto_olympics.Models.Local;
@@ -23,30 +23,51 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Controlador para a inserção de novas equipas.
+ * Permite ao utilizador preencher dados da equipa, como evento, género, modalidade, país e ano de fundação.
+ * Valida os dados inseridos e insere a equipa na base de dados.
+ */
 public class InserirEquipasController {
 
+    /**
+     * Campo para introdução do ano de fundação.
+     */
     @FXML
     private TextField AnoFundacao;
-
+    /**
+     * Botão para criação de uma nova equipa.
+     */
     @FXML
     private Button CriarEquipaButton;
-
+    /**
+     * Caixa de seleção para escolher o evento.
+     */
     @FXML
     private ChoiceBox<String> EventoChoice;
-
+    /**
+     * Caixa de seleção para escolher o género.
+     */
     @FXML
     private ChoiceBox<String> GeneroChoice;
-
+    /**
+     * Caixa de seleção para escolher a modalidade.
+     */
     @FXML
     private ChoiceBox<String> ModalidadeChoice;
-
+    /**
+     * Caixa de seleção para escolher a modalidade.
+     */
     @FXML
     private TextField Nome;
-
+    /**
+     * Campo de texto para introdução do país.
+     */
     @FXML
     private TextField Pais;
-
+    /**
+     * Botão para voltar.
+     */
     @FXML
     private Button VoltarButton;
 
@@ -163,7 +184,7 @@ public class InserirEquipasController {
 
             for (Modalidade modalidade : lst) {
 
-                if (modalidade.getEventoID() == EventoID && !EventoChoice.getValue().equals("-------") && modalidade.getGenero().equals(generoMap.get(Genero))) {
+                if (modalidade.getListEventosID().contains(EventoID) && !EventoChoice.getValue().equals("-------") && modalidade.getGenero().equals(generoMap.get(Genero))) {
                     modalidadeMap.put(modalidade.getNome() + " - " + modalidade.getGenero(), modalidade.getId());
                     desportoMap.put(modalidade.getId(), modalidade.getNome());
                 }

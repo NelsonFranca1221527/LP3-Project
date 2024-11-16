@@ -1,11 +1,13 @@
 package com.example.oporto_olympics.Controllers.InserirAtletaEquipa;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaoEquipaDAO;
-import com.example.oporto_olympics.Controllers.DAO.Equipas.InscricaonaEquipaDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.InscricaoEquipaDAO;
+import com.example.oporto_olympics.DAO.Equipas.InscricaonaEquipaDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.InscricaoEquipas;
 
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,14 +20,25 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+/**
+ * Controlador responsável pela gestão da inscrição de um atleta em equipas.
+ * Esta classe é responsável por carregar as equipas de um país e género específico,
+ * exibir essas equipas na interface do utilizador, e permitir que o atleta se inscreva em uma equipa.
+ */
 public class InserirAtletaEquipaController {
+    /**
+     * Contêiner de layout para a equipa.
+     */
     @FXML
     private VBox ContainerEquipa;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button btnBack;
-
+    /**
+     * Instância do objeto responsável pela inscrição da equipa.
+     */
     private InscricaoEquipaDAO dao;
 
     /**
@@ -43,6 +56,20 @@ public class InserirAtletaEquipaController {
     @FXML
     public void initialize() {
         try {
+
+            Atleta atleta = AtletaSingleton.getInstance().getAtleta();
+
+            if (atleta == null) {
+                System.out.println("Atleta não foi inicializado no Singleton!");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Atleta não foi inicializado.");
+                alert.show();
+                return;
+            }
+
+            int atleta_id = atleta.getId();
+            String genero = atleta.getGenero();
+            String pais = atleta.getPais();
+
             ConnectionBD conexaoBD = ConnectionBD.getInstance();
             Connection conexao = conexaoBD.getConexao();
             if (conexao == null) {
@@ -53,9 +80,6 @@ public class InserirAtletaEquipaController {
             }
 
             dao = new InscricaonaEquipaDAOImp(conexao);
-            int atleta_id = 148;
-            String genero = "Men";
-            String pais = "USA";
             carregarEquipas(pais, atleta_id, genero);
         } catch (SQLException exception) {
             System.out.println("Ligação falhou: " + exception.getMessage());

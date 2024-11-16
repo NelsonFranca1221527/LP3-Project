@@ -1,8 +1,8 @@
 package com.example.oporto_olympics.Controllers.ListagemModalidades;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemModalidades.CardController.ListagemModalidadesCardController;
 import com.example.oporto_olympics.Models.Modalidade;
 import javafx.event.ActionEvent;
@@ -17,12 +17,21 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por exibir a lista de modalidades em uma interface gráfica.
+ * Esta classe é responsável por carregar e exibir dinamicamente os cards de modalidades
+ * dentro de um contêiner VBox, a partir dos dados obtidos na base de dados.
+ */
 public class ListagemModalidadesController {
-
+    /**
+     * Contêiner de layout para a exibição das modalidades.
+     */
     @FXML
     private VBox ModalidadesContainer;
 
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

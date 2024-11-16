@@ -1,21 +1,16 @@
 package com.example.oporto_olympics.Controllers.EventosOlimpicos;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Local;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -27,40 +22,64 @@ import java.util.function.UnaryOperator;
  * inserção de novos locais na base de dados.
  */
 public class InserirLocalController {
-
+    /**
+     * Botão para inserir um novo local.
+     */
     @FXML
     private Button InserirLocalButton;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarButton;
-
+    /**
+     * Campo de texto para introdução do ano de construção do local.
+     */
     @FXML
     private TextField anoconstrucaoField;
-
+    /**
+     * Rótulo para mostrar o ano de construção do local.
+     */
     @FXML
     private Label anoconstrucaoLabel;
-
+    /**
+     * Campo de texto para introdução da capacidade do local.
+     */
     @FXML
     private TextField capacidadeField;
-
+    /**
+     * Rótulo para mostrar a capacidade do local.
+     */
     @FXML
     private Label capacidadeLabel;
-
+    /**
+     * Campo de texto para introdução da cidade onde o local está situado.
+     */
     @FXML
     private TextField cidadeField;
-
+    /**
+     * Campo de texto para introdução da morada do local.
+     */
     @FXML
     private TextField moradaField;
-
+    /**
+     * Campo de texto para introdução do nome do local.
+     */
     @FXML
     private TextField nomeField;
-
+    /**
+     * Campo de texto para introdução do país onde o local está situado.
+     */
     @FXML
     private TextField paisField;
-
+    /**
+     * Caixa de combinação para selecionar o tipo de local.
+     */
     @FXML
     private ComboBox<String> tipolocalCombo;
-
+    /**
+     * Rótulo para mostrar o título do local.
+     */
     @FXML
     private Label tituloLocal;
 

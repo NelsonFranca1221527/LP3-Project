@@ -1,9 +1,8 @@
 package com.example.oporto_olympics.Controllers.ListagemLocais;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemLocais.CardController.ListagemLocaisCardController;
 import com.example.oporto_olympics.Models.Local;
 import javafx.event.ActionEvent;
@@ -18,12 +17,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por gerir a exibição de locais na interface gráfica.
+ * Esta classe conecta-se à base de dados, obtém todos os locais e os exibe dinamicamente
+ * em cards dentro de um contêiner {@link VBox}. Além disso, permite ao utilizador voltar
+ * à tela anterior através de um botão.
+ */
 public class ListagemLocaisController {
-
+    /**
+     * Contêiner de layout para a exibição dos locais.
+     */
     @FXML
     private VBox LocaisContainer;
 
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

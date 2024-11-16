@@ -1,10 +1,10 @@
 package com.example.oporto_olympics.DAO.UserDAO;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.AtletaInfo;
+import com.example.oporto_olympics.Models.Gestor;
 import com.example.oporto_olympics.Models.User;
 import javafx.scene.control.Alert;
 
@@ -12,31 +12,46 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Classe responsável pela implementação dos métodos da interface {@link DAO} para a entidade {@link User}.
+ * Esta classe realiza operações CRUD (Create, Read, Update, Delete) na base de dados para manipular utilizadores.
+ * A comunicação com a base de dados é feita através de uma conexão {@link Connection}.
+ */
 public class UserDAOImp implements DAO<User> {
 
     private static Connection connection;
     private ConnectionBD database;
-
+    /**
+     * Construtor da classe {@link UserDAOImp}.
+     * Inicializa a conexão com a base de dados para interagir com as tabelas associadas à entidade {@link User}.
+     *
+     * @param connection A conexão com a base de dados a ser utilizada pelas operações DAO.
+     */
     public UserDAOImp(Connection connection) {
         this.connection = connection;
     }
-
-    public Atleta getAtletaInfo(int id) throws SQLException {
+    /**
+     * Obtém as informações de um atleta a partir do seu número mecanográfico e password.
+     * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do atleta.
+     *
+     * @param num_mecanografico O número mecanográfico do utilizador para obter as informações do atleta.
+     * @param senha A senha para obter as informações do atleta.
+     * @return O objeto {@link Atleta} contendo as informações do atleta, ou null se não encontrado.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
+     */
+    public Atleta getAtletaInfo(int num_mecanografico, String senha) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a JOIN users u ON a.user_id = u.id WHERE u.id = ?");
-            ps.setInt(1, id);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
+            ps.setInt(1, num_mecanografico);
+            ps.setString(2, senha);
 
-            System.out.println(id);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
 
-                System.out.println(rs.getString("nome"));
                 return new Atleta(
                         rs.getInt("user_id"),
                         rs.getString("nome"),
@@ -47,10 +62,6 @@ public class UserDAOImp implements DAO<User> {
                         rs.getDate("data_nascimento"),
                         null
                 );
-            } else {
-
-                System.err.println("No atleta found with ID: " + id);
-                return null;
             }
 
         } catch (SQLException e) {
@@ -61,41 +72,48 @@ public class UserDAOImp implements DAO<User> {
         return null;
     }
 
-    public int getID(int Num_Mecanografico) throws SQLException {
+    /**
+     * Obtém as informações de um gestor a partir do seu número mecanográfico e password.
+     * Esta função faz uma junção entre as tabelas "gestores" e "users" para obter os dados completos do gestor.
+     *
+     * @param Num_Mecanografico O número mecanográfico do utilizador para obter informações do Gestor.
+     * @return O objeto {@link Gestor} contendo as informações do Gestor, ou null se não encontrado.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
+     */
+    public Gestor getGestorInfo(int Num_Mecanografico, String senha) throws SQLException {
         try {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT id FROM users WHERE num_mecanografico = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM gestores a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
             ps.setInt(1, Num_Mecanografico);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
+            ps.setString(2, senha);
 
-            if (!rs.next()) {
-                connection.close();
-                return 0;
+            ResultSet rs = ps.executeQuery();
 
+            if (rs.next()) {
+
+                return new Gestor(
+                        rs.getInt("user_id"),
+                        rs.getString("nome")
+                );
             }
-
-            return rs.getInt("id");
 
         } catch (SQLException e) {
             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
             alertHandler.getAlert().show();
         }
 
-        return 0;
+        return null;
     }
 
     /**
+     * Verifica se um utilizador existe na base de dados, comparando o número mecanográfico e a senha fornecida.
      *
-     * Verifica os dados inseridos com os dados gravados na base de dados
-     *
-     * @param Num_Mecanografico
-     * @param senha
-     *
-     * @return
-     * @throws SQLException
+     * @param Num_Mecanografico O número mecanográfico do utilizador.
+     * @param senha A senha fornecida pelo utilizador.
+     * @return true se o utilizador existir com a senha correta, false caso contrário.
+     * @throws SQLException Caso haja erro na consulta à base de dados.
      */
     public boolean getUser(int Num_Mecanografico, String senha) throws SQLException {
         try {
@@ -107,7 +125,6 @@ public class UserDAOImp implements DAO<User> {
             ResultSet resultSetUtilizador = statementGetUtilizador.executeQuery(getUtilizadorQuery);
 
             if(!resultSetUtilizador.next()){
-                connection.close();
                 return false;
             }
 
@@ -122,12 +139,12 @@ public class UserDAOImp implements DAO<User> {
     }
 
     /**
-     * Vai a base de dados a permissão do utizador inserido no Login
+     * Obtém o tipo de permissão (role) de um utilizador, verificando o número mecanográfico e a senha.
      *
-     * @param Num_Mecanografico
-     * @param senha
-     * @return UserType
-     * @throws SQLException
+     * @param Num_Mecanografico O número mecanográfico do utilizador.
+     * @param senha A senha fornecida pelo utilizador.
+     * @return O nome do tipo de permissão do utilizador (por exemplo, "Admin", "Atleta").
+     * @throws SQLException Caso haja erro na consulta à base de dados.
      */
     public String getUserType(int Num_Mecanografico, String senha) throws SQLException {
         try {
@@ -141,7 +158,6 @@ public class UserDAOImp implements DAO<User> {
             ResultSet rs = ps.getResultSet();
 
             if (!rs.next()) {
-                connection.close();
                 return "";
 
             }
@@ -156,7 +172,11 @@ public class UserDAOImp implements DAO<User> {
         }
         return "";
     }
-
+    /**
+     * Obtém todos os utilizadores registrados na base de dados.
+     *
+     * @return Lista de objetos {@link User} representando todos os utilizadores da base de dados.
+     */
     @Override
     public List<User> getAll() {
         List<User> lst = new ArrayList<User>();

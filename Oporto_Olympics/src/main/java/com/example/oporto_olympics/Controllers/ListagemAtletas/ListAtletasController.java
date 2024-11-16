@@ -1,16 +1,14 @@
 package com.example.oporto_olympics.Controllers.ListagemAtletas;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.XML.AtletaDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemAtletas.CardController.ListAtletaCardController;
-import com.example.oporto_olympics.HelloApplication;
 import com.example.oporto_olympics.Models.Atleta;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -19,12 +17,20 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Controlador responsável por gerir a exibição dos atletas numa lista.
+ * Esta classe estabelece uma conexão com a base de dados, obtém todos os atletas
+ * e popula dinamicamente os cards de atletas num contêiner `VBox`.
+ */
 public class ListAtletasController {
-
+    /**
+     * Contêiner de layout para os atletas.
+     */
     @FXML
     private VBox AtletasContainer;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

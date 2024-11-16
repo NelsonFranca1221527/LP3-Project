@@ -5,7 +5,8 @@ import javafx.scene.control.ButtonType;
 
 
 /**
- * The class {@link AlertHandler} is a custom class to ease the instation of an alert on the app.
+ * A classe {@link AlertHandler} é uma classe personalizada para facilitar a criação e gestão de alertas na aplicação.
+ * Ela permite criar alertas com diferentes tipos de botões e personalizar o conteúdo, título e tipo do alerta.
  */
 public class AlertHandler {
 
@@ -16,11 +17,11 @@ public class AlertHandler {
     public static ButtonType noButton = new ButtonType("Não");
 
     /**
-     * Constructs an {@link Alert} object with the specified AlertType, title, and content.
+     * Constrói um objeto {@link Alert} com o tipo de alerta especificado, título e conteúdo.
      *
-     * @param alertType the type of the alert
-     * @param title     the title of the alert
-     * @param content   the content of the alert
+     * @param alertType o tipo de alerta (por exemplo, {@link Alert.AlertType#ERROR}, {@link Alert.AlertType#INFORMATION}, etc.)
+     * @param title     o título do alerta
+     * @param content   o conteúdo do alerta
      */
     public AlertHandler(Alert.AlertType alertType, String title, String content) {
         this.alert = new Alert(alertType, content);
@@ -30,13 +31,13 @@ public class AlertHandler {
     }
 
     /**
-     * Constructs an {@link Alert} object with the specified AlertType, title, content, and button types.
+     * Constrói um objeto {@link Alert} com o tipo de alerta especificado, título, conteúdo e botões personalizados.
      *
-     * @param alertType the type of the alert
-     * @param title     the title of the alert
-     * @param content   the content of the alert
-     * @param yesButton the button type for the "Yes" button
-     * @param noButton  the button type for the "No" button
+     * @param alertType o tipo de alerta (por exemplo, {@link Alert.AlertType#CONFIRMATION})
+     * @param title     o título do alerta
+     * @param content   o conteúdo do alerta
+     * @param yesButton o botão personalizado para "Sim"
+     * @param noButton  o botão personalizado para "Não"
      */
     public AlertHandler(Alert.AlertType alertType, String title, String content, ButtonType yesButton, ButtonType noButton) {
         this.alert = new Alert(alertType, content, noButton, yesButton);
@@ -46,42 +47,42 @@ public class AlertHandler {
     }
 
     /**
-     * Constructs a new empty instance of the {@link AlertHandler} class.
+     * Constrói uma nova instância vazia da classe {@link AlertHandler}.
      */
     public AlertHandler() {
     }
 
     /**
-     * Returns the Alert object.
+     * Retorna o objeto {@link Alert} associado a este {@link AlertHandler}.
      *
-     * @return the Alert object
+     * @return o objeto {@link Alert}
      */
     public Alert getAlert() {
         return alert;
     }
 
     /**
-     * Sets the Alert object.
+     * Define o objeto {@link Alert} para este {@link AlertHandler}.
      *
-     * @param alert the Alert object to set
+     * @param alert o objeto {@link Alert} a ser definido
      */
     public void setAlert(Alert alert) {
         this.alert = alert;
     }
 
     /**
-     * Returns the AlertType.
+     * Retorna o tipo de alerta associado a este {@link AlertHandler}.
      *
-     * @return the AlertType
+     * @return o tipo de alerta (por exemplo, {@link Alert.AlertType#ERROR})
      */
     public Alert.AlertType getAlertType() {
         return alertType;
     }
 
     /**
-     * Sets the AlertType.
+     * Define o tipo de alerta para este {@link AlertHandler}.
      *
-     * @param alertType the AlertType to set
+     * @param alertType o tipo de alerta a ser definido
      */
     public void setAlertType(Alert.AlertType alertType) {
         this.alertType = alertType;
@@ -89,9 +90,9 @@ public class AlertHandler {
 
 
     /**
-     * Returns a string representation of the {@link AlertHandler} object.
+     * Retorna uma representação em forma de string do objeto {@link AlertHandler}.
      *
-     * @return a string representation of the object
+     * @return uma string que representa o estado do objeto
      */
     @Override
     public String toString() {

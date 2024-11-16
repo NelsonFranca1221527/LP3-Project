@@ -1,11 +1,11 @@
 package com.example.oporto_olympics.Controllers.Modalidades;
 
-import com.example.oporto_olympics.Controllers.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Controllers.DAO.Eventos.EventosDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.Locais.LocaisDAOImp;
-import com.example.oporto_olympics.Controllers.DAO.XML.ModalidadeDAOImp;
-import com.example.oporto_olympics.Controllers.Helper.RedirecionarHelper;
-import com.example.oporto_olympics.Controllers.Misc.AlertHandler;
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
+import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Evento;
 import com.example.oporto_olympics.Models.Local;
 import com.example.oporto_olympics.Models.Modalidade;
@@ -220,10 +220,26 @@ public class InserirModalidadesController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, eventoID, new RegistoPontos("", 0, ""), new RegistoPontos("", 0, ""), regras);
+        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, ""), new RegistoPontos("", 0, ""), regras);
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+        Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+
+        if (ModalidadeExistente != null) {
+
+            if (ModalidadeExistente.getListEventosID().contains(eventoID)) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+                alertHandler.getAlert().showAndWait();
+                return;
+            }
+
+            modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
+            return;
+        }
+
         modalidadeDAOImp.save(modalidade);
+        modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
 
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
         alertHandler.getAlert().showAndWait();
