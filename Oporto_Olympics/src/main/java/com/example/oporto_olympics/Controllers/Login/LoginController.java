@@ -70,7 +70,7 @@ public class LoginController {
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
 
-        if(Role == "Gestor") {
+        if(Role.equals("Gestor")) {
             Gestor gestor = UserDAO.getGestorInfo(Integer.parseInt(UserField.getText()), SenhaHash);
             GestorSingle.setGestor(gestor);
         } else {

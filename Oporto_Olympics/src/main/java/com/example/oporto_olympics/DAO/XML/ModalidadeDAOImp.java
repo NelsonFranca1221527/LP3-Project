@@ -262,6 +262,61 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     }
 
     /**
+     * Atualiza o estado de uma modalidade específica num evento na tabela `eventos_modalidades`.
+     *
+     * Este método altera o estado (`modalidade_status`) de uma modalidade associada a um evento
+     * na base de dados, com base nos IDs fornecidos do evento e da modalidade, e no novo estado.
+     *
+     * @param eventoID o ID do evento associado à modalidade.
+     * @param modalidadeID o ID da modalidade cujo estado será alterado.
+     * @param status o novo estado a ser atribuído à modalidade (1 para ativo, 0 para inativo).
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public void updateEventos_ModalidadesStatus(int eventoID, int modalidadeID, int status) {
+
+        String updateQuery = "UPDATE eventos_modalidades SET modalidade_status = ? WHERE evento_id = ? and modalidade_id = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, status);
+            pstmt.setInt(2, eventoID);
+            pstmt.setInt(3, modalidadeID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao aprovar inscrição: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Obtém o estado de uma modalidade associada a um evento na tabela `eventos_modalidades`.
+     *
+     * Este método verifica se uma modalidade específica num evento está aberta ou fechada,
+     * consultando o campo `modalidade_status` na tabela.
+     *
+     * @param eventoID o ID do evento associado à modalidade.
+     * @param modalidadeID o ID da modalidade cujo estado será consultado.
+     * @return `true` se a modalidade está fechada (modalidade_status = 1), ou `false` se estiver aberta ou não encontrada.
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public boolean getStatusModalidade(int eventoID, int modalidadeID) {
+        String sql = "SELECT modalidade_status FROM eventos_modalidades WHERE evento_id = ? AND modalidade_id = ?";
+
+        try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("modalidade_status");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao procurar o status do evento_modalidade: " + ex);
+        }
+
+        return false;
+    }
+
+    /**
      * Obtém o nome de uma modalidade com base no seu ID.
      *
      * @param id o ID da modalidade.
