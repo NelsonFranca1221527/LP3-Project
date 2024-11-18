@@ -111,10 +111,10 @@ public class InserirAtletaController {
      * 5. Se todos os dados forem válidos, invoca o método `saveAtleta` do DAO para guardar o atleta.
      * 6. Exibe uma mensagem de sucesso ou erro consoante o resultado da operação.
      *
-     * @param event O evento acionado pelo clique no botão, do tipo `ActionEvent`.
+     *
      */
     @FXML
-    void OnClickCriarAtletaButton(ActionEvent event) {
+    public void OnClickCriarAtletaButton() {
         String nome = Nome.getText();
         String pais = Pais.getText();
         String altura = Altura.getText();
