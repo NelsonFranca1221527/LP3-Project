@@ -189,4 +189,29 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
             throw new RuntimeException("Erro ao reprovar inscrição: " + e.getMessage());
         }
     }
+
+    /**
+     * Insere uma ligação entre um atleta e uma equipa na tabela atletas_equipas.
+     *
+     * Este método utiliza uma instrução SQL preparada para inserir os IDs do atleta e da equipa
+     * na tabela `atletas_equipas`. A ligação é criada associando o atleta especificado à
+     * equipa indicada, caso os IDs fornecidos sejam válidos e a conexão com a base de dados esteja ativa.
+     *
+     * @param atletaId o ID do atleta a ser associado.
+     * @param equipaId o ID da equipa à qual o atleta será associado.
+     * @throws SQLException se ocorrer um erro ao tentar inserir os dados na base de dados.
+     */
+    public void inserirAtletaEquipa(int atletaId, int equipaId) {
+        String insertQuery = "INSERT INTO atletas_equipas (atleta_id, equipa_id) VALUES (?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
+            pstmt.setInt(1, atletaId);
+            pstmt.setInt(2, equipaId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("Linhas inseridas: " + rowsAffected);
+        } catch (SQLException e) {
+            System.err.println("Erro ao inserir dados: " + e.getMessage());
+        }
+    }
 }

@@ -128,7 +128,7 @@ public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Retorna true se o contador for maior que 0, indicando que existe um pedido pendente
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao verificar pedido pendente: " + e.getMessage());

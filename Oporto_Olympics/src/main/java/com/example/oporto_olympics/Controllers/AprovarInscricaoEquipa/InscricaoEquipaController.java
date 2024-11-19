@@ -190,6 +190,7 @@ public class InscricaoEquipaController {
                 btnAprovar.setMinWidth(100);
                 btnAprovar.setOnAction(e -> {
                     dao.aprovarInscricao(insc);
+                    dao.inserirAtletaEquipa(userId, teamId);
                     atualizarStatus();
                     Stage stage = (Stage) btnAprovar.getScene().getWindow();
                     stage.close();
