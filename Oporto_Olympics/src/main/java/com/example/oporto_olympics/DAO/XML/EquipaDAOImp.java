@@ -49,7 +49,7 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
                     lstParticipacoes.add(new ParticipaçõesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
                 }
 
-                lst.add(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("descricao"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
+                lst.add(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
             }
             return lst;
         } catch (SQLException ex) {
@@ -158,6 +158,38 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
         return Optional.empty();
     }
 
+    /**
+     * Atualiza o estado de uma equipa na tabela `equipas`.
+     *
+     * Este método altera o estado (`equipa_status`) de uma equipa específica na base de dados,
+     * com base no ID da equipa e no novo estado fornecidos.
+     *
+     * @param equipaID o ID da equipa cujo estado será alterado.
+     * @param status o novo estado a ser atribuído à equipa (1 para ativo, 0 para inativo).
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public void updateStatus(int equipaID, int status) {
+        String updateQuery = "UPDATE equipas SET equipa_status = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, status);
+            pstmt.setInt(2, equipaID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar o status da equipa: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Verifica se uma sigla de país existe na tabela `paises`.
+     *
+     * Este método consulta a tabela `paises` para verificar se uma determinada sigla de país
+     * está registada na base de dados.
+     *
+     * @param sigla a sigla do país a ser verificada (por exemplo, "PT", "BR").
+     * @return `true` se a sigla existir na tabela, ou `false` caso contrário.
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = conexao.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");

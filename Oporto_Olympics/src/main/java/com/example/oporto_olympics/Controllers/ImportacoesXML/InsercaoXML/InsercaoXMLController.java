@@ -358,7 +358,7 @@ public class InsercaoXMLController {
     private void VisualizarAtletas(List<Atleta> lst) {
         for (Atleta atleta : lst) {
             try {
-                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportaçõesXML/InserçãoXML/Cards/AtletasCard.fxml"));
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportacoesXML/InsercaoXML/Cards/AtletasCard.fxml"));
                 Pane PaneAtleta = loader.load();
                 AtletaCardController cardsController = loader.getController();
                 cardsController.preencherDados(atleta);
@@ -387,7 +387,7 @@ public class InsercaoXMLController {
     private void VisualizarEquipas(List<Equipa> lst) {
         for (Equipa equipa : lst) {
             try {
-                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportaçõesXML/InserçãoXML/Cards/EquipasCard.fxml"));
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportacoesXML/InsercaoXML/Cards/EquipasCard.fxml"));
                 Pane PaneEquipa = loader.load();
                 EquipaCardController cardsController = loader.getController();
                 cardsController.preencherDados(equipa);
@@ -416,7 +416,7 @@ public class InsercaoXMLController {
     private void VisualizarModalidades(List<Modalidade> lst) {
         for (Modalidade modalidade : lst) {
             try {
-                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportaçõesXML/InserçãoXML/Cards/ModalidadesCard.fxml"));
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/ImportacoesXML/InsercaoXML/Cards/ModalidadesCard.fxml"));
                 Pane PaneModalidade = loader.load();
                 ModalidadeCardController cardsController = loader.getController();
                 cardsController.preencherDados(modalidade);
