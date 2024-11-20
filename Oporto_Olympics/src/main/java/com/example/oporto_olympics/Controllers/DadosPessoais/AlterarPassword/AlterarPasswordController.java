@@ -67,29 +67,31 @@ public class AlterarPasswordController {
             Atleta atleta = AtletaSingle.getAtleta();
             Encriptacao encrypt = new Encriptacao();
 
-            if (!NewPasswordField.getText().isEmpty() && !ConfirmPasswordField.getText().isEmpty() || !NewPasswordField.getText().isEmpty() || !ConfirmPasswordField.getText().isEmpty()) {
-                String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
+            if (!NewPasswordField.getText().isEmpty() && !ConfirmPasswordField.getText().isEmpty()){
 
-                if (atleta != null){
-                    if(NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                        dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
-                        RedirecionarHelper.GotoDadosPessoais().switchScene(s);
-                    } else {
-                        AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
-                        alertHandler.getAlert().show();
+                if (!NewPasswordField.getText().isEmpty() || !ConfirmPasswordField.getText().isEmpty()) {
+                    String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
+
+                    if (atleta != null) {
+                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
+                            dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
+                            RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+                        } else {
+                            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
+                            alertHandler.getAlert().show();
+                        }
+                    }
+
+                    if (gestor != null) {
+                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
+                            dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
+                            RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
+                        } else {
+                            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
+                            alertHandler.getAlert().show();
+                        }
                     }
                 }
-
-                if (gestor != null){
-                    if(NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                        dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
-                        RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
-                    } else {
-                        AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
-                        alertHandler.getAlert().show();
-                    }
-                }
-
             } else {
                 AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Preencha os campos vazios..");
                 alertHandler.getAlert().show();
