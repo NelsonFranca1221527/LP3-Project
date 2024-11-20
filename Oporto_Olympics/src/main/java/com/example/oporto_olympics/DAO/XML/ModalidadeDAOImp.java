@@ -3,6 +3,7 @@ package com.example.oporto_olympics.DAO.XML;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.scene.control.Alert;
@@ -314,6 +315,62 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
 
         return false;
+    }
+
+    /**
+     * Obtém o total de participantes individuais de uma modalidade específica num evento.
+     * Este método executa uma consulta SQL para contar o número de participantes individuais
+     * associados a um determinado evento e modalidade, com base nos IDs fornecidos.
+     *
+     * @param eventoID o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
+     * @return o total de participantes individuais encontrados para o evento e modalidade especificados.
+     *         Retorna 0 caso não existam participantes.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta SQL.
+     */
+    public int getTotalParticipantesIndividual(int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT Count(*) as 'totalParticipantes' FROM atletas_modalidades WHERE evento_id = ? and modalidade_id = ?");
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("totalParticipantes");
+            }
+
+            return 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Obtém o total de equipas de uma modalidade específica num evento.
+     * Este método executa uma consulta SQL para contar o número de equipas
+     * associadas a um determinado evento e modalidade, com base nos IDs fornecidos.
+     *
+     * @param eventoID o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
+     * @return o total de participantes coletivos encontrados para o evento e modalidade especificados.
+     *         Retorna 0 caso não existam participantes.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta SQL.
+     */
+    public int getTotalParticipantesColetivo(int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT Count(*) as 'totalParticipantes' FROM equipa_modalidade WHERE evento_id = ? and modalidade_id = ?");
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("totalParticipantes");
+            }
+
+            return 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
+        }
     }
 
     /**

@@ -17,12 +17,6 @@ public interface AprovarInscricaoEquipaDAO {
      */
     List<AprovarInscricaoEquipa> getAll();
     /**
-     * Obtém uma lista de todas as inscrições de equipas aprovadas.
-     *
-     * @return uma lista de objetos AprovarInscricaoEquipa representando as inscrições de equipa.
-     */
-    List<AprovarInscricaoEquipa> getAllAprovado();
-    /**
      * Obtém a equipa com o identificador especificado.
      *
      * @param id o identificador da equipa que se deseja obter.

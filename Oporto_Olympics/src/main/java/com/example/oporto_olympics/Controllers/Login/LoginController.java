@@ -39,6 +39,22 @@ public class LoginController {
     private TextField UserField;
 
     /**
+     * Inicializa o estado dos singletons GestorSingleton e AtletaSingleton.
+     * Este método obtém as instâncias únicas dos singletons {@link GestorSingleton} e {@link AtletaSingleton},
+     * e redefine os seus valores para null, limpando assim os dados anteriormente atribuídos.
+     *
+     * @see GestorSingleton
+     * @see AtletaSingleton
+     */
+    public void initialize() {
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
+        AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+
+        GestorSingle.setGestor(null);
+        AtletaSingle.setAtleta(null);
+    }
+
+    /**
      *
      * 1. Estabelece a conexão a base de dados com a ConnectionBD.
      * 2. Verifica se o username (UserField) e password (SenhaField) se estão preenchidos.

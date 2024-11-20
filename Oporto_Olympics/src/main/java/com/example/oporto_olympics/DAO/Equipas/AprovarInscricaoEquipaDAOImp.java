@@ -57,34 +57,6 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
     }
 
     /**
-     * Método responsável por obter todas as inscrições com status "Aprovado" da base de dados.
-     *
-     * Este método executa uma consulta SQL para recuperar todas as inscrições cuja coluna `status`
-     * seja igual a "Aprovado" e retorna como uma lista de objetos {@link AprovarInscricaoEquipa}.
-     * A consulta é executada através de uma conexão com a base de dados utilizando um {@link Statement}.
-     *
-     * @return Uma lista de objetos {@link AprovarInscricaoEquipa} representando todas as inscrições
-     *         com status "Aprovado" encontradas na base de dados.
-     * @throws RuntimeException Se ocorrer um erro durante a execução da consulta SQL ou ao processar
-     *                          os resultados.
-     */
-    @Override
-    public List<AprovarInscricaoEquipa> getAllAprovado(){
-        List<AprovarInscricaoEquipa> lista = new ArrayList<AprovarInscricaoEquipa>();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM inscricoes WHERE status = 'Aprovado'");
-            while (rs.next()) {
-                lista.add(new AprovarInscricaoEquipa(rs.getInt("id"), rs.getString("status"),
-                        rs.getInt("modalidade_id"),rs.getInt("atleta_id"), rs.getInt("equipa_id")));
-            }
-            return lista;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Método responsável por recuperar uma equipa da base de dados com base no seu ID.
      *
      * Este método executa uma consulta SQL utilizando um {@link PreparedStatement} para buscar os dados

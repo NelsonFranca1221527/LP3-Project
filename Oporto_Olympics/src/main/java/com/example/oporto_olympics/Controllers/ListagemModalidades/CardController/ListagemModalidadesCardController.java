@@ -86,12 +86,28 @@ public class ListagemModalidadesCardController {
      */
     private HashMap<String, Integer> EventoMap = new HashMap<>();
 
+    /**
+     * Representa uma modalidade específica de um card criado.
+     * Este campo armazena a instância da classe {@link Modalidade} correspondente.
+     */
     private Modalidade modalidadeEspecifica;
 
+    /**
+     * Obtém a modalidade específica atualmente associada.
+     * Este método retorna a instância da modalidade que foi definida.
+     *
+     * @return a modalidade específica associada, ou {@code null} caso nenhuma tenha sido definida.
+     */
     public Modalidade getModalidadeEspecifica() {
         return modalidadeEspecifica;
     }
 
+    /**
+     * Define uma modalidade específica.
+     * Este método permite associar uma nova instância de {@link Modalidade}
+     *
+     * @param modalidadeEspecifica a modalidade específica a ser associada. Pode ser {@code null}.
+     */
     public void setModalidadeEspecifica(Modalidade modalidadeEspecifica) {
         this.modalidadeEspecifica = modalidadeEspecifica;
     }
@@ -189,26 +205,6 @@ public class ListagemModalidadesCardController {
             }
         }
 
-        AprovarInscricaoEquipaDAO dao = new AprovarInscricaoEquipaDAOImp(conexao);
-
-        List<AprovarInscricaoEquipa> inscricoes = dao.getAllAprovado();
-
-        //TODO: Alterar participantes para 0
-
-        int participantes = 10;
-
-        for (AprovarInscricaoEquipa inscricao : inscricoes) {
-            if(inscricao.getModalidade_id() == modalidade.getId()){
-                participantes++;
-            }
-        }
-
-        if(participantes < modalidade.getMinParticipantes()){
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Participantes!!", "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma. Possui " + participantes + " participantes.");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
-
         if(EventoMap.isEmpty()){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Eventos Disponiveis!!", "Não existe eventos em que possa iniciar a modalidade " + NomeLabel.getText());
             alertHandler.getAlert().showAndWait();
@@ -243,6 +239,20 @@ public class ListagemModalidadesCardController {
                 int modalidadeID = modalidade.getId();
 
                 int eventoID = EventoMap.get(clickedButton.getText());
+
+                int participantes;
+
+                if(modalidade.getTipo().equals("Individual")){
+                    participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID);
+                }else {
+                    participantes = modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
+                }
+
+                if(participantes < modalidade.getMinParticipantes()){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Participantes!!", "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma. Possui " + participantes + " participantes.");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
 
                 modalidadeDAOImp.updateEventos_ModalidadesStatus(eventoID, modalidadeID, 1);
 
