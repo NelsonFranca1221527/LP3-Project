@@ -27,6 +27,11 @@ public class DadosPessoaisGestorController {
      */
     @FXML
     private Label nomeLabel;
+    /**
+     * Botão para alterar password.
+     */
+    @FXML
+    private Button ChangePassBtn;
 
     /**
      * Inicializa os elementos de interface com as informações do gestor atualmente
@@ -43,6 +48,20 @@ public class DadosPessoaisGestorController {
 
 
         nomeLabel.setText(gestor.getNome());
+    }
+
+    /**
+     * Manipulador de eventos para o botão "Alterar Password".
+     * <p>
+     * Este método é invocado quando o utilizador clica no botão "Alterar Password".
+     * Redireciona o utilizador para um menu onde o utilizador altera a sua password utilizando
+     * a classe {@code RedirecionarHelper}.
+     */
+    @FXML
+    public void onAlterarPasswordCLick(){
+        Stage s = (Stage) ChangePassBtn.getScene().getWindow();
+
+        RedirecionarHelper.GotoAtlerarPassword().switchScene(s);
     }
 
     /**
