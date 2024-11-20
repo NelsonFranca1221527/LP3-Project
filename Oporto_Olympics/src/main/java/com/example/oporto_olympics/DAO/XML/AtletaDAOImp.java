@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
             PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             ps3.setInt(1, numMecanografico);
             ps3.setString(2, encriptacao.StringtoHash(String.valueOf(numMecanografico)));
-            ps3.setDate(3, Date.valueOf(LocalDate.now()));
+            ps3.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps3.setInt(4, rs2.getInt("IdAtleta"));
             ps3.executeUpdate();
 
@@ -121,7 +122,6 @@ public class AtletaDAOImp implements DAO<Atleta> {
             atleta.setId(generatedKeys.getInt(1));
             ps3.close();
 
-            atleta.setId(numMecanografico);
             update(atleta);
 
             if(atleta.getParticipaçõesAtletas().isEmpty() || atleta.getParticipaçõesAtletas() == null){
@@ -156,7 +156,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
     @Override
     public void update(Atleta atleta) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("UPDATE atletas SET atletas.nome = ?, atletas.data_nascimento = ?, atletas.genero = ?, atletas.altura_cm = ?, atletas.peso_kg = ?, atletas.pais_sigla = ? WHERE user_id = (SELECT id FROM users WHERE num_mecanografico = ?)");
+            PreparedStatement ps = conexao.prepareStatement("UPDATE atletas SET atletas.nome = ?, atletas.data_nascimento = ?, atletas.genero = ?, atletas.altura_cm = ?, atletas.peso_kg = ?, atletas.pais_sigla = ? WHERE user_id = ?");
             ps.setString(1, atleta.getNome());
             ps.setDate(2, new Date(atleta.getDataNascimento().getTime()));
             ps.setString(3, atleta.getGenero());

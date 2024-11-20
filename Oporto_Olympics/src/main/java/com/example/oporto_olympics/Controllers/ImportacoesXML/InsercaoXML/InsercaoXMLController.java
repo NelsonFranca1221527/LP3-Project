@@ -5,12 +5,14 @@ import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
+import com.example.oporto_olympics.DAO.XML.HistoricoXMLDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.AtletaCardController;
 import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.EquipaCardController;
 import com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML.CardController.ModalidadeCardController;
 import com.example.oporto_olympics.Misc.AlertHandler;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;
 import com.example.oporto_olympics.HelloApplication;
 import com.example.oporto_olympics.Models.*;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,6 +158,37 @@ public class InsercaoXMLController {
      */
     public void setListaModalidades(List<Modalidade> listaModalidades) {
         ListaModalidades = listaModalidades;
+    }
+
+    /**
+     * Ficheiro selecionado.
+     *
+     * Este campo armazena o ficheiro que foi selecionado pelo utilizador. O tipo do campo é {@code File}.
+     */
+    private File selectedFile;
+
+    /**
+     * Obtém o ficheiro selecionado.
+     *
+     * Este método retorna o ficheiro atualmente armazenado na instância de {@code selectedFile}.
+     *
+     * @return o ficheiro selecionado ou {@code null} se nenhum ficheiro foi selecionado
+     */
+    public File getSelectedFile() {
+        return selectedFile;
+    }
+
+    /**
+     * Define o ficheiro selecionado.
+     *
+     * Este método permite que o ficheiro selecionado seja atribuído à instância. O ficheiro será
+     * armazenado no campo {@code selectedFile} para utilização posterior.
+     *
+     * @param selectedFile o ficheiro a ser definido como o ficheiro selecionado
+     *                     (não pode ser {@code null})
+     */
+    public void setSelectedFile(File selectedFile) {
+        this.selectedFile = selectedFile;
     }
 
     /**
@@ -282,6 +316,9 @@ public class InsercaoXMLController {
 
                 break;
         }
+
+        setSelectedFile(selectedFile);
+
     }
 
     /**
@@ -296,10 +333,22 @@ public class InsercaoXMLController {
     void OnClickInserirButton(ActionEvent event) throws SQLException {
         AlertHandler alertHandler;
 
+        ConnectionBD conexaoBD = ConnectionBD.getInstance();
+        Connection conexao = conexaoBD.getConexao();
+
+        HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
         InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
 
         switch (inserçãoXMLSingleton.getTipoXML()) {
             case "Atleta":
+
+                if(getListaAtletas() == null){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Atletas!!!", "Não existem atletas para inserir, tente inserir um ficheiro XML de Atletas válido!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Atletas por Inserir!!!", "Deseja inserir os atletas?");
                 Optional<ButtonType> rs1 = alertHandler.getAlert().showAndWait();
 
@@ -310,6 +359,13 @@ public class InsercaoXMLController {
 
                 break;
             case "Equipa":
+
+                if(getListaEquipas() == null){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Equipas!!!", "Não existem equipas para inserir, tente inserir um ficheiro XML de Equipas válido!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Equipas por Inserir!!!", "Deseja inserir as equipas?");
                 Optional<ButtonType> rs2 = alertHandler.getAlert().showAndWait();
 
@@ -327,6 +383,13 @@ public class InsercaoXMLController {
 
                 break;
             case "Modalidade":
+
+                if(getListaModalidades() == null){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Modalidades!!!", "Não existem modalidades para inserir, tente inserir um ficheiro XML de Modalidades válido!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
                 alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Modalidades por Inserir!!!", "Deseja inserir as modalidades?");
                 Optional<ButtonType> rs3 = alertHandler.getAlert().showAndWait();
 
@@ -344,6 +407,10 @@ public class InsercaoXMLController {
 
                 break;
         }
+
+        GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+        historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
 
         Stage s = (Stage) InserirButton.getScene().getWindow();
         RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
@@ -556,7 +623,7 @@ public class InsercaoXMLController {
         }
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade/s insirada/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+            alertHandler.getAlert().showAndWait();
     }
 
 
