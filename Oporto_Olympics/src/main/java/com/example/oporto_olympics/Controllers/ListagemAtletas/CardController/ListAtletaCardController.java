@@ -16,8 +16,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.lang.model.AnnotatedConstruct;
+import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,6 +51,9 @@ public class ListAtletaCardController {
     private Label AlturaLabel;
 
     @FXML
+    private ImageView img_perfil;
+
+    @FXML
     private Label PesoLabel;
 
     @FXML
@@ -67,6 +73,20 @@ public class ListAtletaCardController {
         GeneroLabel.setText(atleta.getGenero());
         AlturaLabel.setText(String.valueOf(atleta.getAltura()));
         PesoLabel.setText(String.valueOf(atleta.getPeso()));
+
+        byte[] fotoBytes = atleta.getFotoPerfil();
+
+        if (fotoBytes != null) {
+            try {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(fotoBytes);
+                Image image = new Image(inputStream);
+                img_perfil.setImage(image);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+        }
     }
     /**
      * Método acionado ao clicar no botão de detalhes. Este método recupera o histórico de competições de um atleta,

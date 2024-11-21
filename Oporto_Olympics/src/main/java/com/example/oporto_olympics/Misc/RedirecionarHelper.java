@@ -65,6 +65,14 @@ public class RedirecionarHelper {
         return new RedirecionarHelper("Views/DadosPessoais/VerDadosPessoaisGestor.fxml", "Dados Pessoais");
     }
     /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de alterar de password.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de alterar password.
+     */
+    public static RedirecionarHelper GotoAtlerarPassword() {
+        return new RedirecionarHelper("Views/DadosPessoais/AlterarPassword/AlterarPassword.fxml", "Atlerar Password");
+    }
+    /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o menu principal do gestor.
      *
      * @return Um {@link RedirecionarHelper} para o menu principal do gestor.
