@@ -88,5 +88,11 @@
             <Font size="20.0" />
          </font>
       </Button>
+      <ImageView fx:id="img_perfil" fitHeight="475.0" fitWidth="408.0" layoutX="134.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="ChangeFotoBtn" layoutX="732.0" layoutY="570.0" mnemonicParsing="false" onAction="#onAlterarFotoCLick" style="-fx-background-color: #87ceeb;" text="Alterar Foto de Perfil">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

@@ -44,7 +44,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
         List<Atleta> lst = new ArrayList<Atleta>();
         try {
             Statement stmt = conexao.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from atletas");
+            ResultSet rs = stmt.executeQuery("SELECT a.*, u.imagem FROM atletas as a, users as u where a.user_id=u.id");
             if (!rs.isBeforeFirst()) {
                 return null;
             } else {
@@ -58,7 +58,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
                             lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                         }
 
-                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
+                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
                 }
             }
 
@@ -190,7 +190,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
     @Override
     public Optional<Atleta> get(int atletaID) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM atletas WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("SELECT a.*, u.imagem FROM atletas as a, users as u WHERE a.user_id=u.id AND user_id = ?");
             ps.setInt(1, atletaID);
             ResultSet rs = ps.executeQuery();
 
@@ -206,12 +206,31 @@ public class AtletaDAOImp implements DAO<Atleta> {
                     lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                 }
 
-                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
+                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Atualiza a foto de perfil de um atleta na base de dados.
+     *
+     * Este método recebe o ID do atleta e o novo array de bytes da foto de perfil,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param atletaId   o ID do atleta cujo registo será atualizado.
+     * @param fotoPerfil o array de bytes representando a nova foto de perfil.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateFotoPerfil(int atletaId, byte[] fotoPerfil) throws SQLException {
+        String sql = "UPDATE users SET imagem = ? WHERE id = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setBytes(1, fotoPerfil);
+            stmt.setInt(2, atletaId);
+            stmt.executeUpdate();
+        }
     }
 }

@@ -69,7 +69,7 @@ public class LerXMLController {
                 participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
             }
 
-            lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList));
+            lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList, null));
         }
 
         return lst;

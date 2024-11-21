@@ -87,7 +87,7 @@ public class UserDAOImp implements DAO<User> {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT a.*, u.imagem FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
             ps.setInt(1, num_mecanografico);
             ps.setString(2, senha);
 
@@ -103,7 +103,8 @@ public class UserDAOImp implements DAO<User> {
                         rs.getInt("altura_cm"),
                         rs.getInt("peso_kg"),
                         rs.getDate("data_nascimento"),
-                        null
+                        null,
+                        rs.getBytes("imagem")
                 );
             }
 
