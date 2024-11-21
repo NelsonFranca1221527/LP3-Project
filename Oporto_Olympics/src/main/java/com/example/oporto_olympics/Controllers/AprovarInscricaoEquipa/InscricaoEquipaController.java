@@ -153,12 +153,8 @@ public class InscricaoEquipaController {
                 labelPaisEquipa.setWrapText(true);
                 Label labelAnoFundacao = new Label("Ano de Fundação: " + equipa.getAno_fundacao());
                 labelAnoFundacao.setWrapText(true);
-                Label labelParticipacoes = new Label("Participações: " + equipa.getParticipacoes());
-                labelParticipacoes.setWrapText(true);
-                Label labelMedalhas = new Label("Medalhas: " + equipa.getMedalhas());
-                labelMedalhas.setWrapText(true);
 
-                infoBox.getChildren().addAll(labelNomeEquipa, labelPaisEquipa, labelAnoFundacao, labelParticipacoes, labelMedalhas);
+                infoBox.getChildren().addAll(labelNomeEquipa, labelPaisEquipa, labelAnoFundacao);
 
                 VBox atletaBox = new VBox(10);
                 atletaBox.setStyle("-fx-spacing: 10;");

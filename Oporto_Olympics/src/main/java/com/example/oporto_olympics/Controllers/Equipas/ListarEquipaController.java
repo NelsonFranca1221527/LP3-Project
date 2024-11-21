@@ -91,14 +91,12 @@ public class ListarEquipaController {
                 Label nomeLabel = new Label(equipa.getNome());
                 Label desportoLabel = new Label("Desporto: " + equipa.getDesporto());
                 Label generoLabel = new Label("Género: " + equipa.getGenero());
-                Label medalhasLabel = new Label("Medalhas: " + equipa.getMedalhas());
 
                 nomeLabel.setStyle("-fx-font-weight: bold;");
                 desportoLabel.setStyle("-fx-font-size: 12px;");
                 generoLabel.setStyle("-fx-font-size: 12px;");
-                medalhasLabel.setStyle("-fx-font-size: 12px;");
 
-                teamPane.getChildren().addAll(nomeLabel, desportoLabel, generoLabel, medalhasLabel);
+                teamPane.getChildren().addAll(nomeLabel, desportoLabel, generoLabel);
 
                 // Botão "Ver Detalhes"
                 Button btnDetalhes = new Button("Ver Detalhes");
@@ -116,8 +114,6 @@ public class ListarEquipaController {
                             new Label("Desporto: " + equipa.getDesporto()),
                             new Label("País: " + equipa.getPais_sigla()),
                             new Label("Ano de Fundação: " + equipa.getAno_fundacao()),
-                            new Label("Participações: " + equipa.getParticipacoes()),
-                            new Label("Medalhas: " + equipa.getMedalhas()),
                             new Label("Gênero: " + equipa.getGenero())
                     );
 

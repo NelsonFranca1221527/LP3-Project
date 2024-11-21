@@ -51,8 +51,6 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
                         rs.getString("pais_sigla"),
                         rs.getInt("ano_fundacao"),
                         rs.getInt("modalidade_id"),
-                        rs.getInt("participacoes"),
-                        rs.getInt("medalhas"),
                         rs.getString("nome"),
                         rs.getString("genero"),
                         rs.getString("desporto")
@@ -129,10 +127,9 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
                                 int peso = rsAtletaDetalhes.getInt("peso_kg");
                                 Date dataNascimento = rsAtletaDetalhes.getDate("data_nascimento");
                                 if (dataNascimento != null) {
-                                    dataNascimento = new Date(dataNascimento.getTime()); // Conversão para java.util.Date
+                                    dataNascimento = new Date(dataNascimento.getTime());
                                 }
 
-                                // Criação de um objeto AtletaInfo com os dados recuperados
                                 AtletaInfo atletaInfo = new AtletaInfo(id, nome, pais, genero, altura, peso, dataNascimento);
                                 atletas.add(atletaInfo);
                             }

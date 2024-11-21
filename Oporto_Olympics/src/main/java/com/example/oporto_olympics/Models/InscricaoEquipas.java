@@ -10,8 +10,6 @@ public class InscricaoEquipas {
     private String pais_sigla;
     private Integer ano_fundacao;
     private Integer modalidade_id;
-    private Integer participacoes;
-    private Integer medalhas;
     private String nome;
     private String genero;
     private String desporto;
@@ -29,13 +27,11 @@ public class InscricaoEquipas {
      * @param genero        Género (ex.: masculino, feminino) associado à equipa.
      * @param desporto      Desporto ou modalidade em que a equipa compete.
      */
-    public InscricaoEquipas(int id, String pais_sigla, Integer ano_fundacao, Integer modalidade_id, Integer participacoes, Integer medalhas, String nome, String genero, String desporto) {
+    public InscricaoEquipas(int id, String pais_sigla, Integer ano_fundacao, Integer modalidade_id, String nome, String genero, String desporto) {
         this.id = id;
         this.pais_sigla = pais_sigla;
         this.ano_fundacao = ano_fundacao;
         this.modalidade_id = modalidade_id;
-        this.participacoes = participacoes;
-        this.medalhas = medalhas;
         this.nome = nome;
         this.genero = genero;
         this.desporto = desporto;
@@ -103,38 +99,6 @@ public class InscricaoEquipas {
      */
     public void setModalidade_id(Integer modalidade_id) {
         this.modalidade_id = modalidade_id;
-    }
-    /**
-     * Obtém o número de participações da equipa.
-     *
-     * @return O número de participações.
-     */
-    public Integer getParticipacoes() {
-        return participacoes;
-    }
-    /**
-     * Define o número de participações da equipa.
-     *
-     * @param participacoes O novo número de participações.
-     */
-    public void setParticipacoes(Integer participacoes) {
-        this.participacoes = participacoes;
-    }
-    /**
-     * Obtém o número de medalhas conquistadas pela equipa.
-     *
-     * @return O número de medalhas.
-     */
-    public Integer getMedalhas() {
-        return medalhas;
-    }
-    /**
-     * Define o número de medalhas conquistadas pela equipa.
-     *
-     * @param medalhas O novo número de medalhas.
-     */
-    public void setMedalhas(Integer medalhas) {
-        this.medalhas = medalhas;
     }
     /**
      * Obtém o nome da equipa.

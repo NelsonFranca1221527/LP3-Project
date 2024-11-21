@@ -82,8 +82,6 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
                         rs.getString("pais_sigla"),
                         rs.getInt("ano_fundacao"),
                         rs.getInt("modalidade_id"),
-                        rs.getInt("participacoes"),
-                        rs.getInt("medalhas"),
                         rs.getString("nome"),
                         rs.getString("genero"),
                         rs.getString("desporto")
