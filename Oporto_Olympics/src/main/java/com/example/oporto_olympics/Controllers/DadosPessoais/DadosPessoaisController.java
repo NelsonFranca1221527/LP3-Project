@@ -48,6 +48,11 @@ public class DadosPessoaisController {
      */
     @FXML
     private Label pesoLabel;
+    /**
+     * Botão para alterar password.
+     */
+    @FXML
+    private Button ChangePassBtn;
 
     /**
      * Inicializa os elementos de interface com as informações do atleta atualmente
@@ -70,6 +75,20 @@ public class DadosPessoaisController {
         pesoLabel.setText(String.valueOf(atleta.getPeso()) + " kg");
         DataNascLabel.setText(String.valueOf(atleta.getDataNascimento()));
     }
+    /**
+     * Manipulador de eventos para o botão "Alterar Password".
+     * <p>
+     * Este método é invocado quando o utilizador clica no botão "Alterar Password".
+     * Redireciona o utilizador para um menu onde o utilizador altera a sua password utilizando
+     * a classe {@code RedirecionarHelper}.
+     */
+    @FXML
+    public void onAlterarPasswordCLick(){
+        Stage s = (Stage) ChangePassBtn.getScene().getWindow();
+
+        RedirecionarHelper.GotoAtlerarPassword().switchScene(s);
+    }
+
     /**
      * Manipulador de eventos para o botão "Voltar".
      * <p>

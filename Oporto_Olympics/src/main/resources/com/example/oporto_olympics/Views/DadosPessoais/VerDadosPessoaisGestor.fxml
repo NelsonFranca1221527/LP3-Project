@@ -21,16 +21,22 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#808080" height="562.0" layoutX="85.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 85%;" width="1110.0" />
-      <Label layoutX="132.0" layoutY="261.0" text="Nome:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#808080" height="562.0" layoutX="88.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 85%;" width="1110.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c3c3c3" height="501.0" layoutX="120.0" layoutY="139.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1048.0" />
+      <Label layoutX="552.0" layoutY="182.0" text="Nome:">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="nomeLabel" layoutX="243.0" layoutY="261.0" text="#####">
+      <Label fx:id="nomeLabel" layoutX="663.0" layoutY="182.0" text="#####">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
+      <Button fx:id="ChangePassBtn" layoutX="959.0" layoutY="570.0" mnemonicParsing="false" onAction="#onAlterarPasswordCLick" style="-fx-background-color: #87ceeb;" text="Alterar Password">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
