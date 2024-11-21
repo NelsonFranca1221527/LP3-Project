@@ -2,11 +2,11 @@ package com.example.oporto_olympics.Models;
 
 import java.util.Date;
 /**
- * A classe {@link ResultadosAtleta} representa os resultados de um atleta numa modalidade
+ * A classe {@link ResultadosModalidade} representa os resultados de um atleta numa modalidade
  * com informações sobre a sua data, resultado, tipo de resultado, medalha ganha,
  * modalidade associada e atleta associado.
  */
-public class ResultadosAtleta {
+public class ResultadosModalidade {
 
     private int id;
 
@@ -22,8 +22,10 @@ public class ResultadosAtleta {
 
     private int atletaID;
 
+    private int equipaID;
+
     /**
-     * Construtor para a classe {@link ResultadosAtleta}, que inicializa todos os atributos dos resultados.
+     * Construtor para a classe {@link ResultadosModalidade}, que inicializa todos os atributos dos resultados.
      *
      * @param id                  Identificador único do resultado.
      * @param data                Data do resultado.
@@ -32,8 +34,9 @@ public class ResultadosAtleta {
      * @param medalha             Medalha ganha com o resultado.
      * @param modalidadeID        Identificador da modalidade associada ao resultado.
      * @param atletaID            Identificador do atleta associada ao resultado.
+     * @param equipaID            Identificador da equipa associada ao resultado.
      */
-    public ResultadosAtleta(int id, Date data, Double resultado, String tipo, String medalha, int modalidadeID, int atletaID) {
+    public ResultadosModalidade(int id, Date data, Double resultado, String tipo, String medalha, int modalidadeID, int atletaID, int equipaID) {
         this.id = id;
         this.data = data;
         this.resultado = resultado;
@@ -41,6 +44,7 @@ public class ResultadosAtleta {
         this.medalha = medalha;
         this.modalidadeID = modalidadeID;
         this.atletaID = atletaID;
+        this.equipaID = equipaID;
     }
     /**
      * Obtém o identificador único do resultado.
@@ -153,5 +157,21 @@ public class ResultadosAtleta {
      */
     public void setAtletaID(int atletaID) {
         this.atletaID = atletaID;
+    }
+    /**
+     * Obtém o identificador da equipa associada ao resultado.
+     *
+     * @return O identificador da equipa.
+     */
+    public int getEquipaID() {
+        return equipaID;
+    }
+    /**
+     * Define o identificador da equipa associada ao resultado.
+     *
+     * @param equipaID O novo identificador da equipa.
+     */
+    public void setEquipaID(int equipaID) {
+        this.equipaID = equipaID;
     }
 }

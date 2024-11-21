@@ -12,9 +12,8 @@ import java.sql.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 /**
  * A classe {@link ModalidadeDAOImp} implementa a interface {@link DAOXML} para manipulação de dados de modalidades
  * na base de dados. Ela fornece métodos para realizar operações de CRUD (criação, leitura, atualização e exclusão)
@@ -468,5 +467,75 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                 return null;
             }
         }
+    }
+
+    /**
+     * Obtém os atletas associados a um evento e modalidade específicos.
+     *
+     * Este método realiza uma consulta à base de dados para listar os atletas que participam
+     * numa determinada modalidade e evento, retornando um mapa onde a chave é o ID do atleta
+     * e o valor é o nome do atleta.
+     *
+     * @param eventoId     o ID do evento a ser utilizado no filtro.
+     * @param modalidadeId o ID da modalidade a ser utilizado no filtro.
+     * @return um mapa com os IDs dos atletas como chaves e os respetivos nomes como valores.
+     * @throws SQLException caso ocorra um erro na execução da consulta SQL ou na conexão com a base de dados.
+     */
+    public Map<Integer, String> getAtletasPorEvento(int eventoId, int modalidadeId) throws SQLException {
+        Map<Integer, String> atletas = new HashMap<>();
+
+        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ?";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            // Definir os parâmetros no SQL
+            stmt.setInt(1, eventoId);
+            stmt.setInt(2, modalidadeId);
+
+            // Executar o comando e processar os resultados
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int atletaId = rs.getInt("atleta_id");
+                    String nomeAtleta = rs.getString("nome");
+                    atletas.put(atletaId, nomeAtleta);
+                }
+            }
+        }
+
+        return atletas;
+    }
+
+    /**
+     * Obtém as equipas associados a um evento e modalidade específicos.
+     *
+     * Este método realiza uma consulta à base de dados para listar as equipas que participam
+     * numa determinada modalidade e evento, retornando um mapa onde a chave é o ID da equipa
+     * e o valor é o nome da equipa.
+     *
+     * @param eventoId     o ID do evento a ser utilizado no filtro.
+     * @param modalidadeId o ID da modalidade a ser utilizado no filtro.
+     * @return um mapa com os IDs das equipas como chaves e os respetivos nomes como valores.
+     * @throws SQLException caso ocorra um erro na execução da consulta SQL ou na conexão com a base de dados.
+     */
+    public Map<Integer, String> getEquipasPorEvento(int eventoId, int modalidadeId) throws SQLException {
+        Map<Integer, String> equipas = new HashMap<>();
+
+        String query = "SELECT am.equipa_id, a.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = em.equipa_id WHERE em.evento_id = ? AND em.modalidade_id = ?";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            // Definir os parâmetros no SQL
+            stmt.setInt(1, eventoId);
+            stmt.setInt(2, modalidadeId);
+
+            // Executar o comando e processar os resultados
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int equipaId = rs.getInt("equipa_id");
+                    String nomeEquipa = rs.getString("nome");
+                    equipas.put(equipaId, nomeEquipa);
+                }
+            }
+        }
+
+        return equipas;
     }
 }

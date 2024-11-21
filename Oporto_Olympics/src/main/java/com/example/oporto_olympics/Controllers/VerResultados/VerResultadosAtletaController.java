@@ -2,11 +2,11 @@ package com.example.oporto_olympics.Controllers.VerResultados;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Controllers.VerResultados.CardController.VerResultadosAtletaCardController;
-import com.example.oporto_olympics.DAO.Resultados.ResultadosAtletaDAOImp;
+import com.example.oporto_olympics.DAO.Resultados.ResultadosModalidadeDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.ResultadosAtleta;
+import com.example.oporto_olympics.Models.ResultadosModalidade;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,11 +75,11 @@ public class VerResultadosAtletaController {
                 (change.getControlNewText().matches("\\d*")) ? change : null
         ));
 
-        ResultadosAtletaDAOImp ResultadosAtletaDAO = new ResultadosAtletaDAOImp(conexao);
+        ResultadosModalidadeDAOImp ResultadosAtletaDAO = new ResultadosModalidadeDAOImp(conexao);
 
-        List<ResultadosAtleta> AllResultados = ResultadosAtletaDAO.getAllbyAthlete(atleta.getId());
+        List<ResultadosModalidade> AllResultados = ResultadosAtletaDAO.getAllbyAthlete(atleta.getId());
 
-        for (ResultadosAtleta resultadosAtleta : AllResultados) {
+        for (ResultadosModalidade resultadosAtleta : AllResultados) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/VerResultados/Cards/VerResultadosAtletaCard.fxml"));
                 Pane Resultados = loader.load();
@@ -114,13 +114,13 @@ public class VerResultadosAtletaController {
         Integer ano = anoField.getText().isEmpty() ? null : Integer.parseInt(anoField.getText());
 
         Atleta atleta = AtletaSingleton.getInstance().getAtleta();
-        ResultadosAtletaDAOImp resultadosAtletaDAO = new ResultadosAtletaDAOImp(ConnectionBD.getInstance().getConexao());
+        ResultadosModalidadeDAOImp resultadosAtletaDAO = new ResultadosModalidadeDAOImp(ConnectionBD.getInstance().getConexao());
 
         // Buscar resultados filtrados
-        List<ResultadosAtleta> filteredResults = resultadosAtletaDAO.getFilteredResultsByAthlete(atleta.getId(), ano, modalidade, atleta.getGenero());
+        List<ResultadosModalidade> filteredResults = resultadosAtletaDAO.getFilteredResultsByAthlete(atleta.getId(), ano, modalidade, atleta.getGenero());
 
         // Criar novos cartões com os resultados filtrados
-        for (ResultadosAtleta resultado : filteredResults) {
+        for (ResultadosModalidade resultado : filteredResults) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/VerResultados/Cards/VerResultadosAtletaCard.fxml"));
                 Pane Resultados = loader.load();
