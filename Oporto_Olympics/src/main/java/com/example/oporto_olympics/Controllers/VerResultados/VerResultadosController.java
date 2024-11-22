@@ -67,7 +67,7 @@ public class VerResultadosController {
 
         ModalidadeDAOImp modalidadeDAO = new ModalidadeDAOImp(conexao);
 
-        List<Modalidade> lst = modalidadeDAO.getAllModalidades();
+        List<Modalidade> lst = modalidadeDAO.getAll();
         for(Modalidade modalidade : lst){
             ModalidadeHashMap.put(modalidade.getNome() + " - " + modalidade.getTipo() + " - " + modalidade.getGenero(), modalidade.getId());
         }
