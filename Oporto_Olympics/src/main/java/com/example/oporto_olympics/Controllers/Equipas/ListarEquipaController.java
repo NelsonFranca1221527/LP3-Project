@@ -98,6 +98,13 @@ public class ListarEquipaController {
 
             vboxEquipas.getChildren().clear();
 
+            if (equipas.isEmpty()) {
+                Label noResultsLabel = new Label("Nenhuma equipa encontrada.");
+                noResultsLabel.setStyle("-fx-font-size: 16px; -fx-font-style: italic; -fx-text-fill: grey; -fx-padding: 10 0 0 10;");
+                vboxEquipas.getChildren().add(noResultsLabel);
+                return;
+            }
+
             for (InscricaoEquipas equipa : equipas) {
                 HBox teamPane = new HBox(10);
                 teamPane.setPrefWidth(vboxEquipas.getPrefWidth());
@@ -122,10 +129,6 @@ public class ListarEquipaController {
                 vboxEquipas.getChildren().add(teamPane);
             }
 
-            if (equipas.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Nenhuma equipa encontrada.");
-                alert.show();
-            }
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar as equipas: " + e.getMessage());
