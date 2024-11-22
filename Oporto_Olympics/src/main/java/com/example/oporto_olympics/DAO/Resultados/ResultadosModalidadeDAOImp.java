@@ -45,16 +45,55 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
         }
     }
     /**
+     * Obtém uma lista de resultados filtrados para um atleta, com base no ano, modalidade e gênero selecionados.
+     * Este método permite consultar os resultados do atleta, aplicando filtros de ano, modalidade e gênero.
+     *
+     *
+     * @param modalidade O nome da modalidade a ser filtrada (pode ser "Todas" para não aplicar filtro).
+     * @return Uma lista de objetos {@link ResultadosModalidade} que correspondem aos critérios de pesquisa.
+     *
+     * @throws RuntimeException Se ocorrer um erro ao acessar a base de dados ou ao realizar a consulta.
+     */
+    public List<ResultadosModalidade> getFilteredResults(int modalidade) {
+        List<ResultadosModalidade> lst = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM resultados WHERE modalidade_id = ?");
+
+            if (modalidade != 0) {
+                ps.setInt(1, modalidade);
+            } else if (modalidade == 0){
+                ps = connection.prepareStatement("SELECT * FROM resultados");
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
+                        rs.getDouble("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
+                        rs.getInt("modalidade_id"), rs.getInt("atleta_id"), 0));
+            }
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter resultados filtrados: " + ex.getMessage());
+        }
+    }
+    /**
      * Obtém os top 10 resultados registados na base de dados.
      *
      * @return uma lista de objetos {@link ResultadosModalidade} representando os top 10 resultados resgitados na base de dados.
      * @throws RuntimeException se ocorrer um erro ao obter os resultados de atletas.
      */
-    public List<ResultadosModalidade> getAllOrderedTopTen() {
+    public List<ResultadosModalidade> getAllOrderedTopTen(int id) {
         List<ResultadosModalidade> lst = new ArrayList<>();
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT TOP 10 * FROM resultados ORDER BY resultado ASC;");
+
+            PreparedStatement ps = connection.prepareStatement("SELECT TOP 10 * FROM resultados WHERE modalidade_id = ? ORDER BY resultado ASC");
+            if (id != 0) {
+                ps.setInt(1, id);
+            } else {
+                return null;
+            }
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
                         rs.getDouble("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
