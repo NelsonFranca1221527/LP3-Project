@@ -24,6 +24,48 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
         this.connection = connection;
     }
     /**
+     * Obtém o nome dos atletas registados na base de dados.
+     *
+     * @return uma lista de objetos {@link ResultadosModalidade} representando todos os resultados de atletas na base de dados.
+     * @throws RuntimeException se ocorrer um erro ao obter os resultados de atletas.
+     */
+    public List<String> getAtletaNome (int id){
+        List<String> nomes = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT nome FROM atletas WHERE user_id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                nomes.add(rs.getString("nome"));
+            }
+            return nomes;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o resultado pelo ID: " + ex.getMessage());
+        }
+    }
+    /**
+     * Obtém os top 10 resultados registados na base de dados.
+     *
+     * @return uma lista de objetos {@link ResultadosModalidade} representando os top 10 resultados resgitados na base de dados.
+     * @throws RuntimeException se ocorrer um erro ao obter os resultados de atletas.
+     */
+    public List<ResultadosModalidade> getAllOrderedTopTen() {
+        List<ResultadosModalidade> lst = new ArrayList<>();
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT TOP 10 * FROM resultados ORDER BY resultado ASC;");
+            while (rs.next()) {
+                lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
+                        rs.getDouble("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
+                        rs.getInt("modalidade_id") , rs.getInt("atleta_id"), rs.getInt("equipa_id")));
+            }
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar os locais: " + ex.getMessage());
+        }
+    }
+    /**
      * Obtém todos os resultados de atletas registados na base de dados.
      *
      * @return uma lista de objetos {@link ResultadosModalidade} representando todos os resultados de atletas na base de dados.
@@ -31,7 +73,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
      */
     @Override
     public List<ResultadosModalidade> getAll() {
-        List<ResultadosModalidade> lst = new ArrayList<ResultadosModalidade>();
+        List<ResultadosModalidade> lst = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM resultados");

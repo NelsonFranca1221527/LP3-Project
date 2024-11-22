@@ -37,7 +37,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="650.0" layoutY="502.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
+      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="546.0" layoutY="503.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
          <font>
             <Font size="20.0" />
          </font>
@@ -119,7 +119,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="InsertEquipasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="447.0" layoutY="502.0" mnemonicParsing="false" onAction="#OnInsertEquipasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Equipas">
+      <Button fx:id="InsertEquipasBtn" alignment="CENTER" contentDisplay="TOP" layoutX="343.0" layoutY="503.0" mnemonicParsing="false" onAction="#OnInsertEquipasButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Equipas">
          <font>
             <Font size="20.0" />
          </font>
@@ -185,6 +185,21 @@
          </font>
          <graphic>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Eventos-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="ResultadosBtn" alignment="CENTER" contentDisplay="TOP" layoutX="757.0" layoutY="503.0" mnemonicParsing="false" onAction="#OnVerResultadosButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Resultados">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../Assets/Icons/Eventos-Icon.png" />
                </image>
