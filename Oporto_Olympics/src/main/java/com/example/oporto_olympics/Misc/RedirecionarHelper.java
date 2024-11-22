@@ -208,4 +208,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoVerResultadosAtleta() {
         return new RedirecionarHelper("Views/VerResultados/VerResultadosAtleta.fxml", "Ver Resultados");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de resultados.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de resultados do atleta.
+     */
+    public static RedirecionarHelper GotoVerResultados() {
+        return new RedirecionarHelper("Views/VerResultados/VerResultados.fxml", "Resultados");
+    }
 }

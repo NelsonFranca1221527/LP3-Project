@@ -76,6 +76,8 @@ public class MenuGestorController {
      */
     @FXML
     private Button PerfilBtn;
+    @FXML
+    private Button ResultadosBtn;
     /**
      * Ação para redirecionar o utilizador para a secção de inserção de equipas.
      */
@@ -229,6 +231,19 @@ public class MenuGestorController {
 
             RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação para redirecionar o utilizador para os resultados.
+     */
+    @FXML
+    protected void OnVerResultadosButtonClick(){
+        try{
+            Stage s = (Stage) ResultadosBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoVerResultados().switchScene(s);
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
