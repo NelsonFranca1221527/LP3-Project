@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,11 +28,13 @@
             </VBox>
          </content></ScrollPane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="SKYBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-      <Label alignment="CENTER" layoutX="548.0" layoutY="69.0" prefHeight="58.0" style="-fx-background-color: #D9D9D9;" text=" Equipas " textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="559.0" layoutY="2.0" prefHeight="16.0" prefWidth="162.0" style="-fx-background-color: #D9D9D9;" text=" Equipas " textAlignment="CENTER">
          <font>
-            <Font size="40.0" />
+            <Font size="30.0" />
          </font>
       </Label>
       <Button fx:id="VoltarButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#OnClickVoltarButton" text="Voltar" />
+      <TextField fx:id="searchfield" layoutX="376.0" layoutY="80.0" prefHeight="26.0" prefWidth="496.0" />
+      <Label layoutX="316.0" layoutY="84.0" text="Pesquisar" />
    </children>
 </AnchorPane>

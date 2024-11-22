@@ -29,20 +29,35 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
 
 
     /**
-     * Este método recupera todas as equipas registadas na base de dados e retorna uma lista de objetos {@link InscricaoEquipas}.
+     * Recupera uma lista de equipas da base de dados, com a possibilidade de aplicar um filtro pelo nome.
      *
-     * Ele executa a consulta SQL "SELECT * FROM equipas" para obter todas as equipas da tabela "equipas" na base de dados,
-     * e cria uma lista de objeto com os dados obtidos.
+     * Este método permite ir buscar todas as equipas registadas na base de dados. Caso seja fornecido um valor no
+     * parâmetro `filtroNome`, apenas as equipas cujo nome contenha esse valor serão retornadas.
+     * Se o `filtroNome` for nulo ou vazio, todas as equipas serão retornadas.
      *
-     * @return Uma lista que contem todas as equipas carregadas da base de dados.
+     * A consulta SQL utiliza a cláusula `LIKE` para realizar a filtragem, caso seja especificado um filtro.
+     *
+     * @param filtroNome O nome (ou parte do nome) a ser utilizado como filtro na busca das equipas.
+     *                   Pode ser nulo ou vazio para buscar todas as equipas.
+     * @return Uma lista de objetos {@link InscricaoEquipas}, representando as equipas recuperadas da base de dados.
      * @throws RuntimeException Se ocorrer um erro ao carregar as equipas da base de dados.
      */
     @Override
-    public List<InscricaoEquipas> getEquipas() {
+    public List<InscricaoEquipas> getEquipas(String filtroNome) {
         List<InscricaoEquipas> equipas = new ArrayList<>();
-        String query = "SELECT * FROM equipas";
+        String query;
+
+        if (filtroNome == null || filtroNome.trim().isEmpty()) {
+            query = "SELECT * FROM equipas";
+        } else {
+            query = "SELECT * FROM equipas WHERE nome LIKE ?";
+        }
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            if (filtroNome != null && !filtroNome.trim().isEmpty()) {
+                pstmt.setString(1, "%" + filtroNome + "%");
+            }
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -57,10 +72,12 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
                 ));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao carregar equipas: " + e.getMessage());
+            throw new RuntimeException("Erro ao carregar equipas: " + e.getMessage(), e);
         }
+
         return equipas;
     }
+
 
     @Override
     public List<ResultadosEquipa> getHistorico(int equipaId) {
