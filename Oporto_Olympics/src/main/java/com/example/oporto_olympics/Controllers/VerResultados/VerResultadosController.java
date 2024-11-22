@@ -8,8 +8,10 @@ import com.example.oporto_olympics.DAO.Resultados.ResultadosModalidadeDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.ResultadosModalidade;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VerResultadosController {
@@ -42,6 +46,13 @@ public class VerResultadosController {
      */
     @FXML
     private VBox TopDezContainer;
+    /**
+     * Caixa de combinação para escolher a modalidade do resultado.
+     */
+    @FXML
+    private ComboBox<String> modalidadeCombo;
+
+    private HashMap<String, Integer> ModalidadeHashMap = new HashMap<>();
 
     /**
      *
@@ -54,43 +65,87 @@ public class VerResultadosController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
+        ModalidadeDAOImp modalidadeDAO = new ModalidadeDAOImp(conexao);
+
+        List<Modalidade> lst = modalidadeDAO.getAllModalidades();
+        for(Modalidade modalidade : lst){
+            ModalidadeHashMap.put(modalidade.getNome() + " - " + modalidade.getTipo() + " - " + modalidade.getGenero(), modalidade.getId());
+        }
+
+        modalidadeCombo.setItems(FXCollections.observableArrayList(ModalidadeHashMap.keySet()));
+        modalidadeCombo.getItems().add("--------");
+
+        modalidadeCombo.setValue("--------");
+
+    }
+    /**
+     * Método chamado quando o utilizador clica no botão de "Procurar" para buscar os resultados filtrados do atleta.
+     * O método limpa os cartões existentes e carrega novos cartões com os resultados filtrados, com base no ano e na modalidade
+     * selecionados pelo utilizador.
+     *
+     * @param event O evento gerado pelo clique no botão de "Procurar".
+     * @throws SQLException Se ocorrer um erro ao acessar a base de dados durante a busca dos resultados filtrados.
+     */
+    @FXML
+    void OnClickProcurarButton(ActionEvent event) throws SQLException {
+        ConnectionBD conexaoBD = ConnectionBD.getInstance();
+        Connection conexao = conexaoBD.getConexao();
+
         ResultadosModalidadeDAOImp ResultadosAtletaDAO = new ResultadosModalidadeDAOImp(conexao);
+        // Limpar cartões anteriores
+        ResultadosContainer.getChildren().clear();
+        TopDezContainer.getChildren().clear();
 
-        List<ResultadosModalidade> AllResultados = ResultadosAtletaDAO.getAll();
-        List<ResultadosModalidade> TopTenResultados = ResultadosAtletaDAO.getAllOrderedTopTen();
+        if(modalidadeCombo.getValue().equals("--------")){
+            return;
+        }
 
-        for (ResultadosModalidade resultadosAtleta : AllResultados) {
+        // Recuperar filtros
+        int modalidadeID = ModalidadeHashMap.get(modalidadeCombo.getValue());
+
+        ResultadosModalidadeDAOImp resultadosAtletaDAO = new ResultadosModalidadeDAOImp(ConnectionBD.getInstance().getConexao());
+
+        // Buscar resultados filtrados
+        List<ResultadosModalidade> filteredResults = resultadosAtletaDAO.getFilteredResults(modalidadeID);
+        List<ResultadosModalidade> TopTenResultados = ResultadosAtletaDAO.getAllOrderedTopTen(modalidadeID);
+
+
+        // Criar novos cartões com os resultados filtrados
+        for (ResultadosModalidade resultado : filteredResults) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/VerResultados/Cards/VerResultadosCard.fxml"));
                 Pane Resultados = loader.load();
                 VerResultadosCardController cardsController = loader.getController();
+                cardsController.PreencherDados(resultado);
 
-                cardsController.PreencherDados(resultadosAtleta);
-                Resultados.setUserData(resultadosAtleta);
+                Resultados.setUserData(resultado);
 
                 ResultadosContainer.getChildren().add(Resultados);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
-        for (ResultadosModalidade resultadosTen : TopTenResultados) {
-            try {
-                FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/VerResultados/Cards/VerTopTen.fxml"));
-                Pane TopTen = loader2.load();
-                VerTopTenCardController TopTenController = loader2.getController();
 
-                TopTenController.PreencherDados(resultadosTen);
-                TopTen.setUserData(resultadosTen);
+        if(TopTenResultados != null){
+            for (ResultadosModalidade resultadosTen : TopTenResultados) {
+                try {
+                    FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/VerResultados/Cards/VerTopTen.fxml"));
+                    Pane TopTen = loader2.load();
+                    VerTopTenCardController TopTenController = loader2.getController();
 
-                TopDezContainer.getChildren().add(TopTen);
+                    TopTenController.PreencherDados(resultadosTen);
+                    TopTen.setUserData(resultadosTen);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                    TopDezContainer.getChildren().add(TopTen);
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
-    }
 
+    }
     /**
      * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
      * botão, permitindo assim ao utilizador voltar para a página anterior.
