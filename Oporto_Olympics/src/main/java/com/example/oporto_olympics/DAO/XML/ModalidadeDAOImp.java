@@ -483,7 +483,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public Map<Integer, String> getAtletasPorEvento(int eventoId, int modalidadeId) throws SQLException {
         Map<Integer, String> atletas = new HashMap<>();
 
-        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ?";
+        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.atleta_id, a.nome";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             // Definir os parâmetros no SQL
@@ -518,7 +518,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public Map<Integer, String> getEquipasPorEvento(int eventoId, int modalidadeId) throws SQLException {
         Map<Integer, String> equipas = new HashMap<>();
 
-        String query = "SELECT am.equipa_id, a.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = em.equipa_id WHERE em.evento_id = ? AND em.modalidade_id = ?";
+        String query = "SELECT am.equipa_id, e.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = am.equipa_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.equipa_id, e.nome";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             // Definir os parâmetros no SQL
