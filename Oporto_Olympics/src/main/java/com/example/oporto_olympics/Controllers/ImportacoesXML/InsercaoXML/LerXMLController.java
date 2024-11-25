@@ -59,14 +59,17 @@ public class LerXMLController {
             Date dataNascimento = getDateValueFromElement(lineItemElement, "dateOfBirth");
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
-            for (int j = 0; j < participations.getLength(); j++) {
-                Element participation = (Element) participations.item(j);
-                int ano = getIntValueFromElement(participation, "year");
-                int ouro = getIntValueFromElement(participation, "gold");
-                int prata = getIntValueFromElement(participation, "silver");
-                int bronze = getIntValueFromElement(participation, "bronze");
 
-                participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
+            if (participations.getLength() > 0) {
+                for (int j = 0; j < participations.getLength(); j++) {
+                    Element participation = (Element) participations.item(j);
+                    int ano = getIntValueFromElement(participation, "year");
+                    int ouro = getIntValueFromElement(participation, "gold");
+                    int prata = getIntValueFromElement(participation, "silver");
+                    int bronze = getIntValueFromElement(participation, "bronze");
+
+                    participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
+                }
             }
 
             lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList, null));
@@ -105,12 +108,15 @@ public class LerXMLController {
             int anoFundacao = getIntValueFromElement(lineItemElement, "foundationYear");
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
-            for (int j = 0; j < participations.getLength(); j++) {
-                Element participation = (Element) participations.item(j);
-                int ano = getIntValueFromElement(participation, "year");
-                String resultado = getElementTextContent(participation, "result");
 
-                participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
+            if (participations.getLength() > 0) {
+                for (int j = 0; j < participations.getLength(); j++) {
+                    Element participation = (Element) participations.item(j);
+                    int ano = getIntValueFromElement(participation, "year");
+                    String resultado = getElementTextContent(participation, "result");
+
+                    participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
+                }
             }
 
             lst.add(new Equipa(0, nome, pais, genero, desporto, 0, anoFundacao, participaçõesEquipaList));
@@ -164,9 +170,6 @@ public class LerXMLController {
                     regras = regras + ruleText;
             }
 
-            NodeList olympicRecords = lineItemElement.getElementsByTagName("olympicRecord");
-            NodeList olympicWinners = lineItemElement.getElementsByTagName("winnerOlympic");
-
             int anoRecorde = 0;
             String vencedorRecorde = "";
 
@@ -176,46 +179,57 @@ public class LerXMLController {
             LocalTime tempoRecorde = null;
             LocalTime tempoVencedor = null;
 
-                    Element olympicRecord = (Element) olympicRecords.item(0);
-                    Element olympicWinner = (Element) olympicWinners.item(0);
+            Modalidade modalidade = null;
 
-                    Modalidade modalidade = null;
+            NodeList olympicRecords = lineItemElement.getElementsByTagName("olympicRecord");
+            NodeList olympicWinners = lineItemElement.getElementsByTagName("winnerOlympic");
 
-                    if (olympicRecord != null) {
-                        anoRecorde = getIntValueFromElement(olympicRecord, "year");
-                        vencedorRecorde = getElementTextContent(olympicRecord, "holder");
+            Element olympicRecord = null;
+            Element olympicWinner = null;
+
+            if(olympicRecords.getLength() > 0 && olympicWinners.getLength() > 0) {
+
+                olympicRecord = (Element) olympicRecords.item(0);
+                olympicWinner = (Element) olympicWinners.item(0);
+
+                anoRecorde = getIntValueFromElement(olympicRecord, "year");
+                vencedorRecorde = getElementTextContent(olympicRecord, "holder");
+
+                anoOlimpico = getIntValueFromElement(olympicWinner, "year");
+                vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
+            }
+
+                switch (medida) {
+                    case "Time":
+                        medida = "Tempo";
+
                         String tempoRecordeString = getElementTextContent(olympicRecord, "time");
 
                         if (tempoRecordeString != null && !tempoRecordeString.trim().isEmpty()) {
                             tempoRecorde = parseTime(tempoRecordeString);
                         }
 
-                        anoOlimpico = getIntValueFromElement(olympicWinner, "year");
-                        vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
                         String tempoVencedorString = getElementTextContent(olympicWinner, "time");
 
                         if (tempoVencedorString != null && !tempoVencedorString.trim().isEmpty()) {
                             tempoVencedor = parseTime(tempoVencedorString);
                         }
-                    }
 
-            switch (medida) {
-                case "Time":
-                    medida = "Tempo";
-                    RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
-                    RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
-                    break;
+                        RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
+                        RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
+                        modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
+                        break;
 
-                case "Points":
-                    medida = "Pontos";
-                    int medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
-                    String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
-                    RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
-                    RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
-                    modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
-                    break;
-            }
+                    case "Points":
+                        medida = "Pontos";
+                        int medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
+                        String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
+
+                        RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
+                        RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
+                        modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
+                        break;
+                }
                     lst.add(modalidade);
         }
 

@@ -334,17 +334,12 @@ public class InsercaoXMLController {
     void OnClickInserirButton(ActionEvent event) throws SQLException {
         AlertHandler alertHandler;
 
-        ConnectionBD conexaoBD = ConnectionBD.getInstance();
-        Connection conexao = conexaoBD.getConexao();
-
-        HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
-
         InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
 
         switch (inserçãoXMLSingleton.getTipoXML()) {
             case "Atleta":
 
-                if(getListaAtletas() == null){
+                if(getListaAtletas() == null || getListaAtletas().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Atletas!!!", "Não existem atletas para inserir, tente inserir um ficheiro XML de Atletas válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -361,7 +356,7 @@ public class InsercaoXMLController {
                 break;
             case "Equipa":
 
-                if(getListaEquipas() == null){
+                if(getListaEquipas() == null || getListaEquipas().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Equipas!!!", "Não existem equipas para inserir, tente inserir um ficheiro XML de Equipas válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -379,7 +374,7 @@ public class InsercaoXMLController {
                 break;
             case "Modalidade":
 
-                if(getListaModalidades() == null){
+                if(getListaModalidades() == null || getListaModalidades().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Modalidades!!!", "Não existem modalidades para inserir, tente inserir um ficheiro XML de Modalidades válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -402,10 +397,6 @@ public class InsercaoXMLController {
 
                 break;
         }
-
-        GestorSingleton gestorSingleton = GestorSingleton.getInstance();
-
-        historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
 
         Stage s = (Stage) InserirButton.getScene().getWindow();
         RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
@@ -508,15 +499,29 @@ public class InsercaoXMLController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
+        int quantAtletas = lst.size();
+
         AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
 
         for (Atleta atleta : lst) {
             atletaDAOImp.save(atleta);
+            lst.remove(atleta);
         }
 
-        AlertHandler alertHandler;
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Atleta/s insirado/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+        if(lst.size() < quantAtletas){
+
+            AlertHandler alertHandler;
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Atleta/s insirado/s com Sucesso!");
+            alertHandler.getAlert().showAndWait();
+
+            HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+            InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+            GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+            historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+        }
     }
 
     /**
@@ -528,6 +533,8 @@ public class InsercaoXMLController {
     private void InserirEquipas(List<Equipa> lst) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        int quantEquipas = lst.size();
 
         AlertHandler alertHandler;
 
@@ -577,10 +584,22 @@ public class InsercaoXMLController {
                 }
 
                 equipaDAOImp.save(equipa);
+                lst.remove(equipa);
         }
 
-            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
-            alertHandler.getAlert().showAndWait();
+            if(lst.size() < quantEquipas){
+
+                alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
+                alertHandler.getAlert().showAndWait();
+
+                HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+                InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+                GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+                historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+            }
     }
 
     /**
@@ -593,6 +612,8 @@ public class InsercaoXMLController {
     private void InserirModalidades(List<Modalidade> lst, int IDEvento) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        int quantModalidades = lst.size();
 
         AlertHandler alertHandler;
 
@@ -611,15 +632,28 @@ public class InsercaoXMLController {
                 }
 
                 modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+                lst.remove(modalidade);
                 continue;
             }
 
             modalidadeDAOImp.save(modalidade);
             modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+            lst.remove(modalidade);
         }
+
+        if(lst.size() < quantModalidades){
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade/s insirada/s com Sucesso!");
             alertHandler.getAlert().showAndWait();
+
+            HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+            InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+            GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+            historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+        }
     }
 
 

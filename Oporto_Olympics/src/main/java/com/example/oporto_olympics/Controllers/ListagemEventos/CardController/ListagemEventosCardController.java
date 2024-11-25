@@ -180,7 +180,7 @@ public class ListagemEventosCardController {
         //Lista todas as Modalidades
         for (Modalidade modalidade : lstModalidades) {
             //Verifica se a modalidade já foi iniciada
-            if(!modalidadeDAOImp.getStatusModalidade(evento.getId(),modalidade.getId())){
+            if(!modalidadeDAOImp.getStatusModalidade(evento.getId(),modalidade.getId()) && modalidade.getTipo().equals("Coletivo")){
                 ModalidadesHashMap.put(modalidade.getNome() + " - " + modalidade.getTipo() + " - " + modalidade.getGenero(), modalidade.getId());
             }
         }
@@ -275,7 +275,7 @@ public class ListagemEventosCardController {
 
                 boolean skipEquipaAtual = false;
 
-                if (equipa.getModalidadeID() != modalidadeID) {
+                if (equipa.getModalidadeID() != modalidadeID || equipaDAOImp.getStatus(equipa.getId())) {
                     continue;
                 }
 
