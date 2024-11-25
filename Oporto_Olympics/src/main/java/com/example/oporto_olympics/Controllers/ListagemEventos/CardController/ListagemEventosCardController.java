@@ -12,15 +12,12 @@ import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -341,7 +338,7 @@ public class ListagemEventosCardController {
                 modalidadeDAOImp.saveParticipantesColetivo(equipaId,evento.getId(), modalidadeID);
             }
 
-            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION,"Inscrição Bem Sucedida", "As Equipas foram inscritas com sucesso!");
+            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION,"Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
             alertHandler2.getAlert().showAndWait();
 
             inscreverEquipasStage.close();
