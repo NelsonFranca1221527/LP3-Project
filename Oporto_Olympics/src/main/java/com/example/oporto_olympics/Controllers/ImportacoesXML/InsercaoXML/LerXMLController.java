@@ -47,8 +47,6 @@ public class LerXMLController {
 
         for (int i = 0; i < lineItemNodes.getLength(); i++) {
 
-            List<ParticipaçõesAtleta> participaçõesAtletaList = new ArrayList<>();
-
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
             String nome = getElementTextContent(lineItemElement, "name");
@@ -57,6 +55,8 @@ public class LerXMLController {
             int altura = getIntValueFromElement(lineItemElement, "height");
             int peso = getIntValueFromElement(lineItemElement, "weight");
             Date dataNascimento = getDateValueFromElement(lineItemElement, "dateOfBirth");
+
+            List<ParticipaçõesAtleta> participaçõesAtletaList = new ArrayList<>();
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
 
@@ -96,8 +96,6 @@ public class LerXMLController {
 
         NodeList lineItemNodes = doc.getElementsByTagName("team");
 
-        List<ParticipaçõesEquipa> participaçõesEquipaList = new ArrayList<>();
-
         for (int i = 0; i < lineItemNodes.getLength(); i++) {
             Element lineItemElement = (Element) lineItemNodes.item(i);
 
@@ -108,6 +106,8 @@ public class LerXMLController {
             int anoFundacao = getIntValueFromElement(lineItemElement, "foundationYear");
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
+
+            List<ParticipaçõesEquipa> participaçõesEquipaList = new ArrayList<>();
 
             if (participations.getLength() > 0) {
                 for (int j = 0; j < participations.getLength(); j++) {
