@@ -5,6 +5,8 @@ import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemEventos.CardController.ListagemEventosCardController;
 import com.example.oporto_olympics.Models.Evento;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,6 +81,15 @@ public class ListagemEventosController {
     private void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
+
+        if(AtletaSingle.getAtleta() != null){
+            RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
+        }
+
+        if(GestorSingle.getGestor() != null){
+            RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        }
     }
 }

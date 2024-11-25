@@ -216,8 +216,9 @@ public class InsercaoXMLController {
                 tituloTipoXML.setText(tituloTipoXML.getText() + " um Atleta");
                 return;
             case "Equipa":
+                EventoGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Equipa");
-                break;
+                return;
             case "Modalidade":
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Modalidade");
                 break;
@@ -333,17 +334,12 @@ public class InsercaoXMLController {
     void OnClickInserirButton(ActionEvent event) throws SQLException {
         AlertHandler alertHandler;
 
-        ConnectionBD conexaoBD = ConnectionBD.getInstance();
-        Connection conexao = conexaoBD.getConexao();
-
-        HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
-
         InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
 
         switch (inserçãoXMLSingleton.getTipoXML()) {
             case "Atleta":
 
-                if(getListaAtletas() == null){
+                if(getListaAtletas() == null || getListaAtletas().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Atletas!!!", "Não existem atletas para inserir, tente inserir um ficheiro XML de Atletas válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -360,7 +356,7 @@ public class InsercaoXMLController {
                 break;
             case "Equipa":
 
-                if(getListaEquipas() == null){
+                if(getListaEquipas() == null || getListaEquipas().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Equipas!!!", "Não existem equipas para inserir, tente inserir um ficheiro XML de Equipas válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -373,18 +369,12 @@ public class InsercaoXMLController {
                     return;
                 }
 
-                if(EventoChoice.getValue().equals("-------")){
-                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais equipas deve inserir um evento");
-                    alertHandler.getAlert().showAndWait();
-                    return;
-                }
-
-                InserirEquipas(getListaEquipas(), itemMap.get(EventoChoice.getValue()));
+                InserirEquipas(getListaEquipas());
 
                 break;
             case "Modalidade":
 
-                if(getListaModalidades() == null){
+                if(getListaModalidades() == null || getListaModalidades().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Sem Modalidades!!!", "Não existem modalidades para inserir, tente inserir um ficheiro XML de Modalidades válido!");
                     alertHandler.getAlert().showAndWait();
                     return;
@@ -407,10 +397,6 @@ public class InsercaoXMLController {
 
                 break;
         }
-
-        GestorSingleton gestorSingleton = GestorSingleton.getInstance();
-
-        historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
 
         Stage s = (Stage) InserirButton.getScene().getWindow();
         RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
@@ -513,27 +499,42 @@ public class InsercaoXMLController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
+        int quantAtletas = lst.size();
+
         AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
 
         for (Atleta atleta : lst) {
             atletaDAOImp.save(atleta);
+            lst.remove(atleta);
         }
 
-        AlertHandler alertHandler;
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Atleta/s insirado/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+        if(lst.size() < quantAtletas){
+
+            AlertHandler alertHandler;
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Atleta/s insirado/s com Sucesso!");
+            alertHandler.getAlert().showAndWait();
+
+            HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+            InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+            GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+            historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+        }
     }
 
     /**
      * Insere a lista de equipas na base de dados.
      *
      * @param lst      A lista de equipas a ser inserida.
-     * @param IDEvento
      * @throws SQLException Se ocorrer um erro ao acessar a base de dados.
      */
-    private void InserirEquipas(List<Equipa> lst, int IDEvento) throws SQLException {
+    private void InserirEquipas(List<Equipa> lst) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        int quantEquipas = lst.size();
 
         AlertHandler alertHandler;
 
@@ -541,50 +542,64 @@ public class InsercaoXMLController {
 
         for (Equipa equipa : lst) {
 
-            Optional<Equipa> EquipaExiste = equipaDAOImp.get(equipa.getNome());
-
-            if (EquipaExiste.isPresent() && equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID() ) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Existente", "A Equipa " + equipa.getNome() + " já encontra-se registada no sistema!");
-                alertHandler.getAlert().showAndWait();
-                continue;
-            }
-
-            int anoMin = 1000;
-
-            if(equipa.getAnoFundacao() < anoMin || equipa.getAnoFundacao() > LocalDate.now().getYear()) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Ano de Fundação Inválido", "O ano de fundação da equipa " + equipa.getNome() + " - " + equipa.getGenero()  +  " não deve ser inferior a " + anoMin + " e superior a " + LocalDate.now().getYear()+"!");
-                alertHandler.getAlert().showAndWait();
-                continue;
-            }
-
-            if (!equipaDAOImp.getSigla(equipa.getPais())){
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Pais Inválido", "Insira a sigla de um País válido para a equipa " + equipa.getNome() + " - " + equipa.getGenero()  + "!");
-                alertHandler.getAlert().showAndWait();
-                continue;
-            }
-
             ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
             List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
 
             for (Modalidade modalidade : modalidadeList) {
-                if (modalidade.getNome().equals(equipa.getDesporto()) && modalidade.getGenero().equals(equipa.getGenero()) && modalidade.getListEventosID().contains(IDEvento)) {
+                if (modalidade.getNome().equals(equipa.getDesporto()) && modalidade.getGenero().equals(equipa.getGenero())) {
                     equipa.setModalidadeID(modalidade.getId());
                     break;
                 }
-
             }
 
-            if (equipa.getModalidadeID() == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
-                alertHandler.getAlert().showAndWait();
-                continue;
+            Optional<Equipa> EquipaExiste = equipaDAOImp.get(equipa.getNome());
+
+            if (EquipaExiste.isPresent()) {
+
+                if (equipa.getPais().equals(EquipaExiste.get().getPais()) && equipa.getModalidadeID() == EquipaExiste.get().getModalidadeID()) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Existente", "A Equipa " + equipa.getNome() + " já encontra-se registada no sistema!");
+                    alertHandler.getAlert().showAndWait();
+                    continue;
+                }
             }
 
-            equipaDAOImp.save(equipa);
+                int anoMin = 1000;
+
+                if (equipa.getAnoFundacao() < anoMin || equipa.getAnoFundacao() > LocalDate.now().getYear()) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Ano de Fundação Inválido", "O ano de fundação da equipa " + equipa.getNome() + " - " + equipa.getGenero() + " não deve ser inferior a " + anoMin + " e superior a " + LocalDate.now().getYear() + "!");
+                    alertHandler.getAlert().showAndWait();
+                    continue;
+                }
+
+                if (!equipaDAOImp.getSigla(equipa.getPais())) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Pais Inválido", "Insira a sigla de um País válido para a equipa " + equipa.getNome() + " - " + equipa.getGenero() + "!");
+                    alertHandler.getAlert().showAndWait();
+                    continue;
+                }
+
+                if (equipa.getModalidadeID() == 0) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
+                    alertHandler.getAlert().showAndWait();
+                    continue;
+                }
+
+                equipaDAOImp.save(equipa);
+                lst.remove(equipa);
         }
 
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
-        alertHandler.getAlert().showAndWait();
+            if(lst.size() < quantEquipas){
+
+                alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Equipa/s insirada/s com Sucesso!");
+                alertHandler.getAlert().showAndWait();
+
+                HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+                InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+                GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+                historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+            }
     }
 
     /**
@@ -597,6 +612,8 @@ public class InsercaoXMLController {
     private void InserirModalidades(List<Modalidade> lst, int IDEvento) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        int quantModalidades = lst.size();
 
         AlertHandler alertHandler;
 
@@ -615,15 +632,28 @@ public class InsercaoXMLController {
                 }
 
                 modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+                lst.remove(modalidade);
                 continue;
             }
 
             modalidadeDAOImp.save(modalidade);
             modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+            lst.remove(modalidade);
         }
+
+        if(lst.size() < quantModalidades){
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade/s insirada/s com Sucesso!");
             alertHandler.getAlert().showAndWait();
+
+            HistoricoXMLDAOImp historicoXMLDAOImp = new HistoricoXMLDAOImp(conexao);
+
+            InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
+
+            GestorSingleton gestorSingleton = GestorSingleton.getInstance();
+
+            historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
+        }
     }
 
 

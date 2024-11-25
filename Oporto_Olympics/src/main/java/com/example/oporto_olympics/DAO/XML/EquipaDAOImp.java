@@ -159,6 +159,34 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
     }
 
     /**
+     * Verifica o estado de uma equipa com base no seu ID.
+     *
+     * Este método executa uma consulta à base de dados para determinar o estado de uma equipa
+     * específica, utilizando o seu identificador único. O estado da equipa é obtido a partir
+     * da coluna "equipa_status" na tabela "equipas".
+     *
+     * @param equipaID o identificador único da equipa a ser verificada.
+     * @return {@code true} se o estado da equipa for verdadeiro (fechada); {@code false} caso contrário
+     *         ou se a equipa não for encontrada.
+     * @throws RuntimeException se ocorrer um erro durante a execução da consulta à base de dados.
+     */
+    public boolean getStatus(int equipaID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT equipa_status FROM equipas WHERE id = ?");
+            ps.setInt(1, equipaID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getBoolean("equipa_status");
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
+        }
+        return false;
+    }
+
+    /**
      * Atualiza o estado de uma equipa na tabela `equipas`.
      *
      * Este método altera o estado (`equipa_status`) de uma equipa específica na base de dados,

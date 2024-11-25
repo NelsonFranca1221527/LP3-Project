@@ -368,7 +368,32 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
             return 0;
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
+            throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Insere um registo na base de dados para associar uma equipa a uma modalidade num evento.
+     *
+     * Este método regista a participação de uma equipa numa modalidade específica de um evento,
+     * armazenando os dados na tabela `equipa_modalidade`.
+     *
+     * @param equipaID o identificador da equipa que será associada.
+     * @param eventoID o identificador do evento ao qual a equipa será associada.
+     * @param modalidadeID o identificador da modalidade à qual a equipa será associada.
+     * @throws RuntimeException se ocorrer um erro durante a execução da consulta SQL.
+     */
+    public void saveParticipantesColetivo(int equipaID,int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("Insert into equipa_modalidade (equipa_id,evento_id,modalidade_id) Values (?,?,?)");
+            ps.setInt(1, equipaID);
+            ps.setInt(2, eventoID);
+            ps.setInt(3, modalidadeID);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em associar a equipa à modalidade: " + ex.getMessage());
         }
     }
 
