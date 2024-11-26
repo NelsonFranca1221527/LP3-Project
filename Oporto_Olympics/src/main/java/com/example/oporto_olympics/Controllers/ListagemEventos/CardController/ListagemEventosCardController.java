@@ -1,9 +1,15 @@
 package com.example.oporto_olympics.Controllers.ListagemEventos.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Eventos.InscricaonoEventoDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.Evento;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +48,31 @@ public class ListagemEventosCardController {
      */
     @FXML
     private ImageView img_mascote;
+    /**
+     * Botão da interface gráfica associado à funcionalidade de inscrever o atleta.
+     */
+    @FXML
+    private Button InscreverButton;
+    /**
+     * Representa um evento específico de um card.
+     */
+    private Evento eventoEspecifico;
+    /**
+     * Obtém o evento específico associado.
+     *
+     * @return o evento específico atualmente associado a esta classe.
+     */
+    public Evento getEventoEspecifico() {
+        return eventoEspecifico;
+    }
+    /**
+     * Define o evento específico associado.
+     *
+     * @param eventoEspecifico o novo evento específico a associar a esta classe.
+     */
+    public void setEventoEspecifico(Evento eventoEspecifico) {
+        this.eventoEspecifico = eventoEspecifico;
+    }
     /**
      * Preenche os dados do evento nos rótulos e imagens correspondentes.
      *
@@ -91,5 +122,66 @@ public class ListagemEventosCardController {
                 System.out.println(e.getMessage());
             }
         }
+
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
+        AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+
+        if(GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null){
+            InscreverButton.setDisable(true);
+            InscreverButton.setVisible(false);
+        }
+
+        setEventoEspecifico(evento);
+    }
+    /**
+     * Método acionado ao clicar no botão de inscrição.
+     * Gera uma inscrição para o atleta no evento selecionado, verificando previamente o estado das inscrições existentes.
+     *
+     * @throws SQLException se ocorrer um erro ao aceder à base de dados.
+     *
+     * Regras de inscrição:
+     * <ul>
+     *   <li>Se o atleta já tiver um pedido de inscrição pendente para o evento, é apresentada uma mensagem de aviso.</li>
+     *   <li>Se o atleta já estiver inscrito (estado aprovado) no evento, é apresentada uma mensagem de aviso.</li>
+     *   <li>Se não existir uma inscrição, é criada uma nova com o estado "Pendente".</li>
+     * </ul>
+     * Em caso de erro inesperado, apresenta uma mensagem de erro ao utilizador.
+     */
+    @FXML
+    public void OnClickInscreverButton() throws SQLException {
+        ConnectionBD conexaoBD = ConnectionBD.getInstance();
+        Connection conexao = conexaoBD.getConexao();
+
+        InscricaonoEventoDAOImp InscreverEvnto = new InscricaonoEventoDAOImp(conexao);
+        AtletaSingleton atletaSingle = AtletaSingleton.getInstance();
+        Atleta atleta = atletaSingle.getAtleta();
+
+        try {
+            int eventoId = eventoEspecifico.getId();
+            int atletaId = atleta.getId();
+
+            System.out.println(atletaId);
+
+            if (InscreverEvnto.existeInscricaoPendente(atletaId)) {
+                Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para este evento...");
+                pendenteAlert.show();
+            } else {
+
+                if(InscreverEvnto.existeInscricaoAprovada(atletaId)) {
+                    Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING,"Já está inscrito neste evento");
+                    aprovadoAlert.show();
+                } else {
+                    String estado = "Pendente";
+                    InscreverEvnto.inserirInscricao(estado,eventoId, atletaId);
+
+                    Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Foi criada uma inscrição pedente. Porfavor aguarde para aprovação");
+                    inscricaoAlert.showAndWait();
+                }
+            }
+        } catch (RuntimeException e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
+            errorAlert.show();
+        }
+
     }
 }
