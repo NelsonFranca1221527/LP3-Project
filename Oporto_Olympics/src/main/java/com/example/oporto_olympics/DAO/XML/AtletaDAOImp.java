@@ -128,17 +128,8 @@ public class AtletaDAOImp implements DAO<Atleta> {
                 return;
             }
 
-            for (int i = 0; i < atleta.getParticipaçõesAtletas().size(); i++) {
-                PreparedStatement ps4 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
-
-                ps4.setInt(1, atleta.getId());
-                ps4.setNull(2, java.sql.Types.INTEGER);
-                ps4.setInt(3, atleta.getParticipaçõesAtletas().get(i).getAno());
-                ps4.setInt(4, atleta.getParticipaçõesAtletas().get(i).getOuro());
-                ps4.setInt(5, atleta.getParticipaçõesAtletas().get(i).getPrata());
-                ps4.setInt(6, atleta.getParticipaçõesAtletas().get(i).getBronze());
-                ps4.executeUpdate();
-                ps4.close();
+            for(ParticipaçõesAtleta participaçõesAtleta : atleta.getParticipaçõesAtletas()){
+                saveHistorico(atleta.getId(), 0, participaçõesAtleta);
             }
 
         } catch (SQLException ex) {
@@ -213,6 +204,43 @@ public class AtletaDAOImp implements DAO<Atleta> {
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Insere os dados de participação de um atleta num evento na tabela
+     * `historico_atletas_competicoes` da base de dados.
+     *
+     * @param atletaID O identificador único do atleta na base de dados.
+     * @param eventoID O identificador único do evento na base de dados.
+     *                 Se for igual a 0, será registado como `NULL` na base de dados.
+     * @param participaçõesAtleta Um objeto da classe {@code ParticipaçõesAtleta} que contém
+     *                            os detalhes da participação, incluindo o ano e o número de
+     *                            medalhas (ouro, prata e bronze).
+     * @throws SQLException Lançada se ocorrer um erro ao executar a operação SQL.
+     * @throws RuntimeException Envolvendo a exceção SQL se ocorrer algum erro no processo,
+     *                          com uma mensagem detalhada do problema.
+     */
+    public void saveHistorico(int atletaID, int eventoID, ParticipaçõesAtleta participaçõesAtleta) throws SQLException {
+        try{
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
+
+            ps.setInt(1, atletaID);
+            ps.setNull(2, java.sql.Types.INTEGER);
+
+            if(eventoID != 0){
+                ps.setInt(2, eventoID);
+            }
+
+            ps.setInt(3, participaçõesAtleta.getAno());
+            ps.setInt(4, participaçõesAtleta.getOuro());
+            ps.setInt(5, participaçõesAtleta.getPrata());
+            ps.setInt(6, participaçõesAtleta.getBronze());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao inserir histórico no atleta: " + ex.getMessage());
+        }
     }
 
     /**

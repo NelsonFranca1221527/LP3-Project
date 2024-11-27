@@ -3,9 +3,11 @@ package com.example.oporto_olympics.Controllers.ListagemModalidades.CardControll
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAO;
 import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
+import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.DAO.Resultados.ResultadosModalidadeDAOImp;
+import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
@@ -353,13 +355,23 @@ public class ListagemModalidadesCardController {
 
                     resultado = Double.valueOf(String.format("%.2f", resultado).replace(",", "."));
 
+                    int ouro = 0;
+
+                    int prata = 0;
+
+                    int bronze = 0;
+
                     // Determinar medalha (agora com o melhor resultado recebendo ouro)
+
                     String medalha = "Nenhuma";
                     if (ranking == 1) {
+                        ouro++;
                         medalha = "Ouro";
                     } else if (ranking == 2) {
+                        prata++;
                         medalha = "Prata";
                     } else if (ranking == 3) {
+                        bronze++;
                         medalha = "Bronze";
                     }
 
@@ -375,7 +387,40 @@ public class ListagemModalidadesCardController {
 
                     resultadosModalidadeDAOImp.save(resultadosModalidade);
 
+                    EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+
+                    Evento evento = eventosDAOImp.getById(eventoID);
+
+                    AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
+
+                    if (isIndividual) {
+
+                        atletaDAOImp.saveHistorico(participanteID, eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+
+                    } else {
+
+                        if (ranking > 3) {
+                            medalha = "Diploma";
+                        }
+
+                        EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+
+                            equipaDAOImp.saveHistorico(participanteID, eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+
+                        ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+
+                        List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participanteID);
+
+                        if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+
+                            for (AtletaInfo atletaInfo : lstAtletaInfo) {
+                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                            }
+                        }
+                    }
+
                     ranking++;
+
                 }
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Resultados aceites foram salvos com sucesso.");
@@ -514,18 +559,53 @@ public class ListagemModalidadesCardController {
                 for (int i = 0; i < sortedPontos.size(); i++) {
                     Integer equipaID = sortedPontos.get(i).getKey();
                     Integer pontos = sortedPontos.get(i).getValue();
+
+                    int ouro = 0;
+
+                    int prata = 0;
+
+                    int bronze = 0;
+
                     String medalha = "Nenhuma";
                     if (i == 0) {
+                        ouro++;
                         medalha = "Ouro";
                     } else if (i == 1) {
+                        prata++;
                         medalha = "Prata";
                     } else if (i == 2) {
+                        bronze++;
                         medalha = "Bronze";
                     }
 
                     ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), 0, equipaID);
 
                     resultadosModalidadeDAOImp.save(resultado);
+
+                        if (i > 2) {
+                            medalha = "Diploma";
+                        }
+
+                    EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+
+                    Evento evento = eventosDAOImp.getById(eventoID);
+
+                    EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+
+                        equipaDAOImp.saveHistorico(equipaID, eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+
+                    ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+
+                    AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
+
+                    List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(equipaID);
+
+                    if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+
+                        for (AtletaInfo atletaInfo : lstAtletaInfo) {
+                            atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                        }
+                    }
                 }
 
                 modalidadeDAOImp.updateEventos_ModalidadesStatus(eventoID, modalidade.getId(), 1);
