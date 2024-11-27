@@ -2,6 +2,8 @@ package com.example.oporto_olympics.DAO.Resultados;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.DAO;
+import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
+import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.ResultadosModalidade;
 
 import java.sql.*;
@@ -29,17 +31,29 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
      * @return uma lista de objetos {@link ResultadosModalidade} representando todos os resultados de atletas na base de dados.
      * @throws RuntimeException se ocorrer um erro ao obter os resultados de atletas.
      */
-    public List<String> getAtletaNome (int id){
-        List<String> nomes = new ArrayList<>();
+    public String getTitularNome (int id, String tipoTitular) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT nome FROM atletas WHERE user_id = ?");
+
+            String query = "";
+
+            if(tipoTitular.equals("Atleta")){
+                query = "SELECT nome FROM atletas WHERE user_id = ?";
+            }
+
+            if(tipoTitular.equals("Equipa")){
+                query = "SELECT nome FROM equipas WHERE id = ?";
+            }
+
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                nomes.add(rs.getString("nome"));
+            if(rs.next()){
+                return rs.getString("nome");
             }
-            return nomes;
+
+            return null;
+
         } catch (SQLException ex) {
             throw new RuntimeException("Erro ao obter o resultado pelo ID: " + ex.getMessage());
         }
@@ -69,7 +83,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
                         rs.getDouble("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
-                        rs.getInt("modalidade_id"), rs.getInt("atleta_id"), 0));
+                        rs.getInt("modalidade_id"), rs.getInt("atleta_id"), rs.getInt("equipa_id")));
             }
             return lst;
         } catch (SQLException ex) {
@@ -84,9 +98,30 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
      */
     public List<ResultadosModalidade> getAllOrderedTopTen(int id) {
         List<ResultadosModalidade> lst = new ArrayList<>();
+
+        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(connection);
+
+        String oneGame = "";
+
+        for (Modalidade modalidade : modalidadeDAOImp.getAll()){
+            if(modalidade.getId() == id){
+                oneGame = modalidade.getOneGame();
+            }
+        }
+
+        String query = "SELECT TOP 10 * FROM resultados WHERE modalidade_id = ? ORDER BY resultado ";
+
+        if(oneGame.equals("One")){
+            query = query + "ASC";
+        }else {
+            query = query + "DESC";
+        }
+
+
+
         try {
 
-            PreparedStatement ps = connection.prepareStatement("SELECT TOP 10 * FROM resultados WHERE modalidade_id = ? ORDER BY resultado ASC");
+            PreparedStatement ps = connection.prepareStatement(query);
             if (id != 0) {
                 ps.setInt(1, id);
             } else {

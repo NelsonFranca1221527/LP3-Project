@@ -27,21 +27,34 @@ public class VerTopTenCardController {
     /**
      * Preenche os dados do resultado nos rótulos e imagens correspondentes.
      *
-     * @param resultadosAtleta O objeto {@link ResultadosModalidade} contendo os dados do resultado a serem preenchidos.
+     * @param resultado O objeto {@link ResultadosModalidade} contendo os dados do resultado a serem preenchidos.
      * @throws SQLException Se ocorrer um erro na consulta da base de dados.
      */
-    public void PreencherDados (ResultadosModalidade resultadosAtleta) throws SQLException {
+    public void PreencherDados (ResultadosModalidade resultado) throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
 
         ResultadosModalidadeDAOImp resultadosDao = new ResultadosModalidadeDAOImp(conexao);
 
-        List<String> Atleta = resultadosDao.getAtletaNome(resultadosAtleta.getAtletaID());
+        int idTitular = 0;
 
-        for (String nomeAtleta : Atleta) {
-            AtletaLabel.setText(nomeAtleta);
+        String tipoTitular = "";
+
+        if (resultado.getAtletaID() != 0 && resultado.getEquipaID() == 0) {
+            idTitular = resultado.getAtletaID();
+            tipoTitular = "Atleta";
         }
-        resultadoLabel.setText(String.valueOf(resultadosAtleta.getResultado()));
+
+        if (resultado.getAtletaID() == 0 && resultado.getEquipaID() != 0) {
+            idTitular = resultado.getEquipaID();
+            tipoTitular = "Equipa";
+        }
+
+        String Titular = resultadosDao.getTitularNome(idTitular,tipoTitular);
+
+        AtletaLabel.setText(Titular);
+
+        resultadoLabel.setText(String.valueOf(resultado.getResultado()));
 
     }
 }
