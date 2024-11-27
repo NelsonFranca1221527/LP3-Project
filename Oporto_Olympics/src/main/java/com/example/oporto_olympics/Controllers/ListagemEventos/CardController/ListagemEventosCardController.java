@@ -406,14 +406,14 @@ public class ListagemEventosCardController {
             int eventoId = eventoEspecifico.getId();
             int atletaId = atleta.getId();
 
-            System.out.println(atletaId);
+            System.out.println(eventoId);
 
-            if (InscreverEvnto.existeInscricaoPendente(atletaId)) {
+            if (InscreverEvnto.existeInscricaoPendente(atletaId, eventoId)) {
                 Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para este evento...");
                 pendenteAlert.show();
             } else {
 
-                if(InscreverEvnto.existeInscricaoAprovada(atletaId)) {
+                if(InscreverEvnto.existeInscricaoAprovada(atletaId, eventoId)) {
                     Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING,"Já está inscrito neste evento");
                     aprovadoAlert.show();
                 } else {

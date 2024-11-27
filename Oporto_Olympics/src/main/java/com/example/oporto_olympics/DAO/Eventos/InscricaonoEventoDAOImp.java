@@ -37,15 +37,17 @@ public class InscricaonoEventoDAOImp {
      * Verifica se existe uma inscrição pendente para um atleta específico.
      *
      * @param atletaId o identificador único do atleta.
+     * @param evento_id o identificador único do evento.
      * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoPendente(int atletaId) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND estado = 'Pendente'";
+    public boolean existeInscricaoPendente(int atletaId, int evento_id) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Pendente'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
+            pstmt.setInt(2, evento_id);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -61,15 +63,17 @@ public class InscricaonoEventoDAOImp {
      * Verifica se existe uma inscrição aprovada para um atleta específico.
      *
      * @param atletaId o identificador único do atleta.
+     * @param evento_id o identificador único do evento.
      * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoAprovada(int atletaId) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND estado = 'Aprovado'";
+    public boolean existeInscricaoAprovada(int atletaId, int evento_id) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Aprovado'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
+            pstmt.setInt(2, evento_id);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
