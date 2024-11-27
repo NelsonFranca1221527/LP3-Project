@@ -216,4 +216,7 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoVerResultados() {
         return new RedirecionarHelper("Views/VerResultados/VerResultados.fxml", "Resultados");
     }
+    public static RedirecionarHelper GotoListarXML() {
+        return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Resultados");
+    }
 }

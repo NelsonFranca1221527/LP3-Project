@@ -28,7 +28,8 @@
             <content>
                 <Pane>
                     <children>
-                        <VBox fx:id="ModalidadesContainer" />
+                        <!-- Container onde os cards serão adicionados -->
+                        <VBox fx:id="ModalidadesContainer" spacing="10" style="-fx-padding: 10;" />
                     </children>
                 </Pane>
             </content>

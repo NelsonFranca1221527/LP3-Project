@@ -43,18 +43,20 @@ public class ListagemXMLDAOImp implements ListagemXMLDAO {
             Statement stmt = conexao.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM historicoXML");
             while (rs.next()) {
-                lst.add(new HistoricoXML(
+                HistoricoXML historicoXML = new HistoricoXML(
                         rs.getInt("user_id"),
                         rs.getTimestamp("entradaxml_date").toLocalDateTime(),
                         rs.getString("tipo"),
                         new File(rs.getString("ficheiroXML"))
-                ));
+                );
+                lst.add(historicoXML);
             }
             return lst;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao obter histórico XML: " + e.getMessage());
         }
     }
+
 
 
 
