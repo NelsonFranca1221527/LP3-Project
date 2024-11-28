@@ -38,18 +38,18 @@ public class VerResultadosCardController {
     @FXML
     private Label tipoLabel;
     /**
-     * Rótulo para mostrar o nome do atleta.
+     * Rótulo para mostrar o nome do titular.
      */
     @FXML
-    private Label AtletaLabel;
+    private Label TitularLabel;
 
     /**
      * Preenche os dados do resultado nos rótulos e imagens correspondentes.
      *
-     * @param resultadosAtleta O objeto {@link ResultadosModalidade} contendo os dados do resultado a serem preenchidos.
+     * @param resultado O objeto {@link ResultadosModalidade} contendo os dados do resultado a serem preenchidos.
      * @throws SQLException Se ocorrer um erro na consulta da base de dados.
      */
-    public void PreencherDados (ResultadosModalidade resultadosAtleta) throws SQLException {
+    public void PreencherDados (ResultadosModalidade resultado) throws SQLException {
 
         ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
@@ -57,19 +57,31 @@ public class VerResultadosCardController {
         ResultadosModalidadeDAOImp resultadosDao = new ResultadosModalidadeDAOImp(conexao);
         ModalidadeDAOImp modalidadeDAO = new ModalidadeDAOImp(conexao);
 
-        List<String> Atleta = resultadosDao.getAtletaNome(resultadosAtleta.getAtletaID());
+        int idTitular = 0;
 
-        for (String nomeAtleta : Atleta) {
-            AtletaLabel.setText(nomeAtleta);
+        String tipoTitular = "";
+
+        if (resultado.getAtletaID() != 0 && resultado.getEquipaID() == 0) {
+            idTitular = resultado.getAtletaID();
+            tipoTitular = "Atleta";
         }
 
-        dataLabel.setText(String.valueOf(resultadosAtleta.getData()));
-        medalhaLabel.setText(resultadosAtleta.getMedalha());
-        resultadoLabel.setText(String.valueOf(resultadosAtleta.getResultado()));
-        tipoLabel.setText(resultadosAtleta.getTipo());
+        if (resultado.getAtletaID() == 0 && resultado.getEquipaID() != 0) {
+            idTitular = resultado.getEquipaID();
+            tipoTitular = "Equipa";
+        }
+
+        String Titular = resultadosDao.getTitularNome(idTitular,tipoTitular);
+
+        TitularLabel.setText(Titular);
+
+        dataLabel.setText(String.valueOf(resultado.getData()));
+        medalhaLabel.setText(resultado.getMedalha());
+        resultadoLabel.setText(String.valueOf(resultado.getResultado()));
+        tipoLabel.setText(resultado.getTipo());
 
         // Define o modalidadeLabel com o nome da modalidade usando o ID
-        String nomeModalidade = modalidadeDAO.getNomeById(resultadosAtleta.getModalidadeID());
+        String nomeModalidade = modalidadeDAO.getNomeById(resultado.getModalidadeID());
         if (nomeModalidade != null) {
             modalidadeLabel.setText(nomeModalidade);
         } else {

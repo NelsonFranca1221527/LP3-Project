@@ -99,7 +99,7 @@ public class MenuAtletaController {
         try {
             Stage s = (Stage) EventoBtn.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoListagemEventos().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -16,6 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InserirAtletaTest {
 
+    /**
+     * Testa a funcionalidade de inserir um novo atleta na base de dados.
+     *
+     * O teste verifica o seguinte:
+     * <ul>
+     *   <li>Insere um atleta com os dados fornecidos utilizando o DAO responsável.</li>
+     *   <li>Recupera todos os atletas da base de dados e verifica se o atleta inserido está presente.</li>
+     * </ul>
+     *
+     * Asserção:
+     * <ul>
+     *   <li>O teste confirma que o atleta inserido foi corretamente adicionado, verificando pelo nome.</li>
+     * </ul>
+     *
+     * @throws SQLException se ocorrer um erro de comunicação com a base de dados durante a execução.
+     */
     @Test
     void InserirAtleta() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();

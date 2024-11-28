@@ -368,7 +368,32 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
             return 0;
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
+            throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Insere um registo na base de dados para associar uma equipa a uma modalidade num evento.
+     *
+     * Este método regista a participação de uma equipa numa modalidade específica de um evento,
+     * armazenando os dados na tabela `equipa_modalidade`.
+     *
+     * @param equipaID o identificador da equipa que será associada.
+     * @param eventoID o identificador do evento ao qual a equipa será associada.
+     * @param modalidadeID o identificador da modalidade à qual a equipa será associada.
+     * @throws RuntimeException se ocorrer um erro durante a execução da consulta SQL.
+     */
+    public void saveParticipantesColetivo(int equipaID,int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("Insert into equipa_modalidade (equipa_id,evento_id,modalidade_id) Values (?,?,?)");
+            ps.setInt(1, equipaID);
+            ps.setInt(2, eventoID);
+            ps.setInt(3, modalidadeID);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em associar a equipa à modalidade: " + ex.getMessage());
         }
     }
 
@@ -483,7 +508,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public Map<Integer, String> getAtletasPorEvento(int eventoId, int modalidadeId) throws SQLException {
         Map<Integer, String> atletas = new HashMap<>();
 
-        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ?";
+        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.atleta_id, a.nome";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             // Definir os parâmetros no SQL
@@ -518,7 +543,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public Map<Integer, String> getEquipasPorEvento(int eventoId, int modalidadeId) throws SQLException {
         Map<Integer, String> equipas = new HashMap<>();
 
-        String query = "SELECT am.equipa_id, a.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = em.equipa_id WHERE em.evento_id = ? AND em.modalidade_id = ?";
+        String query = "SELECT am.equipa_id, e.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = am.equipa_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.equipa_id, e.nome";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             // Definir os parâmetros no SQL
