@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InscricaonoEventoDAOImp {
 
@@ -19,13 +21,14 @@ public class InscricaonoEventoDAOImp {
      * @param atletaId o identificador único do atleta.
      * @throws RuntimeException se ocorrer um erro ao inserir a inscrição na base de dados.
      */
-    public void inserirInscricao(String status, int eventoId, int atletaId) {
-        String insertQuery = "INSERT INTO inscricoes_atletas (estado, evento_id, atleta_id) VALUES (?, ?, ?)";
+    public void inserirInscricao(String status, int eventoId, int atletaId, int modalidade_id) {
+        String insertQuery = "INSERT INTO inscricoes_atletas (estado, evento_id, atleta_id,modalidade_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
             pstmt.setString(1, status);
             pstmt.setInt(2, eventoId);
             pstmt.setInt(3, atletaId);
+            pstmt.setInt(4, modalidade_id);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -84,4 +87,41 @@ public class InscricaonoEventoDAOImp {
         }
         return false;
     }
+
+    public List<String> getModalidadesPorEvento(int eventoId) {
+        List<String> modalidades = new ArrayList<>();
+        String sql = "SELECT modalidade FROM eventos_modalidades WHERE evento_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, eventoId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                modalidades.add(rs.getString("modalidade"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar modalidades para o evento: " + eventoId, e);
+        }
+
+        return modalidades;
+    }
+
+    public int getModalidadeIdByNome(String nome) {
+        String sql = "SELECT nome FROM modalidades WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao receber a modalidade.", e);
+        }
+        return -1; // Caso não encontre a modalidade
+    }
+
+
 }

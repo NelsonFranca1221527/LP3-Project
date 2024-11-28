@@ -395,6 +395,7 @@ public class ListagemEventosCardController {
      */
     @FXML
     public void OnClickInscreverButton() throws SQLException {
+        // Obter a conexão com o banco de dados
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
@@ -403,31 +404,72 @@ public class ListagemEventosCardController {
         Atleta atleta = atletaSingle.getAtleta();
 
         try {
-            int eventoId = eventoEspecifico.getId();
-            int atletaId = atleta.getId();
-
-            System.out.println(eventoId);
+            // Passo 1: Verificar se o atleta já tem uma inscrição pendente ou aprovada
+            int eventoId = eventoEspecifico.getId();  // ID do evento específico
+            int atletaId = atleta.getId(); // ID do atleta
 
             if (InscreverEvnto.existeInscricaoPendente(atletaId, eventoId)) {
                 Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para este evento...");
                 pendenteAlert.show();
+            } else if (InscreverEvnto.existeInscricaoAprovada(atletaId, eventoId)) {
+                Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Já está inscrito neste evento");
+                aprovadoAlert.show();
             } else {
-
-                if(InscreverEvnto.existeInscricaoAprovada(atletaId, eventoId)) {
-                    Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING,"Já está inscrito neste evento");
-                    aprovadoAlert.show();
-                } else {
-                    String estado = "Pendente";
-                    InscreverEvnto.inserirInscricao(estado,eventoId, atletaId);
-
-                    Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Foi criada uma inscrição pedente. Porfavor aguarde para aprovação");
-                    inscricaoAlert.showAndWait();
+                // Passo 2: Seleção da modalidade
+                String modalidadeEscolhida = selecionarModalidade(eventoId);  // Método para selecionar a modalidade
+                if (modalidadeEscolhida == null) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, selecione uma modalidade.");
+                    alert.show();
+                    return; // Se não escolher uma modalidade, não continua
                 }
+
+                // Passo 3: Inserir a inscrição com a modalidade escolhida
+                String estado = "Pendente";
+                InscreverEvnto.inserirInscricao(estado, eventoId, atletaId, modalidadeEscolhida); // Adiciona a modalidade à inscrição
+
+                // Passo 4: Alerta de sucesso
+                Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Foi criada uma inscrição pendente. Por favor, aguarde para aprovação.");
+                inscricaoAlert.showAndWait();
             }
         } catch (RuntimeException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
             errorAlert.show();
         }
-
     }
+    private String selecionarModalidade(int eventoId) {
+        // Criar um ComboBox para exibir as modalidades disponíveis
+        ComboBox<String> comboBoxModalidades = new ComboBox<>();
+
+        List<String> modalidades = InscreverEvnto.getModalidadeIdByNome(eventoId); // Buscar as modalidades associadas ao evento
+        comboBoxModalidades.getItems().addAll(modalidades);
+
+        // Criar o botão para confirmar a seleção
+        Button confirmarButton = new Button("Confirmar Modalidade");
+        confirmarButton.setOnAction(event -> {
+            String modalidadeEscolhida = comboBoxModalidades.getValue();
+            if (modalidadeEscolhida != null) {
+                // Modalidade selecionada, podemos continuar
+                // Fechar a janela (no caso de uma janela de escolha)
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, selecione uma modalidade.");
+                alert.show();
+            }
+        });
+
+        // Criar o layout da interface para seleção da modalidade
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(new Label("Escolha a Modalidade:"), comboBoxModalidades, confirmarButton);
+
+        // Criar uma nova janela para selecionar a modalidade
+        Stage stage = new Stage();
+        stage.setTitle("Selecione a Modalidade");
+        Scene scene = new Scene(layout, 300, 200);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        // Retornar a modalidade escolhida
+        return comboBoxModalidades.getValue();  // Retorna a modalidade escolhida ou null se não tiver sido selecionada
+    }
+
+
 }
