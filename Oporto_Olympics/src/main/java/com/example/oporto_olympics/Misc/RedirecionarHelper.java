@@ -216,6 +216,11 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoVerResultados() {
         return new RedirecionarHelper("Views/VerResultados/VerResultados.fxml", "Resultados");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página da listagem dos XMLs.
+     *
+     * @return Um {@link RedirecionarHelper} para a página da listagem do XML.
+     */
     public static RedirecionarHelper GotoListarXML() {
         return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Resultados");
     }

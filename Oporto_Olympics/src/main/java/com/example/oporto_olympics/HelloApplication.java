@@ -9,7 +9,7 @@ import java.io.IOException;
 public class    HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        RedirecionarHelper.GotoListarXML().switchScene(stage);
+        RedirecionarHelper.GotoLogin().switchScene(stage);
     }
 
     public static void main(String[] args) {

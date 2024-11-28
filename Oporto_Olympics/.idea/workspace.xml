@@ -5,13 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Fix da listagem Equipa">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/ListagemXML.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PasswordBD.txt" beforeDir="false" afterPath="$PROJECT_DIR$/PasswordBD.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportacoesXML/ListagemXMLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ImportacoesXML/ListagemXMLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ListagemXMLDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ListagemXMLDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ListagemXMLDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ListagemXMLDAOImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ListagemXML/ListagemXML.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/ListagemXML/ListagemXML.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/HistoricoXML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/HistoricoXML.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/MenuPrincipal-Gestor/MenuGestor.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/MenuPrincipal-Gestor/MenuGestor.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

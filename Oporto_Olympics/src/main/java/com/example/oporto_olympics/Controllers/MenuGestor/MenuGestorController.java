@@ -62,6 +62,11 @@ public class MenuGestorController {
     @FXML
     private Button InsertModalidadeBtn;
     /**
+     * Botão para listar os ficheiros XML.
+     */
+    @FXML
+    private Button btnFXML;
+    /**
      * Botão para aceder à secção de importação de dados via XML.
      */
     @FXML
@@ -257,6 +262,16 @@ public class MenuGestorController {
 
             RedirecionarHelper.GotoLogin().switchScene(s);
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @FXML
+    protected void OnListarXMLButtonClick(){
+        try{
+            Stage s = (Stage) btnFXML.getScene().getWindow();
+
+            RedirecionarHelper.GotoListarXML().switchScene(s);
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
