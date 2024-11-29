@@ -212,4 +212,5 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
             System.err.println("Erro ao inserir dados: " + e.getMessage());
         }
     }
+
 }

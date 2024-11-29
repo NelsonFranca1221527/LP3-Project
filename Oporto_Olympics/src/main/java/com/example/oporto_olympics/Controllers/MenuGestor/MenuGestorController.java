@@ -67,6 +67,11 @@ public class MenuGestorController {
     @FXML
     private Button btnFXML;
     /**
+     * Botão para listar os pedidos de inscrição em um Evento.
+     */
+    @FXML
+    private Button InscricoesBtnEvento;
+    /**
      * Botão para aceder à secção de importação de dados via XML.
      */
     @FXML
@@ -275,4 +280,15 @@ public class MenuGestorController {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    protected void OnInscricoesEventoButtonClick(){
+        try{
+            Stage s = (Stage) InscricoesBtnEvento.getScene().getWindow();
+
+            RedirecionarHelper.GotoAprovarAtletaEvento().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }

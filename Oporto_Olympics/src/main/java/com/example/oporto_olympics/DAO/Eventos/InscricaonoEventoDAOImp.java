@@ -37,24 +37,27 @@ public class InscricaonoEventoDAOImp {
     }
 
     /**
-     * Verifica se existe uma inscrição pendente para um atleta específico.
+     * Verifica se existe uma inscrição pendente para um atleta específico em uma modalidade.
      *
      * @param atletaId o identificador único do atleta.
-     * @param evento_id o identificador único do evento.
-     * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
+     * @param eventoId o identificador único do evento.
+     * @param modalidadeId o identificador único da modalidade.
+     * @return {@code true} se o atleta tiver pelo menos uma inscrição pendente na modalidade;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoPendente(int atletaId, int evento_id) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Pendente'";
+    public boolean existeInscricaoPendente(int atletaId, int eventoId, int modalidadeId) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas " +
+                "WHERE atleta_id = ? AND evento_id = ? AND modalidade_id = ? AND estado = 'Pendente'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
-            pstmt.setInt(2, evento_id);
+            pstmt.setInt(2, eventoId);
+            pstmt.setInt(3, modalidadeId);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Retorna true se o contador for maior que 0, indicando que existe um pedido pendente
+                return rs.getInt(1) > 0; // Retorna true se o contador for maior que 0
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao verificar pedido pendente: " + e.getMessage());
@@ -62,21 +65,25 @@ public class InscricaonoEventoDAOImp {
         return false;
     }
 
+
     /**
-     * Verifica se existe uma inscrição aprovada para um atleta específico.
+     * Verifica se existe uma inscrição aprovada para um atleta específico em uma modalidade.
      *
      * @param atletaId o identificador único do atleta.
-     * @param evento_id o identificador único do evento.
-     * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
+     * @param eventoId o identificador único do evento.
+     * @param modalidadeId o identificador único da modalidade.
+     * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada na modalidade;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoAprovada(int atletaId, int evento_id) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Aprovado'";
+    public boolean existeInscricaoAprovada(int atletaId, int eventoId, int modalidadeId) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas " +
+                "WHERE atleta_id = ? AND evento_id = ? AND modalidade_id = ? AND estado = 'Aprovado'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
-            pstmt.setInt(2, evento_id);
+            pstmt.setInt(2, eventoId);
+            pstmt.setInt(3, modalidadeId);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -88,40 +95,55 @@ public class InscricaonoEventoDAOImp {
         return false;
     }
 
-    public List<String> getModalidadesPorEvento(int eventoId) {
-        List<String> modalidades = new ArrayList<>();
-        String sql = "SELECT modalidade FROM eventos_modalidades WHERE evento_id = ?";
-
+    /**
+     * Obtém os identificadores das modalidades associadas a um evento específico.
+     *
+     * @param eventoId o identificador único do evento.
+     * @return uma lista de identificadores das modalidades associadas ao evento.
+     *         Se não houver modalidades associadas, retorna uma lista vazia.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
+     */
+    public List<Integer> getModalidadesPorEvento(int eventoId) {
+        String sql = "SELECT modalidade_id FROM eventos_modalidades WHERE evento_id = ?";
+        List<Integer> modalidadeIds = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, eventoId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                modalidades.add(rs.getString("modalidade"));
+                modalidadeIds.add(rs.getInt("modalidade_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar modalidades para o evento: " + eventoId, e);
+            throw new RuntimeException("Erro ao recuperar as modalidades associadas ao evento.", e);
         }
-
-        return modalidades;
+        return modalidadeIds;
     }
 
-    public int getModalidadeIdByNome(String nome) {
+    /**
+     * Obtém o nome de uma modalidade com base no seu identificador único.
+     *
+     * @param id o identificador único da modalidade.
+     * @return o nome da modalidade, ou {@code null} se a modalidade não for encontrada.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
+     */
+    public String getModalidadeNomeById(int id) {
         String sql = "SELECT nome FROM modalidades WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, nome);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("id");
+                return rs.getString("nome");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao receber a modalidade.", e);
+            throw new RuntimeException("Erro ao recuperar o nome da modalidade.", e);
         }
-        return -1; // Caso não encontre a modalidade
+        return null;
     }
+
+
 
 
 }

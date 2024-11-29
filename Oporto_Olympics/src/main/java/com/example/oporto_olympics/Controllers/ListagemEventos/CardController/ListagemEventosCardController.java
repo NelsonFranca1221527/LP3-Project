@@ -18,6 +18,8 @@ import javafx.event.ActionEvent;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
@@ -26,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -380,96 +383,108 @@ public class ListagemEventosCardController {
         setEventoEspecifico(evento);
     }
     /**
-     * Método acionado ao clicar no botão de inscrição.
-     * Gera uma inscrição para o atleta no evento selecionado, verificando previamente o estado das inscrições existentes.
+     * Método acionado ao clicar no botão de inscrição. Realiza a interação com a base de dados
+     * para verificar a seleção de uma modalidade e gerenciar a inscrição do atleta no evento.
      *
-     * @throws SQLException se ocorrer um erro ao aceder à base de dados.
-     *
-     * Regras de inscrição:
-     * <ul>
-     *   <li>Se o atleta já tiver um pedido de inscrição pendente para o evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se o atleta já estiver inscrito (estado aprovado) no evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se não existir uma inscrição, é criada uma nova com o estado "Pendente".</li>
-     * </ul>
-     * Em caso de erro inesperado, apresenta uma mensagem de erro ao utilizador.
+     * @throws SQLException se ocorrer um erro ao aceder a base de dados.
      */
     @FXML
     public void OnClickInscreverButton() throws SQLException {
-        // Obter a conexão com o banco de dados
+
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        InscricaonoEventoDAOImp InscreverEvnto = new InscricaonoEventoDAOImp(conexao);
-        AtletaSingleton atletaSingle = AtletaSingleton.getInstance();
-        Atleta atleta = atletaSingle.getAtleta();
+        InscricaonoEventoDAOImp inscreverEvento = new InscricaonoEventoDAOImp(conexao);
+        AtletaSingleton atletaSingleton = AtletaSingleton.getInstance();
+        Atleta atleta = atletaSingleton.getAtleta();
 
         try {
-            // Passo 1: Verificar se o atleta já tem uma inscrição pendente ou aprovada
-            int eventoId = eventoEspecifico.getId();  // ID do evento específico
-            int atletaId = atleta.getId(); // ID do atleta
+            int eventoId = eventoEspecifico.getId();
+            int atletaId = atleta.getId();
 
-            if (InscreverEvnto.existeInscricaoPendente(atletaId, eventoId)) {
-                Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para este evento...");
-                pendenteAlert.show();
-            } else if (InscreverEvnto.existeInscricaoAprovada(atletaId, eventoId)) {
-                Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Já está inscrito neste evento");
-                aprovadoAlert.show();
-            } else {
-                // Passo 2: Seleção da modalidade
-                String modalidadeEscolhida = selecionarModalidade(eventoId);  // Método para selecionar a modalidade
-                if (modalidadeEscolhida == null) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, selecione uma modalidade.");
-                    alert.show();
-                    return; // Se não escolher uma modalidade, não continua
-                }
-
-                // Passo 3: Inserir a inscrição com a modalidade escolhida
-                String estado = "Pendente";
-                InscreverEvnto.inserirInscricao(estado, eventoId, atletaId, modalidadeEscolhida); // Adiciona a modalidade à inscrição
-
-                // Passo 4: Alerta de sucesso
-                Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Foi criada uma inscrição pendente. Por favor, aguarde para aprovação.");
-                inscricaoAlert.showAndWait();
-            }
+            abrirSelecaoModalidade(inscreverEvento, eventoId, atletaId);
         } catch (RuntimeException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
             errorAlert.show();
         }
     }
-    private String selecionarModalidade(int eventoId) {
-        // Criar um ComboBox para exibir as modalidades disponíveis
-        ComboBox<String> comboBoxModalidades = new ComboBox<>();
+    /**
+     * Abre uma janela para selecionar a modalidade associada a um evento e realiza as validações necessárias.
+     *
+     * @param inscreverEvento o objeto {@code InscricaonoEventoDAOImp} para interagir com a base de dados.
+     * @param eventoId o identificador único do evento.
+     * @param atletaId o identificador único do atleta.
+     * @throws SQLException se ocorrer um erro ao acessar a base de dados.
+     */
+    private void abrirSelecaoModalidade(InscricaonoEventoDAOImp inscreverEvento, int eventoId, int atletaId) throws SQLException {
+        List<Integer> modalidadesIds = inscreverEvento.getModalidadesPorEvento(eventoId);
 
-        List<String> modalidades = InscreverEvnto.getModalidadeIdByNome(eventoId); // Buscar as modalidades associadas ao evento
-        comboBoxModalidades.getItems().addAll(modalidades);
+        if (modalidadesIds.isEmpty()) {
+            Alert noModalidadesAlert = new Alert(Alert.AlertType.INFORMATION, "Não há modalidades disponíveis para este evento.");
+            noModalidadesAlert.show();
+            return;
+        }
 
-        // Criar o botão para confirmar a seleção
-        Button confirmarButton = new Button("Confirmar Modalidade");
-        confirmarButton.setOnAction(event -> {
-            String modalidadeEscolhida = comboBoxModalidades.getValue();
-            if (modalidadeEscolhida != null) {
-                // Modalidade selecionada, podemos continuar
-                // Fechar a janela (no caso de uma janela de escolha)
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, selecione uma modalidade.");
-                alert.show();
-            }
-        });
-
-        // Criar o layout da interface para seleção da modalidade
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(new Label("Escolha a Modalidade:"), comboBoxModalidades, confirmarButton);
-
-        // Criar uma nova janela para selecionar a modalidade
         Stage stage = new Stage();
-        stage.setTitle("Selecione a Modalidade");
-        Scene scene = new Scene(layout, 300, 200);
-        stage.setScene(scene);
-        stage.showAndWait();
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER_LEFT);
+        vbox.setPadding(new Insets(20));
 
-        // Retornar a modalidade escolhida
-        return comboBoxModalidades.getValue();  // Retorna a modalidade escolhida ou null se não tiver sido selecionada
+        Label label = new Label("Escolha uma modalidade:");
+        vbox.getChildren().add(label);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        VBox modalContent = new VBox(10);
+        modalContent.setAlignment(Pos.CENTER_LEFT);
+
+        for (int modalidadeId : modalidadesIds) {
+
+            String modalidadeNome = inscreverEvento.getModalidadeNomeById(modalidadeId);
+
+            Button btn = new Button(modalidadeNome);
+            btn.setMaxWidth(Double.MAX_VALUE);
+            btn.setOnAction(event -> {
+                try {
+
+                    if (inscreverEvento.existeInscricaoPendente(atletaId, eventoId, modalidadeId)) {
+                        Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe uma inscrição pendente para esta modalidade.");
+                        pendenteAlert.show();
+                    } else if (inscreverEvento.existeInscricaoAprovada(atletaId, eventoId, modalidadeId)) {
+                        Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Já está inscrito nesta modalidade.");
+                        aprovadoAlert.show();
+                    } else {
+                        String estado = "Pendente";
+                        inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
+
+                        Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada para a modalidade: " + modalidadeNome + ". Por favor, aguarde aprovação.");
+                        inscricaoAlert.showAndWait();
+                        stage.close();
+                    }
+                } catch (RuntimeException ex) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + ex.getMessage());
+                    errorAlert.show();
+                }
+            });
+            modalContent.getChildren().add(btn);
+        }
+
+        scrollPane.setContent(modalContent);
+        vbox.getChildren().add(scrollPane);
+
+        Button cancelButton = new Button("Cancelar");
+        cancelButton.setOnAction(e -> stage.close());
+        vbox.getChildren().add(cancelButton);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setScene(scene);
+        stage.setTitle("Selecione uma Modalidade");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
+
+
+
 
 
 }

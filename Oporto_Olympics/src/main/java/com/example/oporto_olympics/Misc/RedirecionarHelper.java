@@ -222,6 +222,9 @@ public class RedirecionarHelper {
      * @return Um {@link RedirecionarHelper} para a página da listagem do XML.
      */
     public static RedirecionarHelper GotoListarXML() {
-        return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Resultados");
+        return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Ficheiros XML");
+    }
+    public static RedirecionarHelper GotoAprovarAtletaEvento() {
+        return new RedirecionarHelper("Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml", "Atletas Eventos");
     }
 }
