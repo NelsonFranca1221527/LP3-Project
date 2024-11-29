@@ -1,8 +1,6 @@
 package com.example.oporto_olympics.Controllers.ListagemModalidades.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAO;
-import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
@@ -244,7 +242,7 @@ public class ListagemModalidadesCardController {
             if(modalidade.getTipo().equals("Individual")){
                 participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID);
             }else {
-                participantes = modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
+                participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID) + modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
             }
 
             if(participantes < modalidade.getMinParticipantes()){
@@ -299,11 +297,29 @@ public class ListagemModalidadesCardController {
             ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
             ResultadosModalidadeDAOImp resultadosModalidadeDAOImp = new ResultadosModalidadeDAOImp(conexao);
 
-            // Obter participantes (IDs e nomes)
+            // Obter participantes (IDs, nomes e tipo)
             boolean isIndividual = modalidade.getTipo().equalsIgnoreCase("Individual");
-            Map<Integer, String> participantes = isIndividual
-                    ? modalidadeDAOImp.getAtletasPorEvento(eventoID, modalidade.getId())
-                    : modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
+
+            List<Participante> participantes = new ArrayList<>();
+
+            Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
+            Map<Integer, String> atletas = modalidadeDAOImp.getAtletasPorEvento(eventoID, modalidade.getId());
+
+            if(!(equipas == null) && !equipas.isEmpty()) {
+
+                // Adicionar equipas ao mapa
+                for (Map.Entry<Integer, String> entry : equipas.entrySet()) {
+                    participantes.add(new Participante(entry.getKey(), entry.getValue(), "Equipa"));
+                }
+            }
+
+            if(!(atletas == null) && !atletas.isEmpty()) {
+
+                // Adicionar atletas ao mapa
+                for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
+                    participantes.add(new Participante(entry.getKey(), entry.getValue(), "Atleta"));
+                }
+            }
 
             // Criar o diálogo para exibir resultados
             Dialog<ButtonType> resultadosDialog = new Dialog<>();
@@ -318,26 +334,25 @@ public class ListagemModalidadesCardController {
             resultadosGrid.add(new Label("Resultado"), 1, 0);
 
             Random random = new Random();
-            Map<Integer, Double> resultadoParticipante = new HashMap<>();
+            Map<Participante, Double> resultadoParticipante = new HashMap<>();
 
             // Gerar resultados e armazenar no Map
-            for (Map.Entry<Integer, String> entry : participantes.entrySet()) {
-                Integer participanteID = entry.getKey();
+            for (Participante participante : participantes) {
                 double resultado = 10 + (90 * random.nextDouble());
-                resultadoParticipante.put(participanteID, resultado);
+                resultadoParticipante.put(participante, resultado);
             }
 
             // Ordenar os resultados em ordem crescente (menor resultado recebe ouro)
-            List<Map.Entry<Integer, Double>> sortedResults = resultadoParticipante.entrySet().stream()
+            List<Map.Entry<Participante, Double>> sortedResults = resultadoParticipante.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue()) // Ordenação crescente
                     .collect(Collectors.toList());
 
             // Exibir os resultados ordenados na tabela
             for (int i = 0; i < sortedResults.size(); i++) {
-                Integer participanteID = sortedResults.get(i).getKey();
+                Participante participante = sortedResults.get(i).getKey();
                 Double resultado = sortedResults.get(i).getValue();
                 int row = resultadosGrid.getRowCount(); // Obter a próxima linha
-                resultadosGrid.add(new Label(participantes.get(participanteID)), 0, row);
+                resultadosGrid.add(new Label(participante.getNome()), 0, row);
                 resultadosGrid.add(new Label(String.format("%.2f", resultado)), 1, row);
             }
 
@@ -349,20 +364,15 @@ public class ListagemModalidadesCardController {
             if (dialogResult.isPresent() && dialogResult.get() == ButtonType.OK) {
                 // Atribuir medalhas com base no ranking após a ordenação
                 int ranking = 1;
-                for (Map.Entry<Integer, Double> entry : sortedResults) {
-                    Integer participanteID = entry.getKey();
+                for (Map.Entry<Participante, Double> entry : sortedResults) {
+                    Participante participante = entry.getKey();
                     Double resultado = entry.getValue();
 
                     resultado = Double.valueOf(String.format("%.2f", resultado).replace(",", "."));
 
-                    int ouro = 0;
-
-                    int prata = 0;
-
-                    int bronze = 0;
+                    int ouro = 0, prata = 0, bronze = 0;
 
                     // Determinar medalha (agora com o melhor resultado recebendo ouro)
-
                     String medalha = "Nenhuma";
                     if (ranking == 1) {
                         ouro++;
@@ -380,9 +390,9 @@ public class ListagemModalidadesCardController {
                     ResultadosModalidade resultadosModalidade;
 
                     if (isIndividual) {
-                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), participanteID, 0);
+                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
                     } else {
-                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participanteID);
+                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
                     }
 
                     resultadosModalidadeDAOImp.save(resultadosModalidade);
@@ -395,32 +405,48 @@ public class ListagemModalidadesCardController {
 
                     if (isIndividual) {
 
-                        atletaDAOImp.saveHistorico(participanteID, eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
                     } else {
 
-                        if (ranking > 3) {
-                            medalha = "Diploma";
+                        if (participante.getTipo().equals("Atleta")) {
+
+                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), (double) resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
+
+                            resultadosModalidadeDAOImp.save(resultadoModalidade);
+
+                            atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+
                         }
 
-                        EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+                        if (participante.getTipo().equals("Equipa")) {
 
-                            equipaDAOImp.saveHistorico(participanteID, eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), (double) resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
 
-                        ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+                            resultadosModalidadeDAOImp.save(resultadoModalidade);
 
-                        List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participanteID);
+                            if (ranking > 3) {
+                                medalha = "Diploma";
+                            }
 
-                        if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+                            EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
-                            for (AtletaInfo atletaInfo : lstAtletaInfo) {
-                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+
+                            ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+
+                            List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participante.getID());
+
+                            if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+
+                                for (AtletaInfo atletaInfo : lstAtletaInfo) {
+                                    atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                                }
                             }
                         }
                     }
 
                     ranking++;
-
                 }
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Resultados aceites foram salvos com sucesso.");
@@ -432,6 +458,7 @@ public class ListagemModalidadesCardController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao gerar resultados: " + ex.getMessage());
             alert.show();
         }
+
     }
 
     /**
@@ -455,7 +482,9 @@ public class ListagemModalidadesCardController {
             ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
             ResultadosModalidadeDAOImp resultadosModalidadeDAOImp = new ResultadosModalidadeDAOImp(conexao);
 
+            // Obter participantes (equipas e atletas)
             Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
+            Map<Integer, String> atletas = modalidadeDAOImp.getAtletasPorEvento(eventoID, modalidade.getId());
 
             Dialog<ButtonType> resultadosDialog = new Dialog<>();
             resultadosDialog.setTitle("Resultados Finais");
@@ -465,89 +494,109 @@ public class ListagemModalidadesCardController {
             resultadosGrid.setVgap(10);
             resultadosGrid.setStyle("-fx-padding: 20; -fx-alignment: center-left;");
 
-            resultadosGrid.add(new Label("Equipa"), 0, 0);
+            resultadosGrid.add(new Label("Participante"), 0, 0);
             resultadosGrid.add(new Label("Pontos"), 1, 0);
 
-            Map<Integer, Integer> pontosEquipas = new HashMap<>();
-            for (Integer equipaID : equipas.keySet()) {
-                pontosEquipas.put(equipaID, 0);
+            // Criar mapa de pontos
+            Map<Participante, Integer> pontosParticipantes = new HashMap<>();
+
+            if(!(equipas == null) && !equipas.isEmpty()) {
+
+                // Adicionar equipas ao mapa
+                for (Map.Entry<Integer, String> entry : equipas.entrySet()) {
+                    pontosParticipantes.put(new Participante(entry.getKey(), entry.getValue(), "Equipa"), 0);
+                }
+            }
+
+            if(!(atletas == null) && !atletas.isEmpty()) {
+
+                // Adicionar atletas ao mapa
+                for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
+                    pontosParticipantes.put(new Participante(entry.getKey(), entry.getValue(), "Atleta"), 0);
+                }
             }
 
             Random random = new Random();
             StringBuilder resultadosJogos = new StringBuilder();
 
-            List<Integer> equipaIDs = new ArrayList<>(equipas.keySet());
-            for (int i = 0; i < equipaIDs.size(); i++) {
-                for (int j = i + 1; j < equipaIDs.size(); j++) {
-                    Integer equipa1 = equipaIDs.get(i);
-                    Integer equipa2 = equipaIDs.get(j);
+            // Simular jogos entre participantes
+            List<Participante> participantes = new ArrayList<>(pontosParticipantes.keySet());
+            for (int i = 0; i < participantes.size(); i++) {
+                for (int j = i + 1; j < participantes.size(); j++) {
+                    Participante participante1 = participantes.get(i);
+                    Participante participante2 = participantes.get(j);
 
-                    int resultadoEquipa1 = random.nextInt(5);
-                    int resultadoEquipa2 = random.nextInt(5);
+                    int resultadoParticipante1 = random.nextInt(5);
+                    int resultadoParticipante2 = random.nextInt(5);
 
-                    if (resultadoEquipa1 > resultadoEquipa2) {
-                        pontosEquipas.merge(equipa1, 3, Integer::sum);
-                    } else if (resultadoEquipa1 < resultadoEquipa2) {
-                        pontosEquipas.merge(equipa2, 3, Integer::sum);
+                    if (resultadoParticipante1 > resultadoParticipante2) {
+                        pontosParticipantes.merge(participante1, 3, Integer::sum);
+                    } else if (resultadoParticipante1 < resultadoParticipante2) {
+                        pontosParticipantes.merge(participante2, 3, Integer::sum);
                     } else {
-                        pontosEquipas.merge(equipa1, 1, Integer::sum);
-                        pontosEquipas.merge(equipa2, 1, Integer::sum);
+                        pontosParticipantes.merge(participante1, 1, Integer::sum);
+                        pontosParticipantes.merge(participante2, 1, Integer::sum);
                     }
 
                     resultadosJogos.append(String.format("Jogo: %s %d x %d %s%n",
-                            equipas.get(equipa1), resultadoEquipa1, resultadoEquipa2, equipas.get(equipa2)));
+                            participante1.getNome(), resultadoParticipante1, resultadoParticipante2, participante2.getNome()));
                 }
             }
 
+            // Resolver empates
             boolean empates = true;
             while (empates) {
-                Map<Integer, List<Integer>> pontosEmpatados = pontosEquipas.entrySet().stream()
-                        .collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+                Map<Integer, List<Participante>> pontosEmpatados = pontosParticipantes.entrySet().stream()
+                        .collect(Collectors.groupingBy(Map.Entry::getValue,
+                                Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
 
                 empates = false;
-                for (Map.Entry<Integer, List<Integer>> entry : pontosEmpatados.entrySet()) {
+                for (Map.Entry<Integer, List<Participante>> entry : pontosEmpatados.entrySet()) {
                     if (entry.getValue().size() > 1) {
-                        List<Integer> equipasEmpatadas = entry.getValue();
+                        List<Participante> participanteEmpatados = entry.getValue();
                         empates = true;
 
-                        // Resolver o empate com jogos adicionais
-                        for (int i = 0; i < equipasEmpatadas.size(); i++) {
-                            for (int j = i + 1; j < equipasEmpatadas.size(); j++) {
-                                Integer equipa1 = equipasEmpatadas.get(i);
-                                Integer equipa2 = equipasEmpatadas.get(j);
+                        // Resolver empate com jogos adicionais
+                        for (int i = 0; i < participanteEmpatados.size(); i++) {
+                            for (int j = i + 1; j < participanteEmpatados.size(); j++) {
+                                Participante participante1 = participanteEmpatados.get(i);
+                                Participante participante2 = participanteEmpatados.get(j);
 
-                                int resultadoEquipa1 = random.nextInt(5);
-                                int resultadoEquipa2 = random.nextInt(5);
+                                int resultadoParticipante1 = random.nextInt(5);
+                                int resultadoParticipante2 = random.nextInt(5);
 
-                                if (resultadoEquipa1 > resultadoEquipa2) {
-                                    pontosEquipas.merge(equipa1, 1, Integer::sum);
-                                } else if (resultadoEquipa1 < resultadoEquipa2) {
-                                    pontosEquipas.merge(equipa2, 1, Integer::sum);
+                                if (resultadoParticipante1 > resultadoParticipante2) {
+                                    pontosParticipantes.merge(participante1, 1, Integer::sum);
+                                } else if (resultadoParticipante1 < resultadoParticipante2) {
+                                    pontosParticipantes.merge(participante2, 1, Integer::sum);
                                 }
 
                                 resultadosJogos.append(String.format("Desempate: %s %d x %d %s%n",
-                                        equipas.get(equipa1), resultadoEquipa1, resultadoEquipa2, equipas.get(equipa2)));
+                                        participante1.getNome(), resultadoParticipante1, resultadoParticipante2, participante2.getNome()));
                             }
                         }
                     }
                 }
             }
 
+            // Mostrar resultados dos jogos
             Alert resultadosJogosAlert = new Alert(Alert.AlertType.INFORMATION);
             resultadosJogosAlert.setTitle("Resultados dos Jogos");
             resultadosJogosAlert.setHeaderText("Aqui estão os resultados de todos os jogos:");
             resultadosJogosAlert.setContentText(resultadosJogos.toString());
             resultadosJogosAlert.showAndWait();
 
-            List<Map.Entry<Integer, Integer>> sortedPontos = pontosEquipas.entrySet().stream()
+            // Ordenar participantes por pontos
+            List<Map.Entry<Participante, Integer>> sortedPontos = pontosParticipantes.entrySet().stream()
                     .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                     .collect(Collectors.toList());
 
-            for (Map.Entry<Integer, Integer> entry : sortedPontos) {
-                Integer equipaID = entry.getKey();
+            // Adicionar resultados ao grid
+            for (Map.Entry<Participante, Integer> entry : sortedPontos) {
+                Participante participante = entry.getKey();
                 Integer pontos = entry.getValue();
                 int row = resultadosGrid.getRowCount();
-                resultadosGrid.add(new Label(equipas.get(equipaID)), 0, row);
+                resultadosGrid.add(new Label(participante.getNome()), 0, row);
                 resultadosGrid.add(new Label(pontos.toString()), 1, row);
             }
 
@@ -557,7 +606,7 @@ public class ListagemModalidadesCardController {
             Optional<ButtonType> dialogResult = resultadosDialog.showAndWait();
             if (dialogResult.isPresent() && dialogResult.get() == ButtonType.OK) {
                 for (int i = 0; i < sortedPontos.size(); i++) {
-                    Integer equipaID = sortedPontos.get(i).getKey();
+                    Participante participante = sortedPontos.get(i).getKey();
                     Integer pontos = sortedPontos.get(i).getValue();
 
                     int ouro = 0;
@@ -578,32 +627,45 @@ public class ListagemModalidadesCardController {
                         medalha = "Bronze";
                     }
 
-                    ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), 0, equipaID);
-
-                    resultadosModalidadeDAOImp.save(resultado);
-
-                        if (i > 2) {
-                            medalha = "Diploma";
-                        }
+                    AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
 
                     EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
 
                     Evento evento = eventosDAOImp.getById(eventoID);
 
-                    EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+                    if (participante.getTipo().equals("Atleta")) {
 
-                        equipaDAOImp.saveHistorico(equipaID, eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
 
-                    ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+                        resultadosModalidadeDAOImp.save(resultado);
 
-                    AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
-                    List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(equipaID);
+                    }
 
-                    if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+                    if (participante.getTipo().equals("Equipa")) {
 
-                        for (AtletaInfo atletaInfo : lstAtletaInfo) {
-                            atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
+
+                        resultadosModalidadeDAOImp.save(resultado);
+
+                        if (i > 2) {
+                            medalha = "Diploma";
+                        }
+
+                        EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+
+                        equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+
+                        ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+
+                        List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participante.getID());
+
+                        if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+
+                            for (AtletaInfo atletaInfo : lstAtletaInfo) {
+                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                            }
                         }
                     }
                 }
