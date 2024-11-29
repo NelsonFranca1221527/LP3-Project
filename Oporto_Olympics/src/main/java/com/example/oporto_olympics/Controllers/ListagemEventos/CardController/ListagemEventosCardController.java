@@ -407,7 +407,7 @@ public class ListagemEventosCardController {
         List<Modalidade> modalidadesDisponiveis = new ArrayList<>();
 
         for (Modalidade modalidade : lstModalidades) {
-            if (!modalidadeDAOImp.getStatusModalidade(evento.getId(), modalidade.getId())) {
+            if (!modalidadeDAOImp.getStatusModalidade(evento.getId(), modalidade.getId()) && atleta.getGenero().equals(modalidade.getGenero())) {
                 modalidadesDisponiveis.add(modalidade);
             }
         }
