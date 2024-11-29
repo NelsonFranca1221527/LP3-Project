@@ -377,18 +377,17 @@ public class ListagemEventosCardController {
         setEventoEspecifico(evento);
     }
     /**
-     * Método acionado ao clicar no botão de inscrição.
-     * Gera uma inscrição para o atleta no evento selecionado, verificando previamente o estado das inscrições existentes.
+     * Método acionado ao clicar no botão "Inscrever", permitindo que um atleta se inscreva em modalidades disponíveis.
      *
-     * @throws SQLException se ocorrer um erro ao aceder à base de dados.
-     *
-     * Regras de inscrição:
+     * Funcionalidades:
      * <ul>
-     *   <li>Se o atleta já tiver um pedido de inscrição pendente para o evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se o atleta já estiver inscrito (estado aprovado) no evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se não existir uma inscrição, é criada uma nova com o estado "Pendente".</li>
+     *   <li>Obtém o evento específico e as modalidades disponíveis (não iniciadas).</li>
+     *   <li>Exibe uma tabela com as modalidades disponíveis e um botão para inscrição.</li>
+     *   <li>Valida se já existe uma inscrição pendente ou aprovada antes de criar uma nova.</li>
+     *   <li>Cria uma inscrição com estado "Pendente" e exibe mensagens de sucesso ou erro.</li>
      * </ul>
-     * Em caso de erro inesperado, apresenta uma mensagem de erro ao utilizador.
+     *
+     * @throws SQLException se ocorrer um erro ao acessar a base de dados.
      */
     @FXML
     public void OnClickInscreverButton() throws SQLException {
