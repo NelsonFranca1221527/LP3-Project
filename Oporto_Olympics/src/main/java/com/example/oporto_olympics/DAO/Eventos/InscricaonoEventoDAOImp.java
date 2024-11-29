@@ -1,5 +1,9 @@
 package com.example.oporto_olympics.DAO.Eventos;
 
+import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Misc.AlertHandler;
+import javafx.scene.control.Alert;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,13 +23,14 @@ public class InscricaonoEventoDAOImp {
      * @param atletaId o identificador único do atleta.
      * @throws RuntimeException se ocorrer um erro ao inserir a inscrição na base de dados.
      */
-    public void inserirInscricao(String status, int eventoId, int atletaId) {
-        String insertQuery = "INSERT INTO inscricoes_atletas (estado, evento_id, atleta_id) VALUES (?, ?, ?)";
+    public void inserirInscricao(String status, int eventoId, int atletaId, int modalidadeEventoID) {
+        String insertQuery = "INSERT INTO inscricoes_atletas (estado, evento_id, atleta_id, modalidade_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
             pstmt.setString(1, status);
             pstmt.setInt(2, eventoId);
             pstmt.setInt(3, atletaId);
+            pstmt.setInt(4, modalidadeEventoID);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -38,16 +43,18 @@ public class InscricaonoEventoDAOImp {
      *
      * @param atletaId o identificador único do atleta.
      * @param evento_id o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
      * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoPendente(int atletaId, int evento_id) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Pendente'";
+    public boolean existeInscricaoPendente(int atletaId, int evento_id, int modalidadeID) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND modalidade_id = ? AND estado = 'Pendente'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
             pstmt.setInt(2, evento_id);
+            pstmt.setInt(3,modalidadeID);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -64,16 +71,18 @@ public class InscricaonoEventoDAOImp {
      *
      * @param atletaId o identificador único do atleta.
      * @param evento_id o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
      * @return {@code true} se o atleta tiver pelo menos uma inscrição aprovada;
      *         {@code false} caso contrário.
      * @throws RuntimeException se ocorrer um erro ao executar a consulta na base de dados.
      */
-    public boolean existeInscricaoAprovada(int atletaId, int evento_id) {
-        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND estado = 'Aprovado'";
+    public boolean existeInscricaoAprovada(int atletaId, int evento_id, int modalidadeID) {
+        String query = "SELECT COUNT(*) FROM inscricoes_atletas WHERE atleta_id = ? AND evento_id = ? AND modalidade_id = ? AND estado = 'Aprovado'";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, atletaId);
             pstmt.setInt(2, evento_id);
+            pstmt.setInt(3,modalidadeID);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

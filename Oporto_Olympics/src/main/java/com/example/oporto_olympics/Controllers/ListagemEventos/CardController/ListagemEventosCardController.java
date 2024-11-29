@@ -31,10 +31,7 @@ import javafx.stage.Stage;
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Controlador responsável por gerir a exibição dos dados de um evento em um card.
@@ -380,54 +377,125 @@ public class ListagemEventosCardController {
         setEventoEspecifico(evento);
     }
     /**
-     * Método acionado ao clicar no botão de inscrição.
-     * Gera uma inscrição para o atleta no evento selecionado, verificando previamente o estado das inscrições existentes.
+     * Método acionado ao clicar no botão "Inscrever", permitindo que um atleta se inscreva em modalidades disponíveis.
      *
-     * @throws SQLException se ocorrer um erro ao aceder à base de dados.
-     *
-     * Regras de inscrição:
+     * Funcionalidades:
      * <ul>
-     *   <li>Se o atleta já tiver um pedido de inscrição pendente para o evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se o atleta já estiver inscrito (estado aprovado) no evento, é apresentada uma mensagem de aviso.</li>
-     *   <li>Se não existir uma inscrição, é criada uma nova com o estado "Pendente".</li>
+     *   <li>Obtém o evento específico e as modalidades disponíveis (não iniciadas).</li>
+     *   <li>Exibe uma tabela com as modalidades disponíveis e um botão para inscrição.</li>
+     *   <li>Valida se já existe uma inscrição pendente ou aprovada antes de criar uma nova.</li>
+     *   <li>Cria uma inscrição com estado "Pendente" e exibe mensagens de sucesso ou erro.</li>
      * </ul>
-     * Em caso de erro inesperado, apresenta uma mensagem de erro ao utilizador.
+     *
+     * @throws SQLException se ocorrer um erro ao acessar a base de dados.
      */
     @FXML
     public void OnClickInscreverButton() throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        InscricaonoEventoDAOImp InscreverEvnto = new InscricaonoEventoDAOImp(conexao);
+        InscricaonoEventoDAOImp inscreverEvento = new InscricaonoEventoDAOImp(conexao);
+        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
         AtletaSingleton atletaSingle = AtletaSingleton.getInstance();
         Atleta atleta = atletaSingle.getAtleta();
 
-        try {
-            int eventoId = eventoEspecifico.getId();
-            int atletaId = atleta.getId();
+        // Obter o evento específico
+        Evento evento = getEventoEspecifico();
 
-            System.out.println(eventoId);
+        // Obter modalidades não iniciadas do evento
+        List<Modalidade> lstModalidades = modalidadeDAOImp.getAll();
+        List<Modalidade> modalidadesDisponiveis = new ArrayList<>();
 
-            if (InscreverEvnto.existeInscricaoPendente(atletaId, eventoId)) {
-                Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para este evento...");
-                pendenteAlert.show();
-            } else {
-
-                if(InscreverEvnto.existeInscricaoAprovada(atletaId, eventoId)) {
-                    Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING,"Já está inscrito neste evento");
-                    aprovadoAlert.show();
-                } else {
-                    String estado = "Pendente";
-                    InscreverEvnto.inserirInscricao(estado,eventoId, atletaId);
-
-                    Alert inscricaoAlert = new Alert(Alert.AlertType.INFORMATION, "Foi criada uma inscrição pedente. Porfavor aguarde para aprovação");
-                    inscricaoAlert.showAndWait();
-                }
+        for (Modalidade modalidade : lstModalidades) {
+            if (!modalidadeDAOImp.getStatusModalidade(evento.getId(), modalidade.getId())) {
+                modalidadesDisponiveis.add(modalidade);
             }
-        } catch (RuntimeException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + e.getMessage());
-            errorAlert.show();
         }
 
+        // Verificar se há modalidades disponíveis
+        if (modalidadesDisponiveis.isEmpty()) {
+            Alert noModalidadesAlert = new Alert(Alert.AlertType.WARNING, "Não há modalidades disponíveis para inscrição neste evento.");
+            noModalidadesAlert.show();
+            return;
+        }
+
+        // Construir a interface com uma tabela
+        VBox vBox = new VBox(10);
+        vBox.setStyle("-fx-padding: 20; -fx-background-color: #ffffff; -fx-border-color: black; -fx-border-width: 1;");
+
+        TableView<Modalidade> tableView = new TableView<>();
+        tableView.setItems(FXCollections.observableArrayList(modalidadesDisponiveis));
+
+        // Coluna Nome da Modalidade
+        TableColumn<Modalidade, String> nomeColumn = new TableColumn<>("Nome da Modalidade");
+        nomeColumn.setMinWidth(250);
+        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
+
+        // Coluna Gênero
+        TableColumn<Modalidade, String> generoColumn = new TableColumn<>("Gênero");
+        generoColumn.setMinWidth(150);
+        generoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGenero()));
+
+        // Coluna Ação (Botão Inscrever)
+        TableColumn<Modalidade, Void> actionColumn = new TableColumn<>("Ação");
+        actionColumn.setMinWidth(150);
+        actionColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button btn = new Button("Inscrever");
+
+            {
+                btn.setOnAction(event -> {
+                    Modalidade modalidade = getTableView().getItems().get(getIndex());
+
+                    int modalidadeId = modalidade.getId();
+                    int atletaId = atleta.getId();
+                    int eventoId = evento.getId();
+
+                    try {
+                        if (inscreverEvento.existeInscricaoPendente(atletaId, eventoId, modalidadeId)) {
+                            Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para esta modalidade.");
+                            pendenteAlert.show();
+                        } else if (inscreverEvento.existeInscricaoAprovada(atletaId, eventoId, modalidadeId)) {
+                            Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Você já está inscrito nesta modalidade.");
+                            aprovadoAlert.show();
+                        } else {
+                            String estado = "Pendente";
+                            inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
+
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
+                            successAlert.showAndWait();
+
+                            // Opcional: remover a modalidade da tabela após inscrição
+                            getTableView().getItems().remove(modalidade);
+                        }
+                    } catch (RuntimeException ex) {
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + ex.getMessage());
+                        errorAlert.show();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btn);
+                }
+            }
+        });
+
+        // Adicionar colunas à tabela
+        tableView.getColumns().addAll(nomeColumn, generoColumn, actionColumn);
+
+        // Adicionar tabela ao layout
+        vBox.getChildren().add(tableView);
+
+        // Mostrar a janela
+        Stage inscreverStage = new Stage();
+        inscreverStage.setScene(new Scene(vBox, 600, 400));
+        inscreverStage.setTitle("Modalidades Disponíveis para Inscrição");
+        inscreverStage.show();
     }
+
 }
