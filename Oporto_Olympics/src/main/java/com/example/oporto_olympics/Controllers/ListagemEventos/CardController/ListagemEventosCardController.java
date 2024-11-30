@@ -365,6 +365,21 @@ public class ListagemEventosCardController {
                 return;
             }
 
+            if(EquipasHashMap.isEmpty()){
+                alertHandler2 = new AlertHandler(
+                        Alert.AlertType.WARNING,
+                        "Equipas Inexistentes!!",
+                        "Todas as equipas já estão inscritas no evento,\n" +
+                                "não há equipas que pratiquem este desporto\n" +
+                                "ou nenhuma equipa possui o mínimo de membros!\n"
+                );
+
+                alertHandler2.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alertHandler2.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
             alertHandler2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inscrever Equipas!", "Deseja inscrever " + EquipasHashMap.size()  + " equipa/s na modalidade " + choiceBox.getValue()  + "?");
             Optional<ButtonType> rs = alertHandler2.getAlert().showAndWait();
 
