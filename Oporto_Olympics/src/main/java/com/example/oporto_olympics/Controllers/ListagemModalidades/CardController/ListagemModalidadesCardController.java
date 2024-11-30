@@ -227,12 +227,6 @@ public class ListagemModalidadesCardController {
                 return;
             }
 
-            alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Iniciar Modalidade!!!", "Deseja iniciar a modalidade " + NomeLabel.getText()  +  " ( " + clickedButton.getText() + " ) ?");
-            Optional<ButtonType> rs = alertHandler.getAlert().showAndWait();
-
-            if (rs.isPresent() && rs.get() != ButtonType.OK) {
-                return;
-            }
 
             int modalidadeID = modalidade.getId();
 
@@ -247,9 +241,7 @@ public class ListagemModalidadesCardController {
             if(modalidade.getTipo().equals("Individual")){
                 participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID);
 
-                if(participantes < modalidade.getMinParticipantes()){
-
-                    if(atletas != null && !atletas.isEmpty()){
+                    if (atletas != null && !atletas.isEmpty()) {
                         for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
                             String nomeAtleta = entry.getValue();
 
@@ -257,28 +249,11 @@ public class ListagemModalidadesCardController {
                         }
                     }
 
-                    alertHandler = new AlertHandler(
-                            Alert.AlertType.WARNING,
-                            "Sem Participantes!!",
-                            "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma.\n" +
-                                    "Possui " + participantes + " de " + modalidade.getMinParticipantes() + " participantes.\n" +
-                                    participantesInscritos
-                    );
-                    alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-                    alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
-                    alertHandler.getAlert().showAndWait();
-
-                    return;
-                }
-            }else {
+            } else {
 
                 Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
 
                 participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID) + modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
-
-                int participantesMinimos = 2;
-
-                if(participantes < participantesMinimos){
 
                     if(atletas != null && !atletas.isEmpty()){
                         for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
@@ -295,6 +270,50 @@ public class ListagemModalidadesCardController {
                             participantesInscritos = participantesInscritos + nomeEquipa + "\n";
                         }
                     }
+            }
+
+
+            alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Iniciar Modalidade!!!", "Deseja iniciar a modalidade " + NomeLabel.getText()  +  " ( " + clickedButton.getText() + " ) ? \n" +
+            "Participantes: " + participantes + "\n" +
+                    participantesInscritos
+            );
+            alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+            Optional<ButtonType> rs = alertHandler.getAlert().showAndWait();
+
+            if (rs.isPresent() && rs.get() != ButtonType.OK) {
+                return;
+            }
+
+
+            if(modalidade.getTipo().equals("Individual")){
+                participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID);
+
+                if(participantes < modalidade.getMinParticipantes()){
+
+                    alertHandler = new AlertHandler(
+                            Alert.AlertType.WARNING,
+                            "Sem Participantes!!",
+                            "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma.\n" +
+                                    "Possui " + participantes + " de " + modalidade.getMinParticipantes() + " participantes.\n" +
+                                    participantesInscritos
+                    );
+                    alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                    alertHandler.getAlert().showAndWait();
+
+                    return;
+                }
+
+            } else {
+
+                Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
+
+                participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID) + modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
+
+                int participantesMinimos = 2;
+
+                if(participantes < participantesMinimos){
 
                         alertHandler = new AlertHandler(
                                 Alert.AlertType.WARNING,
