@@ -31,7 +31,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Controlador da interface responsável por gerir a visualização e interação com os ficheiros XML.
@@ -106,7 +108,12 @@ public class ListagemXMLController {
             Text fileNameText = new Text("Ficheiro: " + historicoXML.getTipo() + ".xml");
             Text fileTypeText = new Text("Tipo: " + historicoXML.getTipo());
             Text gestorNameText = new Text("Gestor: " + nomeGestor);
-            Text fileDateText = new Text("Data: " + historicoXML.getData().toString());
+
+            LocalDateTime data = historicoXML.getData();
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss");
+            String dataFormatada = data.format(formatador);
+
+            Text fileDateText = new Text("Data: " + dataFormatada);
 
             vbox.getChildren().addAll(fileNameText, fileTypeText,gestorNameText, fileDateText);
 
@@ -359,9 +366,13 @@ public class ListagemXMLController {
      *                     data e o conteúdo XML a ser transferido.
      */
     private void fazerDownload(ListagemXML historicoXML) {
+        LocalDateTime data = historicoXML.getData();
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss");
+        String dataFormatada = data.format(formatador);
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Ficheiro XML", "*.xml"));
-        fileChooser.setInitialFileName("Ficheiro" + historicoXML.getTipo() +"_"+ historicoXML.getData()+ ".xml");
+        fileChooser.setInitialFileName("Ficheiro" + historicoXML.getTipo() +"_"+ dataFormatada + ".xml");
 
         File destino = fileChooser.showSaveDialog(null);
 
@@ -412,6 +423,6 @@ public class ListagemXMLController {
     @FXML
     void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();
-        RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
+        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
     }
 }
