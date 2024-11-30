@@ -90,7 +90,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public void save(Modalidade modalidade) {
 
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, modalidade.getNome());
             ps.setString(2, modalidade.getTipo());
@@ -119,6 +119,15 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
             ps.setString(14, modalidade.getGenero());
             ps.executeUpdate();
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    modalidade.setId(generatedKeys.getInt(1)); // Atualiza o ID da Modalidade
+                } else {
+                    throw new SQLException("Erro ao obter o ID gerado para a Modalidade.");
+                }
+            }
+
             ps.close();
 
         } catch (SQLException ex) {
