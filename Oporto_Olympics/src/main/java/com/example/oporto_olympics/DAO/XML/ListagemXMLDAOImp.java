@@ -39,7 +39,7 @@ public class ListagemXMLDAOImp implements ListagemXMLDAO {
         List<ListagemXML> lst = new ArrayList<>();
         try {
             Statement stmt = conexao.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM historicoXML");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM historicoXML order by entradaxml_date DESC");
             while (rs.next()) {
                 ListagemXML historicoXML = new ListagemXML(
                         rs.getInt("user_id"),
