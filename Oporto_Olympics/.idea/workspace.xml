@@ -5,36 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Ver detalhes da equipa para inscrição">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/Equipas/ListarEquipasDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Equipas/ListarEquipas.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/EventosDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/LocaisDAOImp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/DAO/XML/DAOXML.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Misc/AlertHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Evento.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Local.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/LP3-Project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirEventosOlimpicosController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirLocalController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Helper/RedirecionarHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Evento.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Local.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/EventosOlimpicos/InserirEventosOlimpicos.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/EventosOlimpicos/InserirLocal.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/ResultadosEquipa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Equipas/ListarEquipaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/ListarEquipasDAOImp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,12 +57,12 @@
     &quot;assignee&quot;: &quot;EduPnto&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/NelsonFranca1221527/LP3-Project.git&quot;,
-    &quot;accountId&quot;: &quot;b7c82277-e60c-45bc-abf9-9465fa2e8f42&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/NelsonFranca1221527/LP3-Project.git",
+    "accountId": "707bbc45-41d3-4f80-af78-7a0650b420d9"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -110,7 +82,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "feature-022-VerHistoricoEquipa",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics",
     "node.js.detected.package.eslint": "true",
@@ -208,6 +180,7 @@
       <workItem from="1729776473306" duration="30326000" />
       <workItem from="1729789949576" duration="332000" />
       <workItem from="1731196500819" duration="7694000" />
+      <workItem from="1732994959042" duration="2241000" />
     </task>
     <task id="LOCAL-00001" summary="Update do Inserir atleta em equipa">
       <option name="closed" value="true" />
