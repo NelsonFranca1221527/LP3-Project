@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -239,16 +240,75 @@ public class ListagemModalidadesCardController {
 
             int participantes;
 
+            Map<Integer, String> atletas = modalidadeDAOImp.getAtletasPorEvento(eventoID, modalidade.getId());
+
+            String participantesInscritos = "\n ";
+
             if(modalidade.getTipo().equals("Individual")){
                 participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID);
-            }else {
-                participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID) + modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
-            }
 
-            if(participantes < modalidade.getMinParticipantes()){
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Participantes!!", "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma. Possui " + participantes + " participantes.");
-                alertHandler.getAlert().showAndWait();
-                return;
+                if(participantes < modalidade.getMinParticipantes()){
+
+                    if(atletas != null && !atletas.isEmpty()){
+                        for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
+                            String nomeAtleta = entry.getValue();
+
+                            participantesInscritos = participantesInscritos + nomeAtleta + "\n";
+                        }
+                    }
+
+                    alertHandler = new AlertHandler(
+                            Alert.AlertType.WARNING,
+                            "Sem Participantes!!",
+                            "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma.\n" +
+                                    "Possui " + participantes + " de " + modalidade.getMinParticipantes() + " participantes.\n" +
+                                    participantesInscritos
+                    );
+                    alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                    alertHandler.getAlert().showAndWait();
+
+                    return;
+                }
+            }else {
+
+                Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
+
+                participantes = modalidadeDAOImp.getTotalParticipantesIndividual(eventoID,modalidadeID) + modalidadeDAOImp.getTotalParticipantesColetivo(eventoID,modalidadeID);
+
+                int participantesMinimos = 2;
+
+                if(participantes < participantesMinimos){
+
+                    if(atletas != null && !atletas.isEmpty()){
+                        for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
+                            String nomeAtleta = entry.getValue();
+
+                            participantesInscritos = participantesInscritos + nomeAtleta + "\n";
+                        }
+                    }
+
+                    if(equipas != null && !equipas.isEmpty()) {
+                        for (Map.Entry<Integer, String> entry : equipas.entrySet()) {
+                            String nomeEquipa = entry.getValue();
+
+                            participantesInscritos = participantesInscritos + nomeEquipa + "\n";
+                        }
+                    }
+
+                        alertHandler = new AlertHandler(
+                                Alert.AlertType.WARNING,
+                                "Sem Participantes!!",
+                                "A modalidade " + NomeLabel.getText() + " não possui participantes suficientes para iniciar a mesma.\n" +
+                                        "Possui " + participantes + " de " + participantesMinimos + " participantes.\n" +
+                                        participantesInscritos
+                            );
+                        alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().showAndWait();
+
+                    return;
+                }
             }
 
             EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
@@ -385,18 +445,6 @@ public class ListagemModalidadesCardController {
                         medalha = "Bronze";
                     }
 
-                    Date data = new Date();
-                    // Guardar o resultado na base de dados
-                    ResultadosModalidade resultadosModalidade;
-
-                    if (isIndividual) {
-                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
-                    } else {
-                        resultadosModalidade = new ResultadosModalidade(0, data, resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
-                    }
-
-                    resultadosModalidadeDAOImp.save(resultadosModalidade);
-
                     EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
 
                     Evento evento = eventosDAOImp.getById(eventoID);
@@ -405,13 +453,17 @@ public class ListagemModalidadesCardController {
 
                     if (isIndividual) {
 
+                        ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
+
+                        resultadosModalidadeDAOImp.save(resultadoModalidade);
+
                         atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
                     } else {
 
                         if (participante.getTipo().equals("Atleta")) {
 
-                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), (double) resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
+                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
 
                             resultadosModalidadeDAOImp.save(resultadoModalidade);
 
@@ -421,7 +473,7 @@ public class ListagemModalidadesCardController {
 
                         if (participante.getTipo().equals("Equipa")) {
 
-                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), (double) resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
+                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
 
                             resultadosModalidadeDAOImp.save(resultadoModalidade);
 

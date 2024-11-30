@@ -1,15 +1,13 @@
 package com.example.oporto_olympics.Controllers.ListagemEventos.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.InscricaonoEventoDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
-import com.example.oporto_olympics.Models.Equipa;
-import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.Evento;
-import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.*;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -193,13 +192,13 @@ public class ListagemEventosCardController {
 
         List<Modalidade> lstModalidades = modalidadeDAOImp.getAll();
 
-        HashMap<String, Integer> ModalidadesHashMap = new HashMap<>();
+        HashMap<String, Modalidade> ModalidadesHashMap = new HashMap<>();
 
         //Lista todas as Modalidades
         for (Modalidade modalidade : lstModalidades) {
             //Verifica se a modalidade já foi iniciada
             if(!modalidadeDAOImp.getStatusModalidade(evento.getId(),modalidade.getId()) && modalidade.getTipo().equals("Coletivo")){
-                ModalidadesHashMap.put(modalidade.getNome() + " - " + modalidade.getTipo() + " - " + modalidade.getGenero(), modalidade.getId());
+                ModalidadesHashMap.put(modalidade.getNome() + " - " + modalidade.getTipo() + " - " + modalidade.getGenero(), modalidade);
             }
         }
 
@@ -285,20 +284,24 @@ public class ListagemEventosCardController {
                 return;
             }
 
-            int modalidadeID = ModalidadesHashMap.get(choiceBox.getValue());
+            Modalidade modalidade = ModalidadesHashMap.get(choiceBox.getValue());
+
+            String participantesEquipas = "\n ";
 
             for (Equipa equipa : lstEquipas) {
+
+                ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
 
                 Map<Integer, String> EquipasExistentesHashMap;
 
                 boolean skipEquipaAtual = false;
 
-                if (equipa.getModalidadeID() != modalidadeID || equipaDAOImp.getStatus(equipa.getId())) {
+                if (equipa.getModalidadeID() != modalidade.getId() || equipaDAOImp.getStatus(equipa.getId())) {
                     continue;
                 }
 
                 try {
-                    EquipasExistentesHashMap = modalidadeDAOImp.getEquipasPorEvento(evento.getId(), modalidadeID);
+                    EquipasExistentesHashMap = modalidadeDAOImp.getEquipasPorEvento(evento.getId(), modalidade.getId());
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -314,12 +317,35 @@ public class ListagemEventosCardController {
                     continue;
                 }
 
+                List<AtletaInfo> Membroslst = listarEquipasDAOImp.getAtletasByEquipaId(equipa.getId());
+
+                int membros = 0;
+
+                if(Membroslst != null && !Membroslst.isEmpty()){
+                    membros = Membroslst.size();
+                }
+
+                if(membros < modalidade.getMinParticipantes()){
+                    participantesEquipas = participantesEquipas + equipa.getNome() + " - " + membros  + " de " + modalidade.getMinParticipantes() + " membros. \n";
+                    continue;
+                }
+
                 EquipasHashMap.put(equipa, equipa.getId());
             }
 
             //Verifica se todas as equipas já foram associadas a um evento ou não existem equipas que participem do mesmo desporto da modalidade selecionada
             if(EquipasHashMap.isEmpty()){
-                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING,"Equipas Inexistentes!!", "Todas as equipas desta modalidade já estão associadas a este evento, ou não há equipas que pratiquem o mesmo desporto!!");
+                alertHandler2 = new AlertHandler(
+                        Alert.AlertType.WARNING,
+                        "Equipas Inexistentes!!",
+                        "Todas as equipas já estão inscritas no evento,\n" +
+                                "não há equipas que pratiquem este desporto\n" +
+                                "ou nenhuma equipa possui o mínimo de membros!\n" +
+                                participantesEquipas
+                );
+
+                alertHandler2.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alertHandler2.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
                 alertHandler2.getAlert().showAndWait();
                 return;
             }
@@ -349,11 +375,11 @@ public class ListagemEventosCardController {
                 return;
             }
 
-            int modalidadeID = ModalidadesHashMap.get(choiceBox.getValue());
+            Modalidade modalidade = ModalidadesHashMap.get(choiceBox.getValue());
 
             //Associa todas as equipas selecionadas ao evento e modalidade escolhidas
             for(int equipaId : EquipasHashMap.values()){
-                modalidadeDAOImp.saveParticipantesColetivo(equipaId,evento.getId(), modalidadeID);
+                modalidadeDAOImp.saveParticipantesColetivo(equipaId,evento.getId(), modalidade.getId());
             }
 
             alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION,"Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
