@@ -224,6 +224,11 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoListarXML() {
         return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Ficheiros XML");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de Aprovar a inscrição do atleta em um evento.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de Aprovar a inscrição do atleta em um evento.
+     */
     public static RedirecionarHelper GotoAprovarAtletaEvento() {
         return new RedirecionarHelper("Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml", "Atletas Eventos");
     }

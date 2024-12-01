@@ -21,8 +21,6 @@ public class InscricaoEquipas {
      * @param pais_sigla    Sigla do país da equipa.
      * @param ano_fundacao  Ano de fundação da equipa (pode ser nulo).
      * @param modalidade_id Identificador da modalidade desportiva.
-     * @param participacoes Número de participações da equipa na competição.
-     * @param medalhas      Número de medalhas conquistadas pela equipa.
      * @param nome          Nome da equipa.
      * @param genero        Género (ex.: masculino, feminino) associado à equipa.
      * @param desporto      Desporto ou modalidade em que a equipa compete.

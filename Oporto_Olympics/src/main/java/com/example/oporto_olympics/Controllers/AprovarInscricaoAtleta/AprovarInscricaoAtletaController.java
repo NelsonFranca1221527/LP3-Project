@@ -27,7 +27,17 @@ public class AprovarInscricaoAtletaController {
     private VBox ModalidadesContainer;
 
     private AprovarInscricaoAtletaDAO dao;
-
+    /**
+     * Inicializa o controlador da interface gráfica.
+     *
+     * Este método é chamado automaticamente pelo JavaFX ao carregar a interface associada.
+     * Ele estabelece uma ligação com a base de dados através da classe {@link ConnectionBD},
+     * verifica a sua validade, e inicializa o DAO para gerir as inscrições pendentes.
+     * Caso a ligação falhe, apresenta uma mensagem de erro ao utilizador.
+     *
+     *
+     * @throws SQLException se ocorrer um erro ao tentar conectar à base de dados.
+     */
     @FXML
     public void initialize() {
         try {
@@ -50,7 +60,14 @@ public class AprovarInscricaoAtletaController {
             alert.show();
         }
     }
-
+    /**
+     * Carrega as inscrições pendentes no contêiner de modalidades da interface gráfica.
+     * Este método obtém a lista de inscrições pendentes através do DAO, cria um cartão
+     * para cada inscrição e adiciona-os ao contêiner visual correspondente. Em caso de erro,
+     * apresenta uma mensagem de alerta ao utilizador.
+     *
+     * @throws RuntimeException se ocorrer um erro ao obter ou processar as inscrições.
+     */
     private void carregarInscricoesPendentes() {
         try {
             ModalidadesContainer.getChildren().clear();
@@ -149,7 +166,14 @@ public class AprovarInscricaoAtletaController {
         }
     }
 
-
+    /**
+     * Trata o evento de ação desencadeado ao clicar no botão "Voltar".
+     *
+     * Este método obtém a janela (stage) atual a partir da cena do botão e redireciona
+     * o utilizador para o menu principal do gestor utilizando o {@link RedirecionarHelper}.
+     *
+     * @param event o {@link ActionEvent} desencadeado pelo clique no botão
+     */
     @FXML
     void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();

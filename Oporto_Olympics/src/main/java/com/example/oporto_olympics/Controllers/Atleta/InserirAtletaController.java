@@ -181,7 +181,14 @@ public class InserirAtletaController {
         Data_nasc.clear();
         GeneroChoice.setValue("Men");
     }
-
+    /**
+     * Trata o evento de ação desencadeado ao clicar no botão "Voltar".
+     *
+     * Este método obtém a janela (stage) atual a partir da cena do botão e redireciona
+     * o utilizador para o menu principal do gestor utilizando o {@link RedirecionarHelper}.
+     *
+     * @param event o {@link ActionEvent} desencadeado pelo clique no botão
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
