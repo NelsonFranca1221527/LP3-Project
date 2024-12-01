@@ -10,11 +10,17 @@ import java.util.List;
  */
 public interface ListarEquipasDAO {
     /**
-     * Obtém uma lista de todas as inscrições de equipas.
+     * Interface para obter uma lista de equipas da base de dados, com possibilidade de aplicar um filtro pelo nome.
      *
-     * @return uma lista de objetos {@link InscricaoEquipas} representando todas as inscrições de equipas.
+     * Este método permite recuperar todas as equipas registadas ou, se fornecido um filtro,
+     * apenas as equipas cujo nome contenha o valor especificado.
+     *
+     * @param filtroNome O nome (ou parte do nome) a ser utilizado como filtro na pesquisa das equipas.
+     *                   Se for nulo ou vazio, todas as equipas serão retornadas.
+     * @return Uma lista de objetos {@link InscricaoEquipas}, representando as equipas recuperadas.
      */
-    List<InscricaoEquipas> getEquipas();
+
+    List<InscricaoEquipas> getEquipas(String filtroNome);
     /**
      * Recupera o histórico de resultados de uma equipa, dado o seu identificador.
      *

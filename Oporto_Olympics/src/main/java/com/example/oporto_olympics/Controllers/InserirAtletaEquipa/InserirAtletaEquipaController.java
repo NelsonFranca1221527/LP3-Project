@@ -118,7 +118,7 @@ public class InserirAtletaEquipaController {
                 Label nomeLabel = new Label(equipa.getNome());
                 Label desportoLabel = new Label("Desporto: " + equipa.getDesporto());
                 Label generoLabel = new Label("Género: " + equipa.getGenero());
-                Label medalhasLabel = new Label("Medalhas: " + equipa.getMedalhas());
+
 
                 nomeLabel.setLayoutX(8.0);
                 nomeLabel.setLayoutY(6.0);
@@ -126,8 +126,6 @@ public class InserirAtletaEquipaController {
                 desportoLabel.setLayoutY(28.0);
                 generoLabel.setLayoutX(327.0);
                 generoLabel.setLayoutY(28.0);
-                medalhasLabel.setLayoutX(221.0);
-                medalhasLabel.setLayoutY(28.0);
 
                 Button btnDetalhes = new Button("Ver Detalhes");
                 btnDetalhes.setLayoutY(27.0);
@@ -151,8 +149,6 @@ public class InserirAtletaEquipaController {
                             new Label("Desporto: " + equipa.getDesporto()),
                             new Label("País: " + equipa.getPais_sigla()),
                             new Label("Ano de Fundação: " + equipa.getAno_fundacao()),
-                            new Label("Participações: " + equipa.getParticipacoes()),
-                            new Label("Medalhas: " + equipa.getMedalhas()),
                             new Label("Gênero: " + equipa.getGenero())
                     );
 
@@ -194,7 +190,7 @@ public class InserirAtletaEquipaController {
                     dialog.showAndWait();
                 });
 
-                teamPane.getChildren().addAll(nomeLabel, desportoLabel, generoLabel, medalhasLabel, btnDetalhes);
+                teamPane.getChildren().addAll(nomeLabel, desportoLabel, generoLabel, btnDetalhes);
 
                 ContainerEquipa.getChildren().add(teamPane);
             }

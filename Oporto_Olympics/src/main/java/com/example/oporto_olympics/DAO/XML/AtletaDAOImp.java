@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
         List<Atleta> lst = new ArrayList<Atleta>();
         try {
             Statement stmt = conexao.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from atletas");
+            ResultSet rs = stmt.executeQuery("SELECT a.*, u.imagem FROM atletas as a, users as u where a.user_id=u.id");
             if (!rs.isBeforeFirst()) {
                 return null;
             } else {
@@ -57,7 +58,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
                             lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                         }
 
-                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
+                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
                 }
             }
 
@@ -109,7 +110,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
             PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             ps3.setInt(1, numMecanografico);
             ps3.setString(2, encriptacao.StringtoHash(String.valueOf(numMecanografico)));
-            ps3.setDate(3, Date.valueOf(LocalDate.now()));
+            ps3.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps3.setInt(4, rs2.getInt("IdAtleta"));
             ps3.executeUpdate();
 
@@ -121,24 +122,14 @@ public class AtletaDAOImp implements DAO<Atleta> {
             atleta.setId(generatedKeys.getInt(1));
             ps3.close();
 
-            atleta.setId(numMecanografico);
             update(atleta);
 
             if(atleta.getParticipaçõesAtletas().isEmpty() || atleta.getParticipaçõesAtletas() == null){
                 return;
             }
 
-            for (int i = 0; i < atleta.getParticipaçõesAtletas().size(); i++) {
-                PreparedStatement ps4 = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
-
-                ps4.setInt(1, atleta.getId());
-                ps4.setNull(2, java.sql.Types.INTEGER);
-                ps4.setInt(3, atleta.getParticipaçõesAtletas().get(i).getAno());
-                ps4.setInt(4, atleta.getParticipaçõesAtletas().get(i).getOuro());
-                ps4.setInt(5, atleta.getParticipaçõesAtletas().get(i).getPrata());
-                ps4.setInt(6, atleta.getParticipaçõesAtletas().get(i).getBronze());
-                ps4.executeUpdate();
-                ps4.close();
+            for(ParticipaçõesAtleta participaçõesAtleta : atleta.getParticipaçõesAtletas()){
+                saveHistorico(atleta.getId(), 0, participaçõesAtleta);
             }
 
         } catch (SQLException ex) {
@@ -156,7 +147,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
     @Override
     public void update(Atleta atleta) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("UPDATE atletas SET atletas.nome = ?, atletas.data_nascimento = ?, atletas.genero = ?, atletas.altura_cm = ?, atletas.peso_kg = ?, atletas.pais_sigla = ? WHERE user_id = (SELECT id FROM users WHERE num_mecanografico = ?)");
+            PreparedStatement ps = conexao.prepareStatement("UPDATE atletas SET atletas.nome = ?, atletas.data_nascimento = ?, atletas.genero = ?, atletas.altura_cm = ?, atletas.peso_kg = ?, atletas.pais_sigla = ? WHERE user_id = ?");
             ps.setString(1, atleta.getNome());
             ps.setDate(2, new Date(atleta.getDataNascimento().getTime()));
             ps.setString(3, atleta.getGenero());
@@ -190,7 +181,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
     @Override
     public Optional<Atleta> get(int atletaID) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM atletas WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("SELECT a.*, u.imagem FROM atletas as a, users as u WHERE a.user_id=u.id AND user_id = ?");
             ps.setInt(1, atletaID);
             ResultSet rs = ps.executeQuery();
 
@@ -206,12 +197,68 @@ public class AtletaDAOImp implements DAO<Atleta> {
                     lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                 }
 
-                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes));
+                return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Insere os dados de participação de um atleta num evento na tabela
+     * `historico_atletas_competicoes` da base de dados.
+     *
+     * @param atletaID O identificador único do atleta na base de dados.
+     * @param eventoID O identificador único do evento na base de dados.
+     *                 Se for igual a 0, será registado como `NULL` na base de dados.
+     * @param participaçõesAtleta Um objeto da classe {@code ParticipaçõesAtleta} que contém
+     *                            os detalhes da participação, incluindo o ano e o número de
+     *                            medalhas (ouro, prata e bronze).
+     * @throws SQLException Lançada se ocorrer um erro ao executar a operação SQL.
+     * @throws RuntimeException Envolvendo a exceção SQL se ocorrer algum erro no processo,
+     *                          com uma mensagem detalhada do problema.
+     */
+    public void saveHistorico(int atletaID, int eventoID, ParticipaçõesAtleta participaçõesAtleta) throws SQLException {
+        try{
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
+
+            ps.setInt(1, atletaID);
+            ps.setNull(2, java.sql.Types.INTEGER);
+
+            if(eventoID != 0){
+                ps.setInt(2, eventoID);
+            }
+
+            ps.setInt(3, participaçõesAtleta.getAno());
+            ps.setInt(4, participaçõesAtleta.getOuro());
+            ps.setInt(5, participaçõesAtleta.getPrata());
+            ps.setInt(6, participaçõesAtleta.getBronze());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao inserir histórico no atleta: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Atualiza a foto de perfil de um atleta na base de dados.
+     *
+     * Este método recebe o ID do atleta e o novo array de bytes da foto de perfil,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param atletaId   o ID do atleta cujo registo será atualizado.
+     * @param fotoPerfil o array de bytes representando a nova foto de perfil.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateFotoPerfil(int atletaId, byte[] fotoPerfil) throws SQLException {
+        String sql = "UPDATE users SET imagem = ? WHERE id = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setBytes(1, fotoPerfil);
+            stmt.setInt(2, atletaId);
+            stmt.executeUpdate();
+        }
     }
 }

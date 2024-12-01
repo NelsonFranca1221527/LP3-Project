@@ -24,6 +24,8 @@ public class Atleta {
     private Date dataNascimento;
 
     private List<ParticipaçõesAtleta> participaçõesAtletas;
+
+    private byte[] fotoPerfil;
     /**
      * Construtor para a classe {@link Atleta}, inicializando todos os atributos do atleta.
      *
@@ -36,7 +38,7 @@ public class Atleta {
      * @param dataNascimento         Data de nascimento do atleta.
      * @param participaçõesAtletas   Lista de participações do atleta em eventos.
      */
-    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas) {
+    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas, byte[] fotoPerfil) {
         this.id = id;
         this.nome = nome;
         this.pais = pais;
@@ -45,6 +47,7 @@ public class Atleta {
         this.peso = peso;
         this.dataNascimento = dataNascimento;
         this.participaçõesAtletas = participaçõesAtletas;
+        this.fotoPerfil = fotoPerfil;
     }
     /**
      * Obtém o identificador do atleta.
@@ -173,5 +176,21 @@ public class Atleta {
      */
     public void setParticipaçõesAtletas(List<ParticipaçõesAtleta> participaçõesAtletas) {
         this.participaçõesAtletas = participaçõesAtletas;
+    }
+    /**
+     * Obtém a foto de perfil do atleta.
+     *
+     * @return A foto de perfil do atleta como um array de bytes.
+     */
+    public byte[] getFotoPerfil() {
+        return fotoPerfil;
+    }
+    /**
+     * Define a foto de perfil do atleta.
+     *
+     * @param fotoPerfil A nova foto de perfil do atleta como um array de bytes.
+     */
+    public void setFotoPerfil(byte[] fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 }

@@ -30,6 +30,49 @@ public class UserDAOImp implements DAO<User> {
     public UserDAOImp(Connection connection) {
         this.connection = connection;
     }
+
+    /**
+     * Atualiza a palavra-passe de um utilizador no sistema.
+     *
+     * Este método recebe o ID de um utilizador e uma nova palavra-passe,
+     * atualizando o registo correspondente na base de dados. Caso a operação
+     * seja bem-sucedida, apresenta uma mensagem de sucesso ao utilizador.
+     * Se não forem encontrados registos para atualizar ou ocorrer um erro,
+     * uma mensagem de aviso ou erro será exibida.
+     *
+     * @param id           o ID do utilizador cuja palavra-passe será atualizada.
+     * @param newPassword  a nova palavra-passe a ser atribuída ao utilizador.
+     *
+     * @throws SQLException se ocorrer um erro durante a execução da consulta SQL.
+     */
+    public void UpdatePassword(int id , String newPassword) {
+        try {
+            database = ConnectionBD.getInstance();
+            connection = database.getConexao();
+
+            PreparedStatement ps = connection.prepareStatement("UPDATE users SET User_password = ? WHERE id = ?");
+            ps.setString(1, newPassword);
+            ps.setInt(2, id);
+
+
+            int rs = ps.executeUpdate();
+
+            if (rs > 0) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Alteração da Password", "A sua password foi alterada com sucesso!!");
+                alertHandler.getAlert().show();
+            } else {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Alteração da Password", "A sua password não foi alterada verifique os campos ou o id..");
+                alertHandler.getAlert().show();
+            }
+
+        } catch (SQLException e) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
+            alertHandler.getAlert().show();
+        }
+
+
+    }
+
     /**
      * Obtém as informações de um atleta a partir do seu número mecanográfico e password.
      * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do atleta.
@@ -44,7 +87,7 @@ public class UserDAOImp implements DAO<User> {
             database = ConnectionBD.getInstance();
             connection = database.getConexao();
 
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT a.*, u.imagem FROM atletas a, users u WHERE a.user_id = u.id AND u.num_mecanografico = ? AND u.User_password = ?");
             ps.setInt(1, num_mecanografico);
             ps.setString(2, senha);
 
@@ -60,7 +103,8 @@ public class UserDAOImp implements DAO<User> {
                         rs.getInt("altura_cm"),
                         rs.getInt("peso_kg"),
                         rs.getDate("data_nascimento"),
-                        null
+                        null,
+                        rs.getBytes("imagem")
                 );
             }
 

@@ -49,7 +49,7 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
                     lstParticipacoes.add(new ParticipaçõesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
                 }
 
-                lst.add(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("descricao"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
+                lst.add(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
             }
             return lst;
         } catch (SQLException ex) {
@@ -89,14 +89,8 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
 
             ps.close();
 
-            for (int i = 0; i < equipa.getParticipaçõesEquipa().size(); i++) {
-                PreparedStatement ps2 = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
-                ps2.setInt(1, id_equipa);
-                ps2.setNull(2, java.sql.Types.INTEGER);
-                ps2.setInt(3, equipa.getParticipaçõesEquipa().get(i).getAnoParticipacao());
-                ps2.setString(4, equipa.getParticipaçõesEquipa().get(i).getResultado());
-                ps2.executeUpdate();
-                ps2.close();
+            for (ParticipaçõesEquipa participaçõesEquipa : equipa.getParticipaçõesEquipa()){
+                saveHistorico(id_equipa, 0, participaçõesEquipa);
             }
 
         } catch (SQLException ex) {
@@ -158,6 +152,100 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
         return Optional.empty();
     }
 
+    /**
+     * Insere os dados de participação de uma equipa num evento na tabela
+     * `historico_equipas_competicoes` da base de dados.
+     *
+     * @param id_equipa O identificador único da equipa na base de dados.
+     * @param evento_id O identificador único do evento na base de dados.
+     *                  Se for igual a 0, será registado como `NULL` na base de dados.
+     * @param participaçõesEquipa Um objeto da classe {@code ParticipaçõesEquipa} que contém
+     *                            os detalhes da participação, incluindo o ano de participação
+     *                            e o resultado obtido pela equipa.
+     * @throws SQLException Lançada se ocorrer um erro ao executar a operação SQL.
+     * @throws RuntimeException Envolvendo a exceção SQL se ocorrer algum erro no processo,
+     *                          com uma mensagem detalhada do problema.
+     */
+    public void saveHistorico(int id_equipa, int evento_id, ParticipaçõesEquipa participaçõesEquipa) throws SQLException {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
+            ps.setInt(1, id_equipa);
+            ps.setNull(2, java.sql.Types.INTEGER);
+
+            if(evento_id != 0){
+                ps.setInt(2, evento_id);
+            }
+
+            ps.setInt(3, participaçõesEquipa.getAnoParticipacao());
+            ps.setString(4, participaçõesEquipa.getResultado());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao inserir histórico na equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Verifica o estado de uma equipa com base no seu ID.
+     *
+     * Este método executa uma consulta à base de dados para determinar o estado de uma equipa
+     * específica, utilizando o seu identificador único. O estado da equipa é obtido a partir
+     * da coluna "equipa_status" na tabela "equipas".
+     *
+     * @param equipaID o identificador único da equipa a ser verificada.
+     * @return {@code true} se o estado da equipa for verdadeiro (fechada); {@code false} caso contrário
+     *         ou se a equipa não for encontrada.
+     * @throws RuntimeException se ocorrer um erro durante a execução da consulta à base de dados.
+     */
+    public boolean getStatus(int equipaID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT equipa_status FROM equipas WHERE id = ?");
+            ps.setInt(1, equipaID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getBoolean("equipa_status");
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Atualiza o estado de uma equipa na tabela `equipas`.
+     *
+     * Este método altera o estado (`equipa_status`) de uma equipa específica na base de dados,
+     * com base no ID da equipa e no novo estado fornecidos.
+     *
+     * @param equipaID o ID da equipa cujo estado será alterado.
+     * @param status o novo estado a ser atribuído à equipa (1 para ativo, 0 para inativo).
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public void updateStatus(int equipaID, int status) {
+        String updateQuery = "UPDATE equipas SET equipa_status = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, status);
+            pstmt.setInt(2, equipaID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar o status da equipa: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Verifica se uma sigla de país existe na tabela `paises`.
+     *
+     * Este método consulta a tabela `paises` para verificar se uma determinada sigla de país
+     * está registada na base de dados.
+     *
+     * @param sigla a sigla do país a ser verificada (por exemplo, "PT", "BR").
+     * @return `true` se a sigla existir na tabela, ou `false` caso contrário.
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
     public boolean getSigla(String sigla) {
         try {
             PreparedStatement ps = conexao.prepareStatement("SELECT nome FROM paises WHERE sigla = ?");

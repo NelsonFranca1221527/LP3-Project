@@ -65,6 +65,14 @@ public class RedirecionarHelper {
         return new RedirecionarHelper("Views/DadosPessoais/VerDadosPessoaisGestor.fxml", "Dados Pessoais");
     }
     /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de alterar de password.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de alterar password.
+     */
+    public static RedirecionarHelper GotoAtlerarPassword() {
+        return new RedirecionarHelper("Views/DadosPessoais/AlterarPassword/AlterarPassword.fxml", "Atlerar Password");
+    }
+    /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o menu principal do gestor.
      *
      * @return Um {@link RedirecionarHelper} para o menu principal do gestor.
@@ -199,5 +207,24 @@ public class RedirecionarHelper {
      */
     public static RedirecionarHelper GotoVerResultadosAtleta() {
         return new RedirecionarHelper("Views/VerResultados/VerResultadosAtleta.fxml", "Ver Resultados");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de resultados.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de resultados do atleta.
+     */
+    public static RedirecionarHelper GotoVerResultados() {
+        return new RedirecionarHelper("Views/VerResultados/VerResultados.fxml", "Resultados");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página da listagem dos XMLs.
+     *
+     * @return Um {@link RedirecionarHelper} para a página da listagem do XML.
+     */
+    public static RedirecionarHelper GotoListarXML() {
+        return new RedirecionarHelper("Views/ListagemXML/ListagemXML.fxml", "Ficheiros XML");
+    }
+    public static RedirecionarHelper GotoAprovarAtletaEvento() {
+        return new RedirecionarHelper("Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml", "Atletas Eventos");
     }
 }

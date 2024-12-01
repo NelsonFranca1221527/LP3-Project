@@ -3,6 +3,7 @@ package com.example.oporto_olympics.DAO.XML;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.scene.control.Alert;
@@ -11,9 +12,8 @@ import java.sql.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 /**
  * A classe {@link ModalidadeDAOImp} implementa a interface {@link DAOXML} para manipulação de dados de modalidades
  * na base de dados. Ela fornece métodos para realizar operações de CRUD (criação, leitura, atualização e exclusão)
@@ -90,7 +90,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public void save(Modalidade modalidade) {
 
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, modalidade.getNome());
             ps.setString(2, modalidade.getTipo());
@@ -119,6 +119,15 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
             ps.setString(14, modalidade.getGenero());
             ps.executeUpdate();
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    modalidade.setId(generatedKeys.getInt(1)); // Atualiza o ID da Modalidade
+                } else {
+                    throw new SQLException("Erro ao obter o ID gerado para a Modalidade.");
+                }
+            }
+
             ps.close();
 
         } catch (SQLException ex) {
@@ -262,6 +271,142 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     }
 
     /**
+     * Atualiza o estado de uma modalidade específica num evento na tabela `eventos_modalidades`.
+     *
+     * Este método altera o estado (`modalidade_status`) de uma modalidade associada a um evento
+     * na base de dados, com base nos IDs fornecidos do evento e da modalidade, e no novo estado.
+     *
+     * @param eventoID o ID do evento associado à modalidade.
+     * @param modalidadeID o ID da modalidade cujo estado será alterado.
+     * @param status o novo estado a ser atribuído à modalidade (1 para ativo, 0 para inativo).
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public void updateEventos_ModalidadesStatus(int eventoID, int modalidadeID, int status) {
+
+        String updateQuery = "UPDATE eventos_modalidades SET modalidade_status = ? WHERE evento_id = ? and modalidade_id = ?";
+
+        try (PreparedStatement pstmt = conexao.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, status);
+            pstmt.setInt(2, eventoID);
+            pstmt.setInt(3, modalidadeID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao aprovar inscrição: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Obtém o estado de uma modalidade associada a um evento na tabela `eventos_modalidades`.
+     *
+     * Este método verifica se uma modalidade específica num evento está aberta ou fechada,
+     * consultando o campo `modalidade_status` na tabela.
+     *
+     * @param eventoID o ID do evento associado à modalidade.
+     * @param modalidadeID o ID da modalidade cujo estado será consultado.
+     * @return `true` se a modalidade está fechada (modalidade_status = 1), ou `false` se estiver aberta ou não encontrada.
+     * @throws RuntimeException se ocorrer um erro ao executar a query SQL.
+     */
+    public boolean getStatusModalidade(int eventoID, int modalidadeID) {
+        String sql = "SELECT modalidade_status FROM eventos_modalidades WHERE evento_id = ? AND modalidade_id = ?";
+
+        try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("modalidade_status");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao procurar o status do evento_modalidade: " + ex);
+        }
+
+        return false;
+    }
+
+    /**
+     * Obtém o total de participantes individuais de uma modalidade específica num evento.
+     * Este método executa uma consulta SQL para contar o número de participantes individuais
+     * associados a um determinado evento e modalidade, com base nos IDs fornecidos.
+     *
+     * @param eventoID o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
+     * @return o total de participantes individuais encontrados para o evento e modalidade especificados.
+     *         Retorna 0 caso não existam participantes.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta SQL.
+     */
+    public int getTotalParticipantesIndividual(int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT Count(*) as 'totalParticipantes' FROM atletas_modalidades WHERE evento_id = ? and modalidade_id = ?");
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("totalParticipantes");
+            }
+
+            return 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar o atleta: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Obtém o total de equipas de uma modalidade específica num evento.
+     * Este método executa uma consulta SQL para contar o número de equipas
+     * associadas a um determinado evento e modalidade, com base nos IDs fornecidos.
+     *
+     * @param eventoID o identificador único do evento.
+     * @param modalidadeID o identificador único da modalidade.
+     * @return o total de participantes coletivos encontrados para o evento e modalidade especificados.
+     *         Retorna 0 caso não existam participantes.
+     * @throws RuntimeException se ocorrer um erro ao executar a consulta SQL.
+     */
+    public int getTotalParticipantesColetivo(int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("SELECT Count(*) as 'totalParticipantes' FROM equipa_modalidade WHERE evento_id = ? and modalidade_id = ?");
+            ps.setInt(1, eventoID);
+            ps.setInt(2, modalidadeID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("totalParticipantes");
+            }
+
+            return 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em mostrar a equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Insere um registo na base de dados para associar uma equipa a uma modalidade num evento.
+     *
+     * Este método regista a participação de uma equipa numa modalidade específica de um evento,
+     * armazenando os dados na tabela `equipa_modalidade`.
+     *
+     * @param equipaID o identificador da equipa que será associada.
+     * @param eventoID o identificador do evento ao qual a equipa será associada.
+     * @param modalidadeID o identificador da modalidade à qual a equipa será associada.
+     * @throws RuntimeException se ocorrer um erro durante a execução da consulta SQL.
+     */
+    public void saveParticipantesColetivo(int equipaID,int eventoID, int modalidadeID) {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("Insert into equipa_modalidade (equipa_id,evento_id,modalidade_id) Values (?,?,?)");
+            ps.setInt(1, equipaID);
+            ps.setInt(2, eventoID);
+            ps.setInt(3, modalidadeID);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em associar a equipa à modalidade: " + ex.getMessage());
+        }
+    }
+
+    /**
      * Obtém o nome de uma modalidade com base no seu ID.
      *
      * @param id o ID da modalidade.
@@ -285,7 +430,6 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
         return null;  // Retorna null se o local não for encontrado
     }
-
     /**
      * Obtém uma lista de modalidades pelo género.
      *
@@ -356,5 +500,75 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                 return null;
             }
         }
+    }
+
+    /**
+     * Obtém os atletas associados a um evento e modalidade específicos.
+     *
+     * Este método realiza uma consulta à base de dados para listar os atletas que participam
+     * numa determinada modalidade e evento, retornando um mapa onde a chave é o ID do atleta
+     * e o valor é o nome do atleta.
+     *
+     * @param eventoId     o ID do evento a ser utilizado no filtro.
+     * @param modalidadeId o ID da modalidade a ser utilizado no filtro.
+     * @return um mapa com os IDs dos atletas como chaves e os respetivos nomes como valores.
+     * @throws SQLException caso ocorra um erro na execução da consulta SQL ou na conexão com a base de dados.
+     */
+    public Map<Integer, String> getAtletasPorEvento(int eventoId, int modalidadeId) throws SQLException {
+        Map<Integer, String> atletas = new HashMap<>();
+
+        String query = "SELECT am.atleta_id, a.nome FROM atletas_modalidades AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN atletas AS a ON a.user_id = am.atleta_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.atleta_id, a.nome";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            // Definir os parâmetros no SQL
+            stmt.setInt(1, eventoId);
+            stmt.setInt(2, modalidadeId);
+
+            // Executar o comando e processar os resultados
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int atletaId = rs.getInt("atleta_id");
+                    String nomeAtleta = rs.getString("nome");
+                    atletas.put(atletaId, nomeAtleta);
+                }
+            }
+        }
+
+        return atletas;
+    }
+
+    /**
+     * Obtém as equipas associados a um evento e modalidade específicos.
+     *
+     * Este método realiza uma consulta à base de dados para listar as equipas que participam
+     * numa determinada modalidade e evento, retornando um mapa onde a chave é o ID da equipa
+     * e o valor é o nome da equipa.
+     *
+     * @param eventoId     o ID do evento a ser utilizado no filtro.
+     * @param modalidadeId o ID da modalidade a ser utilizado no filtro.
+     * @return um mapa com os IDs das equipas como chaves e os respetivos nomes como valores.
+     * @throws SQLException caso ocorra um erro na execução da consulta SQL ou na conexão com a base de dados.
+     */
+    public Map<Integer, String> getEquipasPorEvento(int eventoId, int modalidadeId) throws SQLException {
+        Map<Integer, String> equipas = new HashMap<>();
+
+        String query = "SELECT am.equipa_id, e.nome FROM equipa_modalidade AS am JOIN modalidades AS m ON m.id = am.modalidade_id JOIN eventos_modalidades AS em ON em.evento_id = am.evento_id JOIN equipas AS e ON e.id = am.equipa_id WHERE am.evento_id = ? AND am.modalidade_id = ? GROUP BY am.equipa_id, e.nome";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            // Definir os parâmetros no SQL
+            stmt.setInt(1, eventoId);
+            stmt.setInt(2, modalidadeId);
+
+            // Executar o comando e processar os resultados
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int equipaId = rs.getInt("equipa_id");
+                    String nomeEquipa = rs.getString("nome");
+                    equipas.put(equipaId, nomeEquipa);
+                }
+            }
+        }
+
+        return equipas;
     }
 }

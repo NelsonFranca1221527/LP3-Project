@@ -30,8 +30,8 @@ class InscricaoEquipaTest {
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-        int atleta_id = 148; // ID do atleta
-        int equipaId = 31;   // ID da equipa
+        int atleta_id = 199; // ID do atleta
+        int equipaId = 90;   // ID da equipa
 
         boolean existePedidoPendente = dao.existePedidoPendente(atleta_id, equipaId);
 
@@ -53,8 +53,8 @@ class InscricaoEquipaTest {
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-        int atleta_id = 148; // ID do atleta
-        int equipaId = 17;   // ID da equipa
+        int atleta_id = 199; // ID do atleta
+        int equipaId = 89;   // ID da equipa
 
         boolean existePedidoAprovado = dao.existePedidoAprovado(atleta_id, equipaId);
 

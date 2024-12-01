@@ -4,7 +4,10 @@ import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Controllers.ListagemModalidades.CardController.ListagemModalidadesCardController;
+import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -80,6 +83,16 @@ public class ListagemModalidadesController {
     private void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
+
+        if(AtletaSingle.getAtleta() != null){
+            RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
+        }
+
+        if(GestorSingle.getGestor() != null){
+            RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        }
+
     }
 }

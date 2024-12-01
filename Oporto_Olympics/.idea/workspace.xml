@@ -4,9 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Ver detalhes da equipa para inscrição">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Fix da listagem Equipa">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/AprovarInscricaoAtletaDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/AprovarInscricaoAtletaDAOImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/InscricaoAtletaEvento.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/AprovarInscricaoAtleta/AprovarInscricaoAtletaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/AprovarInscricaoAtleta/AprovarInscricaoAtletaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/CardController/ListagemEventosCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/ListagemEventos/CardController/ListagemEventosCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuGestor/MenuGestorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/AprovarInscricaoEquipaDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Equipas/AprovarInscricaoEquipaDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Eventos/InscricaonoEventoDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Eventos/InscricaonoEventoDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/MenuPrincipal-Gestor/MenuGestor.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/MenuPrincipal-Gestor/MenuGestor.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +31,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -39,6 +52,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -57,12 +71,12 @@
     &quot;assignee&quot;: &quot;EduPnto&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/NelsonFranca1221527/LP3-Project.git",
-    "accountId": "707bbc45-41d3-4f80-af78-7a0650b420d9"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/NelsonFranca1221527/LP3-Project.git&quot;,
+    &quot;accountId&quot;: &quot;707bbc45-41d3-4f80-af78-7a0650b420d9&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -75,28 +89,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor": "Run",
-    "Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4597701",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.InserirModalidadeTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InserirModalidadesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-041-AprovarAtletaEvento&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/eduar/Desktop/LP3 - Oporto Olympics/Oporto_Olympics/src/main/java/com/example/oporto_olympics&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\java\com\example\oporto_olympics" />
@@ -119,7 +135,7 @@
       <command value=";" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.HelloApplication">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true">
       <option name="ALTERNATIVE_JRE_PATH" value="19" />
       <option name="MAIN_CLASS_NAME" value="com.example.oporto_olympics.HelloApplication" />
@@ -135,12 +151,61 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="InserirModalidadeTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.example.oporto_olympics.InserirModalidadeTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="InserirModalidadesTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.example.oporto_olympics.InserirModalidadesTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.InserirModalidadeTest" />
+        <item itemvalue="Gradle.InserirModalidadesTest" />
         <item itemvalue="Application.HelloApplication" />
-        <item itemvalue="Application.HelloApplication" />
-        <item itemvalue="Application.HelloApplication" />
-        <item itemvalue="Application.HelloApplication" />
+        <item itemvalue="Gradle.InserirModalidadeTest" />
+        <item itemvalue="Gradle.InserirModalidadesTest" />
       </list>
     </recent_temporary>
   </component>
@@ -180,7 +245,7 @@
       <workItem from="1729776473306" duration="30326000" />
       <workItem from="1729789949576" duration="332000" />
       <workItem from="1731196500819" duration="7694000" />
-      <workItem from="1732994959042" duration="2241000" />
+      <workItem from="1732558127116" duration="5579000" />
     </task>
     <task id="LOCAL-00001" summary="Update do Inserir atleta em equipa">
       <option name="closed" value="true" />
@@ -190,7 +255,31 @@
       <option name="project" value="LOCAL" />
       <updated>1731622888926</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Teste unitario inserir Modalidade">
+      <option name="closed" value="true" />
+      <created>1732228990401</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732228990401</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fix da listagem Equipa">
+      <option name="closed" value="true" />
+      <created>1732229538436</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732229538436</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fix da inscrição em evento">
+      <option name="closed" value="true" />
+      <created>1732829362002</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732829362002</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +288,19 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />
     <MESSAGE value="Update do Inserir atleta em equipa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update do Inserir atleta em equipa" />
+    <MESSAGE value="Teste unitario inserir Modalidade" />
+    <MESSAGE value="Fix da listagem Equipa" />
+    <MESSAGE value="Fix da inscrição em evento" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix da inscrição em evento" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="com.microsoft.sqlserver.jdbc.SQLServerException" package="com.microsoft.sqlserver.jdbc" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

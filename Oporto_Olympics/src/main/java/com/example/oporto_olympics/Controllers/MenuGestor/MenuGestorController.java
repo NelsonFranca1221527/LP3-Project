@@ -1,6 +1,8 @@
 package com.example.oporto_olympics.Controllers.MenuGestor;
 
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -60,6 +62,16 @@ public class MenuGestorController {
     @FXML
     private Button InsertModalidadeBtn;
     /**
+     * Botão para listar os ficheiros XML.
+     */
+    @FXML
+    private Button btnFXML;
+    /**
+     * Botão para listar os pedidos de inscrição em um Evento.
+     */
+    @FXML
+    private Button InscricoesBtnEvento;
+    /**
      * Botão para aceder à secção de importação de dados via XML.
      */
     @FXML
@@ -74,6 +86,8 @@ public class MenuGestorController {
      */
     @FXML
     private Button PerfilBtn;
+    @FXML
+    private Button ResultadosBtn;
     /**
      * Ação para redirecionar o utilizador para a secção de inserção de equipas.
      */
@@ -231,6 +245,19 @@ public class MenuGestorController {
         }
     }
     /**
+     * Ação para redirecionar o utilizador para os resultados.
+     */
+    @FXML
+    protected void OnVerResultadosButtonClick(){
+        try{
+            Stage s = (Stage) ResultadosBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoVerResultados().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    /**
      * Ação para terminar a sessão e redirecionar o utilizador para o ecrã de login.
      */
     @FXML
@@ -243,4 +270,25 @@ public class MenuGestorController {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    protected void OnListarXMLButtonClick(){
+        try{
+            Stage s = (Stage) btnFXML.getScene().getWindow();
+
+            RedirecionarHelper.GotoListarXML().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    @FXML
+    protected void OnInscricoesEventoButtonClick(){
+        try{
+            Stage s = (Stage) InscricoesBtnEvento.getScene().getWindow();
+
+            RedirecionarHelper.GotoAprovarAtletaEvento().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }

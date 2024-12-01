@@ -42,4 +42,12 @@ public interface AprovarInscricaoEquipaDAO {
      * @param id o identificador da inscrição da equipa a ser reprovada.
      */
     void reprovarInscricao(int id);
+
+    /**
+     * Insere um atleta em uma equipa.
+     *
+     * @param atletaId O ID do atleta.
+     * @param equipaId O ID da equipa.
+     */
+    void inserirAtletaEquipa(int atletaId, int equipaId);
 }
