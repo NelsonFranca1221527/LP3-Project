@@ -2,8 +2,7 @@ package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Models.Equipa;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
-import com.example.oporto_olympics.Models.ParticipaçõesEquipa;
+import com.example.oporto_olympics.Models.ParticipaocesEquipa;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,12 +40,12 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
             ResultSet rs = stmt.executeQuery("Select equipas.* From equipas, modalidades where equipas.modalidade_id = modalidades.id");
             while (rs.next()) {
 
-                List<ParticipaçõesEquipa> lstParticipacoes = new ArrayList<>();
+                List<ParticipaocesEquipa> lstParticipacoes = new ArrayList<>();
 
                 Statement stmt2 = conexao.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("Select * from historico_equipas_competicoes where equipa_id = " + rs.getInt("id"));
                 while (rs2.next()) {
-                    lstParticipacoes.add(new ParticipaçõesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
+                    lstParticipacoes.add(new ParticipaocesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
                 }
 
                 lst.add(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
@@ -89,8 +88,8 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
 
             ps.close();
 
-            for (ParticipaçõesEquipa participaçõesEquipa : equipa.getParticipaçõesEquipa()){
-                saveHistorico(id_equipa, 0, participaçõesEquipa);
+            for (ParticipaocesEquipa participaocesEquipa : equipa.getParticipaçõesEquipa()){
+                saveHistorico(id_equipa, 0, participaocesEquipa);
             }
 
         } catch (SQLException ex) {
@@ -135,12 +134,12 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
 
             if (rs.next()) {
 
-                List<ParticipaçõesEquipa> lstParticipacoes = new ArrayList<>();
+                List<ParticipaocesEquipa> lstParticipacoes = new ArrayList<>();
 
                 Statement stmt2 = conexao.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("Select * from historico_equipas_competicoes where equipa_id = " + rs.getInt("id"));
                 while (rs2.next()) {
-                    lstParticipacoes.add(new ParticipaçõesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
+                    lstParticipacoes.add(new ParticipaocesEquipa(rs2.getInt("ano"), rs2.getString("resultado")));
                 }
 
                 return Optional.of(new Equipa(rs.getInt("id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getString("desporto"), rs.getInt("modalidade_id"), rs.getInt("ano_fundacao"), lstParticipacoes));
@@ -159,14 +158,14 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
      * @param id_equipa O identificador único da equipa na base de dados.
      * @param evento_id O identificador único do evento na base de dados.
      *                  Se for igual a 0, será registado como `NULL` na base de dados.
-     * @param participaçõesEquipa Um objeto da classe {@code ParticipaçõesEquipa} que contém
+     * @param participaocesEquipa Um objeto da classe {@code ParticipaçõesEquipa} que contém
      *                            os detalhes da participação, incluindo o ano de participação
      *                            e o resultado obtido pela equipa.
      * @throws SQLException Lançada se ocorrer um erro ao executar a operação SQL.
      * @throws RuntimeException Envolvendo a exceção SQL se ocorrer algum erro no processo,
      *                          com uma mensagem detalhada do problema.
      */
-    public void saveHistorico(int id_equipa, int evento_id, ParticipaçõesEquipa participaçõesEquipa) throws SQLException {
+    public void saveHistorico(int id_equipa, int evento_id, ParticipaocesEquipa participaocesEquipa) throws SQLException {
         try {
             PreparedStatement ps = conexao.prepareStatement("INSERT INTO historico_equipas_competicoes (equipa_id, evento_id, ano, resultado) VALUES(?,?,?,?)");
             ps.setInt(1, id_equipa);
@@ -176,8 +175,8 @@ public class EquipaDAOImp implements DAOXML<Equipa> {
                 ps.setInt(2, evento_id);
             }
 
-            ps.setInt(3, participaçõesEquipa.getAnoParticipacao());
-            ps.setString(4, participaçõesEquipa.getResultado());
+            ps.setInt(3, participaocesEquipa.getAnoParticipacao());
+            ps.setString(4, participaocesEquipa.getResultado());
             ps.executeUpdate();
             ps.close();
 

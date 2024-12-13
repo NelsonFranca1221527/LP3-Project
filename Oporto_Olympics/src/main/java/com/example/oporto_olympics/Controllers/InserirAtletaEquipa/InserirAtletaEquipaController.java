@@ -51,7 +51,6 @@ public class InserirAtletaEquipaController {
      * ao utilizador. Caso a conexão seja bem-sucedida, inicializa o DAO com a conexão, define o ID do
      * atleta, o país e o género para filtrar as equipas, e invoca o método carregarEquipas para mostrar as equipas.
      *
-     * @throws SQLException se ocorrer um erro ao estabelecer a ligação com a base de dados.
      */
     @FXML
     public void initialize() {

@@ -56,7 +56,7 @@ public class LerXMLController {
             int peso = getIntValueFromElement(lineItemElement, "weight");
             Date dataNascimento = getDateValueFromElement(lineItemElement, "dateOfBirth");
 
-            List<ParticipaçõesAtleta> participaçõesAtletaList = new ArrayList<>();
+            List<ParticipacoesAtleta> participacoesAtletaList = new ArrayList<>();
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
 
@@ -68,11 +68,11 @@ public class LerXMLController {
                     int prata = getIntValueFromElement(participation, "silver");
                     int bronze = getIntValueFromElement(participation, "bronze");
 
-                    participaçõesAtletaList.add(new ParticipaçõesAtleta(ano, ouro, prata, bronze));
+                    participacoesAtletaList.add(new ParticipacoesAtleta(ano, ouro, prata, bronze));
                 }
             }
 
-            lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento,participaçõesAtletaList, null));
+            lst.add(new Atleta(0,nome,pais,genero,altura,peso,dataNascimento, participacoesAtletaList, null));
         }
 
         return lst;
@@ -107,7 +107,7 @@ public class LerXMLController {
 
             NodeList participations = lineItemElement.getElementsByTagName("participation");
 
-            List<ParticipaçõesEquipa> participaçõesEquipaList = new ArrayList<>();
+            List<ParticipaocesEquipa> participaocesEquipaList = new ArrayList<>();
 
             if (participations.getLength() > 0) {
                 for (int j = 0; j < participations.getLength(); j++) {
@@ -115,11 +115,11 @@ public class LerXMLController {
                     int ano = getIntValueFromElement(participation, "year");
                     String resultado = getElementTextContent(participation, "result");
 
-                    participaçõesEquipaList.add(new ParticipaçõesEquipa(ano, resultado));
+                    participaocesEquipaList.add(new ParticipaocesEquipa(ano, resultado));
                 }
             }
 
-            lst.add(new Equipa(0, nome, pais, genero, desporto, 0, anoFundacao, participaçõesEquipaList));
+            lst.add(new Equipa(0, nome, pais, genero, desporto, 0, anoFundacao, participaocesEquipaList));
         }
 
         return lst;

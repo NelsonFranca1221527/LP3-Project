@@ -115,7 +115,6 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
      * @param equipaId O ID da equipa cujos atletas serão recuperados.
      * @return Uma lista de {@link AtletaInfo} contendo os atletas associados à equipa especificada.
      *         Se não houver atletas para a equipa, retorna uma lista vazia.
-     * @throws SQLException Lança uma exceção se ocorrer um erro ao executar as consultas a base de dados.
      */
     @Override
     public List<AtletaInfo> getAtletasByEquipaId(int equipaId) {

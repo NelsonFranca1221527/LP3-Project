@@ -5,12 +5,11 @@ import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Misc.Encriptacao;
 import com.example.oporto_olympics.Models.Atleta;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
+import com.example.oporto_olympics.Models.ParticipacoesAtleta;
 import javafx.scene.control.Alert;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +49,12 @@ public class AtletaDAOImp implements DAO<Atleta> {
             } else {
                 while (rs.next()) {
 
-                    List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
+                    List<ParticipacoesAtleta> lstParticipacoes = new ArrayList<>();
 
                     Statement stmt2 = conexao.createStatement();
                     ResultSet rs2 = stmt2.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
                         while (rs2.next()) {
-                            lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
+                            lstParticipacoes.add(new ParticipacoesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                         }
 
                     lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
@@ -128,8 +127,8 @@ public class AtletaDAOImp implements DAO<Atleta> {
                 return;
             }
 
-            for(ParticipaçõesAtleta participaçõesAtleta : atleta.getParticipaçõesAtletas()){
-                saveHistorico(atleta.getId(), 0, participaçõesAtleta);
+            for(ParticipacoesAtleta participacoesAtleta : atleta.getParticipaçõesAtletas()){
+                saveHistorico(atleta.getId(), 0, participacoesAtleta);
             }
 
         } catch (SQLException ex) {
@@ -187,14 +186,14 @@ public class AtletaDAOImp implements DAO<Atleta> {
 
             if (rs.next()) {
 
-                List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
+                List<ParticipacoesAtleta> lstParticipacoes = new ArrayList<>();
 
                 PreparedStatement ps2 = conexao.prepareStatement("Select * from historico_atletas_competicoes where atleta_id = ?");
                 ps2.setInt(1, rs.getInt("user_id"));
                 ResultSet rs2 = ps2.executeQuery();
 
                 while (rs2.next()) {
-                    lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
+                    lstParticipacoes.add(new ParticipacoesAtleta(rs2.getInt("ano"),rs2.getInt("medalha_ouro"),rs2.getInt("medalha_prata"),rs2.getInt("medalha_bronze")));
                 }
 
                 return Optional.of(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
@@ -213,14 +212,14 @@ public class AtletaDAOImp implements DAO<Atleta> {
      * @param atletaID O identificador único do atleta na base de dados.
      * @param eventoID O identificador único do evento na base de dados.
      *                 Se for igual a 0, será registado como `NULL` na base de dados.
-     * @param participaçõesAtleta Um objeto da classe {@code ParticipaçõesAtleta} que contém
+     * @param participacoesAtleta Um objeto da classe {@code ParticipaçõesAtleta} que contém
      *                            os detalhes da participação, incluindo o ano e o número de
      *                            medalhas (ouro, prata e bronze).
      * @throws SQLException Lançada se ocorrer um erro ao executar a operação SQL.
      * @throws RuntimeException Envolvendo a exceção SQL se ocorrer algum erro no processo,
      *                          com uma mensagem detalhada do problema.
      */
-    public void saveHistorico(int atletaID, int eventoID, ParticipaçõesAtleta participaçõesAtleta) throws SQLException {
+    public void saveHistorico(int atletaID, int eventoID, ParticipacoesAtleta participacoesAtleta) throws SQLException {
         try{
             PreparedStatement ps = conexao.prepareStatement("INSERT INTO historico_atletas_competicoes (atleta_id, evento_id, ano, medalha_ouro, medalha_prata, medalha_bronze) VALUES(?,?,?,?,?,?)");
 
@@ -231,10 +230,10 @@ public class AtletaDAOImp implements DAO<Atleta> {
                 ps.setInt(2, eventoID);
             }
 
-            ps.setInt(3, participaçõesAtleta.getAno());
-            ps.setInt(4, participaçõesAtleta.getOuro());
-            ps.setInt(5, participaçõesAtleta.getPrata());
-            ps.setInt(6, participaçõesAtleta.getBronze());
+            ps.setInt(3, participacoesAtleta.getAno());
+            ps.setInt(4, participacoesAtleta.getOuro());
+            ps.setInt(5, participacoesAtleta.getPrata());
+            ps.setInt(6, participacoesAtleta.getBronze());
             ps.executeUpdate();
             ps.close();
 

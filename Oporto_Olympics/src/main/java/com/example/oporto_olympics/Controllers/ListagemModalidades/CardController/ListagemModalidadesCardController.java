@@ -476,7 +476,7 @@ public class ListagemModalidadesCardController {
 
                         resultadosModalidadeDAOImp.save(resultadoModalidade);
 
-                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipacoesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
                     } else {
 
@@ -486,7 +486,7 @@ public class ListagemModalidadesCardController {
 
                             resultadosModalidadeDAOImp.save(resultadoModalidade);
 
-                            atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                            atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipacoesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
                         }
 
@@ -502,7 +502,7 @@ public class ListagemModalidadesCardController {
 
                             EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
-                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaocesEquipa(evento.getAno_edicao(), medalha));
 
                             ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
 
@@ -511,7 +511,7 @@ public class ListagemModalidadesCardController {
                             if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
 
                                 for (AtletaInfo atletaInfo : lstAtletaInfo) {
-                                    atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                                    atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipacoesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
                                 }
                             }
                         }
@@ -710,7 +710,7 @@ public class ListagemModalidadesCardController {
 
                         resultadosModalidadeDAOImp.save(resultado);
 
-                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipacoesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
 
                     }
 
@@ -726,7 +726,7 @@ public class ListagemModalidadesCardController {
 
                         EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
-                        equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
+                        equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaocesEquipa(evento.getAno_edicao(), medalha));
 
                         ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
 
@@ -735,7 +735,7 @@ public class ListagemModalidadesCardController {
                         if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
 
                             for (AtletaInfo atletaInfo : lstAtletaInfo) {
-                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
+                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipacoesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
                             }
                         }
                     }

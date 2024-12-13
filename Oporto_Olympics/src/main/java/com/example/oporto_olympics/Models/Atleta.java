@@ -23,7 +23,7 @@ public class Atleta {
 
     private Date dataNascimento;
 
-    private List<ParticipaçõesAtleta> participaçõesAtletas;
+    private List<ParticipacoesAtleta> participacoesAtletas;
 
     private byte[] fotoPerfil;
     /**
@@ -36,9 +36,9 @@ public class Atleta {
      * @param altura                 Altura do atleta em centímetros.
      * @param peso                   Peso do atleta em quilogramas.
      * @param dataNascimento         Data de nascimento do atleta.
-     * @param participaçõesAtletas   Lista de participações do atleta em eventos.
+     * @param participacoesAtletas   Lista de participações do atleta em eventos.
      */
-    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas, byte[] fotoPerfil) {
+    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipacoesAtleta> participacoesAtletas, byte[] fotoPerfil) {
         this.id = id;
         this.nome = nome;
         this.pais = pais;
@@ -46,7 +46,7 @@ public class Atleta {
         this.altura = altura;
         this.peso = peso;
         this.dataNascimento = dataNascimento;
-        this.participaçõesAtletas = participaçõesAtletas;
+        this.participacoesAtletas = participacoesAtletas;
         this.fotoPerfil = fotoPerfil;
     }
     /**
@@ -166,16 +166,16 @@ public class Atleta {
      *
      * @return A lista de participações do atleta.
      */
-    public List<ParticipaçõesAtleta> getParticipaçõesAtletas() {
-        return participaçõesAtletas;
+    public List<ParticipacoesAtleta> getParticipaçõesAtletas() {
+        return participacoesAtletas;
     }
     /**
      * Define a lista de participações do atleta em eventos.
      *
-     * @param participaçõesAtletas A nova lista de participações do atleta.
+     * @param participacoesAtletas A nova lista de participações do atleta.
      */
-    public void setParticipaçõesAtletas(List<ParticipaçõesAtleta> participaçõesAtletas) {
-        this.participaçõesAtletas = participaçõesAtletas;
+    public void setParticipaçõesAtletas(List<ParticipacoesAtleta> participacoesAtletas) {
+        this.participacoesAtletas = participacoesAtletas;
     }
     /**
      * Obtém a foto de perfil do atleta.

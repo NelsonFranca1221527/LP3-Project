@@ -43,7 +43,6 @@ public class UserDAOImp implements DAO<User> {
      * @param id           o ID do utilizador cuja palavra-passe será atualizada.
      * @param newPassword  a nova palavra-passe a ser atribuída ao utilizador.
      *
-     * @throws SQLException se ocorrer um erro durante a execução da consulta SQL.
      */
     public void UpdatePassword(int id , String newPassword) {
         try {

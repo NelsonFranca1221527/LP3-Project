@@ -116,7 +116,6 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
      *
      * @param sigla A sigla do país a ser verificada, composta três letras.
      * @return {@code true} se a sigla do país estiver presente na tabela `paises`, {@code false} se não for encontrada.
-     * @throws SQLException Se ocorrer um erro durante a execução da consulta SQL.
      */
     @Override
     public boolean getPais(String sigla) {

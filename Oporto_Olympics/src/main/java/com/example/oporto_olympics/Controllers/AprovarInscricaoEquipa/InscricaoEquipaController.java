@@ -46,7 +46,6 @@ public class InscricaoEquipaController {
      * Este método estabelece a conexão com a base de dados e carrega as inscrições.
      * Caso a conexão falhe, mostra uma mensagem de erro ao utilizador.
      *
-     * @throws SQLException Se ocorrer um erro ao tentar estabelecer a conexão com a base de dados.
      */
     @FXML
     public void initialize() {

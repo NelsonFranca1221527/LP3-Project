@@ -1,6 +1,5 @@
 package com.example.oporto_olympics.Models;
 
-import java.util.ArrayList;
 import java.util.List;
 /**
  * A classe {@link Equipa} representa uma equipa desportiva com informações sobre
@@ -23,7 +22,7 @@ public class Equipa {
 
     private int anoFundacao;
 
-    private List<ParticipaçõesEquipa> participaçõesEquipa;
+    private List<ParticipaocesEquipa> participaocesEquipa;
     /**
      * Construtor para a classe {@link Equipa}, que inicializa todos os atributos da equipa.
      *
@@ -34,9 +33,9 @@ public class Equipa {
      * @param desporto            Tipo de desporto praticado pela equipa.
      * @param modalidadeID        Identificador da modalidade associada à equipa.
      * @param anoFundacao         Ano de fundação da equipa.
-     * @param participaçõesEquipa Lista das participações da equipa em competições.
+     * @param participaocesEquipa Lista das participações da equipa em competições.
      */
-    public Equipa(int id, String nome, String pais, String genero, String desporto, int modalidadeID, int anoFundacao, List<ParticipaçõesEquipa> participaçõesEquipa) {
+    public Equipa(int id, String nome, String pais, String genero, String desporto, int modalidadeID, int anoFundacao, List<ParticipaocesEquipa> participaocesEquipa) {
         this.id = id;
         this.nome = nome;
         this.pais = pais;
@@ -44,7 +43,7 @@ public class Equipa {
         this.desporto = desporto;
         this.modalidadeID = modalidadeID;
         this.anoFundacao = anoFundacao;
-        this.participaçõesEquipa = participaçõesEquipa;
+        this.participaocesEquipa = participaocesEquipa;
     }
     /**
      * Obtém o identificador único da equipa.
@@ -163,15 +162,15 @@ public class Equipa {
      *
      * @return A lista de participações da equipa.
      */
-    public List<ParticipaçõesEquipa> getParticipaçõesEquipa() {
-        return participaçõesEquipa;
+    public List<ParticipaocesEquipa> getParticipaçõesEquipa() {
+        return participaocesEquipa;
     }
     /**
      * Define a lista de participações da equipa em competições.
      *
-     * @param participaçõesEquipa A nova lista de participações da equipa.
+     * @param participaocesEquipa A nova lista de participações da equipa.
      */
-    public void setParticipaçõesEquipa(List<ParticipaçõesEquipa> participaçõesEquipa) {
-        this.participaçõesEquipa = participaçõesEquipa;
+    public void setParticipaçõesEquipa(List<ParticipaocesEquipa> participaocesEquipa) {
+        this.participaocesEquipa = participaocesEquipa;
     }
 }

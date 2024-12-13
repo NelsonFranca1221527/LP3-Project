@@ -1,9 +1,9 @@
 package com.example.oporto_olympics.Models;
 /**
- * A classe {@link ParticipaçõesAtleta} representa as participações de um atleta nas competições olímpicas,
+ * A classe {@link ParticipacoesAtleta} representa as participações de um atleta nas competições olímpicas,
  * incluindo o número de medalhas (ouro, prata e bronze) conquistadas em um determinado ano.
  */
-public class ParticipaçõesAtleta {
+public class ParticipacoesAtleta {
 
     private int ano;
 
@@ -13,14 +13,14 @@ public class ParticipaçõesAtleta {
 
     private int bronze;
     /**
-     * Construtor da classe {@link ParticipaçõesAtleta} que inicializa os atributos de ano e medalhas.
+     * Construtor da classe {@link ParticipacoesAtleta} que inicializa os atributos de ano e medalhas.
      *
      * @param ano    O ano da competição.
      * @param ouro   O número de medalhas de ouro conquistadas.
      * @param prata  O número de medalhas de prata conquistadas.
      * @param bronze O número de medalhas de bronze conquistadas.
      */
-    public ParticipaçõesAtleta(int ano, int ouro, int prata, int bronze) {
+    public ParticipacoesAtleta(int ano, int ouro, int prata, int bronze) {
         this.ano = ano;
         this.ouro = ouro;
         this.prata = prata;

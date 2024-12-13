@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+/****/
 public class VerResultadosController {
     /**
      * Contêiner de layout para a exibição dos resultados.

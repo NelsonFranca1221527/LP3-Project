@@ -197,7 +197,7 @@ public class AprovarInscricaoEquipaDAOImp implements AprovarInscricaoEquipaDAO {
      *
      * @param atletaId o ID do atleta a ser associado.
      * @param equipaId o ID da equipa à qual o atleta será associado.
-     * @throws SQLException se ocorrer um erro ao tentar inserir os dados na base de dados.
+     *
      */
     public void inserirAtletaEquipa(int atletaId, int equipaId) {
         String insertQuery = "INSERT INTO atletas_equipas (atleta_id, equipa_id) VALUES (?, ?)";

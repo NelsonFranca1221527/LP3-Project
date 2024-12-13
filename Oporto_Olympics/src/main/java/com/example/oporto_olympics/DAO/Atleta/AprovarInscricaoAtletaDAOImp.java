@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
 
     private Connection connection;
@@ -63,7 +64,6 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
      * @param atletaId   O ID do atleta a ser associado.
      * @param modalidadeId O ID da modalidade com a qual o atleta será associado.
      * @param eventoId O ID do evento ao qual o atleta será associado.
-     * @throws SQLException Se ocorrer um erro durante a execução da inserção.
      */
 
     @Override
@@ -76,7 +76,7 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
             pstmt.setInt(3, eventoId);
             pstmt.executeUpdate();
             System.out.println("Atleta associado ao evento e modalidade com sucesso!");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao associar o atleta ao evento e modalidade: " + e.getMessage());
         }
     }

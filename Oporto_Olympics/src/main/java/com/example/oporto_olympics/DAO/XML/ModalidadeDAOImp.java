@@ -1,12 +1,9 @@
 package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
-import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.time.LocalTime;

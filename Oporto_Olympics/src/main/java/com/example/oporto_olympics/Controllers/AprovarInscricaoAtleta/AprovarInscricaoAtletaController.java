@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/****/
 public class AprovarInscricaoAtletaController {
 
     @FXML
@@ -36,7 +36,7 @@ public class AprovarInscricaoAtletaController {
      * Caso a ligação falhe, apresenta uma mensagem de erro ao utilizador.
      *
      *
-     * @throws SQLException se ocorrer um erro ao tentar conectar à base de dados.
+     *
      */
     @FXML
     public void initialize() {
@@ -53,11 +53,11 @@ public class AprovarInscricaoAtletaController {
             dao = new AprovarInscricaoAtletaDAOImp(conexao);
 
             carregarInscricoesPendentes();
+        }catch (Exception exception) {
+                System.out.println("Ligação falhou: " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao conectar a base de dados: " + exception.getMessage());
+                alert.show();
 
-        } catch (SQLException exception) {
-            System.out.println("Ligação falhou: " + exception.getMessage());
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao conectar a base de dados: " + exception.getMessage());
-            alert.show();
         }
     }
     /**
