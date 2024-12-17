@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.MenuGestor.MenuGestorController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.MenuGestor.MenuGestorController">
    <children>
       <ImageView fitHeight="782.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -37,7 +37,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="348.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
+      <Button fx:id="XMLBtn" alignment="CENTER" contentDisplay="TOP" layoutX="549.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnInserirXMLButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir XML">
          <font>
             <Font size="20.0" />
          </font>
@@ -194,7 +194,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="ResultadosBtn" alignment="CENTER" contentDisplay="TOP" layoutX="550.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnVerResultadosButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Resultados">
+      <Button fx:id="ResultadosBtn" alignment="CENTER" contentDisplay="TOP" layoutX="751.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnVerResultadosButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Resultados">
          <font>
             <Font size="20.0" />
          </font>
@@ -224,9 +224,24 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="InscricoesBtnEvento" alignment="CENTER" contentDisplay="TOP" layoutX="750.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnInscricoesEventoButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inscrições Eventos">
+      <Button fx:id="InscricoesBtnEvento" alignment="CENTER" contentDisplay="TOP" layoutX="951.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnInscricoesEventoButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inscrições Eventos">
          <font>
             <Font size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Assets/Icons/Atleta-Icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="InsertGestorBtn" alignment="CENTER" contentDisplay="TOP" layoutX="348.0" layoutY="488.0" mnemonicParsing="false" onAction="#OnInsertGestorButtonClick" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: #87ceeb;" text="Inserir Gestor">
+         <font>
+            <Font size="20.0" />
          </font>
          <effect>
             <DropShadow />

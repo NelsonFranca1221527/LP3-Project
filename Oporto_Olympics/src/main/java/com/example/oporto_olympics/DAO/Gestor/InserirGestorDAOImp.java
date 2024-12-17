@@ -1,5 +1,6 @@
-package com.example.oporto_olympics.DAO.Atleta;
+package com.example.oporto_olympics.DAO.Gestor;
 
+import com.example.oporto_olympics.DAO.Gestor.InserirGestorDAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import javafx.scene.control.Alert;
 
@@ -9,11 +10,11 @@ import java.sql.*;
 import java.time.LocalDate;
 
 /**
- * Implementação da interface {@link InserirAtletaDAO} para a gestão de operações de inserção e atualização de dados de atletas na base de dados.
- * Esta classe é responsável por guardar ou atualizar os dados de um atleta, verificar a existência de um país na tabela {@code paises},
+ * Implementação da interface {@link InserirGestorDAO} para a gestão de operações de inserção e atualização de dados de gestores na base de dados.
+ * Esta classe é responsável por guardar ou atualizar os dados de um gestor,
  * e converter strings para um hash utilizando o algoritmo SHA-256.
  */
-public class InserirAtletaDAOImp implements InserirAtletaDAO{
+public class InserirGestorDAOImp implements InserirGestorDAO{
 
     private Connection conexao;
 
@@ -22,28 +23,23 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
      *
      * @param conexao conexão com a base de dados
      */
-    public InserirAtletaDAOImp(Connection conexao) {
+    public InserirGestorDAOImp(Connection conexao) {
         this.conexao = conexao;
     }
 
     /**
-     * Método responsável por guardar ou atualizar os dados de um atleta na base de dados.
+     * Método responsável por guardar ou atualizar os dados de um gestor na base de dados.
      * O fluxo:
-     * 1. Gera o número mecanográfico do atleta.
-     * 2. Obtém o ID de função para o tipo de utilizador 'Atleta'.
+     * 1. Gera o número mecanográfico do gestor.
+     * 2. Obtém o ID de função para o tipo de utilizador 'Gestor'.
      * 3. Insere um novo utilizador na tabela 'users'.
      * 4. Recupera o ID do utilizador recém-criado.
-     * 5. Atualiza os dados do atleta na tabela 'atletas', associando-o ao utilizador recém-criado.
+     * 5. Atualiza os dados do gestor na tabela 'gestores', associando-o ao utilizador recém-criado.
      *
-     * @param nome O nome do atleta a ser guardado/atualizado.
-     * @param pais O país de origem do atleta.
-     * @param altura A altura do atleta em centímetros.
-     * @param peso O peso do atleta em quilogramas.
-     * @param dataNascimento A data de nascimento do atleta.
-     * @param genero O género do atleta.
+     * @param nome O nome do gestor a ser guardado/atualizado.
      */
     @Override
-    public void saveAtleta(String nome, String pais, double altura, double peso, LocalDate dataNascimento, String genero) {
+    public void saveGestor(String nome) {
 
         AlertHandler alertHandler;
 
@@ -57,8 +53,8 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
                 numMecanografico = maiorNumMecanografico > 0 ? maiorNumMecanografico + 1 : 1000000;
             }
 
-            PreparedStatement ps2 = conexao.prepareStatement("SELECT id as \"IdAtleta\" FROM roles WHERE nome = ?");
-            ps2.setString(1, "Atleta");
+            PreparedStatement ps2 = conexao.prepareStatement("SELECT id as \"IdGestor\" FROM roles WHERE nome = ?");
+            ps2.setString(1, "Gestor");
             ResultSet rs2 = ps2.executeQuery();
 
             if (!rs2.next()) {
@@ -67,13 +63,13 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
                 return;
             }
 
-            int idAtleta = rs2.getInt("IdAtleta");
+            int idGestor = rs2.getInt("IdGestor");
 
             PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)");
             ps3.setInt(1, numMecanografico);
             ps3.setString(2, StringtoHash(String.valueOf(numMecanografico)));
             ps3.setDate(3, Date.valueOf(LocalDate.now()));
-            ps3.setInt(4, idAtleta);
+            ps3.setInt(4, idGestor);
             ps3.executeUpdate();
             ps3.close();
 
@@ -85,23 +81,17 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
             if (rs4.next()) {
                 int userId = rs4.getInt("id");
 
-
-                String updateAtletaQuery = "INSERT INTO atletas (nome, data_nascimento, genero, altura_cm, peso_kg , pais_sigla, user_id) VALUES(?,?,?,?,?,?,?)";
-                try (PreparedStatement ps5 = conexao.prepareStatement(updateAtletaQuery)) {
+                String insertGestorQuery = "INSERT INTO gestores (nome, user_id) VALUES(?,?)";
+                try (PreparedStatement ps5 = conexao.prepareStatement(insertGestorQuery)) {
                     ps5.setString(1, nome);
-                    ps5.setDate(2, Date.valueOf(dataNascimento));
-                    ps5.setString(3, genero);
-                    ps5.setDouble(4, altura);
-                    ps5.setDouble(5, peso);
-                    ps5.setString(6, pais);
-                    ps5.setInt(7, userId);
+                    ps5.setInt(2, userId);
                     ps5.executeUpdate();
                 }
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro ao atualizar atleta", "Erro ao salvar o atleta na base de dados. Verifique o console.");
+            alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro ao atualizar gestor", "Erro ao salvar o gestor na base de dados. Verifique o console.");
             alertHandler.getAlert().showAndWait();
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
@@ -109,31 +99,6 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
             alertHandler.getAlert().showAndWait();
         }
     }
-
-    /**
-     * Verifica a existência de um país na tabela `paises` com base na sigla fornecida.
-     *
-     *
-     * @param sigla A sigla do país a ser verificada, composta três letras.
-     * @return {@code true} se a sigla do país estiver presente na tabela `paises`, {@code false} se não for encontrada.
-     * @throws SQLException Se ocorrer um erro durante a execução da consulta SQL.
-     */
-    @Override
-    public boolean getPais(String sigla) {
-        String query = "SELECT 1 FROM paises WHERE sigla = ?";
-        try (PreparedStatement ps = conexao.prepareStatement(query)) {
-            ps.setString(1, sigla);
-            ResultSet rs = ps.executeQuery();
-
-            return rs.next();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
 
     /**
      * Converte uma string para um hash SHA-256.

@@ -227,4 +227,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoAprovarAtletaEvento() {
         return new RedirecionarHelper("Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml", "Atletas Eventos");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inserção de gestor.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de inserção de gestor.
+     */
+    public static RedirecionarHelper GotoInserirGestor() {
+        return new RedirecionarHelper("Views/Gestor/InserirGestor.fxml", "Inserir Gestores");
+    }
 }

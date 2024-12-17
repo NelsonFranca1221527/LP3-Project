@@ -42,6 +42,11 @@ public class MenuGestorController {
     @FXML
     private Button InsertAtletasBtn;
     /**
+     * Botão para inserir novos gestores.
+     */
+    @FXML
+    private Button InsertGestorBtn;
+    /**
      * Botão para aceder à secção de modalidades.
      */
     @FXML
@@ -136,6 +141,19 @@ public class MenuGestorController {
             Stage s = (Stage) InsertAtletasBtn.getScene().getWindow();
 
             RedirecionarHelper.GotoInserirAtleta().switchScene(s);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação para redirecionar o utilizador para a secção de inserção de gestores.
+     */
+    @FXML
+    protected void OnInsertGestorButtonClick(){
+        try {
+            Stage s = (Stage) InsertGestorBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoInserirGestor().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

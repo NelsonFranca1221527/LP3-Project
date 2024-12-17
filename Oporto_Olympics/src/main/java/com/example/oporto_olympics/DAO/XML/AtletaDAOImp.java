@@ -122,7 +122,15 @@ public class AtletaDAOImp implements DAO<Atleta> {
             atleta.setId(generatedKeys.getInt(1));
             ps3.close();
 
-            update(atleta);
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO atletas (nome, data_nascimento, genero, altura_cm, peso_kg , pais_sigla, user_id) VALUES(?,?,?,?,?,?,?)");
+            ps.setString(1, atleta.getNome());
+            ps.setDate(2, new Date(atleta.getDataNascimento().getTime()));
+            ps.setString(3, atleta.getGenero());
+            ps.setInt(4, atleta.getAltura());
+            ps.setInt(5, atleta.getPeso());
+            ps.setString(6, atleta.getPais());
+            ps.setInt(7, atleta.getId());
+            ps.executeUpdate();
 
             if(atleta.getParticipaçõesAtletas().isEmpty() || atleta.getParticipaçõesAtletas() == null){
                 return;
