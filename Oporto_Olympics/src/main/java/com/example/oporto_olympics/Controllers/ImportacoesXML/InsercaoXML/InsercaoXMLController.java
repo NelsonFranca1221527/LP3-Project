@@ -274,6 +274,10 @@ public class InsercaoXMLController {
 
         Container.getChildren().clear();
 
+        setListaAtletas(new ArrayList<>());
+        setListaEquipas(new ArrayList<>());
+        setListaModalidades(new ArrayList<>());
+
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
                 valido = VerificarXML(selectedFile, AtletaXSDPath);
@@ -630,6 +634,7 @@ public class InsercaoXMLController {
 
             if (ModalidadeExistente != null) {
                 if (ModalidadeExistente.getListEventosID().contains(IDEvento)) {
+
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
                     alertHandler.getAlert().showAndWait();
                     continue;

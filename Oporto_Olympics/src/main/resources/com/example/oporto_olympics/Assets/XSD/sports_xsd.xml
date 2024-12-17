@@ -57,6 +57,8 @@
 									<xs:sequence>
 										<!-- Record time -->
 										<xs:element name="time" type="xs:time" minOccurs="0"/>
+										<!-- Distance -->
+										<xs:element name="distance" type="xs:decimal" minOccurs="0"/>
 										<!-- Year when the record was set -->
 										<xs:element name="year" type="xs:int"/>
 										<!-- Record holder's name or team -->
@@ -72,6 +74,8 @@
 									<xs:sequence>
 										<!-- Time -->
 										<xs:element name="time" type="xs:time" minOccurs="0"/>
+										<!-- Distance -->
+										<xs:element name="distance" type="xs:decimal" minOccurs="0"/>
 										<!-- Year of the winning Olympic event -->
 										<xs:element name="year" type="xs:int"/>
 										<!-- Name or team of the holder  -->
