@@ -626,7 +626,7 @@ public class InsercaoXMLController {
         while (iterator.hasNext()) {
             Modalidade modalidade = iterator.next();
 
-            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
             if (ModalidadeExistente != null) {
                 if (ModalidadeExistente.getListEventosID().contains(IDEvento)) {

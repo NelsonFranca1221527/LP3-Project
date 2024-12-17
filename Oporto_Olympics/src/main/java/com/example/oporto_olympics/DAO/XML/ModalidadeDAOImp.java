@@ -176,12 +176,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      *         ou null se não for encontrada nenhuma modalidade correspondente.
      * @throws RuntimeException Se ocorrer um erro na consulta à base de dados.
      */
-    public Modalidade getModalidadeByNomeGeneroTipo(String nome, String genero, String tipo) {
+    public Modalidade getModalidadeByNomeGeneroTipo(String nome, String genero, String tipo, int minParticipantes) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE modalidades.nome = ? and modalidades.genero = ? and modalidades.tipo = ?");
+            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE modalidades.nome = ? and modalidades.genero = ? and modalidades.tipo = ? and modalidades.min_participantes = ?");
             ps.setString(1, nome);
             ps.setString(2, genero);
             ps.setString(3, tipo);
+            ps.setInt(4, minParticipantes);
             ResultSet rs = ps.executeQuery();
 
             Modalidade modalidade = null;
