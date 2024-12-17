@@ -9,13 +9,12 @@ import java.sql.Time;
  */
 public class RegistoPontos extends RegistoOlimpico{
     /**
-     * Constrói um novo registo de pontos para um evento olímpico, definindo o vencedor, o ano
-     * e as medalhas conquistadas. Esta classe não armazena tempo, focando-se apenas em eventos
-     * baseados em pontuações e conquistas.
+     * Construtor que cria um registo olímpico com o vencedor, o ano e as medalhas conquistadas.
+     * Este construtor é útil para eventos onde apenas as medalhas são relevantes.
      *
-     * @param vencedor O nome do vencedor do evento olímpico baseado em pontos.
+     * @param vencedor O nome do vencedor do evento olímpico.
      * @param ano      O ano em que ocorreu o evento.
-     * @param medalhas As medalhas conquistadas pelo vencedor, ex.: "Ouro", "Prata", "Bronze".
+     * @param medalhas As medalhas conquistadas pelo vencedor (ex.: "Ouro", "Prata", "Bronze").
      */
     public RegistoPontos(String vencedor, int ano, String medalhas) {
         super(vencedor, ano, medalhas);

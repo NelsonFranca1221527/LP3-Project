@@ -144,6 +144,7 @@ public class InserirModalidadesController {
 
         UniMedidaMap.put("Tempo", "Tempo");
         UniMedidaMap.put("Pontos", "Pontos");
+        UniMedidaMap.put("Distância", "Distância");
 
         GeneroChoice.setItems(FXCollections.observableArrayList(generoMap.keySet()));
         TipoChoice.setItems(FXCollections.observableArrayList(tipoMap.keySet()));
@@ -239,7 +240,7 @@ public class InserirModalidadesController {
         }
 
         modalidadeDAOImp.save(modalidade);
-        modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
+        modalidadeDAOImp.saveEventos_Modalidades(eventoID, modalidade.getId());
 
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
         alertHandler.getAlert().showAndWait();

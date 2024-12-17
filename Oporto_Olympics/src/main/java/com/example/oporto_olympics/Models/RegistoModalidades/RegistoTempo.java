@@ -9,15 +9,14 @@ import java.time.LocalTime;
  */
 public class RegistoTempo extends RegistoOlimpico {
     /**
-     * Constrói um novo registo de tempo para um evento olímpico, definindo o vencedor,
-     * o ano e o tempo de conclusão do evento. Esta classe foca-se em competições
-     * onde o tempo é crucial para determinar a vitória.
+     * Construtor que cria um registo olímpico com o vencedor, o ano, o tempo e as medalhas conquistadas.
      *
-     * @param vencedor O nome do vencedor do evento olímpico baseado em tempo.
-     * @param ano      O ano em que o evento ocorreu.
-     * @param tempo    O tempo de conclusão do vencedor no evento, representado como {@link LocalTime}.
+     * @param vencedor O nome do vencedor do evento olímpico.
+     * @param ano      O ano em que ocorreu o evento.
+     * @param tempo    O tempo que o vencedor levou para concluir o evento.
+     * @param medalhas As medalhas conquistadas pelo vencedor (ex.: "Ouro", "Prata", "Bronze").
      */
-    public RegistoTempo(String vencedor, int ano, LocalTime tempo) {
-        super(vencedor, ano, tempo);
+    public RegistoTempo(String vencedor, int ano, LocalTime tempo, String medalhas) {
+        super(vencedor, ano, tempo, medalhas);
     }
 }

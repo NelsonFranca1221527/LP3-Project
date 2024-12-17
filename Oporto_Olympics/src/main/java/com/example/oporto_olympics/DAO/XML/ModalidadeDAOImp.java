@@ -4,6 +4,7 @@ import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.scene.control.Alert;
@@ -60,16 +61,19 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
-
                     case "Pontos":
-                        RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
+                        RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("recorde_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
@@ -90,7 +94,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public void save(Modalidade modalidade) {
 
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_medalhas, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_medalhas, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, modalidade.getNome());
             ps.setString(2, modalidade.getTipo());
@@ -101,23 +105,54 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
             ps.setInt(6, modalidade.getOneGame().equals("One") ? 1 : 0);
             ps.setString(7, modalidade.getRegras());
 
-            if (modalidade.getMedida().equals("Tempo")) {
-                ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
-                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
-                ps.setString(10, modalidade.getRecordeOlimpico().getVencedor());
-                ps.setInt(11, modalidade.getVencedorOlimpico().getAno());
-                ps.setString(12, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
-                ps.setString(13, modalidade.getVencedorOlimpico().getVencedor());
-            } else if (modalidade.getMedida().equals("Pontos")) {
-                ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
-                ps.setString(9, modalidade.getRecordeOlimpico().getMedalhas());
-                ps.setString(10, modalidade.getRecordeOlimpico().getVencedor());
-                ps.setInt(11, modalidade.getVencedorOlimpico().getAno());
-                ps.setString(12, modalidade.getVencedorOlimpico().getMedalhas());
-                ps.setString(13, modalidade.getVencedorOlimpico().getVencedor());
+            //Ano do Recorde Olimpico
+            ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
+
+            //Medalhas do Recorde Olimpico
+            if (modalidade.getRecordeOlimpico().getMedalhas() != null) {
+                ps.setInt(10, Integer.parseInt(modalidade.getRecordeOlimpico().getMedalhas()));
+            } else {
+                ps.setNull(10, java.sql.Types.INTEGER);
             }
 
-            ps.setString(14, modalidade.getGenero());
+            //Titular do Recorde Olimpico
+            ps.setString(11, modalidade.getRecordeOlimpico().getVencedor());
+
+            //Ano do Vencedor Olimpico
+            ps.setInt(12, modalidade.getVencedorOlimpico().getAno());
+
+            //Medalhas do Vencedor Olimpico
+            if (modalidade.getVencedorOlimpico().getMedalhas() != null || !modalidade.getVencedorOlimpico().getMedalhas().isEmpty()) {
+                ps.setString(14, modalidade.getVencedorOlimpico().getMedalhas());
+            } else {
+                ps.setNull(14, java.sql.Types.VARCHAR);
+            }
+
+            //Titular do Vencedor Olimpico
+            ps.setString(15, modalidade.getVencedorOlimpico().getVencedor());
+
+            if (modalidade.getMedida().equals("Tempo")) {
+
+                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
+
+                ps.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
+
+            } else if (modalidade.getMedida().equals("Pontos")) {
+
+                ps.setNull(9, Types.VARCHAR);
+
+                ps.setNull(13, Types.INTEGER);
+
+            } else if (modalidade.getMedida().equals("Distância")) {
+
+                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getDistancia()));
+
+                ps.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getDistancia()));
+
+            }
+
+            ps.setString(16, modalidade.getGenero());
+
             ps.executeUpdate();
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -201,8 +236,9 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
 
@@ -210,6 +246,11 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                         RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
@@ -459,16 +500,19 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
-
                     case "Pontos":
                         RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
