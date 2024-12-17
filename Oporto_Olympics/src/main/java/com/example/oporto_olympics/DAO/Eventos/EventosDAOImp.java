@@ -169,4 +169,42 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
         }
     }
+
+    /**
+     * Atualiza o logotipo de um evento na base de dados.
+     *
+     * Este método recebe o ID do evento e o novo array de bytes do logotipo,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param eventoId   o ID do evento cujo registo será atualizado.
+     * @param logo o array de bytes representando o novo logotipo do evento.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateLogotipo(int eventoId, byte[] logo) throws SQLException {
+        String sql = "UPDATE eventos SET logo = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBytes(1, logo);
+            stmt.setInt(2, eventoId);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Atualiza a mascote de um evento na base de dados.
+     *
+     * Este método recebe o ID do evento e o novo array de bytes da mascote,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param eventoId   o ID do evento cujo registo será atualizado.
+     * @param mascote o array de bytes representando a nova imagem da mascote.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateMascote(int eventoId, byte[] mascote) throws SQLException {
+        String sql = "UPDATE eventos SET logo = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBytes(1, mascote);
+            stmt.setInt(2, eventoId);
+            stmt.executeUpdate();
+        }
+    }
 }

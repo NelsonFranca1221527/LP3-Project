@@ -2,8 +2,10 @@ package com.example.oporto_olympics.Controllers.ListagemEventos.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.InscricaonoEventoDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
@@ -25,9 +27,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -69,6 +75,18 @@ public class ListagemEventosCardController {
      */
     @FXML
     private Button InscreverEquipasButton;
+
+    /**
+     * Botão para alterar foto do Logotipo.
+     */
+    @FXML
+    private Button AlterarLogoBtn;
+
+    /**
+     * Botão para alterar foto da Mascote.
+     */
+    @FXML
+    private Button AlterarMascoteBtn;
 
     /**
      * Representa um evento específico de um card.
@@ -537,6 +555,122 @@ public class ListagemEventosCardController {
         inscreverStage.setScene(new Scene(vBox, 600, 400));
         inscreverStage.setTitle("Modalidades Disponíveis para Inscrição");
         inscreverStage.show();
+    }
+
+    /**
+     * Manipulador de eventos para o botão "Alterar Logo".
+     *
+     * Este método é chamado quando o utilizador clica no botão para alterar o Logotipo de um evento.
+     * Ele permite que o utilizador selecione uma nova imagem através de um explorador de ficheiros,
+     * converte a imagem selecionada em um array de bytes e atualiza a base de dados com o novo Logotipo.
+     * Além disso, a interface gráfica é atualizada para exibir o novo Logotipo.
+     *
+     */
+    @FXML
+    void OnAlterarLogoButton() {
+        Evento evento = getEventoEspecifico();
+
+        // Abrir explorador de ficheiros
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecione uma imagem");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(AlterarLogoBtn.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                // Converter imagem para byte[]
+                byte[] fotoLogo = Files.readAllBytes(selectedFile.toPath());
+
+                // Atualizar no modelo Atleta
+                evento.setLogo(fotoLogo);
+
+                // Atualizar na base de dados
+                ConnectionBD conexaoBD = ConnectionBD.getInstance();
+                Connection conexao = conexaoBD.getConexao();
+                EventosDAOImp EventosDAO = new EventosDAOImp(conexao);
+                EventosDAO.updateLogotipo(evento.getId(), fotoLogo);
+
+                // Atualizar na interface
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(fotoLogo);
+                Image novaImagem = new Image(inputStream);
+                img_logo.setImage(novaImagem);
+
+                // Notificar sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Logotipo atualizado com sucesso!");
+                alert.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar a imagem: " + e.getMessage());
+                alert.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao atualizar a imagem na base de dados: " + e.getMessage());
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nenhuma imagem foi selecionada.");
+            alert.show();
+        }
+    }
+
+    /**
+     * Manipulador de eventos para o botão "Alterar Mascote".
+     *
+     * Este método é chamado quando o utilizador clica no botão para alterar a Mascote de um evento.
+     * Ele permite que o utilizador selecione uma nova imagem através de um explorador de ficheiros,
+     * converte a imagem selecionada em um array de bytes e atualiza a base de dados com a nova foto/mascote.
+     * Além disso, a interface gráfica é atualizada para exibir a nova mascote.
+     *
+     */
+    @FXML
+    void OnAlterarMascoteButton() {
+        Evento evento = getEventoEspecifico();
+
+        // Abrir explorador de ficheiros
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecione uma imagem");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(AlterarMascoteBtn.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                // Converter imagem para byte[]
+                byte[] mascote = Files.readAllBytes(selectedFile.toPath());
+
+                // Atualizar no modelo Atleta
+                evento.setMascote(mascote);
+
+                // Atualizar na base de dados
+                ConnectionBD conexaoBD = ConnectionBD.getInstance();
+                Connection conexao = conexaoBD.getConexao();
+                EventosDAOImp EventosDAO = new EventosDAOImp(conexao);
+                EventosDAO.updateMascote(evento.getId(), mascote);
+
+                // Atualizar na interface
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(mascote);
+                Image novaMascote = new Image(inputStream);
+                img_mascote.setImage(novaMascote);
+
+                // Notificar sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Mascote atualizado com sucesso!");
+                alert.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar a imagem: " + e.getMessage());
+                alert.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao atualizar a imagem na base de dados: " + e.getMessage());
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nenhuma imagem foi selecionada.");
+            alert.show();
+        }
     }
 
 }
