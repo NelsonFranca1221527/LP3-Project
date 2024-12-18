@@ -200,7 +200,7 @@ public class EventosDAOImp implements DAO<Evento> {
      * @throws SQLException se ocorrer um erro durante a execução da query SQL.
      */
     public void updateMascote(int eventoId, byte[] mascote) throws SQLException {
-        String sql = "UPDATE eventos SET logo = ? WHERE id = ?";
+        String sql = "UPDATE eventos SET mascote = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setBytes(1, mascote);
             stmt.setInt(2, eventoId);
