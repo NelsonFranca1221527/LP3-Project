@@ -203,6 +203,12 @@ public class InserirLocalController {
             return;
         }
 
+        if(Tipo.equals("interior") && Capacidade <= 0) {
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Capacidadde Inválida", "Um local interior deve possuir uma capacidade superior a 0!");
+            AH1.getAlert().show();
+            return;
+        }
+
         AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
         Optional<ButtonType> result = AH2.getAlert().showAndWait();
         if (result.get() == ButtonType.OK) {
