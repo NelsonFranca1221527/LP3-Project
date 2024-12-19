@@ -92,10 +92,43 @@ public class InserirAtletaController {
             alert.show();
         }
 
-        // Preencher o ChoiceBox de Gênero
         GeneroChoice.getItems().addAll("Men", "Women");
-        GeneroChoice.setValue("Men"); // Valor default, pode mudar se necessário
+        GeneroChoice.setValue("Men");
+
+        addDateMask(Data_nasc);
     }
+
+    /**
+     * Adiciona uma máscara ao campo de texto para garantir o formato yyyy-MM-dd.
+     *
+     * @param textField O campo de texto onde a máscara será aplicada.
+     */
+    private void addDateMask(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 4))); // Ano
+            }
+            if (length > 4) {
+                masked.append("-");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Mês
+            }
+            if (length > 6) {
+                masked.append("-");
+                masked.append(sanitized.substring(6, Math.min(length, 8))); // Dia
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                textField.setText(masked.toString());
+                textField.positionCaret(masked.length());
+            }
+        });
+    }
+
 
     /**
      * Método associado ao botão de criação de atleta. Este método é acionado ao clicar no botão de "Criar Atleta"
@@ -128,6 +161,14 @@ public class InserirAtletaController {
         }
         if (!dao.getPais(pais)) {
             showAlert(Alert.AlertType.WARNING, "País inválido", "A sigla do país inserido não é válida.");
+            return;
+        }
+        if(altura.equals(String.valueOf(0))){
+            showAlert(Alert.AlertType.WARNING, "Altura inválida","A altura que inseriu não é válida!");
+            return;
+        }
+        if(peso.equals(String.valueOf(0))){
+            showAlert(Alert.AlertType.WARNING, "Peso inválida","O peso que inseriu não é válido!");
             return;
         }
 
