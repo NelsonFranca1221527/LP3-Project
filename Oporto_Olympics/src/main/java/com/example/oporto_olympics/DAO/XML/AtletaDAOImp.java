@@ -5,6 +5,7 @@ import com.example.oporto_olympics.DAO.DAO;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Misc.Encriptacao;
 import com.example.oporto_olympics.Models.Atleta;
+import com.example.oporto_olympics.Models.InscricaoEquipas;
 import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import javafx.scene.control.Alert;
 
@@ -267,6 +268,46 @@ public class AtletaDAOImp implements DAO<Atleta> {
             stmt.setBytes(1, fotoPerfil);
             stmt.setInt(2, atletaId);
             stmt.executeUpdate();
+        }
+    }
+
+    public List<Atleta> getAtletas(String filtroNome) throws SQLException {
+        List<Atleta> lst = new ArrayList<>();
+        String query;
+
+        if (filtroNome == null || filtroNome.trim().isEmpty()) {
+            query = "SELECT a.*, u.imagem FROM atletas as a, users as u where a.user_id=u.id";
+        } else {
+            query = "SELECT a.*, u.imagem FROM atletas as a, users as u where a.user_id=u.id AND a.nome LIKE ?";
+        }
+        PreparedStatement pstmt = conexao.prepareStatement(query);
+        try{
+
+            if (filtroNome != null && !filtroNome.trim().isEmpty()) {
+                pstmt.setString(1, "%" + filtroNome + "%");
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                return null;
+            } else {
+                while (rs.next()) {
+
+                    List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
+
+                    Statement stmt2 = conexao.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
+                    while (rs2.next()) {
+                        lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"), rs2.getInt("medalha_ouro"), rs2.getInt("medalha_prata"), rs2.getInt("medalha_bronze")));
+                    }
+
+                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
+                }
+            }
+
+            return lst;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

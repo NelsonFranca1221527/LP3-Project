@@ -8,7 +8,10 @@ import com.example.oporto_olympics.Models.Atleta;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -34,6 +37,11 @@ public class ListAtletasController {
     @FXML
     private Button VoltarBtn;
 
+    @FXML
+    private TextField searchfield;
+
+    private AtletaDAOImp AtletaDAO;
+
 
     /**
      *
@@ -47,25 +55,61 @@ public class ListAtletasController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        AtletaDAOImp AtletaDAO = new AtletaDAOImp(conexao);
+        if (conexao == null) {
+            System.out.println("Conexão com a base de dados falhou!");
+            return;
+        } else {
+            System.out.println("Conexão com a base de dados bem-sucedida!");
+        }
 
-        List<Atleta> AllAtletas = AtletaDAO.getAll();
+        AtletaDAO = new AtletaDAOImp(conexao);
 
-        for (Atleta atleta : AllAtletas) {
+        configurarSearchField();
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/ListagemAtletas/Cards/ListAtletaCard.fxml"));
-                Pane Atletas = loader.load();
-                ListAtletaCardController cardsController = loader.getController();
-                cardsController.PreencherDados(atleta);
+        ListarAtletas(null);
+    }
 
-                Atletas.setUserData(atleta);
+    /**
+     * Configura o listener para o campo de texto de pesquisa.
+     */
+    private void configurarSearchField() {
+        searchfield.textProperty().addListener((observable, oldValue, newValue) -> {
+            ListarAtletas(newValue.trim()); // Atualizar a lista conforme o texto digitado
+        });
+    }
 
-                AtletasContainer.getChildren().add(Atletas);
+    public void ListarAtletas(String filtroNome){
+        try{
+            List<Atleta> atletas = AtletaDAO.getAtletas(filtroNome);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            AtletasContainer.getChildren().clear();
+
+            if (atletas.isEmpty()) {
+                Label noResultsLabel = new Label("Nenhuma equipa encontrada.");
+                noResultsLabel.setStyle("-fx-font-size: 16px; -fx-font-style: italic; -fx-text-fill: grey; -fx-padding: 10 0 0 10;");
+                AtletasContainer.getChildren().add(noResultsLabel);
+                return;
             }
+
+            for (Atleta atleta : atletas) {
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/ListagemAtletas/Cards/ListAtletaCard.fxml"));
+                    Pane Atletas = loader.load();
+                    ListAtletaCardController cardsController = loader.getController();
+                    cardsController.PreencherDados(atleta);
+
+                    Atletas.setUserData(atleta);
+
+                    AtletasContainer.getChildren().add(Atletas);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar os atletas: " + e.getMessage());
+            alert.show();
         }
     }
 
