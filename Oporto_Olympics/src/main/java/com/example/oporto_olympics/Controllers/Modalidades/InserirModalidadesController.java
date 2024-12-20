@@ -9,7 +9,9 @@ import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Evento;
 import com.example.oporto_olympics.Models.Local;
 import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -221,7 +223,13 @@ public class InserirModalidadesController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, ""), new RegistoPontos("", 0, ""), regras);
+        if(minParticipantes <= 1){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A modalidade deve ter um minimo de 2 ou mais participantes.");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, String.valueOf(0)), new RegistoPontos("", 0, ""), regras);
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
