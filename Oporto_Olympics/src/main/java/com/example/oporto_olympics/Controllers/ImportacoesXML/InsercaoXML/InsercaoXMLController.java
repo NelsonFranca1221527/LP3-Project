@@ -632,6 +632,12 @@ public class InsercaoXMLController {
 
             Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
+            if(modalidade.getMinParticipantes() <= 1){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A Modalidade " + modalidade.getNome() + " deve ter um minimo de 2 ou mais participantes.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             if (ModalidadeExistente != null) {
                 if (ModalidadeExistente.getListEventosID().contains(IDEvento)) {
 
