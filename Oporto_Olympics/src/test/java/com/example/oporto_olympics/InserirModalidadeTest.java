@@ -59,14 +59,14 @@ class InserirModalidadesTest {
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
-        Modalidade modalidadeExistenteBD = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+        Modalidade modalidadeExistenteBD = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
         if (modalidadeExistenteBD == null) {
             modalidadeDAOImp.save(modalidade);
         } else {
             modalidadeExistente = true;
         }
 
-        Modalidade modalidadeRecuperada = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+        Modalidade modalidadeRecuperada = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
         assertNotNull(modalidadeRecuperada, "A modalidade deveria existir na base de dados.");
         assertTrue(modalidadeExistente || modalidadeRecuperada.getNome().equals(nome), "A modalidade foi inserida ou já existia na base de dados.");
