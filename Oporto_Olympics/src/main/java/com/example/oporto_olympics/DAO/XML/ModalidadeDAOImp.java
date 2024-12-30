@@ -1,15 +1,14 @@
 package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.Misc.AlertHandler;
+import com.example.oporto_olympics.Models.HorarioModalidade;
 import com.example.oporto_olympics.Models.Modalidade;
-import com.example.oporto_olympics.Models.ParticipaçõesAtleta;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
-import javafx.scene.control.Alert;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -291,6 +290,30 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
     }
 
+    public List<HorarioModalidade> getAllHorarioModalidade() {
+        try {
+
+            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id FROM eventos_modalidades");
+            ResultSet rs = ps.executeQuery();
+
+            List<HorarioModalidade> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                if(rs.getTimestamp("data_modalidade").toLocalDateTime() == null || rs.getTime("duracao").toLocalTime() == null || rs.getInt("local_id") == 0){
+                 continue;
+                }
+
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+            }
+
+                return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao inserir a evento_modalidade: " + ex.getMessage());
+        }
+    }
+
     /**
      * Guarda a relação entre um evento e uma modalidade na base de dados.
      *
@@ -298,12 +321,15 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      * @param modalidadeID  ID da modalidade a ser associada ao evento.
      * @throws RuntimeException Se ocorrer um erro ao inserir a relação na base de dados.
      */
-    public void saveEventos_Modalidades(int eventoID, int modalidadeID){
+    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id){
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id) VALUES(?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id) VALUES(?,?,?,?,?)");
 
             ps.setInt(1, eventoID);
             ps.setInt(2, modalidadeID);
+            ps.setTimestamp(3, Timestamp.valueOf(dataTempo));
+            ps.setTime(4, Time.valueOf(duracao));
+            ps.setInt(5, local_id);
             ps.executeUpdate();
             ps.close();
 

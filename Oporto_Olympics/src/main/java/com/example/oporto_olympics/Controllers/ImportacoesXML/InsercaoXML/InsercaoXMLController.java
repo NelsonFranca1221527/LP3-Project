@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -646,13 +647,13 @@ public class InsercaoXMLController {
                     continue;
                 }
 
-                modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
+                modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId(), LocalDateTime.now(), LocalTime.now(), 1);
                 iterator.remove();
                 continue;
             }
 
             modalidadeDAOImp.save(modalidade);
-            modalidadeDAOImp.saveEventos_Modalidades(IDEvento, modalidade.getId());
+            modalidadeDAOImp.saveEventos_Modalidades(IDEvento, modalidade.getId(), LocalDateTime.now(), LocalTime.now(), 1);
             iterator.remove();
         }
 
