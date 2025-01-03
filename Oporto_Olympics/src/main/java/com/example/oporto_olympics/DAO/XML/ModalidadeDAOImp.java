@@ -290,6 +290,18 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
     }
 
+    /**
+     * Obtém todos os horários das modalidades da base de dados.
+     *
+     * Este método realiza uma consulta à tabela `eventos_modalidades` para obter os campos
+     * `data_modalidade`, `duracao` e `local_id`. Os dados são convertidos para objetos da classe
+     * {@link HorarioModalidade} e retornados numa lista.
+     * Registos com valores inválidos (data ou duração nula, ou `local_id` igual a 0) são ignorados.
+     *
+     * @return Uma lista de objetos {@link HorarioModalidade} contendo os dados dos horários
+     *         das modalidades presentes na base de dados.
+     * @throws RuntimeException Se ocorrer um erro durante a execução da consulta SQL.
+     */
     public List<HorarioModalidade> getAllHorarioModalidade() {
         try {
 
@@ -300,8 +312,10 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
             while (rs.next()) {
 
-                if(rs.getTimestamp("data_modalidade").toLocalDateTime() == null || rs.getTime("duracao").toLocalTime() == null || rs.getInt("local_id") == 0){
-                 continue;
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
                 }
 
                 list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));

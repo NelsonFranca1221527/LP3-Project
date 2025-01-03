@@ -411,14 +411,14 @@ public class InserirModalidadesController {
         LimparDados();
     }
 
-    public Boolean VerificarConflito(LocalDateTime dataHora, LocalTime duracao,int localID,List<HorarioModalidade> listaHorarios){
+    public Boolean VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao,int localID,List<HorarioModalidade> listaHorarios){
 
         if(listaHorarios == null || listaHorarios.isEmpty()){
             //Sem Conflitos
             return false;
         }
 
-        LocalDateTime dataHoraFim = dataHora.plusSeconds(duracao.toSecondOfDay());
+        LocalDateTime dataHoraFim = dataHoraInicio.plusSeconds(duracao.toSecondOfDay());
 
         for (HorarioModalidade horario : listaHorarios) {
 
@@ -429,7 +429,12 @@ public class InserirModalidadesController {
             LocalDateTime horarioInicio = horario.getDataHora();
             LocalDateTime horarioFim = horarioInicio.plusSeconds(horario.getDuracao().toSecondOfDay());
 
-            if (dataHoraFim.isAfter(horarioInicio) || dataHora.isBefore(horarioFim)) {
+            /* Verifica se o horário da modalidade a ser inserida não se sobrepõe ao intervalo do horário da modalidade que está a ser verificada,
+               assim como também verifica que o horário da modalidade existente não entra em conflito com o horário da modalidade a ser inserida. */
+            if ((dataHoraInicio.isAfter(horarioInicio) && dataHoraInicio.isBefore(horarioFim) ) ||
+                    ( dataHoraFim.isAfter(horarioInicio) && dataHoraFim.isBefore(horarioFim) ) ||
+                    ( horarioInicio.isAfter(dataHoraInicio) && horarioInicio.isBefore(dataHoraFim) ) ||
+                    ( horarioFim.isAfter(dataHoraInicio) && horarioFim.isBefore(dataHoraFim) )) {
                     //Detetou Conflito de Horários
                     return true;
             }
