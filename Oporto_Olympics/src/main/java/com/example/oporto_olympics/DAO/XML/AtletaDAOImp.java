@@ -293,15 +293,7 @@ public class AtletaDAOImp implements DAO<Atleta> {
             } else {
                 while (rs.next()) {
 
-                    List<ParticipaçõesAtleta> lstParticipacoes = new ArrayList<>();
-
-                    Statement stmt2 = conexao.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("Select * from historico_atletas_competicoes where atleta_id = " + rs.getInt("user_id"));
-                    while (rs2.next()) {
-                        lstParticipacoes.add(new ParticipaçõesAtleta(rs2.getInt("ano"), rs2.getInt("medalha_ouro"), rs2.getInt("medalha_prata"), rs2.getInt("medalha_bronze")));
-                    }
-
-                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), lstParticipacoes, rs.getBytes("imagem")));
+                    lst.add(new Atleta(rs.getInt("user_id"), rs.getString("nome"), rs.getString("pais_sigla"), rs.getString("genero"), rs.getInt("altura_cm"), rs.getInt("peso_kg"), rs.getDate("data_nascimento"), null, rs.getBytes("imagem")));
                 }
             }
 
