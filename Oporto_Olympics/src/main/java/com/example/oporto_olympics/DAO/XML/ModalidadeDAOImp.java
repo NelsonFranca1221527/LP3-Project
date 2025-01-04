@@ -91,83 +91,68 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      */
     @Override
     public void save(Modalidade modalidade) {
+        try (CallableStatement cs = conexao.prepareCall("{CALL SaveModalidade(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
 
-        try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_medalhas, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_medalhas, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-
-            ps.setString(1, modalidade.getNome());
-            ps.setString(2, modalidade.getTipo());
-            ps.setString(3, modalidade.getDescricao());
-            ps.setInt(4, modalidade.getMinParticipantes());
-            ps.setString(5, modalidade.getMedida());
-
-            ps.setInt(6, modalidade.getOneGame().equals("One") ? 1 : 0);
-            ps.setString(7, modalidade.getRegras());
-
-            //Ano do Recorde Olimpico
-            ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
-
-            //Medalhas do Recorde Olimpico
-            if (modalidade.getRecordeOlimpico().getMedalhas() != null) {
-                ps.setInt(10, Integer.parseInt(modalidade.getRecordeOlimpico().getMedalhas()));
-            } else {
-                ps.setNull(10, java.sql.Types.INTEGER);
-            }
-
-            //Titular do Recorde Olimpico
-            ps.setString(11, modalidade.getRecordeOlimpico().getVencedor());
-
-            //Ano do Vencedor Olimpico
-            ps.setInt(12, modalidade.getVencedorOlimpico().getAno());
-
-            //Medalhas do Vencedor Olimpico
-            if (modalidade.getVencedorOlimpico().getMedalhas() != null || !modalidade.getVencedorOlimpico().getMedalhas().isEmpty()) {
-                ps.setString(14, modalidade.getVencedorOlimpico().getMedalhas());
-            } else {
-                ps.setNull(14, java.sql.Types.VARCHAR);
-            }
-
-            //Titular do Vencedor Olimpico
-            ps.setString(15, modalidade.getVencedorOlimpico().getVencedor());
+            // Definir os parâmetros do procedimento armazenado
+            cs.setString(1, modalidade.getNome());
+            cs.setString(2, modalidade.getTipo());
+            cs.setString(3, modalidade.getDescricao());
+            cs.setInt(4, modalidade.getMinParticipantes());
+            cs.setString(5, modalidade.getMedida());
+            cs.setBoolean(6, modalidade.getOneGame().equals("One"));
+            cs.setString(7, modalidade.getRegras());
+            cs.setInt(8, modalidade.getRecordeOlimpico().getAno());
 
             if (modalidade.getMedida().equals("Tempo")) {
-
-                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
-
-                ps.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
-
-            } else if (modalidade.getMedida().equals("Pontos")) {
-
-                ps.setNull(9, Types.VARCHAR);
-
-                ps.setNull(13, Types.INTEGER);
-
+                cs.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
             } else if (modalidade.getMedida().equals("Distância")) {
-
-                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getDistancia()));
-
-                ps.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getDistancia()));
-
+                cs.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getDistancia()));
+            } else {
+                cs.setNull(9, java.sql.Types.VARCHAR);
             }
 
-            ps.setString(16, modalidade.getGenero());
-
-            ps.executeUpdate();
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    modalidade.setId(generatedKeys.getInt(1)); // Atualiza o ID da Modalidade
-                } else {
-                    throw new SQLException("Erro ao obter o ID gerado para a Modalidade.");
-                }
+            if (modalidade.getRecordeOlimpico().getMedalhas() != null) {
+                cs.setInt(10, Integer.parseInt(modalidade.getRecordeOlimpico().getMedalhas()));
+            } else {
+                cs.setNull(10, java.sql.Types.INTEGER);
             }
 
-            ps.close();
+            cs.setString(11, modalidade.getRecordeOlimpico().getVencedor());
+            cs.setInt(12, modalidade.getVencedorOlimpico().getAno());
+
+            if (modalidade.getMedida().equals("Tempo")) {
+                cs.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
+            } else if (modalidade.getMedida().equals("Distância")) {
+                cs.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getDistancia()));
+            } else {
+                cs.setNull(13, java.sql.Types.VARCHAR);
+            }
+
+            if (modalidade.getVencedorOlimpico().getMedalhas() != null &&
+                    !modalidade.getVencedorOlimpico().getMedalhas().isEmpty()) {
+                cs.setString(14, modalidade.getVencedorOlimpico().getMedalhas());
+            } else {
+                cs.setNull(14, java.sql.Types.VARCHAR);
+            }
+
+            cs.setString(15, modalidade.getVencedorOlimpico().getVencedor());
+            cs.setString(16, modalidade.getGenero());
+
+            // Registrar o parâmetro de saída
+            cs.registerOutParameter(17, java.sql.Types.INTEGER);
+
+            // Executar o procedimento
+            cs.execute();
+
+            // Recuperar o ID gerado
+            int newId = cs.getInt(17);
+            modalidade.setId(newId); // Atualiza o ID da Modalidade
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao inserir a modalidade: " + ex.getMessage());
+            throw new RuntimeException("Erro ao inserir a modalidade: " + ex.getMessage(), ex);
         }
     }
+
 
     /**
      * Atualiza os dados de uma modalidade na base de dados.

@@ -44,61 +44,18 @@ public class InserirGestorDAOImp implements InserirGestorDAO{
         AlertHandler alertHandler;
 
         try {
-            int numMecanografico = 0;
-            PreparedStatement ps1 = conexao.prepareStatement("SELECT Max(num_mecanografico) as \"MaiorNumMecanografico\" FROM users");
-            ResultSet rs1 = ps1.executeQuery();
-
-            if (rs1.next()) {
-                int maiorNumMecanografico = rs1.getInt("MaiorNumMecanografico");
-                numMecanografico = maiorNumMecanografico > 0 ? maiorNumMecanografico + 1 : 1000000;
-            }
-
-            PreparedStatement ps2 = conexao.prepareStatement("SELECT id as \"IdGestor\" FROM roles WHERE nome = ?");
-            ps2.setString(1, "Gestor");
-            ResultSet rs2 = ps2.executeQuery();
-
-            if (!rs2.next()) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Utilizador Não Encontrado", "Tipo de Utilizador não encontrado!!");
-                alertHandler.getAlert().showAndWait();
-                return;
-            }
-
-            int idGestor = rs2.getInt("IdGestor");
-
-            PreparedStatement ps3 = conexao.prepareStatement("INSERT INTO users (num_mecanografico, User_password, criado_em, role_id) VALUES(?,?,?,?)");
-            ps3.setInt(1, numMecanografico);
-            ps3.setString(2, StringtoHash(String.valueOf(numMecanografico)));
-            ps3.setDate(3, Date.valueOf(LocalDate.now()));
-            ps3.setInt(4, idGestor);
-            ps3.executeUpdate();
-            ps3.close();
-
-
-            PreparedStatement ps4 = conexao.prepareStatement("SELECT id FROM users WHERE num_mecanografico = ?");
-            ps4.setInt(1, numMecanografico);
-            ResultSet rs4 = ps4.executeQuery();
-
-            if (rs4.next()) {
-                int userId = rs4.getInt("id");
-
-                String insertGestorQuery = "INSERT INTO gestores (nome, user_id) VALUES(?,?)";
-                try (PreparedStatement ps5 = conexao.prepareStatement(insertGestorQuery)) {
-                    ps5.setString(1, nome);
-                    ps5.setInt(2, userId);
-                    ps5.executeUpdate();
-                }
-            }
+            CallableStatement cs = conexao.prepareCall("{CALL SaveGestor(?)}");
+            cs.setString(1, nome);
+            cs.executeUpdate();
+            cs.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
             alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro ao atualizar gestor", "Erro ao salvar o gestor na base de dados. Verifique o console.");
             alertHandler.getAlert().showAndWait();
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro de Criptografia", "Erro ao criptografar a senha.");
-            alertHandler.getAlert().showAndWait();
         }
     }
+
 
     /**
      * Converte uma string para um hash SHA-256.

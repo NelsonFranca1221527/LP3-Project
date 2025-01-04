@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Fix da listagem Equipa">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PasswordBD.txt" beforeDir="false" afterPath="$PROJECT_DIR$/PasswordBD.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirLocalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/EventosOlimpicos/InserirLocalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Gestor/InserirGestorDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Gestor/InserirGestorDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Locais/LocaisDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Locais/LocaisDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ModalidadeDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/XML/ModalidadeDAOImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Local.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/Local.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -296,7 +300,8 @@
     <MESSAGE value="Teste unitario inserir Modalidade" />
     <MESSAGE value="Fix da listagem Equipa" />
     <MESSAGE value="Fix da inscrição em evento" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix da inscrição em evento" />
+    <MESSAGE value="Atualização da password da base de dados" />
+    <option name="LAST_COMMIT_MESSAGE" value="Atualização da password da base de dados" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

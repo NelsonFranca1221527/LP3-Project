@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -169,46 +170,58 @@ public class InserirLocalController {
             return;
         }
 
-        String Tipo = String.valueOf(tipolocalCombo.getValue());
-        String Nome = String.valueOf(nomeField.getText());
-        String Morada = String.valueOf(moradaField.getText());
-        String Cidade = String.valueOf(cidadeField.getText());
-        String Pais = String.valueOf(paisField.getText());
+        String Tipo = tipolocalCombo.getValue() != null ? tipolocalCombo.getValue() : "";
+        String Nome = nomeField.getText().trim();
+        String Morada = moradaField.getText().trim();
+        String Cidade = cidadeField.getText().trim();
+        String Pais = paisField.getText().trim();
 
-        // Verificar se os campos estão vazios e definir as variáveis como null se necessário
-        Integer Capacidade = capacidadeField.getText().isEmpty() ? 0 : Integer.valueOf(capacidadeField.getText());
-        Integer Ano_construcao = anoconstrucaoField.getText().isEmpty() ? 0 : Integer.valueOf(anoconstrucaoField.getText());
-
-        Local L1 = new Local(0, Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
-
-        LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
-
-        // Verificar se os campos estão vazios ou contêm apenas espaços
-        if (isBlankOrEmpty(Tipo) || isBlankOrEmpty(Nome) || isBlankOrEmpty(Morada) || isBlankOrEmpty(Cidade) || isBlankOrEmpty(Pais) || isBlankOrEmpty(String.valueOf(Capacidade)) || isBlankOrEmpty(String.valueOf(Ano_construcao))) {
+        if (isBlankOrEmpty(Tipo) || isBlankOrEmpty(Nome) || isBlankOrEmpty(Morada) || isBlankOrEmpty(Cidade) || isBlankOrEmpty(Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados, para que possa inserir um novo Local.");
             AH1.getAlert().show();
             return;
         }
 
-        // Verificar se o local já existe
+        Integer Capacidade = 0;
+        if (!capacidadeField.getText().isEmpty()) {
+            Capacidade = Integer.parseInt(capacidadeField.getText());
+        }
+
+
+        Date Ano_construcao = null;
+        if ("interior".equalsIgnoreCase(Tipo)) {
+            try {
+                Ano_construcao = java.sql.Date.valueOf(anoconstrucaoField.getText());
+            } catch (IllegalArgumentException e) {
+                AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Formato Inválido", "O formato da data de construção está inválido.");
+                AH1.getAlert().show();
+                return;
+            }
+        }
+
+        Local L1 = new Local(0, Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
+
+        LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
+
         if (LDI1.existsByLocal(Nome, Tipo, Morada, Cidade, Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Local Duplicado", "Este local já existe.");
             AH1.getAlert().show();
             return;
         }
 
-        if (!LDI1.getSigla(Pais)){
+        if (!LDI1.getSigla(Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Pais Inválido", "Insira a sigla de um País válido!");
             AH1.getAlert().show();
             return;
         }
 
-        if(Tipo.equals("interior") && Capacidade <= 0) {
-            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Capacidadde Inválida", "Um local interior deve possuir uma capacidade superior a 0!");
+        if ("interior".equalsIgnoreCase(Tipo) && Capacidade <= 0) {
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Capacidade Inválida", "Um local interior deve possuir uma capacidade superior a 0!");
             AH1.getAlert().show();
             return;
         }
 
+        // Solicitar confirmação antes de salvar
         AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
         Optional<ButtonType> result = AH2.getAlert().showAndWait();
         if (result.get() == ButtonType.OK) {
