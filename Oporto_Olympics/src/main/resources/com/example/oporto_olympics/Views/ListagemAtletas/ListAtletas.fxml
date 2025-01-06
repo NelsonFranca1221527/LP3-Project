@@ -35,6 +35,6 @@
          </content>
       </ScrollPane>
       <TextField fx:id="searchfield" layoutX="392.0" layoutY="71.0" prefHeight="26.0" prefWidth="496.0" />
-      <Label layoutX="327.0" layoutY="76.0" text="Pesquisar" />
+      <Label layoutX="275.0" layoutY="76.0" text="Pesquisar pelo nome" />
    </children>
 </Pane>
