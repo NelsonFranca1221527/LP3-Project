@@ -34,7 +34,7 @@
          </font>
       </Label>
       <Button fx:id="VoltarButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#OnClickVoltarButton" text="Voltar" />
-      <TextField fx:id="searchfield" layoutX="376.0" layoutY="80.0" prefHeight="26.0" prefWidth="496.0" />
-      <Label layoutX="251.0" layoutY="85.0" text="Pesquisar pelo nome:" />
+      <TextField fx:id="searchfield" layoutX="376.0" layoutY="80.0" prefHeight="26.0" prefWidth="496.0" promptText="Insira o nome de uma equipa...." />
+      <Label layoutX="312.0" layoutY="85.0" text="Pesquisar:" />
    </children>
 </AnchorPane>

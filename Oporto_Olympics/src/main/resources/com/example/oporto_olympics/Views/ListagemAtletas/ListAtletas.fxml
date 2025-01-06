@@ -34,7 +34,7 @@
             </Pane>
          </content>
       </ScrollPane>
-      <TextField fx:id="searchfield" layoutX="392.0" layoutY="71.0" prefHeight="26.0" prefWidth="496.0" />
-      <Label layoutX="275.0" layoutY="76.0" text="Pesquisar pelo nome" />
+      <TextField fx:id="searchfield" layoutX="392.0" layoutY="71.0" prefHeight="26.0" prefWidth="496.0" promptText="Insira o nome de um atleta...." />
+      <Label layoutX="328.0" layoutY="76.0" text="Pesquisar:" />
    </children>
 </Pane>
