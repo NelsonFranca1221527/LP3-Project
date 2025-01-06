@@ -7,11 +7,10 @@ import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.Evento;
+import com.example.oporto_olympics.Models.HorarioModalidade;
 import com.example.oporto_olympics.Models.Local;
 import com.example.oporto_olympics.Models.Modalidade;
-import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
-import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,9 +19,13 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
 /**
  * Classe de controlador para a interface de inserção de modalidades.
  * Controla a criação de novas modalidades no sistema, gerindo a interface e a comunicação com a base de dados.
@@ -90,10 +93,39 @@ public class InserirModalidadesController {
     private ChoiceBox<String> UniMedidaChoice;
 
     /**
+     * ChoiceBox para selecionar um local de uma lista pré-definida.
+     */
+    @FXML
+    private ChoiceBox<String> LocalChoice;
+
+    /**
+     * DatePicker para selecionar uma data através de um calendário.
+     */
+    @FXML
+    private DatePicker DataPicker;
+
+    /**
+     * Campo de texto para introduzir a hora de início no formato HH:mm:ss.
+     */
+    @FXML
+    private TextField HoraInicio;
+
+    /**
+     * Campo de texto para introduzir a duração no formato HH:mm:ss.
+     */
+    @FXML
+    private TextField Duracao;
+
+    /**
      * Botão para voltar para o ecrã anterior.
      */
     @FXML
     private Button VoltarButton;
+
+    /**
+     * Mapa para armazenar as opções de locais.
+     */
+    private HashMap<String, Integer> localMap = new HashMap<>();
 
     /**
      * Mapa para armazenar as opções de género.
@@ -170,6 +202,9 @@ public class InserirModalidadesController {
         EventoChoice.getItems().add("-------");
 
         for (Local local : localList) {
+
+            localMap.put(local.getNome(), local.getId());
+
             for (Evento evento : eventoList) {
                 if (local.getId() == evento.getLocal_id()) {
                     EventoMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento.getId());
@@ -179,6 +214,81 @@ public class InserirModalidadesController {
 
         EventoChoice.setItems(FXCollections.observableArrayList(EventoMap.keySet()));
         EventoChoice.setValue("-------");
+        LocalChoice.setItems(FXCollections.observableArrayList(localMap.keySet()));
+        LocalChoice.setValue("-------");
+
+        DataPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Dia
+            }
+            if (length > 2) {
+                masked.append("/");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Mês
+            }
+            if (length > 4) {
+                masked.append("/");
+                masked.append(sanitized.substring(4, Math.min(length, 8))); // Ano
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                DataPicker.getEditor().setText(masked.toString());
+                DataPicker.getEditor().positionCaret(masked.length());
+            }
+        });
+
+        Duracao.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Horas
+            }
+            if (length > 2) {
+                masked.append(":");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Minutos
+            }
+            if (length > 4) {
+                masked.append(":");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Segundos
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                Duracao.setText(masked.toString());
+                Duracao.positionCaret(masked.length());
+            }
+        });
+
+        HoraInicio.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Horas
+            }
+            if (length > 2) {
+                masked.append(":");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Minutos
+            }
+            if (length > 4) {
+                masked.append(":");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Segundos
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                HoraInicio.setText(masked.toString());
+                HoraInicio.positionCaret(masked.length());
+            }
+        });
+
     }
 
     /**
@@ -203,7 +313,10 @@ public class InserirModalidadesController {
                 Regras.getText().trim().isEmpty() ||
                 UniMedidaMap.get(UniMedidaChoice.getValue()) == null ||
                 QuantJogosMap.get(QuantJogosChoice.getValue()) == null ||
-                EventoChoice.getValue() == null) {
+                EventoChoice.getValue() == null ||
+                LocalChoice.getValue() == null ||
+                HoraInicio.getText().trim().isEmpty() ||
+                Duracao.getText().trim().isEmpty()){
 
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Dados Vazios", "Preencha todos os dados para inserir a modalidade");
             alertHandler.getAlert().showAndWait();
@@ -219,19 +332,61 @@ public class InserirModalidadesController {
         String regras = Regras.getText();
         int minParticipantes = Integer.parseInt(MinParticipantes.getText());
         int eventoID = EventoMap.get(EventoChoice.getValue());
+        int localID = localMap.get(LocalChoice.getValue());
+
+        if(minParticipantes <= 1){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A modalidade deve ter um minimo de 2 ou mais participantes!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        if (DataPicker.getValue() == null) {
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A Data de início da modalidade deve ser uma Data válida!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        if(DataPicker.getValue().isBefore(LocalDate.now())){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A Data de Início da Modalidade não deve ser anterior ao dia de hoje!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        if (!HoraInicio.getText().matches("^([01]?[0-9]|2[0-3])(:([0-5]?[0-9])){0,2}$")) {
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Hora de Início Inválida", "A Hora de Início inserida é inválida! As horas devem ser entre 00 e 23, e os minutos e segundos entre 00 e 59.");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        if (!Duracao.getText().matches("^([01]?[0-9]|2[0-3])(:([0-5]?[0-9])){0,2}$")) {
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Duração Inválida", "A Duração inserida é inválida! As horas devem ser entre 00 e 23, e os minutos e segundos entre 00 e 59.");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        LocalDateTime dataHora = LocalDateTime.of(DataPicker.getValue(), LocalTime.parse(HoraInicio.getText()));
+        LocalTime duracao = LocalTime.parse(Duracao.getText());
 
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        if(minParticipantes <= 1){
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A modalidade deve ter um minimo de 2 ou mais participantes.");
+        EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+
+        if(dataHora.getYear() != eventosDAOImp.getById(eventoID).getAno_edicao()){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A data de inicio não corresponde ao ano em que o evento será realizado!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+        if(VerificarConflito(dataHora,duracao,localID, modalidadeDAOImp.getAllHorarioModalidade())){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponivel", "O horário da modalidade entra em conflito com um horário já existente de outra modalidade no local selecionado!");
             alertHandler.getAlert().showAndWait();
             return;
         }
 
         Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, String.valueOf(0)), new RegistoPontos("", 0, ""), regras);
-
-        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
         Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
@@ -243,17 +398,49 @@ public class InserirModalidadesController {
                 return;
             }
 
-            modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId());
+            modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId(), dataHora, duracao,localID);
             return;
         }
 
         modalidadeDAOImp.save(modalidade);
-        modalidadeDAOImp.saveEventos_Modalidades(eventoID, modalidade.getId());
+        modalidadeDAOImp.saveEventos_Modalidades(eventoID, modalidade.getId(), dataHora, duracao,localID);
 
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
         alertHandler.getAlert().showAndWait();
 
         LimparDados();
+    }
+
+    public Boolean VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao,int localID,List<HorarioModalidade> listaHorarios){
+
+        if(listaHorarios == null || listaHorarios.isEmpty()){
+            //Sem Conflitos
+            return false;
+        }
+
+        LocalDateTime dataHoraFim = dataHoraInicio.plusSeconds(duracao.toSecondOfDay());
+
+        for (HorarioModalidade horario : listaHorarios) {
+
+            if(horario.getLocalID() != localID){
+                continue;
+            }
+
+            LocalDateTime horarioInicio = horario.getDataHora();
+            LocalDateTime horarioFim = horarioInicio.plusSeconds(horario.getDuracao().toSecondOfDay());
+
+            /* Verifica se o horário da modalidade a ser inserida não se sobrepõe ao intervalo do horário da modalidade que está a ser verificada,
+               assim como também verifica que o horário da modalidade existente não entra em conflito com o horário da modalidade a ser inserida. */
+            if ((dataHoraInicio.isAfter(horarioInicio) && dataHoraInicio.isBefore(horarioFim) ) ||
+                    ( dataHoraFim.isAfter(horarioInicio) && dataHoraFim.isBefore(horarioFim) ) ||
+                    ( horarioInicio.isAfter(dataHoraInicio) && horarioInicio.isBefore(dataHoraFim) ) ||
+                    ( horarioFim.isAfter(dataHoraInicio) && horarioFim.isBefore(dataHoraFim) )) {
+                    //Detetou Conflito de Horários
+                    return true;
+            }
+        }
+
+        return false; // Sem conflitos
     }
 
     /**
@@ -280,5 +467,9 @@ public class InserirModalidadesController {
         Regras.clear();
         MinParticipantes.clear();
         EventoChoice.setValue("-------");
+        LocalChoice.setValue("-------");
+        DataPicker.setValue(null);
+        HoraInicio.clear();
+        Duracao.clear();
     }
 }

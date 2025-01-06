@@ -84,8 +84,8 @@ public class ListAtletasController {
 
             AtletasContainer.getChildren().clear();
 
-            if (atletas.isEmpty()) {
-                Label noResultsLabel = new Label("Nenhuma equipa encontrada.");
+            if (atletas == null) {
+                Label noResultsLabel = new Label("Nenhum atleta encontrado.");
                 noResultsLabel.setStyle("-fx-font-size: 16px; -fx-font-style: italic; -fx-text-fill: grey; -fx-padding: 10 0 0 10;");
                 AtletasContainer.getChildren().add(noResultsLabel);
                 return;

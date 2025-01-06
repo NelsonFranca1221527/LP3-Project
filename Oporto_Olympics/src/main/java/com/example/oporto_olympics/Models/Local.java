@@ -1,4 +1,7 @@
 package com.example.oporto_olympics.Models;
+
+import java.util.Date;
+
 /**
  * A classe {@link Local} representa um local onde eventos desportivos podem ocorrer,
  * incluindo informações sobre o nome, tipo, morada, cidade, país, capacidade e ano de construção.
@@ -11,7 +14,7 @@ public class Local {
     private String Cidade;
     private String Pais;
     private int Capacidade;
-    private int Ano_construcao;
+    private Date Ano_construcao;
     /**
      * Construtor da classe {@link Local} que inicializa todos os campos.
      *
@@ -24,7 +27,7 @@ public class Local {
      * @param capacidade     Capacidade máxima de público do local.
      * @param ano_construcao Ano de construção do local.
      */
-    public Local (int id, String nome, String tipo, String morada, String cidade, String pais, int capacidade, int ano_construcao) {
+    public Local (int id, String nome, String tipo, String morada, String cidade, String pais, int capacidade, Date ano_construcao) {
         this.Id = id;
         this.Nome = nome;
         this.Tipo = tipo;
@@ -151,7 +154,7 @@ public class Local {
      *
      * @return O ano de construção do local.
      */
-    public int getAno_construcao() {
+    public Date getAno_construcao() {
         return Ano_construcao;
     }
     /**
@@ -159,7 +162,7 @@ public class Local {
      *
      * @param ano_construcao O novo ano de construção do local.
      */
-    public void setAno_construcao(int ano_construcao) {
+    public void setAno_construcao(Date ano_construcao) {
         this.Ano_construcao = ano_construcao;
     }
 }

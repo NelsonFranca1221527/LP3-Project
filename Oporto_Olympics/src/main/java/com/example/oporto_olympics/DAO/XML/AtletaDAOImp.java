@@ -270,7 +270,15 @@ public class AtletaDAOImp implements DAO<Atleta> {
             stmt.executeUpdate();
         }
     }
-
+    /**
+     * Obtém uma lista de atletas com base num filtro de nome opcional.
+     *
+     * @param filtroNome Texto usado como filtro para os nomes dos atletas.
+     *                   Se for {@code null} ou vazia, todos os atletas serão retornados.
+     * @return uma lista de objetos {@code Atleta} que correspondem ao filtro de pesquisa.
+     *         Retorna {@code null} se não forem encontrados atletas.
+     * @throws SQLException se ocorrer um erro ao executar a consulta SQL.
+     */
     public List<Atleta> getAtletas(String filtroNome) throws SQLException {
         List<Atleta> lst = new ArrayList<>();
         String query;
