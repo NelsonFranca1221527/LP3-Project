@@ -73,6 +73,30 @@ public class UserDAOImp implements DAO<User> {
 
     }
 
+    public boolean VerificarPasswordIgual(String password, int id) {
+        try {
+            database = ConnectionBD.getInstance();
+            connection = database.getConexao();
+
+            PreparedStatement ps = connection.prepareStatement("Select User_password from users where User_password = ? AND id = ?");
+            ps.setString(1, password);
+            ps.setInt(2, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Alteração da Password", "A password que insiriu é igual a sua atual..");
+                alertHandler.getAlert().show();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
+            alertHandler.getAlert().show();
+        }
+        return false;
+    }
+
     /**
      * Obtém as informações de um atleta a partir do seu número mecanográfico e password.
      * Esta função faz uma junção entre as tabelas "atletas" e "users" para obter os dados completos do atleta.
