@@ -85,7 +85,7 @@ public class InserirGestorController {
     public void OnClickCriarGestorButton() {
         String nome = Nome.getText();
 
-        if (nome.isEmpty()) {
+        if (nome.trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Campos obrigatórios", "Todos os campos devem ser preenchidos.");
             return;
         }

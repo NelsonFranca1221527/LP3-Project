@@ -56,23 +56,4 @@ public class InserirGestorDAOImp implements InserirGestorDAO{
         }
     }
 
-
-    /**
-     * Converte uma string para um hash SHA-256.
-     *
-     * @param dado o dado a ser convertido em hash.
-     * @return a string correspondente ao hash.
-     * @throws NoSuchAlgorithmException se o algoritmo SHA-256 não estiver disponível.
-     */
-    public String StringtoHash(String dado) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashdado = md.digest(dado.getBytes());
-
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashdado) {
-            hexString.append(String.format("%02x", b));
-        }
-
-        return hexString.toString();
-    }
 }
