@@ -209,8 +209,8 @@ public class InserirLocalController {
             return;
         }
 
-        if(Integer.valueOf(anoconstrucaoField.getText()) > 1000){
-            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de Construção Inválido", "Um local deve possuir um ano de construção superior a 1000!");
+        if(Integer.parseInt(anoconstrucaoField.getText()) > 1000){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Data de Construção Inválido", "Um local deve possuir um ano de construção superior a 1000!");
             AH1.getAlert().show();
             return;
         }
