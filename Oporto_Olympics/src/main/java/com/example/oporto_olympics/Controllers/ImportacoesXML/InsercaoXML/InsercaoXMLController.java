@@ -90,7 +90,7 @@ public class InsercaoXMLController {
     @FXML
     private Label tituloTipoXML;
     /**
-     * Mapa que relaciona um item (evento, equipa, etc.) com um valor inteiro.
+     * Mapa para armazenar os eventos.
      */
     private Map<String, Evento> EventoMap = new HashMap<>();
     /**
@@ -534,14 +534,18 @@ public class InsercaoXMLController {
                 continue;
             }
 
-            if(atleta.getAltura() <= 0){
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Altura inválida","A altura do atleta " + atleta.getNome() + " não é válida!");
+            int alturaMinima = 120;
+
+            if(atleta.getAltura() <= alturaMinima){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Altura inválida","A altura do atleta " + atleta.getNome() + " não é válida! O atleta deve possuir uma altura superior a " + alturaMinima + "cm.");
                 alertHandler.getAlert().showAndWait();
                 continue;
             }
 
-            if(atleta.getPeso() <= 0){
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Peso inválida","O peso do atleta " + atleta.getNome() + " não é válido!");
+            int pesoMinimo = 20;
+
+            if(atleta.getPeso() <= pesoMinimo){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Peso inválida","O peso do atleta " + atleta.getNome() + " não é válido! O atleta deve possuir um peso superior a " + pesoMinimo + "kg.");
                 alertHandler.getAlert().showAndWait();
                 continue;
             }
