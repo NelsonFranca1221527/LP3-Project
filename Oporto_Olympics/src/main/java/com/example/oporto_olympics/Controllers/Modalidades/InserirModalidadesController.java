@@ -416,6 +416,27 @@ public class InserirModalidadesController {
         LimparDados();
     }
 
+    /**
+     * Verifica se há conflitos de horários para um local específico com base em uma lista de horários existentes.
+     *
+     * @param dataHoraInicio A data e hora de início da modalidade a ser inserida.
+     * @param duracao A duração da modalidade a ser inserida.
+     * @param localID O identificador do local onde o horário será inserido.
+     * @param listaHorarios A lista de horários existentes associados às modalidades.
+     *
+     * @return true se houver conflito de horários; false caso contrário.
+     *
+     * Este método verifica se o intervalo de tempo definido por dataHoraInicio e a duração da nova modalidade
+     * entra em conflito com os intervalos de tempo das modalidades existentes associadas ao mesmo local.
+     *
+     * Um conflito ocorre quando:
+     * - O início do novo horário está dentro do intervalo de um horário existente.
+     * - O fim do novo horário está dentro do intervalo de um horário existente.
+     * - O início de um horário existente está dentro do intervalo do novo horário.
+     * - O fim de um horário existente está dentro do intervalo do novo horário.
+     *
+     * Se a lista de horários for nula ou estiver vazia, considera-se que não há conflitos.
+     */
     public Boolean VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao,int localID,List<HorarioModalidade> listaHorarios){
 
         if(listaHorarios == null || listaHorarios.isEmpty()){

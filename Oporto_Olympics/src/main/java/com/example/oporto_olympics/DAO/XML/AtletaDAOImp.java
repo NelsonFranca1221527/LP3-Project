@@ -216,6 +216,31 @@ public class AtletaDAOImp implements DAO<Atleta> {
     }
 
     /**
+     * Verifica se existe um país na base de dados com a sigla fornecida.
+     *
+     * Este método executa uma consulta à tabela `paises` para determinar
+     * se existe um registo com a sigla especificada. Se a consulta retornar
+     * pelo menos um registo, o método devolve `true`. Caso contrário, devolve `false`.
+     *
+     * @param sigla A sigla do país a verificar. Deve ser uma string não nula.
+     * @return {@code true} se existir um país com a sigla fornecida, {@code false} caso contrário.
+     * @throws SQLException Se ocorrer um erro ao executar a consulta à base de dados.
+     */
+    public boolean getPais(String sigla) {
+        String query = "SELECT 1 FROM paises WHERE sigla = ?";
+        try (PreparedStatement ps = conexao.prepareStatement(query)) {
+            ps.setString(1, sigla);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Insere os dados de participação de um atleta num evento na tabela
      * `historico_atletas_competicoes` da base de dados.
      *
