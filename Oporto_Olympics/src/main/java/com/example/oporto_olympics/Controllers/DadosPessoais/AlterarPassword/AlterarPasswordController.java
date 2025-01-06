@@ -74,8 +74,10 @@ public class AlterarPasswordController {
 
                     if (atleta != null) {
                         if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                            dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
-                            RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+                            if(!dao.VerificarPasswordIgual(SenhaEncriptada, atleta.getId())){
+                                dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
+                                RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+                            }
                         } else {
                             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
                             alertHandler.getAlert().show();
@@ -84,8 +86,10 @@ public class AlterarPasswordController {
 
                     if (gestor != null) {
                         if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                            dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
-                            RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
+                            if(!dao.VerificarPasswordIgual(SenhaEncriptada, gestor.getId())){
+                                dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
+                                RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
+                            }
                         } else {
                             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
                             alertHandler.getAlert().show();

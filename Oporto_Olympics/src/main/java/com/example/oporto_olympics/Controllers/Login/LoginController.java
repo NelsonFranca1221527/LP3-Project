@@ -80,21 +80,22 @@ public class LoginController {
 
         Encriptacao Encrypt = new Encriptacao();
         UserDAOImp UserDAO = new UserDAOImp(conexao);
-        String SenhaHash = Encrypt.StringtoHash(SenhaField.getText());
-        String Role = UserDAO.getUserType(Integer.parseInt(UserField.getText()), SenhaHash);
+        int numMecano = Integer.parseInt(UserField.getText().trim());
+        String SenhaHash = Encrypt.StringtoHash(SenhaField.getText().trim());
+        String Role = UserDAO.getUserType(numMecano, SenhaHash);
 
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
 
         if(Role.equals("Gestor")) {
-            Gestor gestor = UserDAO.getGestorInfo(Integer.parseInt(UserField.getText()), SenhaHash);
+            Gestor gestor = UserDAO.getGestorInfo(numMecano, SenhaHash);
             GestorSingle.setGestor(gestor);
         } else {
-            Atleta atleta = UserDAO.getAtletaInfo(Integer.parseInt(UserField.getText()),SenhaHash);
+            Atleta atleta = UserDAO.getAtletaInfo(numMecano,SenhaHash);
             AtletaSingle.setAtleta(atleta);
         }
 
-        if (UserDAO.getUser(Integer.parseInt(UserField.getText()), SenhaHash)) {
+        if (UserDAO.getUser(numMecano, SenhaHash)) {
             Stage s = (Stage) loginBtn.getScene().getWindow();
 
             switch (Role) {

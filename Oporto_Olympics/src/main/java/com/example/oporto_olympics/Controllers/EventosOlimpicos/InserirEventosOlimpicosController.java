@@ -154,6 +154,12 @@ public class InserirEventosOlimpicosController {
             return;
         }
 
+        if(anoEdicao < 1000){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "O ano de edição deve ser superior a 1000.");
+            AH1.getAlert().show();
+            return;
+        }
+
         if (pais.trim().isEmpty() || logoURL.getText().trim().isEmpty() || mascoteURL.getText().trim().isEmpty()) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados e selecionar as imagens.");
             AH1.getAlert().show();

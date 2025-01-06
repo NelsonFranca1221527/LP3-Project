@@ -155,7 +155,7 @@ public class InserirAtletaController {
         String dataNasc = Data_nasc.getText();
         String genero = GeneroChoice.getValue().toString();
 
-        if (nome.isEmpty() || pais.isEmpty() || altura.isEmpty() || peso.isEmpty() || dataNasc.isEmpty() || genero.isEmpty()) {
+        if (nome.trim().isEmpty() || pais.trim().isEmpty() || altura.trim().isEmpty() || peso.trim().isEmpty() || dataNasc.trim().isEmpty() || genero.trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Campos obrigatórios", "Todos os campos devem ser preenchidos.");
             return;
         }
@@ -163,11 +163,11 @@ public class InserirAtletaController {
             showAlert(Alert.AlertType.WARNING, "País inválido", "A sigla do país inserido não é válida.");
             return;
         }
-        if(altura.equals(String.valueOf(0))){
+        if(Integer.valueOf(altura) < 120){
             showAlert(Alert.AlertType.WARNING, "Altura inválida","A altura que inseriu não é válida!");
             return;
         }
-        if(peso.equals(String.valueOf(0))){
+        if(Integer.valueOf(peso) < 20){
             showAlert(Alert.AlertType.WARNING, "Peso inválida","O peso que inseriu não é válido!");
             return;
         }
