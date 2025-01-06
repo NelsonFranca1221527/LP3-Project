@@ -209,6 +209,12 @@ public class InserirLocalController {
             return;
         }
 
+        if(Integer.valueOf(anoconstrucaoField.getText()) > 1000){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de Construção Inválido", "Um local deve possuir um ano de construção superior a 1000!");
+            AH1.getAlert().show();
+            return;
+        }
+
         AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
         Optional<ButtonType> result = AH2.getAlert().showAndWait();
         if (result.get() == ButtonType.OK) {
