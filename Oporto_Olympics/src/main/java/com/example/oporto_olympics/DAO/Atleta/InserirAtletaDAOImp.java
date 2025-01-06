@@ -125,7 +125,11 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
             ps.setString(1, sigla);
             ResultSet rs = ps.executeQuery();
 
-            return rs.next();
+            if(rs.next()){
+                return true;
+            }
+
+            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
