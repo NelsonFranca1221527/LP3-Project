@@ -125,7 +125,7 @@ public class InserirModalidadesController {
     /**
      * Mapa para armazenar as opções de locais.
      */
-    private HashMap<String, Integer> localMap = new HashMap<>();
+    private HashMap<String, Local> localMap = new HashMap<>();
 
     /**
      * Mapa para armazenar as opções de género.
@@ -148,9 +148,9 @@ public class InserirModalidadesController {
     private HashMap<String, String> UniMedidaMap = new HashMap<>();
 
     /**
-     * Mapa para armazenar os eventos e os seus respetivos IDs.
+     * Mapa para armazenar os eventos.
      */
-    private HashMap<String, Integer> EventoMap = new HashMap<>();
+    private HashMap<String, Evento> EventoMap = new HashMap<>();
 
     /**
      * Método de inicialização para configurar os campos e carregar dados da base de dados.
@@ -203,11 +203,11 @@ public class InserirModalidadesController {
 
         for (Local local : localList) {
 
-            localMap.put(local.getNome(), local.getId());
+            localMap.put(local.getNome(), local);
 
             for (Evento evento : eventoList) {
                 if (local.getId() == evento.getLocal_id()) {
-                    EventoMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento.getId());
+                    EventoMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento);
                 }
             }
         }
@@ -288,7 +288,6 @@ public class InserirModalidadesController {
                 HoraInicio.positionCaret(masked.length());
             }
         });
-
     }
 
     /**
@@ -331,8 +330,14 @@ public class InserirModalidadesController {
         String quant = QuantJogosMap.get(QuantJogosChoice.getValue());
         String regras = Regras.getText();
         int minParticipantes = Integer.parseInt(MinParticipantes.getText());
-        int eventoID = EventoMap.get(EventoChoice.getValue());
-        int localID = localMap.get(LocalChoice.getValue());
+        Evento evento = EventoMap.get(EventoChoice.getValue());
+        Local local = localMap.get(LocalChoice.getValue());
+
+        if(!evento.getPais().equals(local.getPais())){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Local Não Correspondente", "O Local inserido não se encontra no mesmo país em que o evento será realizado!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
 
         if(minParticipantes <= 1){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A modalidade deve ter um minimo de 2 ou mais participantes!");
@@ -372,7 +377,7 @@ public class InserirModalidadesController {
 
         EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
 
-        if(dataHora.getYear() != eventosDAOImp.getById(eventoID).getAno_edicao()){
+        if(dataHora.getYear() != evento.getAno_edicao()){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A data de inicio não corresponde ao ano em que o evento será realizado!");
             alertHandler.getAlert().showAndWait();
             return;
@@ -380,7 +385,7 @@ public class InserirModalidadesController {
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
-        if(VerificarConflito(dataHora,duracao,localID, modalidadeDAOImp.getAllHorarioModalidade())){
+        if(VerificarConflito(dataHora,duracao,local.getId(), modalidadeDAOImp.getAllHorarioModalidade())){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponivel", "O horário da modalidade entra em conflito com um horário já existente de outra modalidade no local selecionado!");
             alertHandler.getAlert().showAndWait();
             return;
@@ -392,18 +397,18 @@ public class InserirModalidadesController {
 
         if (ModalidadeExistente != null) {
 
-            if (ModalidadeExistente.getListEventosID().contains(eventoID)) {
+            if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
                 alertHandler.getAlert().showAndWait();
                 return;
             }
 
-            modalidadeDAOImp.saveEventos_Modalidades(eventoID, ModalidadeExistente.getId(), dataHora, duracao,localID);
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao,local.getId());
             return;
         }
 
         modalidadeDAOImp.save(modalidade);
-        modalidadeDAOImp.saveEventos_Modalidades(eventoID, modalidade.getId(), dataHora, duracao,localID);
+        modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao,local.getId());
 
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
         alertHandler.getAlert().showAndWait();
