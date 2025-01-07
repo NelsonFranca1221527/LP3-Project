@@ -67,9 +67,9 @@ public class AlterarPasswordController {
             Atleta atleta = AtletaSingle.getAtleta();
             Encriptacao encrypt = new Encriptacao();
 
-            if (!NewPasswordField.getText().isEmpty() && !ConfirmPasswordField.getText().isEmpty()){
+            if (!NewPasswordField.getText().trim().isEmpty() && !ConfirmPasswordField.getText().trim().isEmpty()){
 
-                if (!NewPasswordField.getText().isEmpty() || !ConfirmPasswordField.getText().isEmpty()) {
+                if (!NewPasswordField.getText().trim().isEmpty() || !ConfirmPasswordField.getText().trim().isEmpty()) {
                     String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
 
                     if (atleta != null) {
