@@ -191,7 +191,21 @@ public class InserirLocalController {
         Date Ano_construcao = null;
         if ("interior".equalsIgnoreCase(Tipo)) {
             try {
+
+                if (anoconstrucaoField.getText().trim().isEmpty()) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "Tem de inserir um ano de contrução...");
+                    AH1.getAlert().show();
+                    return;
+                }
+
                 Ano_construcao = java.sql.Date.valueOf(anoconstrucaoField.getText());
+
+                if (Ano_construcao.getYear() <= 1000) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
+                    AH1.getAlert().show();
+                    return;
+                }
+
             } catch (IllegalArgumentException e) {
                 AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Formato Inválido", "O formato da data de construção está inválido.");
                 AH1.getAlert().show();

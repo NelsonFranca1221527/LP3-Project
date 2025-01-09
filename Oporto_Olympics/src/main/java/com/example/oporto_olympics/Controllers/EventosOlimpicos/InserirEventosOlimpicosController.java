@@ -58,7 +58,7 @@ public class InserirEventosOlimpicosController {
      * Campo de texto para introdução do ano da edição do evento.
      */
     @FXML
-    private TextField anoedicaoField;
+    private DatePicker anoedicaoPicker;
     /**
      * Caixa de combinação para escolher o local do evento.
      */
@@ -100,11 +100,6 @@ public class InserirEventosOlimpicosController {
         // Adicionar os nomes dos locais à ComboBox
         locaisDAO.getAll().forEach(local -> localCombo.getItems().add(local.getNome()));
 
-        // Permitir apenas números no campo anoedicaoField
-        anoedicaoField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("\\d*")) ? change : null
-        ));
-
         // Limitar o paisField para 3 caracteres
         paisField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().length() <= 3) ? change : null
@@ -144,15 +139,7 @@ public class InserirEventosOlimpicosController {
 
         int localId = localSelecionado.get().getId();
         String pais = paisField.getText();
-        int anoEdicao;
-
-        try {
-            anoEdicao = Integer.parseInt(anoedicaoField.getText());
-        } catch (NumberFormatException e) {
-            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de Edição Inválido", "O ano de edição deve ser um número.");
-            AH1.getAlert().show();
-            return;
-        }
+        int anoEdicao = Integer.parseInt(String.valueOf(anoedicaoPicker.getValue().getYear()));
 
         if(anoEdicao < 1000){
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "O ano de edição deve ser superior a 1000.");
