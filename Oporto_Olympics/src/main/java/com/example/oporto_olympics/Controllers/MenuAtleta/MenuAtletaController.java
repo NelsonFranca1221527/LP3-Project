@@ -16,6 +16,11 @@ public class MenuAtletaController {
     @FXML
     private Button ResultadosBtn;
     /**
+     * Botão para visualizar o calendário.
+     */
+    @FXML
+    private Button btnCal;
+    /**
      * Botão para aceder à secção de equipas.
      */
     @FXML
@@ -100,6 +105,22 @@ public class MenuAtletaController {
             Stage s = (Stage) EventoBtn.getScene().getWindow();
 
             RedirecionarHelper.GotoListagemEventos().switchScene(s);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *
+     * Redireciona para a página do calendário do atleta.
+     *
+     */
+    @FXML
+    protected void onClickbtnCalend() {
+        try {
+            Stage s = (Stage) EventoBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoCalendario().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

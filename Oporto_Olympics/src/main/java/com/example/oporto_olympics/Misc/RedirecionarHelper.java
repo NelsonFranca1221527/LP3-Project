@@ -235,4 +235,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoInserirGestor() {
         return new RedirecionarHelper("Views/Gestor/InserirGestor.fxml", "Inserir Gestores");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página do calendário do Atleta.
+     *
+     * @return Um {@link RedirecionarHelper} para a página do calendário do Atleta.
+     */
+    public static RedirecionarHelper GotoCalendario() {
+        return new RedirecionarHelper("Views/Atleta/CalendarioAtleta.fxml", "Calendário");
+    }
 }
