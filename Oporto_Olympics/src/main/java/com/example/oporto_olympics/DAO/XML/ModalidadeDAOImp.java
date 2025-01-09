@@ -641,4 +641,77 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
         return equipas;
     }
+
+    /**
+     * Obtém os detalhes do horário de uma modalidade específica com base no seu ID.
+     *
+     * @param modalidadeId O ID da modalidade para a qual se pretende obter o horário.
+     * @return Um objeto {@link HorarioModalidade} contendo os detalhes do horário da modalidade.
+     * @throws SQLException Caso ocorra um erro ao executar a consulta à base de dados.
+     */
+    public HorarioModalidade getHorarioModalidadeById(int modalidadeId, int eventoId) throws SQLException {
+        HorarioModalidade horariomodalidade = null;
+        String query = "SELECT data_modalidade, duracao, local_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            stmt.setInt(1, modalidadeId);
+            stmt.setInt(2, eventoId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                LocalDateTime dataHora = rs.getTimestamp("data_modalidade") != null
+                        ? rs.getTimestamp("data_modalidade").toLocalDateTime()
+                        : null;
+
+                LocalTime duracao = rs.getTime("duracao") != null
+                        ? rs.getTime("duracao").toLocalTime()
+                        : null;
+
+                Integer localId = rs.getInt("local_id");
+                if (rs.wasNull()) {
+                    localId = null;
+                }
+
+                if (dataHora != null && duracao != null && localId != null) {
+                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId);
+                }
+            }
+        }
+
+        return horariomodalidade; // Retorna null se os valores necessários forem nulos ou não existirem.
+    }
+
+    /**
+     * Obtém uma lista de horários de todas as modalidades em que uma equipa específica está inscrita.
+     *
+     * @param equipaId O ID da equipa cujos horários de modalidades devem ser obtidos.
+     * @return Uma lista de objetos {@link HorarioModalidade} representando os horários das modalidades em que a equipa está inscrita.
+     * @throws RuntimeException Caso ocorra um erro ao executar a consulta à base de dados.
+     */
+    public List<HorarioModalidade> getAllHorarioModalidadeByEquipa(int equipaId) {
+        try {
+
+            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
+            ps.setInt(1, equipaId);
+            ResultSet rs = ps.executeQuery();
+
+            List<HorarioModalidade> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
+                }
+
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+            }
+
+            return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao listar Horarios pela Equipa: " + ex.getMessage());
+        }
+    }
 }
