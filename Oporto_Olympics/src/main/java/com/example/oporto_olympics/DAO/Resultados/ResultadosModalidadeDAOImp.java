@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * Implementação do DAO (Data Access Object) para a tabela de resultados de atletas.
  * Esta classe fornece métodos para interagir com a base de dados e manipular as informações dos resultados de atletas.
@@ -96,49 +98,59 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
      * @return uma lista de objetos {@link ResultadosModalidade} representando os top 10 resultados resgitados na base de dados.
      * @throws RuntimeException se ocorrer um erro ao obter os resultados de atletas.
      */
-    public List<ResultadosModalidade> getAllOrderedTopTen(int id) {
-        List<ResultadosModalidade> lst = new ArrayList<>();
+    public List<ResultadosModalidade> getAllOrderedTopTen(int modalidadeId) {
+        List<ResultadosModalidade> resultados = new ArrayList<>();
 
-        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(connection);
-
-        String oneGame = "";
-
-        for (Modalidade modalidade : modalidadeDAOImp.getAll()){
-            if(modalidade.getId() == id){
-                oneGame = modalidade.getOneGame();
-            }
-        }
-
-        String query = "SELECT TOP 10 * FROM resultados WHERE modalidade_id = ? ORDER BY resultado ";
-
-        if(oneGame.equals("One")){
-            query = query + "ASC";
-        }else {
-            query = query + "DESC";
-        }
-
-
+        String query = "SELECT * FROM resultados WHERE modalidade_id = ?";
 
         try {
-
             PreparedStatement ps = connection.prepareStatement(query);
-            if (id != 0) {
-                ps.setInt(1, id);
-            } else {
-                return null;
-            }
+            ps.setInt(1, modalidadeId);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getString("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
-                        rs.getInt("modalidade_id") , rs.getInt("atleta_id"), rs.getInt("equipa_id")));
+                resultados.add(new ResultadosModalidade(
+                        rs.getInt("id"),
+                        rs.getDate("data"),
+                        rs.getString("resultado"),
+                        rs.getString("tipo_resultado"), // Assumindo que tipo_resultado é armazenado na tabela
+                        rs.getString("medalha"),
+                        rs.getInt("modalidade_id"),
+                        rs.getInt("atleta_id"),
+                        rs.getInt("equipa_id")
+                ));
             }
-            return lst;
+
+            // Ordenar os resultados com base no tipo do resultado
+            List<ResultadosModalidade> topTenResultados = resultados.stream()
+                    .sorted((res1, res2) -> {
+                        try {
+                            String tipoResultado = res1.getTipo(); // Obtém o tipo diretamente do resultado
+
+                            if (tipoResultado.equalsIgnoreCase("tempo")) {
+                                // Ordenar por tempo: menor é melhor
+                                return res1.getResultado().compareTo(res2.getResultado());
+                            } else {
+                                // Ordenar por distância ou pontos: maior é melhor
+                                return Double.compare(
+                                        Double.parseDouble(res2.getResultado().replace(",", ".")),
+                                        Double.parseDouble(res1.getResultado().replace(",", "."))
+                                );
+                            }
+                        } catch (Exception e) {
+                            throw new RuntimeException("Erro ao ordenar resultados: "
+                                    + res1.getResultado() + " ou " + res2.getResultado(), e);
+                        }
+                    })
+                    .limit(10) // Selecionar apenas os 10 melhores resultados
+                    .collect(Collectors.toList());
+
+            return topTenResultados;
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro em mostrar os locais: " + ex.getMessage());
+            throw new RuntimeException("Erro ao buscar resultados: " + ex.getMessage());
         }
     }
+
     /**
      * Obtém todos os resultados de atletas registados na base de dados.
      *

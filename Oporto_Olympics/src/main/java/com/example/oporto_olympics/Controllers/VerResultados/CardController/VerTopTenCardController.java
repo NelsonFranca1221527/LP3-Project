@@ -19,6 +19,11 @@ public class VerTopTenCardController {
     @FXML
     private Label resultadoLabel;
     /**
+     * Rótulo para mostrar a medida.
+     */
+    @FXML
+    private Label medidaLabel;
+    /**
      * Rótulo para mostrar o nome do atleta.
      */
     @FXML
@@ -56,5 +61,6 @@ public class VerTopTenCardController {
 
         resultadoLabel.setText(String.valueOf(resultado.getResultado()));
 
+        medidaLabel.setText(resultado.getTipo());
     }
 }

@@ -36,7 +36,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="233.0" layoutY="16.0" text="Tipo de Resultado:">
+      <Label layoutX="316.0" layoutY="16.0" text="Medida:">
          <font>
             <Font size="18.0" />
          </font>
