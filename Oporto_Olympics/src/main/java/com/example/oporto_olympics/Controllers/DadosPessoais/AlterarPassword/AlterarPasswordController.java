@@ -67,13 +67,22 @@ public class AlterarPasswordController {
             Atleta atleta = AtletaSingle.getAtleta();
             Encriptacao encrypt = new Encriptacao();
 
+            if(NewPasswordField.getText().trim().length() < 3) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Password demasiado curta...");
+                alertHandler.getAlert().show();
+
+                NewPasswordField.clear();
+                ConfirmPasswordField.clear();
+                return;
+            }
+
             if (!NewPasswordField.getText().trim().isEmpty() && !ConfirmPasswordField.getText().trim().isEmpty()){
 
                 if (!NewPasswordField.getText().trim().isEmpty() || !ConfirmPasswordField.getText().trim().isEmpty()) {
                     String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
 
                     if (atleta != null) {
-                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
+                        if (NewPasswordField.getText().trim().equals(ConfirmPasswordField.getText().trim())) {
                             if(!dao.VerificarPasswordIgual(SenhaEncriptada, atleta.getId())){
                                 dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
                                 RedirecionarHelper.GotoDadosPessoais().switchScene(s);
@@ -85,7 +94,7 @@ public class AlterarPasswordController {
                     }
 
                     if (gestor != null) {
-                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
+                        if (NewPasswordField.getText().trim().equals(ConfirmPasswordField.getText().trim())) {
                             if(!dao.VerificarPasswordIgual(SenhaEncriptada, gestor.getId())){
                                 dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
                                 RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
