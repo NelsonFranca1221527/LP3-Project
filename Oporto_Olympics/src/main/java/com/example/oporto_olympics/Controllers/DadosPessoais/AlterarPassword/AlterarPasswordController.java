@@ -79,7 +79,7 @@ public class AlterarPasswordController {
             if (!NewPasswordField.getText().trim().isEmpty() && !ConfirmPasswordField.getText().trim().isEmpty()){
 
                 if (!NewPasswordField.getText().trim().isEmpty() || !ConfirmPasswordField.getText().trim().isEmpty()) {
-                    String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
+                    String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText().replaceAll("\\s+",""));
 
                     if (atleta != null) {
                         if (NewPasswordField.getText().trim().equals(ConfirmPasswordField.getText().trim())) {
