@@ -720,13 +720,13 @@ public class InsercaoXMLController {
                     continue;
                 }
 
-                SaveEventosModalidades(conexao, evento, ModalidadeExistente.getId());
+                SaveEventosModalidades(conexao, evento, ModalidadeExistente);
                 iterator.remove();
                 continue;
             }
 
             modalidadeDAOImp.save(modalidade);
-            SaveEventosModalidades(conexao, evento, modalidade.getId());
+            SaveEventosModalidades(conexao, evento, modalidade);
             iterator.remove();
         }
 
@@ -770,9 +770,9 @@ public class InsercaoXMLController {
      *
      * @param conexao A conexão com a base de dados que será utilizada para realizar as operações de salvamento.
      * @param evento O evento ao qual a modalidade será associada.
-     * @param modalidadeID O ID da modalidade que será associada ao evento.
+     * @param modalidade A modalidade que será associada ao evento.
      */
-    public void SaveEventosModalidades(Connection conexao, Evento evento,int modalidadeID){
+    public void SaveEventosModalidades(Connection conexao, Evento evento,Modalidade modalidade){
 
         ChoiceBox<String> LocalChoice = new ChoiceBox<>();
 
@@ -874,19 +874,22 @@ public class InsercaoXMLController {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        grid.add(new Label("Local:"), 0, 0);
-        grid.add(LocalChoice, 1, 0);
+        grid.add(new Label("Modalidade a Inserir Horário: "), 0, 0);
+        grid.add(new Label(modalidade.getNome()), 1, 0);
 
-        grid.add(new Label("Data:"), 0, 1);
-        grid.add(DataPicker, 1, 1);
+        grid.add(new Label("Local:"), 0, 1);
+        grid.add(LocalChoice, 1, 1);
 
-        grid.add(new Label("Hora de Início:"), 0, 2);
-        grid.add(HoraInicio, 1, 2);
+        grid.add(new Label("Data:"), 0, 2);
+        grid.add(DataPicker, 1, 2);
 
-        grid.add(new Label("Duração:"), 0, 3);
-        grid.add(Duracao, 1, 3);
+        grid.add(new Label("Hora de Início:"), 0, 3);
+        grid.add(HoraInicio, 1, 3);
 
-        grid.add(OKButton, 0, 4);
+        grid.add(new Label("Duração:"), 0, 4);
+        grid.add(Duracao, 1, 4);
+
+        grid.add(OKButton, 0, 5);
 
         Stage HorarioStage = new Stage();
         HorarioStage.setScene(new Scene(grid, 300, 200));
@@ -897,6 +900,12 @@ public class InsercaoXMLController {
 
             if (DataPicker.getValue() == null) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A Data de início da modalidade deve ser uma Data válida!");
+                alertHandler.getAlert().showAndWait();
+                return;
+            }
+
+            if(DataPicker.getValue().getYear() != evento.getAno_edicao()){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Ano Inválido", "O ano selecionado na data de início não corresponde ao ano de edição do evento.");
                 alertHandler.getAlert().showAndWait();
                 return;
             }
@@ -937,7 +946,7 @@ public class InsercaoXMLController {
                 return;
             }
 
-            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidadeID, dataHora, duracao,local.getId());
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao,local.getId());
 
             HorarioStage.close();
         });
