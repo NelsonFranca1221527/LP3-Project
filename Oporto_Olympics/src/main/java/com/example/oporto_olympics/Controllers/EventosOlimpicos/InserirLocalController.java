@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -37,7 +39,7 @@ public class InserirLocalController {
      * Campo de texto para introdução do ano de construção do local.
      */
     @FXML
-    private TextField anoconstrucaoField;
+    private DatePicker anoconstrucaoPicker;
     /**
      * Rótulo para mostrar o ano de construção do local.
      */
@@ -96,7 +98,7 @@ public class InserirLocalController {
 
         // Define os campos como invisíveis por padrão
         capacidadeField.setVisible(false);
-        anoconstrucaoField.setVisible(false);
+        anoconstrucaoPicker.setVisible(false);
         capacidadeLabel.setVisible(false);
         anoconstrucaoLabel.setVisible(false);
 
@@ -105,15 +107,15 @@ public class InserirLocalController {
             if ("interior".equals(newValue)) {
                 // Torna os campos visíveis se a opção for "interior"
                 capacidadeField.setVisible(true);
-                anoconstrucaoField.setVisible(true);
+                anoconstrucaoPicker.setVisible(true);
                 capacidadeLabel.setVisible(true);
                 anoconstrucaoLabel.setVisible(true);
             } else {
                 // Torna os campos invisíveis se a opção for "exterior"
                 capacidadeField.clear();
-                anoconstrucaoField.clear();
+                anoconstrucaoPicker.setValue(null);
                 capacidadeField.setVisible(false);
-                anoconstrucaoField.setVisible(false);
+                anoconstrucaoPicker.setVisible(false);
                 capacidadeLabel.setVisible(false);
                 anoconstrucaoLabel.setVisible(false);
             }
@@ -121,7 +123,6 @@ public class InserirLocalController {
 
         // Configurar os TextFields para aceitar apenas números
         setNumericTextField(capacidadeField);
-        setNumericTextField(anoconstrucaoField);
 
         // Configurar paisField para aceitar no máximo 3 caracteres
         paisField.setTextFormatter(new TextFormatter<String>(change ->
@@ -187,20 +188,20 @@ public class InserirLocalController {
             Capacidade = Integer.parseInt(capacidadeField.getText());
         }
 
-
+        LocalDate AnoPicker = anoconstrucaoPicker.getValue();
         Date Ano_construcao = null;
         if ("interior".equalsIgnoreCase(Tipo)) {
             try {
 
-                if (anoconstrucaoField.getText().trim().isEmpty()) {
+                if (AnoPicker == null) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "Tem de inserir um ano de contrução...");
                     AH1.getAlert().show();
                     return;
                 }
 
-                Ano_construcao = java.sql.Date.valueOf(anoconstrucaoField.getText());
+                Ano_construcao = Date.from(AnoPicker.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                if (Ano_construcao.getYear() <= 1000) {
+                if (Ano_construcao.getYear() < 1000) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
                     AH1.getAlert().show();
                     return;
