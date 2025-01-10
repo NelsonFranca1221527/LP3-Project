@@ -139,6 +139,13 @@ public class InserirEventosOlimpicosController {
 
         int localId = localSelecionado.get().getId();
         String pais = paisField.getText();
+
+        if(anoedicaoPicker.getValue() == null){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "Tem selecionar um ano..");
+            AH1.getAlert().show();
+            return;
+        }
+
         int anoEdicao = Integer.parseInt(String.valueOf(anoedicaoPicker.getValue().getYear()));
 
         if(anoEdicao < 1000){
