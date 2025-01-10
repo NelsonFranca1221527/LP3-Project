@@ -71,7 +71,7 @@ public class LoginController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
-        if(UserField.getText().equals("") || SenhaField.getText().equals("") || SenhaField.getText().equals(" ")){
+        if(UserField.getText().trim().isEmpty() || SenhaField.getText().trim().isEmpty()){
             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro na autenticação.",
                     "Preencha todos os campos.");
             alertHandler.getAlert().show();
@@ -80,8 +80,8 @@ public class LoginController {
 
         Encriptacao Encrypt = new Encriptacao();
         UserDAOImp UserDAO = new UserDAOImp(conexao);
-        int numMecano = Integer.parseInt(UserField.getText().trim());
-        String SenhaHash = Encrypt.StringtoHash(SenhaField.getText().trim());
+        int numMecano = Integer.parseInt(UserField.getText().replaceAll("\\s+",""));
+        String SenhaHash = Encrypt.StringtoHash(SenhaField.getText().replaceAll("\\s+",""));
         String Role = UserDAO.getUserType(numMecano, SenhaHash);
 
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
