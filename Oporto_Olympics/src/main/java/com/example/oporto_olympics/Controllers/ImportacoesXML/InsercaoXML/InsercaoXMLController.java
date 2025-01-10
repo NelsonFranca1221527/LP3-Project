@@ -550,6 +550,12 @@ public class InsercaoXMLController {
                 continue;
             }
 
+            if (atleta.getDataNascimento().before(Date.from(Instant.from(LocalDate.now().minusYears(200))))) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento do atleta " + atleta.getNome() + " não pode ser anterior a 200 anos atrás.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             if (atleta.getDataNascimento().after(Date.from(Instant.now()))) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento do atleta " + atleta.getNome() + " não pode ser maior que a data de hoje.");
                 alertHandler.getAlert().showAndWait();
@@ -883,7 +889,7 @@ public class InsercaoXMLController {
         grid.add(OKButton, 0, 4);
 
         Stage HorarioStage = new Stage();
-        HorarioStage.setScene(new Scene(grid, 600, 400));
+        HorarioStage.setScene(new Scene(grid, 300, 200));
         HorarioStage.setTitle("Inserir Horário");
 
         OKButton.setOnAction(e -> {
