@@ -12,7 +12,7 @@ public class ResultadosModalidade {
 
     private Date data;
 
-    private Double resultado;
+    private String resultado;
 
     private String tipo;
 
@@ -36,7 +36,7 @@ public class ResultadosModalidade {
      * @param atletaID            Identificador do atleta associada ao resultado.
      * @param equipaID            Identificador da equipa associada ao resultado.
      */
-    public ResultadosModalidade(int id, Date data, Double resultado, String tipo, String medalha, int modalidadeID, int atletaID, int equipaID) {
+    public ResultadosModalidade(int id, Date data, String resultado, String tipo, String medalha, int modalidadeID, int atletaID, int equipaID) {
         this.id = id;
         this.data = data;
         this.resultado = resultado;
@@ -83,7 +83,7 @@ public class ResultadosModalidade {
      *
      * @return O resultado.
      */
-    public Double getResultado() {
+    public String getResultado() {
         return resultado;
     }
     /**
@@ -91,7 +91,7 @@ public class ResultadosModalidade {
      *
      * @param resultado O resultado.
      */
-    public void setResultado(Double resultado) {
+    public void setResultado(String resultado) {
         this.resultado = resultado;
     }
     /**

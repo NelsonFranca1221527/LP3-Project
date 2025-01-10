@@ -20,6 +20,7 @@ import javafx.scene.layout.Region;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -375,26 +376,22 @@ public class ListagemModalidadesCardController {
 
             ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
             ResultadosModalidadeDAOImp resultadosModalidadeDAOImp = new ResultadosModalidadeDAOImp(conexao);
+            AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
 
-            // Obter participantes (IDs, nomes e tipo)
+            // Obter participantes
             boolean isIndividual = modalidade.getTipo().equalsIgnoreCase("Individual");
-
             List<Participante> participantes = new ArrayList<>();
 
             Map<Integer, String> equipas = modalidadeDAOImp.getEquipasPorEvento(eventoID, modalidade.getId());
             Map<Integer, String> atletas = modalidadeDAOImp.getAtletasPorEvento(eventoID, modalidade.getId());
 
-            if(!(equipas == null) && !equipas.isEmpty()) {
-
-                // Adicionar equipas ao mapa
+            if (equipas != null && !equipas.isEmpty()) {
                 for (Map.Entry<Integer, String> entry : equipas.entrySet()) {
                     participantes.add(new Participante(entry.getKey(), entry.getValue(), "Equipa"));
                 }
             }
 
-            if(!(atletas == null) && !atletas.isEmpty()) {
-
-                // Adicionar atletas ao mapa
+            if (atletas != null && !atletas.isEmpty()) {
                 for (Map.Entry<Integer, String> entry : atletas.entrySet()) {
                     participantes.add(new Participante(entry.getKey(), entry.getValue(), "Atleta"));
                 }
@@ -413,123 +410,120 @@ public class ListagemModalidadesCardController {
             resultadosGrid.add(new Label("Resultado"), 1, 0);
 
             Random random = new Random();
-            Map<Participante, Double> resultadoParticipante = new HashMap<>();
+            Map<Participante, String> resultadoParticipante = new HashMap<>();
 
-            // Gerar resultados e armazenar no Map
+            // Gerar resultados
             for (Participante participante : participantes) {
-                double resultado = 10 + (90 * random.nextDouble());
+                String resultado;
+                if (modalidade.getMedida().equalsIgnoreCase("tempo")) {
+                    long millis = (long) (10000 + random.nextDouble() * (3 * 60 * 60 * 1000 - 10000));
+                    LocalTime tempo = LocalTime.ofSecondOfDay(millis / 1000);
+                    resultado = String.format("%02d:%02d:%02d.%03d",
+                            tempo.getHour(), tempo.getMinute(), tempo.getSecond(), millis % 1000);
+                } else {
+                    double distancia = 1 + (random.nextDouble() * 199);
+                    resultado = String.format("%.2f", distancia); // Sempre tratado como string
+                }
                 resultadoParticipante.put(participante, resultado);
             }
 
-            // Ordenar os resultados em ordem crescente (menor resultado recebe ouro)
-            List<Map.Entry<Participante, Double>> sortedResults = resultadoParticipante.entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue()) // Ordenação crescente
+            // Ordenar resultados
+            List<Map.Entry<Participante, String>> sortedResults = resultadoParticipante.entrySet().stream()
+                    .sorted((entry1, entry2) -> {
+                        if (modalidade.getMedida().equalsIgnoreCase("tempo")) {
+                            // Tempo: menor é melhor
+                            return entry1.getValue().compareTo(entry2.getValue());
+                        } else {
+                            // Distância: maior é melhor (convertendo para double para ordenação)
+                            return Double.compare(
+                                    Double.parseDouble(entry2.getValue().replace(",", ".")), // Substituir vírgula por ponto
+                                    Double.parseDouble(entry1.getValue().replace(",", "."))
+                            );
+                        }
+                    })
                     .collect(Collectors.toList());
 
-            // Exibir os resultados ordenados na tabela
-            for (int i = 0; i < sortedResults.size(); i++) {
-                Participante participante = sortedResults.get(i).getKey();
-                Double resultado = sortedResults.get(i).getValue();
-                int row = resultadosGrid.getRowCount(); // Obter a próxima linha
+            // Exibir os resultados na tabela
+            for (Map.Entry<Participante, String> entry : sortedResults) {
+                Participante participante = entry.getKey();
+                String resultado = entry.getValue();
+                int row = resultadosGrid.getRowCount();
                 resultadosGrid.add(new Label(participante.getNome()), 0, row);
-                resultadosGrid.add(new Label(String.format("%.2f", resultado)), 1, row);
+                resultadosGrid.add(new Label(resultado), 1, row);
             }
 
             resultadosDialog.getDialogPane().setContent(resultadosGrid);
             resultadosDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-            // Mostrar o diálogo e salvar os resultados aceites
+            // Mostrar o diálogo e salvar os resultados
             Optional<ButtonType> dialogResult = resultadosDialog.showAndWait();
             if (dialogResult.isPresent() && dialogResult.get() == ButtonType.OK) {
-                // Atribuir medalhas com base no ranking após a ordenação
+                EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+                Evento evento = eventosDAOImp.getById(eventoID);
                 int ranking = 1;
-                for (Map.Entry<Participante, Double> entry : sortedResults) {
-                    Participante participante = entry.getKey();
-                    Double resultado = entry.getValue();
 
-                    resultado = Double.valueOf(String.format("%.2f", resultado).replace(",", "."));
+                for (Map.Entry<Participante, String> entry : sortedResults) {
+                    Participante participante = entry.getKey();
+                    String resultado = entry.getValue();
 
                     int ouro = 0, prata = 0, bronze = 0;
+                    String medalha = ranking == 1 ? "Ouro" : ranking == 2 ? "Prata" : ranking == 3 ? "Bronze" : "Diploma";
+                    String medalhaR = ranking == 1 ? "Ouro" : ranking == 2 ? "Prata" : ranking == 3 ? "Bronze" : "Nenhuma";
 
-                    // Determinar medalha (agora com o melhor resultado recebendo ouro)
-                    String medalha = "Nenhuma";
-                    if (ranking == 1) {
-                        ouro++;
-                        medalha = "Ouro";
-                    } else if (ranking == 2) {
-                        prata++;
-                        medalha = "Prata";
-                    } else if (ranking == 3) {
-                        bronze++;
-                        medalha = "Bronze";
-                    }
-
-                    EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
-
-                    Evento evento = eventosDAOImp.getById(eventoID);
-
-                    AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
+                    if (ranking == 1) ouro++;
+                    if (ranking == 2) prata++;
+                    if (ranking == 3) bronze++;
 
                     if (isIndividual) {
-
-                        ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
-
-                        resultadosModalidadeDAOImp.save(resultadoModalidade);
-
-                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
-
-                    } else {
-
+                        resultadosModalidadeDAOImp.save(new ResultadosModalidade(
+                                0, new Date(), resultado, modalidade.getMedida(), medalhaR, modalidade.getId(), participante.getID(), 0
+                        ));
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(
+                                evento.getAno_edicao(), ouro, prata, bronze
+                        ));
+                    } else  {
                         if (participante.getTipo().equals("Atleta")) {
-
-                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
-
-                            resultadosModalidadeDAOImp.save(resultadoModalidade);
-
-                            atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
-
+                            resultadosModalidadeDAOImp.save(new ResultadosModalidade(
+                                    0, new Date(), resultado, modalidade.getMedida(), medalhaR, modalidade.getId(), participante.getID(), 0
+                            ));
+                        atletaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesAtleta(
+                                evento.getAno_edicao(), ouro, prata, bronze
+                        ));
                         }
 
                         if (participante.getTipo().equals("Equipa")) {
+                            resultadosModalidadeDAOImp.save(new ResultadosModalidade(
+                                    0, new Date(), resultado, modalidade.getMedida(), medalhaR, modalidade.getId(), 0, participante.getID()
+                            ));
 
-                            ResultadosModalidade resultadoModalidade = new ResultadosModalidade(0, new Date(), resultado, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
+                        EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
+                        equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(
+                                evento.getAno_edicao(), medalha
+                        ));
 
-                            resultadosModalidadeDAOImp.save(resultadoModalidade);
+                        ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
+                        List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participante.getID());
 
-                            if (ranking > 3) {
-                                medalha = "Diploma";
-                            }
-
-                            EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
-
-                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
-
-                            ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
-
-                            List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participante.getID());
-
-                            if(lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
-
-                                for (AtletaInfo atletaInfo : lstAtletaInfo) {
-                                    atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(evento.getAno_edicao(), ouro, prata, bronze));
-                                }
+                        if (lstAtletaInfo != null && !lstAtletaInfo.isEmpty()) {
+                            for (AtletaInfo atletaInfo : lstAtletaInfo) {
+                                atletaDAOImp.saveHistorico(atletaInfo.getId(), eventoID, new ParticipaçõesAtleta(
+                                        evento.getAno_edicao(), ouro, prata, bronze
+                                ));
                             }
                         }
+                        }
                     }
-
                     ranking++;
                 }
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Resultados aceites foram salvos com sucesso.");
                 alert.show();
-
                 modalidadeDAOImp.updateEventos_ModalidadesStatus(eventoID, modalidade.getId(), 1);
             }
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao gerar resultados: " + ex.getMessage());
             alert.show();
         }
-
     }
 
     /**
@@ -706,7 +700,7 @@ public class ListagemModalidadesCardController {
 
                     if (participante.getTipo().equals("Atleta")) {
 
-                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
+                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), pontos.toString(), modalidade.getMedida(), medalha, modalidade.getId(), participante.getID(), 0);
 
                         resultadosModalidadeDAOImp.save(resultado);
 
@@ -716,7 +710,7 @@ public class ListagemModalidadesCardController {
 
                     if (participante.getTipo().equals("Equipa")) {
 
-                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), (double) pontos, modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
+                        ResultadosModalidade resultado = new ResultadosModalidade(0, new Date(), pontos.toString(), modalidade.getMedida(), medalha, modalidade.getId(), 0, participante.getID());
 
                         resultadosModalidadeDAOImp.save(resultado);
 
