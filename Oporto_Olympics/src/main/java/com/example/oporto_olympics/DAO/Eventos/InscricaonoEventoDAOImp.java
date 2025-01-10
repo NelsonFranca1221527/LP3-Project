@@ -1,9 +1,10 @@
 package com.example.oporto_olympics.DAO.Eventos;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.example.oporto_olympics.Models.HorarioModalidade;
+
+import java.sql.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,44 @@ public class InscricaonoEventoDAOImp {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inserir inscrição: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Obtém uma lista de horários de modalidades associados a um atleta específico.
+     *
+     * Este método consulta o banco de dados para buscar todas as modalidades em que um atleta está inscrito,
+     * retornando os detalhes de horário, duração e local das modalidades. Apenas modalidades com informações
+     * completas (data, duração e local) são incluídas na lista.
+     *
+     * @param atletaId o identificador único do atleta.
+     * @return uma lista de objetos {@link HorarioModalidade} contendo as informações das modalidades.
+     * @throws RuntimeException se ocorrer um erro de SQL ao buscar os dados.
+     */
+    public List<HorarioModalidade> getAllHorarioModalidadeByAtleta(int atletaId) {
+        try {
+
+            PreparedStatement ps = connection.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN atletas_modalidades as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.atleta_id= ? ");
+            ps.setInt(1, atletaId);
+            ResultSet rs = ps.executeQuery();
+
+            List<HorarioModalidade> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
+                }
+
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+            }
+
+            return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao listar Horarios pelo atleta: " + ex.getMessage());
         }
     }
 
