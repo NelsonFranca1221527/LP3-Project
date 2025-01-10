@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.Optional;
 
 /**
@@ -147,9 +148,10 @@ public class InserirEventosOlimpicosController {
         }
 
         int anoEdicao = Integer.parseInt(String.valueOf(anoedicaoPicker.getValue().getYear()));
+        Year thisYear = Year.now();
 
-        if(anoEdicao < 1000){
-            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "O ano de edição deve ser superior a 1000.");
+        if(anoEdicao < Integer.valueOf(String.valueOf(thisYear))){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "O ano de edição deve ser superior ao ano atual.");
             AH1.getAlert().show();
             return;
         }

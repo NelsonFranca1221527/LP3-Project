@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
 /**
@@ -64,6 +65,7 @@ public class CalendarioAtletaController {
      * O mês e ano atuais, utilizados para calcular o calendário.
      */
     private YearMonth currentMonth;
+
     /**
      * Objeto de acesso a dados (DAO) utilizado para interagir com a base de dados e obter eventos.
      */
