@@ -374,9 +374,7 @@ public class InserirModalidadesController {
 
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
-
-        EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
-
+        
         if(dataHora.getYear() != evento.getAno_edicao()){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A data de inicio não corresponde ao ano em que o evento será realizado!");
             alertHandler.getAlert().showAndWait();
