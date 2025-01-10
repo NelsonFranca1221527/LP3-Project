@@ -169,7 +169,7 @@ public class CalendarioAtletaController {
                 if (eventDate != null && eventDate.equals(date)) {
                     Button eventButton = new Button("Ver Inscrição");
                     eventButton.setStyle("-fx-font-size: 12px; -fx-text-fill: white; -fx-background-color: #007bff; -fx-cursor: hand;");
-                    eventButton.setOnAction(e -> abrirDetalhesEvento(evento.getEvento_id(), evento.getModalidade_id()));
+                    eventButton.setOnAction(e -> abrirDetalhesEvento(evento.getEvento_id(), evento.getModalidade_id(), evento.getLocal_id()));
 
                     StackPane.setAlignment(eventButton, javafx.geometry.Pos.CENTER);
                     dayPane.getChildren().add(eventButton);
@@ -195,13 +195,16 @@ public class CalendarioAtletaController {
      *
      * @param eventoId o identificador único do evento.
      * @param modalidadeId o identificador único da modalidade associada ao evento.
+     * @param localId o identificador único do local associado ao evento.
      */
-    private void abrirDetalhesEvento(int eventoId, int modalidadeId) {
+    private void abrirDetalhesEvento(int eventoId, int modalidadeId, int localId) {
         try {
 
             Evento evento = dao.getById(eventoId);
 
             Modalidade modalidade = dao.getModalidadeById(modalidadeId);
+
+            Local locais = dao.getLocalById(localId);
 
             EventosModalidade eventosModalidade = dao.getEventoModalidade(eventoId, modalidadeId);
 
@@ -224,6 +227,11 @@ public class CalendarioAtletaController {
                 Label modalidadeGeneroLabel = new Label("Gênero: " + modalidade.getGenero());
                 Label modalidadeRegrasLabel = new Label("Regras: " + modalidade.getRegras());
 
+                Label localnome = new Label("Nome do local: " + locais.getNome());
+                Label localtipo = new Label("Tipo de recinto: " + locais.getTipo());
+                Label localmorada = new Label("Morada: " + locais.getMorada());
+                Label localcidade = new Label("Cidade: " + locais.getCidade());
+
 
                 Label dataModalidadeLabel = new Label("Data do Evento: " + eventosModalidade.getData_modalidade());
                 Label duracaoLabel = new Label("Duração: " + eventosModalidade.getDuracao());
@@ -231,7 +239,7 @@ public class CalendarioAtletaController {
                 vbox.getChildren().addAll(
                         anoEdicaoLabel, paisAnfitriaoLabel,
                         modalidadeNomeLabel, modalidadeDescricaoLabel, modalidadeGeneroLabel, modalidadeRegrasLabel,
-                        dataModalidadeLabel, duracaoLabel
+                        dataModalidadeLabel, duracaoLabel, localnome, localtipo, localmorada, localcidade
                 );
 
                 Scene scene = new Scene(vbox, 400, 400);

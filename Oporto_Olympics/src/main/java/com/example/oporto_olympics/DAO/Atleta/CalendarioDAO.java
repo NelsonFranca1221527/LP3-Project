@@ -60,5 +60,17 @@ public interface CalendarioDAO {
      * @throws RuntimeException Se ocorrer um erro durante a execução da consulta.
      */
     EventosModalidade getEventoModalidade(int eventoId, int modalidadeId);
+    /**
+     * Obtém um local específico com base no seu ID.
+     *
+     * Este método é utilizado para recuperar os detalhes de um local da base de dados
+     * através do ID fornecido. Se o local existir, será retornado um objeto {@code Local}
+     * contendo as suas informações.
+     *
+     * @param id O ID do local a ser pesquisado.
+     * @return Um objeto {@code Local} que representa o local correspondente ao ID fornecido.
+     * @throws RuntimeException Se ocorrer um erro ao aceder à base de dados ou se o local não for encontrado.
+     */
+    Local getLocalById(int id);
 
 }

@@ -9,8 +9,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuAtleta/CalendarioAtletaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/MenuAtleta/CalendarioAtletaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/CalendarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/CalendarioDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/CalendarioDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/DAO/Atleta/CalendarioDAOImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/AtletasModalidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/AtletasModalidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/EventosModalidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Models/EventosModalidade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,6 +240,7 @@
       <workItem from="1732558127116" duration="5579000" />
       <workItem from="1734650077232" duration="1718000" />
       <workItem from="1736454918821" duration="10953000" />
+      <workItem from="1736508821940" duration="519000" />
     </task>
     <task id="LOCAL-00001" summary="Update do Inserir atleta em equipa">
       <option name="closed" value="true" />
@@ -280,6 +279,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adicianada conexão a base de dados e processo de login e encriptação de password feitos" />

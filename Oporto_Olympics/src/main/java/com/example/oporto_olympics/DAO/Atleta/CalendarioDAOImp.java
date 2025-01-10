@@ -1,9 +1,6 @@
 package com.example.oporto_olympics.DAO.Atleta;
 
-import com.example.oporto_olympics.Models.AtletasModalidades;
-import com.example.oporto_olympics.Models.Evento;
-import com.example.oporto_olympics.Models.EventosModalidade;
-import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -225,6 +222,44 @@ public class CalendarioDAOImp implements CalendarioDAO {
             throw new RuntimeException("Erro ao obter dados de eventos_modalidade: " + ex.getMessage());
         }
         return null; // Retorna null se nenhum dado for encontrado
+    }
+    /**
+     * Obtém os detalhes de um local específico com base no seu ID.
+     *
+     * Este método executa uma consulta à tabela `locais` da base de dados, procurando
+     * um registo que corresponda ao ID fornecido. Se o local for encontrado, retorna
+     * um objeto {@code Local} com os detalhes do registo. Caso contrário, lança uma
+     * exceção para indicar que o local não foi encontrado.
+     *
+     * @param id O ID do local a ser pesquisado.
+     * @return Um objeto {@code Local} que representa o local correspondente ao ID fornecido.
+     * @throws RuntimeException Se ocorrer um erro ao aceder à base de dados ou se o local não for encontrado.
+     */
+    @Override
+    public Local getLocalById(int id) {
+        try {
+            String query = "SELECT * FROM locais WHERE id = ?";
+            PreparedStatement pstmt = conexao.prepareStatement(query);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Local(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("tipo"),
+                        rs.getString("morada"),
+                        rs.getString("cidade"),
+                        rs.getString("pais_sigla"),
+                        rs.getInt("capacidade"),
+                        rs.getDate("data_construcao")
+                );
+            } else {
+                throw new RuntimeException("Local com ID " + id + " não encontrado.");
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao buscar local por ID: " + ex.getMessage());
+        }
     }
 
 
