@@ -1,6 +1,7 @@
 package com.example.oporto_olympics.Controllers.ListagemEventos.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.InscricaonoEventoDAOImp;
@@ -36,6 +37,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -202,6 +206,8 @@ public class ListagemEventosCardController {
         Evento evento = getEventoEspecifico();
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+        AprovarInscricaoEquipaDAOImp aprovarInscricaoEquipaDAOImp = new AprovarInscricaoEquipaDAOImp(conexao);
 
         EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
@@ -407,13 +413,52 @@ public class ListagemEventosCardController {
 
             Modalidade modalidade = ModalidadesHashMap.get(choiceBox.getValue());
 
-            //Associa todas as equipas selecionadas ao evento e modalidade escolhidas
-            for(int equipaId : EquipasHashMap.values()){
-                modalidadeDAOImp.saveParticipantesColetivo(equipaId,evento.getId(), modalidade.getId());
+            // Lista para armazenar equipas com conflitos de horário
+            List<String> equipasComConflitos = new ArrayList<>();
+
+            // Iterar sobre as equipas selecionadas
+            for (int equipaId : EquipasHashMap.values()) {
+                HorarioModalidade horariomodalidade;
+                InscricaoEquipas equipa;
+
+                try {
+                    horariomodalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), evento.getId());
+                    equipa = aprovarInscricaoEquipaDAOImp.getEquipa(equipaId);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                // Verificar se existe conflito de horário
+                if (VerificarConflito(
+                        horariomodalidade.getDataHora(),
+                        horariomodalidade.getDuracao(),
+                        modalidadeDAOImp.getAllHorarioModalidadeByEquipa(equipaId))) {
+                    // Adicionar o nome da equipa à lista de conflitos
+                    equipasComConflitos.add(equipa.getNome());
+                } else {
+                    // Inscrever a equipa se não houver conflito
+                    modalidadeDAOImp.saveParticipantesColetivo(equipaId, evento.getId(), modalidade.getId());
+                }
             }
 
-            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION,"Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
+            // Verificar se houve conflitos
+            if (!equipasComConflitos.isEmpty()) {
+                // Construir uma mensagem com todas as equipas com conflitos
+                StringBuilder mensagem = new StringBuilder("As seguintes equipas têm conflitos de horário:\n");
+                for (String nomeEquipa : equipasComConflitos) {
+                    mensagem.append("- ").append(nomeEquipa).append("\n");
+                }
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponível", mensagem.toString());
+                alertHandler2.getAlert().showAndWait();
+
+                // Retornar aqui para evitar a mensagem de sucesso
+                return;
+            }
+
+            // Se não houve conflitos, exibir a mensagem de sucesso
+            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
             alertHandler2.getAlert().showAndWait();
+
 
             inscreverEquipasStage.close();
         });
@@ -673,4 +718,34 @@ public class ListagemEventosCardController {
         }
     }
 
+    /**
+     * Verifica se o horário da modalidade que a equipa está a ser inscrita entra em conflito com modalidades que ela já esteja inscrita.
+     *
+     * @param inicioModalidade A data e hora de início da modalidade a ser verificada.
+     * @param duracaoModalidade A duração da modalidade a ser verificada.
+     * @param listaHorarios A lista de horários de outras modalidades para verificar possíveis conflitos.
+     * @return {@code true} se for encontrado um conflito de horários; {@code false} caso contrário.
+     */
+    public boolean VerificarConflito(LocalDateTime inicioModalidade, LocalTime duracaoModalidade, List<HorarioModalidade> listaHorarios) {
+        LocalDateTime dataHoraFim = inicioModalidade.plus(Duration.ofHours(duracaoModalidade.getHour())
+                .plusMinutes(duracaoModalidade.getMinute())
+                .plusSeconds(duracaoModalidade.getSecond()));
+
+        for (HorarioModalidade horario : listaHorarios) {
+            LocalDateTime horarioInicio = horario.getDataHora();
+            LocalDateTime horarioFim = horarioInicio.plus(Duration.ofHours(horario.getDuracao().getHour())
+                    .plusMinutes(horario.getDuracao().getMinute())
+                    .plusSeconds(horario.getDuracao().getSecond()));
+
+            // Ajustes nos horários
+            LocalDateTime horarioInicioAjustado = horarioInicio.minusHours(2);
+            LocalDateTime horarioFimAjustado = horarioFim.plusHours(2);
+
+            // Verificação de conflito
+            if ((inicioModalidade.isBefore(horarioFimAjustado) && dataHoraFim.isAfter(horarioInicioAjustado))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -149,9 +149,9 @@ public class InserirAtletaController {
     @FXML
     public void OnClickCriarAtletaButton() {
         String nome = Nome.getText();
-        String pais = Pais.getText();
-        String altura = Altura.getText();
-        String peso = Peso.getText();
+        String pais = Pais.getText().trim();
+        String altura = Altura.getText().trim();
+        String peso = Peso.getText().trim();
         String dataNasc = Data_nasc.getText();
         String genero = GeneroChoice.getValue().toString();
 
@@ -163,11 +163,11 @@ public class InserirAtletaController {
             showAlert(Alert.AlertType.WARNING, "País inválido", "A sigla do país inserido não é válida.");
             return;
         }
-        if(Integer.valueOf(altura) < 120){
+        if(Integer.parseInt(altura) < 120){
             showAlert(Alert.AlertType.WARNING, "Altura inválida","A altura que inseriu não é válida!");
             return;
         }
-        if(Integer.valueOf(peso) < 20){
+        if(Integer.parseInt(peso) < 20){
             showAlert(Alert.AlertType.WARNING, "Peso inválida","O peso que inseriu não é válido!");
             return;
         }
