@@ -177,6 +177,10 @@ public class ListagemEventosCardController {
         if(GestorSingle.getGestor() == null && AtletaSingle.getAtleta() != null){
             InscreverEquipasButton.setDisable(true);
             InscreverEquipasButton.setVisible(false);
+            AlterarLogoBtn.setDisable(true);
+            AlterarLogoBtn.setVisible(false);
+            AlterarMascoteBtn.setDisable(true);
+            AlterarMascoteBtn.setVisible(false);
         }
 
         if(GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null){
