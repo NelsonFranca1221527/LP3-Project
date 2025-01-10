@@ -82,7 +82,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getDouble("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
+                        rs.getString("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
                         rs.getInt("modalidade_id"), rs.getInt("atleta_id"), rs.getInt("equipa_id")));
             }
             return lst;
@@ -131,7 +131,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getDouble("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
+                        rs.getString("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
                         rs.getInt("modalidade_id") , rs.getInt("atleta_id"), rs.getInt("equipa_id")));
             }
             return lst;
@@ -153,7 +153,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
             ResultSet rs = stmt.executeQuery("SELECT * FROM resultados");
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getDouble("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
+                        rs.getString("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
                         rs.getInt("modalidade_id") , rs.getInt("atleta_id"), rs.getInt("equipa_id")));
             }
             return lst;
@@ -176,7 +176,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             // Definir os parâmetros do SQL
             stmt.setDate(1, new java.sql.Date(resultadosModalidade.getData().getTime()));
-            stmt.setDouble(2, resultadosModalidade.getResultado());
+            stmt.setString(2, resultadosModalidade.getResultado());
             stmt.setString(3, resultadosModalidade.getTipo());
             stmt.setString(4, resultadosModalidade.getMedalha());
             stmt.setInt(5, resultadosModalidade.getModalidadeID());
@@ -237,7 +237,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
 
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getDouble("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
+                        rs.getString("resultado"), rs.getString("tipo_resultado") , rs.getString("medalha") ,
                         rs.getInt("modalidade_id") , rs.getInt("atleta_id"), 0));
             }
             return lst;
@@ -286,7 +286,7 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 lst.add(new ResultadosModalidade(rs.getInt("id"), rs.getDate("data"),
-                        rs.getDouble("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
+                        rs.getString("resultado"), rs.getString("tipo_resultado"), rs.getString("medalha"),
                         rs.getInt("modalidade_id"), rs.getInt("atleta_id"), 0));
             }
             return lst;
