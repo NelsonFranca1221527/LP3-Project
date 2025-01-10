@@ -65,6 +65,61 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException("Erro ao verificar o ano de edição: " + ex.getMessage());
         }
     }
+
+    /**
+     * Verifica se todas as modalidades associadas a um evento estão ativas.
+     *
+     * O método executa uma consulta SQL para obter o estado (`modalidade_status`) de todas as modalidades
+     * associadas a um evento, identificado pelo seu ID. O estado 0 indica que a modalidade está inativa.
+     *
+     * @param eventoId o identificador único do evento cujas modalidades serão verificadas.
+     * @return {@code true} se todas as modalidades associadas ao evento estiverem ativas (nenhuma com `modalidade_status` igual a 0),
+     *         {@code false} caso contrário.
+     * @throws RuntimeException se ocorrer um erro de SQL ao tentar verificar as modalidades.
+     */
+    public boolean verficarModalidades(int eventoId) {
+        try{
+            PreparedStatement ps = connection.prepareStatement("SELECT modalidade_status FROM eventos_modalidades WHERE evento_id = ?");
+            ps.setInt(1, eventoId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("modalidade_status") == 0) {
+                    return false;
+                }
+            }
+
+            return true;
+        }catch (SQLException e){
+            throw new RuntimeException("Erro ao verificar modalidades: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Atualiza o estado de um evento para "fechado" no sistema.
+     *
+     * O método utiliza uma instrução SQL para alterar o valor do campo `evento_status` na tabela `eventos`,
+     * definindo-o como 1 (indicando que o evento está fechado), com base no ID do evento fornecido.
+     *
+     * @param eventoId o identificador único do evento que se deseja fechar.
+     * @return {@code true} se a atualização foi bem-sucedida (ou seja, exatamente uma linha foi afetada),
+     *         {@code false} caso contrário.
+     * @throws RuntimeException se ocorrer um erro de SQL ao tentar atualizar o estado do evento.
+     */
+    public boolean fecharEvento(int eventoId){
+        try {
+            PreparedStatement ps2 = connection.prepareStatement("UPDATE eventos SET evento_status = 1 WHERE evento_id = ?");
+            ps2.setInt(1, eventoId);
+            int rs2 = ps2.executeUpdate();
+            if (rs2 == 1) {
+                return true;
+            }
+
+            return false;
+        }catch (SQLException e){
+            throw new RuntimeException("Erro ao fechar evento: " + e.getMessage());
+        }
+    }
+
     /**
      * Atualiza um evento na base de dados.
      *
@@ -105,7 +160,7 @@ public class EventosDAOImp implements DAO<Evento> {
         try {
 
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from eventos");
+            ResultSet rs = stmt.executeQuery("Select * from eventos where evento_status = 0");
             while (rs.next()) {
                 lst.add(new Evento(rs.getInt("id"),rs.getInt("ano_edicao"),rs.getString("pais_anfitriao_sigla"), rs.getBytes("logo"),rs.getBytes("mascote"),rs.getInt("local_id")));
             }

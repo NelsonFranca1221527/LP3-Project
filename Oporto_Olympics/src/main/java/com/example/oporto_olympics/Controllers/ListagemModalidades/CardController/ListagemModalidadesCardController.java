@@ -340,9 +340,41 @@ public class ListagemModalidadesCardController {
 
             if (modalidade.getOneGame().equals("One")) {
                 gerarResultadosOneGame(modalidade, eventoID);
+
+                EventosDAOImp eventoDAO = new EventosDAOImp(conexao);
+
+                if(eventoDAO.verficarModalidades(eventoID)){
+                    if(eventoDAO.fecharEvento(eventoID)){
+                        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,
+                                "Evento fechado",
+                                "O evento  foi fechado com successo"
+                        );
+
+                        alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().showAndWait();
+
+                    }
+                }
             }
             if (modalidade.getOneGame().equals("Multiple")) {
                 gerarResultadosMultiple(modalidade, eventoID);
+
+                EventosDAOImp eventoDAO = new EventosDAOImp(conexao);
+
+                if(eventoDAO.verficarModalidades(eventoID)){
+                    if(eventoDAO.fecharEvento(eventoID)){
+                        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION,
+                                "Evento fechado",
+                                "O evento  foi fechado com successo"
+                        );
+
+                        alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
+                        alertHandler.getAlert().showAndWait();
+
+                    }
+                }
             }
 
             for (Equipa equipa : equipaDAOImp.getAll()) {
