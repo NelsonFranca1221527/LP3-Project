@@ -567,13 +567,20 @@ public class ListagemEventosCardController {
                             aprovadoAlert.show();
                         } else {
                             String estado = "Pendente";
-                            inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
 
-                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
-                            successAlert.showAndWait();
+                            if(!inscreverEvento.verificarInscricao(eventoId,atletaId,modalidadeId)) {
+                                inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
 
-                            // Opcional: remover a modalidade da tabela após inscrição
-                            getTableView().getItems().remove(modalidade);
+                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
+                                successAlert.showAndWait();
+
+                                // Opcional: remover a modalidade da tabela após inscrição
+                                getTableView().getItems().remove(modalidade);
+                            } else {
+                                Alert erroAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição não foi criada...");
+                                erroAlert.showAndWait();
+                            }
+
                         }
                     } catch (RuntimeException ex) {
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + ex.getMessage());

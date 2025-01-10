@@ -1,9 +1,8 @@
 package com.example.oporto_olympics.DAO.Eventos;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +31,60 @@ public class InscricaonoEventoDAOImp {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir inscrição: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Verifica se um atleta está inscrito em uma modalidade específica de um evento, levando em consideração
+     * o horário das modalidades para evitar sobreposição.
+     *
+     * O método consulta a base de dados para verificar a inscrição do atleta em uma modalidade específica de um evento.
+     * Também valida se os horários da modalidade não entram em conflito, ajustando o intervalo de início e fim com uma margem de 2 horas.
+     *
+     * @param eventoId o identificador único do evento.
+     * @param atletaId o identificador único do atleta.
+     * @param modalidade_id o identificador único da modalidade.
+     * @return {@code true} se a inscrição for válida e não houver sobreposição de horários, {@code false} caso contrário.
+     * @throws RuntimeException se ocorrer um erro de SQL ao tentar verificar a inscrição.
+     */
+    public boolean verificarInscricao(int eventoId, int atletaId, int modalidade_id) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT ev.* FROM eventos AS ev, eventos_modalidades AS e, atletas_modalidades a WHERE a.atleta_id = ? AND ev.id = ? AND e.modalidade_id = ?");
+            ps.setInt(1, atletaId);
+            ps.setInt(2, eventoId);
+            ps.setInt(3, modalidade_id);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+
+                Date Inicio = rs.getDate("data_inicio");
+                Date Fim = rs.getDate("data_fim");
+
+                //Converte a variavel Date para Timestamp
+                Timestamp dataInicio = new Timestamp(Inicio.getTime());
+                Timestamp dataFim = new Timestamp(Fim.getTime());
+
+                //Converte a variavel Timestamp para LocalDateTime
+                LocalDateTime localDateInc = dataInicio.toLocalDateTime();
+                LocalDateTime localDateFim = dataFim.toLocalDateTime();
+
+                //Adiciona mais 2 horas a data_fim e remove 2 horas a data_inicio
+                LocalDateTime DataInc = localDateInc.minusHours(2);
+                LocalDateTime DataFim = localDateFim.plusHours(2);
+
+
+                if( ( localDateInc.isAfter(DataInc) && localDateInc.isBefore(DataInc) ) ||
+                    ( localDateFim.isAfter(DataFim) && localDateFim.isBefore(DataFim) ) ||
+                        ( DataInc.isAfter(localDateInc) && DataInc.isBefore(localDateInc) ) ||
+                        ( DataFim.isAfter(localDateFim) && DataFim.isBefore(localDateFim) ) ){
+                    return true; // Com conflito
+                }
+
+            }
+
+            return false; // Sem Conflito
+        }catch (SQLException e){
             throw new RuntimeException("Erro ao inserir inscrição: " + e.getMessage());
         }
     }
