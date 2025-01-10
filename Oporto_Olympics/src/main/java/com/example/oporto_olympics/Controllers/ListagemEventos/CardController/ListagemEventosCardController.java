@@ -559,6 +559,14 @@ public class ListagemEventosCardController {
                     int eventoId = evento.getId();
 
                     try {
+                        HorarioModalidade horariomodalidade;
+
+                        try {
+                            horariomodalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), evento.getId());
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
                         if (inscreverEvento.existeInscricaoPendente(atletaId, eventoId, modalidadeId)) {
                             Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para esta modalidade.");
                             pendenteAlert.show();
@@ -566,9 +574,9 @@ public class ListagemEventosCardController {
                             Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Você já está inscrito nesta modalidade.");
                             aprovadoAlert.show();
                         } else {
-                            String estado = "Pendente";
+                            if (!VerificarConflito(horariomodalidade.getDataHora(), horariomodalidade.getDuracao(), inscreverEvento.getAllHorarioModalidadeByAtleta(atletaId))) {
+                                String estado = "Pendente";
 
-                            if(!inscreverEvento.verificarInscricao(eventoId,atletaId,modalidadeId)) {
                                 inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
 
                                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
@@ -577,10 +585,9 @@ public class ListagemEventosCardController {
                                 // Opcional: remover a modalidade da tabela após inscrição
                                 getTableView().getItems().remove(modalidade);
                             } else {
-                                Alert erroAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição não foi criada...");
-                                erroAlert.showAndWait();
+                                Alert successAlert = new Alert(Alert.AlertType.WARNING, "Inscrição não foi criada porque já tem uma inscrição feita no mesmo horário.");
+                                successAlert.showAndWait();
                             }
-
                         }
                     } catch (RuntimeException ex) {
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + ex.getMessage());

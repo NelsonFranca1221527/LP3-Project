@@ -1,5 +1,7 @@
 package com.example.oporto_olympics.DAO.Eventos;
 
+import com.example.oporto_olympics.Models.HorarioModalidade;
+
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -36,56 +38,40 @@ public class InscricaonoEventoDAOImp {
     }
 
     /**
-     * Verifica se um atleta está inscrito em uma modalidade específica de um evento, levando em consideração
-     * o horário das modalidades para evitar sobreposição.
+     * Obtém uma lista de horários de modalidades associados a um atleta específico.
      *
-     * O método consulta a base de dados para verificar a inscrição do atleta em uma modalidade específica de um evento.
-     * Também valida se os horários da modalidade não entram em conflito, ajustando o intervalo de início e fim com uma margem de 2 horas.
+     * Este método consulta o banco de dados para buscar todas as modalidades em que um atleta está inscrito,
+     * retornando os detalhes de horário, duração e local das modalidades. Apenas modalidades com informações
+     * completas (data, duração e local) são incluídas na lista.
      *
-     * @param eventoId o identificador único do evento.
      * @param atletaId o identificador único do atleta.
-     * @param modalidade_id o identificador único da modalidade.
-     * @return {@code true} se a inscrição for válida e não houver sobreposição de horários, {@code false} caso contrário.
-     * @throws RuntimeException se ocorrer um erro de SQL ao tentar verificar a inscrição.
+     * @return uma lista de objetos {@link HorarioModalidade} contendo as informações das modalidades.
+     * @throws RuntimeException se ocorrer um erro de SQL ao buscar os dados.
      */
-    public boolean verificarInscricao(int eventoId, int atletaId, int modalidade_id) {
+    public List<HorarioModalidade> getAllHorarioModalidadeByAtleta(int atletaId) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT ev.* FROM eventos AS ev, eventos_modalidades AS e, atletas_modalidades a WHERE a.atleta_id = ? AND ev.id = ? AND e.modalidade_id = ?");
+
+            PreparedStatement ps = connection.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN atletas_modalidades as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.atleta_id= ? ");
             ps.setInt(1, atletaId);
-            ps.setInt(2, eventoId);
-            ps.setInt(3, modalidade_id);
-
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
 
-                Date Inicio = rs.getDate("data_inicio");
-                Date Fim = rs.getDate("data_fim");
+            List<HorarioModalidade> list = new ArrayList<>();
 
-                //Converte a variavel Date para Timestamp
-                Timestamp dataInicio = new Timestamp(Inicio.getTime());
-                Timestamp dataFim = new Timestamp(Fim.getTime());
+            while (rs.next()) {
 
-                //Converte a variavel Timestamp para LocalDateTime
-                LocalDateTime localDateInc = dataInicio.toLocalDateTime();
-                LocalDateTime localDateFim = dataFim.toLocalDateTime();
-
-                //Adiciona mais 2 horas a data_fim e remove 2 horas a data_inicio
-                LocalDateTime DataInc = localDateInc.minusHours(2);
-                LocalDateTime DataFim = localDateFim.plusHours(2);
-
-
-                if( ( localDateInc.isAfter(DataInc) && localDateInc.isBefore(DataInc) ) ||
-                    ( localDateFim.isAfter(DataFim) && localDateFim.isBefore(DataFim) ) ||
-                        ( DataInc.isAfter(localDateInc) && DataInc.isBefore(localDateInc) ) ||
-                        ( DataFim.isAfter(localDateFim) && DataFim.isBefore(localDateFim) ) ){
-                    return true; // Com conflito
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
                 }
 
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
             }
 
-            return false; // Sem Conflito
-        }catch (SQLException e){
-            throw new RuntimeException("Erro ao inserir inscrição: " + e.getMessage());
+            return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao listar Horarios pelo atleta: " + ex.getMessage());
         }
     }
 
