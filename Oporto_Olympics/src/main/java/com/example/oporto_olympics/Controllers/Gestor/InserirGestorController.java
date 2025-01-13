@@ -94,8 +94,6 @@ public class InserirGestorController {
 
             dao.saveGestor(nome);
 
-            showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Gestor criado com sucesso!");
-
             refreshPage();
 
 

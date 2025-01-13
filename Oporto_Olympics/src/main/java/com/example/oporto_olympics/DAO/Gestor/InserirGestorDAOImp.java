@@ -44,9 +44,18 @@ public class InserirGestorDAOImp implements InserirGestorDAO{
         AlertHandler alertHandler;
 
         try {
-            CallableStatement cs = conexao.prepareCall("{CALL SaveGestor(?)}");
+            CallableStatement cs = conexao.prepareCall("{CALL SaveGestor(?,?)}");
             cs.setString(1, nome);
+            cs.registerOutParameter(2, java.sql.Types.NVARCHAR);
             cs.executeUpdate();
+
+            //Busca o número mecanográfico gerado para o novo gestor
+            String num = cs.getString(2);
+
+            //Mostra um alerta a dizer ao utilizador qual é o número mecanogáfico do novo gestor
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Gestor Criado com Sucesso!","O gestor foi criado com sucesso. Número mecanográfico: " + num);
+            alertHandler.getAlert().showAndWait();
+
             cs.close();
 
         } catch (SQLException ex) {
