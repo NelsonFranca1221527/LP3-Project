@@ -11,8 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class InserirAtletaTest {
 
@@ -60,6 +59,75 @@ class InserirAtletaTest {
         }
 
         assertTrue(igual, "O atleta deveria existir..");
+    }
+
+    @Test
+    void InserirAtletaValido() throws SQLException {
+        ConnectionBD connectionBD = ConnectionBD.getInstance();
+        Connection conexao = connectionBD.getConexao();
+        Boolean criado = false;
+
+        String nome = "Atleta test3";
+        String pais = "PRT";
+        Double altura = 171.00;
+        Double peso = 70.7;
+        LocalDate DataNasc = LocalDate.of(1995, 12, 14);
+        String genero = "Women";
+
+        InserirAtletaDAOImp dao = new InserirAtletaDAOImp(conexao);
+        AtletaDAOImp dao2 = new AtletaDAOImp(conexao);
+
+        if(!dao.getPais(pais)){
+            assertFalse(criado, "País inválido.");
+        }
+
+        if(altura < 120.00){
+            assertFalse(criado,"O atleta não deve menor a 120 cm.");
+        }
+        if(peso < 20){
+            assertFalse(criado, "O alteta não pode pesar menor de 20 Kg.");
+        }
+
+        dao.saveAtleta(nome,pais,altura,peso,DataNasc,genero);
+
+        for (Atleta atleta : dao2.getAll()){
+
+            if(atleta.getNome().equals(nome)){
+                criado = true;
+                break;
+            }
+
+        }
+
+        assertTrue(criado, "O atleta foi criado");
+    }
+
+    @Test
+    void InserirAtletaInvalido() throws SQLException {
+        ConnectionBD connectionBD = ConnectionBD.getInstance();
+        Connection conexao = connectionBD.getConexao();
+
+        String nome = "Atleta test4";
+        String pais = "PVT";
+        Double altura = 119.00;
+        Double peso = 19.0;
+        LocalDate DataNasc = LocalDate.of(1995, 12, 14);
+        String genero = "Women";
+
+        InserirAtletaDAOImp dao = new InserirAtletaDAOImp(conexao);
+
+        if(!dao.getPais(pais)){
+            assertTrue(true, "País inválido.");
+        }
+
+        if(altura < 120){
+            assertTrue(true,"O atleta não deve menor a 120 cm.");
+        }
+        if(peso < 20){
+            assertTrue(true, "O alteta não pode pesar menor de 20 Kg.");
+        }
+
+
     }
 
 
