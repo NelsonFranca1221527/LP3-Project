@@ -15,16 +15,16 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Classe de controlador para a interface de inserção de modalidades.
@@ -91,12 +91,6 @@ public class InserirModalidadesController {
      */
     @FXML
     private ChoiceBox<String> UniMedidaChoice;
-
-    /**
-     * ChoiceBox para selecionar um local de uma lista pré-definida.
-     */
-    @FXML
-    private ChoiceBox<String> LocalChoice;
 
     /**
      * DatePicker para selecionar uma data através de um calendário.
@@ -214,8 +208,6 @@ public class InserirModalidadesController {
 
         EventoChoice.setItems(FXCollections.observableArrayList(EventoMap.keySet()));
         EventoChoice.setValue("-------");
-        LocalChoice.setItems(FXCollections.observableArrayList(localMap.keySet()));
-        LocalChoice.setValue("-------");
 
         DataPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -312,8 +304,7 @@ public class InserirModalidadesController {
                 Regras.getText().trim().isEmpty() ||
                 UniMedidaMap.get(UniMedidaChoice.getValue()) == null ||
                 QuantJogosMap.get(QuantJogosChoice.getValue()) == null ||
-                EventoChoice.getValue() == null ||
-                LocalChoice.getValue() == null ||
+                EventoMap.get(EventoChoice.getValue()) == null ||
                 HoraInicio.getText().trim().isEmpty() ||
                 Duracao.getText().trim().isEmpty()){
 
@@ -331,13 +322,6 @@ public class InserirModalidadesController {
         String regras = Regras.getText();
         int minParticipantes = Integer.parseInt(MinParticipantes.getText());
         Evento evento = EventoMap.get(EventoChoice.getValue());
-        Local local = localMap.get(LocalChoice.getValue());
-
-        if(!evento.getPais().equals(local.getPais())){
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Local Não Correspondente", "O Local inserido não se encontra no mesmo país em que o evento será realizado!");
-            alertHandler.getAlert().showAndWait();
-            return;
-        }
 
         if(minParticipantes <= 1){
             alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A modalidade deve ter um minimo de 2 ou mais participantes!");
@@ -372,6 +356,14 @@ public class InserirModalidadesController {
         LocalDateTime dataHora = LocalDateTime.of(DataPicker.getValue(), LocalTime.parse(HoraInicio.getText()));
         LocalTime duracao = LocalTime.parse(Duracao.getText());
 
+        LocalTime duracaoMinima = LocalTime.of(1,0,0);
+
+        if(duracao.isBefore(duracaoMinima)){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Duração Inválida", "A duração deve ser superior a 1 hora!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
         
@@ -383,33 +375,66 @@ public class InserirModalidadesController {
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
 
-        if(VerificarConflito(dataHora,duracao,local.getId(), modalidadeDAOImp.getAllHorarioModalidade())){
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponivel", "O horário da modalidade entra em conflito com um horário já existente de outra modalidade no local selecionado!");
+        HashMap<String, Local> LocaisDisponiveis = VerificarConflito(dataHora,duracao, modalidadeDAOImp.getAllHorarioModalidade(), new HashMap<>(localMap), evento);
+
+        if(LocaisDisponiveis == null || LocaisDisponiveis.isEmpty()){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponivel", "Conflito de horários: não existe locais disponíveis para o horário inserido!!");
             alertHandler.getAlert().showAndWait();
             return;
         }
 
-        Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, String.valueOf(0)), new RegistoPontos("", 0, ""), regras);
+        alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Selecione um Local!!", "Selecione 1 dos locais disponiveis para este horário:");
 
-        Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
+        ChoiceBox<String> locaisChoice = new ChoiceBox<>();
+        locaisChoice.setItems(FXCollections.observableArrayList(LocaisDisponiveis.keySet()));
+        locaisChoice.getItems().add("-------");
+        locaisChoice.setValue("-------");
 
-        if (ModalidadeExistente != null) {
+        VBox vBox = new VBox();
+        vBox.getChildren().add(locaisChoice);
 
-            if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+        alertHandler.getAlert().getDialogPane().setContent(vBox);
+
+        Optional<ButtonType> result = alertHandler.getAlert().showAndWait();
+
+        if (result.isPresent()) {
+
+            ButtonType clickedButton = result.get();
+
+            if(clickedButton != ButtonType.OK){
+                return;
+            }
+
+            if(!LocaisDisponiveis.containsKey(locaisChoice.getValue())){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Local Inválido", "Deve inserir um local válido para poder inserir a modalidade!");
                 alertHandler.getAlert().showAndWait();
                 return;
             }
 
-            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao,local.getId());
-            return;
+            Local local = LocaisDisponiveis.get(locaisChoice.getValue());
+
+            Modalidade modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, quant, null, new RegistoPontos("", 0, String.valueOf(0)), new RegistoPontos("", 0, ""), regras);
+
+            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
+
+            if (ModalidadeExistente != null) {
+
+                if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId());
+                return;
+            }
+
+            modalidadeDAOImp.save(modalidade);
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
+
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
+            alertHandler.getAlert().showAndWait();
         }
-
-        modalidadeDAOImp.save(modalidade);
-        modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao,local.getId());
-
-        alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
-        alertHandler.getAlert().showAndWait();
 
         LimparDados();
     }
@@ -417,12 +442,12 @@ public class InserirModalidadesController {
     /**
      * Verifica se há conflitos de horários para um local específico com base em uma lista de horários existentes.
      *
-     * @param dataHoraInicio A data e hora de início da modalidade a ser inserida.
-     * @param duracao A duração da modalidade a ser inserida.
-     * @param localID O identificador do local onde o horário será inserido.
-     * @param listaHorarios A lista de horários existentes associados às modalidades.
-     *
-     * @return true se houver conflito de horários; false caso contrário.
+     * @param dataHoraInicio A data e hora de início da nova modalidade.
+     * @param duracao A duração da nova modalidade.
+     * @param listaHorarios Uma lista de horários já registados para outras modalidades.
+     * @param locais Um mapa de locais disponíveis, onde a chave é o nome do local e o valor é o objeto {@link Local}.
+     * @param evento O evento associado à modalidade, que contém informações como o país.
+     * @return Um mapa de locais que não apresentam conflitos de horário com a nova modalidade. Se todos os locais apresentarem conflito ou a lista de horários/locais for nula ou vazia, retorna {@code null}
      *
      * Este método verifica se o intervalo de tempo definido por dataHoraInicio e a duração da nova modalidade
      * entra em conflito com os intervalos de tempo das modalidades existentes associadas ao mesmo local.
@@ -435,36 +460,51 @@ public class InserirModalidadesController {
      *
      * Se a lista de horários for nula ou estiver vazia, considera-se que não há conflitos.
      */
-    public Boolean VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao,int localID,List<HorarioModalidade> listaHorarios){
+    public HashMap<String, Local> VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao, List<HorarioModalidade> listaHorarios, HashMap<String, Local> locais, Evento evento){
 
-        if(listaHorarios == null || listaHorarios.isEmpty()){
-            //Sem Conflitos
-            return false;
+        if(listaHorarios == null || listaHorarios.isEmpty() ||
+                locais == null || locais.isEmpty()){
+            return null;
         }
 
-        LocalDateTime dataHoraFim = dataHoraInicio.plusSeconds(duracao.toSecondOfDay());
+        Iterator<Map.Entry<String, Local>> iterator = locais.entrySet().iterator();
 
-        for (HorarioModalidade horario : listaHorarios) {
+        while (iterator.hasNext()) {
+            Map.Entry<String, Local> entry = iterator.next();
 
-            if(horario.getLocalID() != localID){
-                continue;
+            Local local = entry.getValue();
+
+            if (!local.getPais().equals(evento.getPais())) {
+                iterator.remove();
             }
 
-            LocalDateTime horarioInicio = horario.getDataHora();
-            LocalDateTime horarioFim = horarioInicio.plusSeconds(horario.getDuracao().toSecondOfDay());
+            LocalDateTime dataHoraFim = dataHoraInicio.plusSeconds(duracao.toSecondOfDay());
+
+            for (HorarioModalidade horario : listaHorarios) {
+
+                if (local.getId() != horario.getLocalID()) {
+                    continue;
+                }
+
+                LocalDateTime horarioInicio = horario.getDataHora();
+                LocalDateTime horarioFim = horarioInicio.plusSeconds(horario.getDuracao().toSecondOfDay());
 
             /* Verifica se o horário da modalidade a ser inserida não se sobrepõe ao intervalo do horário da modalidade que está a ser verificada,
                assim como também verifica que o horário da modalidade existente não entra em conflito com o horário da modalidade a ser inserida. */
-            if ((dataHoraInicio.isAfter(horarioInicio) && dataHoraInicio.isBefore(horarioFim) ) ||
-                    ( dataHoraFim.isAfter(horarioInicio) && dataHoraFim.isBefore(horarioFim) ) ||
-                    ( horarioInicio.isAfter(dataHoraInicio) && horarioInicio.isBefore(dataHoraFim) ) ||
-                    ( horarioFim.isAfter(dataHoraInicio) && horarioFim.isBefore(dataHoraFim) )) {
+                if ((dataHoraInicio.isAfter(horarioInicio) && dataHoraInicio.isBefore(horarioFim)) ||
+                        (dataHoraFim.isAfter(horarioInicio) && dataHoraFim.isBefore(horarioFim)) ||
+                        (horarioInicio.isAfter(dataHoraInicio) && horarioInicio.isBefore(dataHoraFim)) ||
+                        (horarioFim.isAfter(dataHoraInicio) && horarioFim.isBefore(dataHoraFim)) ||
+                        dataHoraInicio.equals(horarioInicio) || dataHoraInicio.equals(horarioFim) ||
+                        dataHoraFim.equals(horarioInicio) || dataHoraFim.equals(horarioFim)) {
                     //Detetou Conflito de Horários
-                    return true;
+                    iterator.remove();
+                    break;
+                }
             }
         }
 
-        return false; // Sem conflitos
+        return locais;
     }
 
     /**
@@ -491,7 +531,6 @@ public class InserirModalidadesController {
         Regras.clear();
         MinParticipantes.clear();
         EventoChoice.setValue("-------");
-        LocalChoice.setValue("-------");
         DataPicker.setValue(null);
         HoraInicio.clear();
         Duracao.clear();
