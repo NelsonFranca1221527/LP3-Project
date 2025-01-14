@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.Modalidades.InserirModalidadesController">
    <children>
-      <ImageView fitHeight="768.0" fitWidth="1280.0" layoutX="-38.0" layoutY="-12.0">
+      <ImageView fitHeight="768.0" fitWidth="1280.0" layoutX="38.0" layoutY="-86.0">
          <image>
             <Image url="@../../Assets/Images/Aneis.png" />
          </image>
@@ -87,41 +87,35 @@
          </font>
       </Label>
       <ChoiceBox fx:id="EventoChoice" layoutX="204.0" layoutY="385.0" prefWidth="150.0" />
-      <Label layoutX="141.0" layoutY="436.0" text="Local:">
+      <DatePicker fx:id="DataPicker" layoutX="204.0" layoutY="443.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="HoraInicio" layoutX="229.0" layoutY="490.0" prefHeight="26.0" prefWidth="115.0" />
+      <Label layoutX="141.0" layoutY="443.0" text="Data:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="LocalChoice" layoutX="204.0" layoutY="437.0" prefWidth="150.0" />
-      <DatePicker fx:id="DataPicker" layoutX="204.0" layoutY="483.0" prefHeight="26.0" prefWidth="150.0" />
-      <TextField fx:id="HoraInicio" layoutX="239.0" layoutY="530.0" prefHeight="26.0" prefWidth="115.0" />
-      <Label layoutX="141.0" layoutY="483.0" text="Data:">
+      <Label layoutX="106.0" layoutY="490.0" text="Hora de Início:" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="106.0" layoutY="530.0" text="Hora de Início:" textOverrun="WORD_ELLIPSIS">
+      <Label layoutX="150.0" layoutY="544.0" text="Duração:" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="150.0" layoutY="584.0" text="Duração:" textOverrun="WORD_ELLIPSIS">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="Duracao" layoutX="238.0" layoutY="585.0" prefHeight="26.0" prefWidth="115.0" />
-      <Label layoutX="363.0" layoutY="487.0" text="dd/MM/yyyy">
+      <TextField fx:id="Duracao" layoutX="228.0" layoutY="545.0" prefHeight="26.0" prefWidth="115.0" />
+      <Label layoutX="363.0" layoutY="447.0" text="dd/MM/yyyy">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="363.0" layoutY="533.0" text="HH:mm:ss">
+      <Label layoutX="353.0" layoutY="493.0" text="HH:mm:ss">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="363.0" layoutY="588.0" text="HH:mm:ss">
+      <Label layoutX="353.0" layoutY="548.0" text="HH:mm:ss">
          <font>
             <Font size="14.0" />
          </font>
