@@ -160,7 +160,7 @@ public class EventosDAOImp implements DAO<Evento> {
         try {
 
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from eventos where evento_status = 0");
+            ResultSet rs = stmt.executeQuery("Select * from eventos where evento_status = 0 ORDER BY ano_edicao DESC");
             while (rs.next()) {
                 lst.add(new Evento(rs.getInt("id"),rs.getInt("ano_edicao"),rs.getString("pais_anfitriao_sigla"), rs.getBytes("logo"),rs.getBytes("mascote"),rs.getInt("local_id")));
             }

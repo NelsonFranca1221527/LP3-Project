@@ -288,6 +288,9 @@ public class MenuGestorController {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Método chamado ao clicar no botão para redirecionar para a tela de listar XML.
+     */
     @FXML
     protected void OnListarXMLButtonClick(){
         try{
@@ -298,6 +301,9 @@ public class MenuGestorController {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Método chamado ao clicar no botão para redirecionar para a tela de aprovar inscrições de atletas para o evento.
+     */
     @FXML
     protected void OnInscricoesEventoButtonClick(){
         try{

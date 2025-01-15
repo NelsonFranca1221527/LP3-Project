@@ -6,11 +6,25 @@ import java.util.Date;
  * o número mecanográfico, a senha, o tipo de utilizador e a data de criação.
  */
 public class User {
-
+    /**
+     * Identificador único do utilizador.
+     */
     private  int Id;
+    /**
+     * Número mecanográfico do utilizador.
+     */
     private int Num_Mecanografico;
+    /**
+     * Palavra-passe associada à conta do utilizador.
+     */
     private String Password;
+    /**
+     * Tipo de utilizador (por exemplo, administrador, atleta, gestor).
+     */
     private String UserType;
+    /**
+     * Data de criação da conta do utilizador.
+     */
     private Date Criado_Em;
 
 

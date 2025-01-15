@@ -13,6 +13,9 @@ import java.util.Optional;
  * Esta classe fornece métodos para interagir com a base de dados e manipular as informações dos locais.
  */
 public class LocaisDAOImp implements DAO<Local> {
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private static Connection connection;
     private ConnectionBD database;
     /**

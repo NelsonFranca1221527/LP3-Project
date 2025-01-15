@@ -222,7 +222,12 @@ public class InserirAtletaController {
         Data_nasc.clear();
         GeneroChoice.setValue("Men");
     }
-
+    /**
+     * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
+     * botão, permitindo assim ao utilizador voltar para a página anterior.
+     *
+     * @param event O evento de ação que desencadeia o método, gerado pelo clique no botão.
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();

@@ -4,11 +4,29 @@ package com.example.oporto_olympics.Models;
  * logotipo, mascote e local de realização.
  */
 public class Evento {
+    /**
+     * Identificador único da edição do evento.
+     */
     private int Id;
+    /**
+     * Ano em que a edição do evento ocorreu.
+     */
     private int Ano_edicao;
+    /**
+     * País onde a edição do evento foi realizada.
+     */
     private String Pais;
+    /**
+     * Logótipo do evento armazenado como um array de bytes.
+     */
     private byte[] Logo;
+    /**
+     * Mascote do evento armazenada como um array de bytes.
+     */
     private byte[] Mascote;
+    /**
+     * Identificador único do local onde o evento foi realizado.
+     */
     private int Local_id;
     /**
      * Construtor para a classe {@link Evento}, que inicializa todos os atributos do evento.

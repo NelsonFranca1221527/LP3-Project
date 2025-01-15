@@ -7,13 +7,37 @@ import java.util.Date;
  * incluindo informações sobre o nome, tipo, morada, cidade, país, capacidade e ano de construção.
  */
 public class Local {
+    /**
+     * Identificador único do local.
+     */
     private int Id;
+    /**
+     * Nome do local.
+     */
     private String Nome;
+    /**
+     * Tipo do local.
+     */
     private String Tipo;
+    /**
+     * Morada do local.
+     */
     private String Morada;
+    /**
+     * Cidade onde o local está situado.
+     */
     private String Cidade;
+    /**
+     * País onde o local está situado.
+     */
     private String Pais;
+    /**
+     * Capacidade máxima do local (número de pessoas que pode acomodar).
+     */
     private int Capacidade;
+    /**
+     * Ano de construção do local.
+     */
     private Date Ano_construcao;
     /**
      * Construtor da classe {@link Local} que inicializa todos os campos.

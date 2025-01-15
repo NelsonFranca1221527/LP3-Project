@@ -13,7 +13,9 @@ import java.util.List;
  * informações associadas a atletas.
  */
 public class CalendarioDAOImp implements CalendarioDAO {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection conexao;
 
     /**

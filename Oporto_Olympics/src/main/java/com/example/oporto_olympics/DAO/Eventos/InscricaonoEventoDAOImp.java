@@ -7,11 +7,19 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Implementação para gestão de inscrições em eventos.
+ */
 public class InscricaonoEventoDAOImp {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection connection;
-
+    /**
+     * Construtor que inicializa a conexão com a base de dados.
+     *
+     * @param connection a conexão com a base de dados
+     */
     public InscricaonoEventoDAOImp(Connection connection) {this.connection = connection;}
 
     /**
@@ -40,7 +48,7 @@ public class InscricaonoEventoDAOImp {
     /**
      * Obtém uma lista de horários de modalidades associados a um atleta específico.
      *
-     * Este método consulta o banco de dados para buscar todas as modalidades em que um atleta está inscrito,
+     * Este método consulta o base de dados para buscar todas as modalidades em que um atleta está inscrito,
      * retornando os detalhes de horário, duração e local das modalidades. Apenas modalidades com informações
      * completas (data, duração e local) são incluídas na lista.
      *

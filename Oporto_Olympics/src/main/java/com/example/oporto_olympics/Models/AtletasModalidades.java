@@ -1,9 +1,19 @@
 package com.example.oporto_olympics.Models;
-
+/**
+ * Representa a relação entre um atleta, uma modalidade e um evento.
+ */
 public class AtletasModalidades {
-
+    /**
+     * Identificador único do atleta.
+     */
     private int atleta_id;
+    /**
+     * Identificador único da modalidade.
+     */
     private int modalidade_id;
+    /**
+     * Identificador único do evento.
+     */
     private int evento_id;
 
     /**

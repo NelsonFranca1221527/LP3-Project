@@ -27,16 +27,24 @@ import java.sql.SQLException;
  * da palavra-passe e interação com a base de dados.
  */
 public class AlterarPasswordController {
-
+    /**
+     * Campo para a confirmação da nova palavra-passe.
+     */
     @FXML
     private PasswordField ConfirmPasswordField;
-
+    /**
+     * Campo para introduzir a nova palavra-passe.
+     */
     @FXML
     private PasswordField NewPasswordField;
-
+    /**
+     * Botão para confirmar a alteração da palavra-passe.
+     */
     @FXML
     private Button ChangePasswordBtn;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 

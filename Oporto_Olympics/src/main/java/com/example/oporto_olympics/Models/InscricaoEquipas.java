@@ -5,13 +5,33 @@ package com.example.oporto_olympics.Models;
  * medalhas conquistadas, nome, género e desporto associado.
  */
 public class InscricaoEquipas {
-
+    /**
+     * Identificador único da equipa.
+     */
     private int id;
+    /**
+     * Sigla do país de origem da equipa.
+     */
     private String pais_sigla;
+    /**
+     * Ano de fundação da equipa.
+     */
     private Integer ano_fundacao;
+    /**
+     * Identificador único da modalidade associada à equipa.
+     */
     private Integer modalidade_id;
+    /**
+     * Nome da equipa.
+     */
     private String nome;
+    /**
+     * Género predominante dos membros da equipa.
+     */
     private String genero;
+    /**
+     * Desporto praticado pela equipa.
+     */
     private String desporto;
 
     /**
@@ -21,8 +41,6 @@ public class InscricaoEquipas {
      * @param pais_sigla    Sigla do país da equipa.
      * @param ano_fundacao  Ano de fundação da equipa (pode ser nulo).
      * @param modalidade_id Identificador da modalidade desportiva.
-     * @param participacoes Número de participações da equipa na competição.
-     * @param medalhas      Número de medalhas conquistadas pela equipa.
      * @param nome          Nome da equipa.
      * @param genero        Género (ex.: masculino, feminino) associado à equipa.
      * @param desporto      Desporto ou modalidade em que a equipa compete.

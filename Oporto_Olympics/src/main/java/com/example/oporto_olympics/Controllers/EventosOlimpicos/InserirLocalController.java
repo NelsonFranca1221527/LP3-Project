@@ -251,7 +251,11 @@ public class InserirLocalController {
         }
     }
 
-
+    /**
+     * Método chamado ao clicar no botão para voltar ao menu principal do gestor.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();

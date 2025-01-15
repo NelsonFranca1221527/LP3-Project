@@ -46,5 +46,6 @@ public interface AprovarInscricaoAtletaDAO {
     // Método para buscar o nome da modalidade
     String getModalidadeNome(int modalidadeId);
 
+    // Método para buscar o nome do Evento
     String getLocalNome(int eventoId);
 }

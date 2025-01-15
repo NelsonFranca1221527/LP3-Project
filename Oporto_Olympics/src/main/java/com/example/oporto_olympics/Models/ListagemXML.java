@@ -20,9 +20,21 @@ import java.util.Map;
  * o tipo do ficheiro e o conteúdo completo do XML como uma string.
  */
 public class  ListagemXML {
+    /**
+     * Identificador único do utilizador associado.
+     */
     private int userId;
+    /**
+     * Data e hora em que o registo foi criado ou atualizado.
+     */
     private LocalDateTime data;
+    /**
+     * Tipo de registo ou ação representada.
+     */
     private String tipo;
+    /**
+     * Conteúdo XML associado ao registo.
+     */
     private String conteudoXML;
     /**
      * Construtor completo da classe.

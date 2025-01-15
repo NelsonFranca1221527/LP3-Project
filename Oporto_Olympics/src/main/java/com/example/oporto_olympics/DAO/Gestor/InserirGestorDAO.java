@@ -11,7 +11,7 @@ public interface InserirGestorDAO {
     /**
      * Salva e atualiza os dados de um gestor na base de dados.
      *
-     * @param nome           Nome do gestor.
+     * @param nome Nome do gestor.
      *
      */
     void saveGestor(String nome);

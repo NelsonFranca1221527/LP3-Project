@@ -5,9 +5,13 @@ package com.example.oporto_olympics.Singleton;
  * tipo de XML (representado por uma String) e garantir que este valor seja acessado de forma global e única.
  */
 public class InserçãoXMLSingleton {
-
+    /**
+     * Instância única do singleton {@link InserçãoXMLSingleton}.
+     */
     private static InserçãoXMLSingleton instance;
-
+    /**
+     * Tipo de XML que está a ser manipulado ou processado.
+     */
     private String TipoXML;
     /**
      * Construtor privado que impede a criação de instâncias fora da classe.

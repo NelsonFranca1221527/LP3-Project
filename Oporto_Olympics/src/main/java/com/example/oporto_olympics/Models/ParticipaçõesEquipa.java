@@ -4,9 +4,14 @@ package com.example.oporto_olympics.Models;
  * incluindo o ano da participação e o resultado obtido pela equipa.
  */
 public class ParticipaçõesEquipa {
-
+    /**
+     * Ano em que ocorreu a participação.
+     */
     private int AnoParticipacao;
 
+    /**
+     * Resultado obtido na participação.
+     */
     private String Resultado;
     /**
      * Construtor da classe {@link ParticipaçõesEquipa} que inicializa os atributos de ano de participação
