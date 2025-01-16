@@ -139,6 +139,26 @@ public class EventosDAOImp implements DAO<Evento> {
 
     }
     /**
+     * Exclui um evento da base de dados pelo ano.
+     *
+     * @param anoEdicao o ano do evento a ser excluído.
+     */
+    public void deleteByAno(int anoEdicao) {
+        String query = "DELETE FROM eventos WHERE ano_edicao = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, anoEdicao);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Nenhum evento encontrado com o ano de edição: " + anoEdicao);
+            }
+
+            System.out.println("Evento com ano de edição " + anoEdicao + " foi apagado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao apagar evento com ano de edição " + anoEdicao + ": " + e.getMessage(), e);
+        }
+    }
+    /**
      * Obtém um evento a partir do seu ID.
      *
      * @param i o ID do evento a ser obtido.
