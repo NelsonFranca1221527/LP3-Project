@@ -17,8 +17,8 @@ ext {
   junitVersion = '5.9.2'
 }
 
-sourceCompatibility = '9'
-targetCompatibility = '9'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
@@ -27,15 +27,19 @@ tasks.withType(JavaCompile) {
 application {
   mainModule = 'com.example.oporto_olympics'
   mainClass = 'com.example.oporto_olympics.HelloApplication'
+
+  applicationDefaultJvmArgs = [
+          '--module-path', './Assets/JavaFX/javafx-sdk-19.0.2/lib',  // Caminho para a pasta 'lib' do JavaFX SDK
+          '--add-modules', 'javafx.controls,javafx.fxml'  // Módulos a serem carregados
+  ]
 }
 
 javafx {
-  version = '17.0.6'
+  version = '19'  // Alterado para JavaFX 19
   modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
-
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
   implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre11'
@@ -57,4 +61,20 @@ jlink {
 
 jlinkZip {
   group = 'distribution'
+}
+
+jar {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+  manifest {
+    attributes(
+            'Main-Class': 'com.example.oporto_olympics.HelloApplication'
+    )
+  }
+
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+
+  exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
