@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -189,7 +190,9 @@ public class InserirLocalController {
             Capacidade = Integer.parseInt(capacidadeField.getText());
         }
 
-        LocalDate AnoPicker = anoconstrucaoPicker.getValue();
+        String data = anoconstrucaoPicker.getValue().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate AnoPicker;
         Date Ano_construcao = null;
         if ("interior".equalsIgnoreCase(Tipo)) {
             try {
@@ -200,7 +203,14 @@ public class InserirLocalController {
                     return;
                 }
 
+                AnoPicker = LocalDate.parse(data,formatter);
                 Ano_construcao = java.sql.Date.valueOf(AnoPicker);
+
+                if (AnoPicker.isAfter(LocalDate.now())) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser maior que a data de hoje.");
+                    AH1.getAlert().show();
+                    return;
+                }
 
                 if (Ano_construcao.getYear() > 1000) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
@@ -245,11 +255,30 @@ public class InserirLocalController {
                 LDI1.save(L1);
                 AlertHandler AH3 = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso !!", "Local Inserido com Sucesso !");
                 AH3.getAlert().show();
+                refreshPage();
             } catch (RuntimeException e) {
                 AlertHandler erro = new AlertHandler(Alert.AlertType.ERROR, "Erro ao inserir Local", e.getMessage());
                 erro.getAlert().show();
             }
         }
+    }
+
+    /**
+     * Reseta os campos do formulário de criação do local para os valores padrão.
+     *
+     */
+    private void refreshPage() {
+        nomeField.clear();
+        moradaField.clear();
+        cidadeField.clear();
+        paisField.clear();
+        capacidadeField.clear();
+        anoconstrucaoPicker.setValue(null);
+        capacidadeField.setVisible(false);
+        anoconstrucaoPicker.setVisible(false);
+        capacidadeLabel.setVisible(false);
+        anoconstrucaoLabel.setVisible(false);
+        tipolocalCombo.setValue("");
     }
 
     /**
