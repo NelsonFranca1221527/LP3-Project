@@ -73,6 +73,6 @@
          </font>
       </Label>
       <TextField fx:id="paisField" layoutX="796.0" layoutY="390.0" prefHeight="25.0" prefWidth="82.0" />
-      <DatePicker fx:id="anoconstrucaoPicker" layoutX="607.0" layoutY="463.0" />
+      <DatePicker fx:id="anoconstrucaoPicker" editable="false" layoutX="607.0" layoutY="463.0" />
    </children>
 </AnchorPane>
