@@ -308,6 +308,31 @@ public class ResultadosModalidadeDAOImp implements DAO<ResultadosModalidade> {
     }
 
     /**
+     * Verifica se um resultado já foi gerado para um atleta em uma modalidade específica.
+     *
+     * @param atletaId       ID do atleta.
+     * @param modalidadeId   ID da modalidade.
+     * @return true se o resultado foi gerado, false caso contrário.
+     */
+    public boolean verificarResultadoGerado(int atletaId, int modalidadeId) {
+        String query = "SELECT COUNT(*) AS total FROM resultados WHERE atleta_id = ? AND modalidade_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, atletaId);
+            statement.setInt(2, modalidadeId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("total") > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao verificar resultado gerado: " + e.getMessage());
+        }
+        return false;
+    }
+
+
+    /**
      * Obtém um resultado de um atleta com base no seu ID.
      *
      * @param i o ID do resultado a ser obtido.
