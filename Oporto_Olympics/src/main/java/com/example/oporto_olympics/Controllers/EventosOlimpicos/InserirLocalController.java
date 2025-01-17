@@ -202,8 +202,6 @@ public class InserirLocalController {
 
                 Ano_construcao = java.sql.Date.valueOf(AnoPicker);
 
-                Date Ano = Ano_construcao;
-
                 if (Ano_construcao.getYear() > 1000) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
                     AH1.getAlert().show();
