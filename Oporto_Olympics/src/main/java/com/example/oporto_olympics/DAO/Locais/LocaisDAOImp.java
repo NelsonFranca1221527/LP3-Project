@@ -74,7 +74,7 @@ public class LocaisDAOImp implements DAO<Local> {
                 cs.setString(4, local.getCidade());
                 cs.setInt(5, local.getCapacidade());
 
-                String anoConstrucaoString = local.getAno_construcao() + "-01-01";
+                String anoConstrucaoString = String.valueOf(local.getAno_construcao());
                 java.sql.Date anoConstrucaoDate = java.sql.Date.valueOf(anoConstrucaoString);
                 cs.setDate(6, anoConstrucaoDate);
 

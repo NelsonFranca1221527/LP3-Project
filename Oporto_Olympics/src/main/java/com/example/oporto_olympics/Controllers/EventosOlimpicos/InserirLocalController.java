@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -183,7 +184,7 @@ public class InserirLocalController {
             return;
         }
 
-        Integer Capacidade = 0;
+        int Capacidade = 0;
         if (!capacidadeField.getText().isEmpty()) {
             Capacidade = Integer.parseInt(capacidadeField.getText());
         }
@@ -193,15 +194,17 @@ public class InserirLocalController {
         if ("interior".equalsIgnoreCase(Tipo)) {
             try {
 
-                if (AnoPicker == null) {
+                if (anoconstrucaoPicker.getValue() == null) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "Tem de inserir um ano de contrução...");
                     AH1.getAlert().show();
                     return;
                 }
 
-                Ano_construcao = Date.from(AnoPicker.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Ano_construcao = java.sql.Date.valueOf(AnoPicker);
 
-                if (Ano_construcao.getYear() < 1000) {
+                Date Ano = Ano_construcao;
+
+                if (Ano_construcao.getYear() > 1000) {
                     AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
                     AH1.getAlert().show();
                     return;
