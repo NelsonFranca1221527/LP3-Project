@@ -17,6 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class InserirAtletaTest {
 
+    /**
+     * Teste para verificar a inserção de um atleta válido no sistema.
+     *
+     * Este teste valida as condições de altura, peso, país e outros campos antes de
+     * realizar a inserção na base de dados e verifica se o atleta foi corretamente criado.
+     *
+     * @throws SQLException se ocorrer um erro ao acessar a base de dados.
+     */
     @Test
     void InserirAtletaValido() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
