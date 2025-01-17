@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de teste para validar as funcionalidades relacionadas à Inscrição de Atleta em Evento.
+ */
 public class InscricaoAtletaEventoTest {
 
     /**
