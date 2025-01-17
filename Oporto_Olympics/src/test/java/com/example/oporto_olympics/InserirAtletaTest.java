@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de testes para validar as funcionalidades de inserção de atletas no sistema.
+ */
 class InserirAtletaTest {
 
     /**
@@ -60,7 +62,12 @@ class InserirAtletaTest {
 
         assertTrue(igual, "O atleta deveria existir..");
     }
-
+    /**
+     * Testa a inserção de um atleta válido na base de dados.
+     * Verifica se os dados do atleta cumprem os requisitos e se o mesmo é criado corretamente.
+     *
+     * @throws SQLException se ocorrer um erro durante a conexão ou a execução da operação na base de dados.
+     */
     @Test
     void InserirAtletaValido() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
@@ -101,7 +108,12 @@ class InserirAtletaTest {
 
         assertTrue(criado, "O atleta foi criado");
     }
-
+    /**
+     * Testa a inserção de um atleta inválido na base de dados.
+     * Verifica se os critérios de validação são respeitados para rejeitar atletas com dados incorretos.
+     *
+     * @throws SQLException se ocorrer um erro durante a conexão ou a execução da operação na base de dados.
+     */
     @Test
     void InserirAtletaInvalido() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
