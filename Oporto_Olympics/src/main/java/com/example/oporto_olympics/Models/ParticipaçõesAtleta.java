@@ -4,13 +4,21 @@ package com.example.oporto_olympics.Models;
  * incluindo o número de medalhas (ouro, prata e bronze) conquistadas em um determinado ano.
  */
 public class ParticipaçõesAtleta {
-
+    /**
+     * Ano em que o atleta participou na competição.
+     */
     private int ano;
-
+    /**
+     * Número de medalhas de ouro conquistadas pelo atleta.
+     */
     private int ouro;
-
+    /**
+     * Número de medalhas de prata conquistadas pelo atleta.
+     */
     private int prata;
-
+    /**
+     * Número de medalhas de bronze conquistadas pelo atleta.
+     */
     private int bronze;
     /**
      * Construtor da classe {@link ParticipaçõesAtleta} que inicializa os atributos de ano e medalhas.

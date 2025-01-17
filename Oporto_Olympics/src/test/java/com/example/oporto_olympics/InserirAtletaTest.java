@@ -12,55 +12,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de testes para validar as funcionalidades de inserção de atletas no sistema.
+ */
 class InserirAtletaTest {
 
     /**
-     * Testa a funcionalidade de inserir um novo atleta na base de dados.
+     * Teste para verificar a inserção de um atleta válido no sistema.
      *
-     * O teste verifica o seguinte:
-     * <ul>
-     *   <li>Insere um atleta com os dados fornecidos utilizando o DAO responsável.</li>
-     *   <li>Recupera todos os atletas da base de dados e verifica se o atleta inserido está presente.</li>
-     * </ul>
+     * Este teste valida as condições de altura, peso, país e outros campos antes de
+     * realizar a inserção na base de dados e verifica se o atleta foi corretamente criado.
      *
-     * Asserção:
-     * <ul>
-     *   <li>O teste confirma que o atleta inserido foi corretamente adicionado, verificando pelo nome.</li>
-     * </ul>
-     *
-     * @throws SQLException se ocorrer um erro de comunicação com a base de dados durante a execução.
+     * @throws SQLException se ocorrer um erro ao acessar a base de dados.
      */
-    @Test
-    void InserirAtleta() throws SQLException {
-        ConnectionBD connectionBD = ConnectionBD.getInstance();
-        Connection conexao = connectionBD.getConexao();
-        Boolean igual = false;
-
-        String nome = "Atleta test2";
-        String pais = "PRT";
-        Double altura = 1.80;
-        Double peso = 66.7;
-        LocalDate DataNasc = LocalDate.of(1998, 8, 8);
-        String genero = "Men";
-
-        InserirAtletaDAOImp dao = new InserirAtletaDAOImp(conexao);
-        AtletaDAOImp dao2 = new AtletaDAOImp(conexao);
-
-        dao.saveAtleta(nome,pais,altura,peso,DataNasc,genero);
-
-        for (Atleta atleta : dao2.getAll()){
-
-            if(atleta.getNome().equals(nome)){
-                igual = true;
-                break;
-            }
-
-        }
-
-        assertTrue(igual, "O atleta deveria existir..");
-    }
-
     @Test
     void InserirAtletaValido() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
@@ -101,7 +65,12 @@ class InserirAtletaTest {
 
         assertTrue(criado, "O atleta foi criado");
     }
-
+    /**
+     * Testa a inserção de um atleta inválido na base de dados.
+     * Verifica se os critérios de validação são respeitados para rejeitar atletas com dados incorretos.
+     *
+     * @throws SQLException se ocorrer um erro durante a conexão ou a execução da operação na base de dados.
+     */
     @Test
     void InserirAtletaInvalido() throws SQLException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();

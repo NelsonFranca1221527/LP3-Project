@@ -8,23 +8,41 @@ import java.util.List;
  * uma lista de participações em eventos olímpicos.
  */
 public class Atleta {
-
+    /**
+     * Identificador único do atleta.
+     */
     private int id;
-
+    /**
+     * Nome do atleta.
+     */
     private String nome;
-
+    /**
+     * País do atleta.
+     */
     private String pais;
-
+    /**
+     * Género do atleta.
+     */
     private String genero;
-
+    /**
+     * Altura do atleta em centímetros.
+     */
     private int altura;
-
+    /**
+     * Peso do atleta em quilogramas.
+     */
     private int peso;
-
+    /**
+     * Data de nascimento do atleta.
+     */
     private Date dataNascimento;
-
+    /**
+     * Lista de participações do atleta em competições.
+     */
     private List<ParticipaçõesAtleta> participaçõesAtletas;
-
+    /**
+     * Fotografia de perfil do atleta armazenada como um array de bytes.
+     */
     private byte[] fotoPerfil;
     /**
      * Construtor para a classe {@link Atleta}, inicializando todos os atributos do atleta.

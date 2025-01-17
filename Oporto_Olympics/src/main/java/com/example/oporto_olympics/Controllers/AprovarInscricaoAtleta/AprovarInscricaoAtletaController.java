@@ -17,17 +17,40 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Controlador responsável pela gestão da interface gráfica e das operações
+ * relacionadas com a aprovação de inscrições de atletas em eventos.
+ *
+ */
 public class AprovarInscricaoAtletaController {
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
-
+    /**
+     * Contêiner de layout para a secção de aprovar inscrição.
+     */
     @FXML
     private VBox ModalidadesContainer;
-
+    /**
+     * Objeto DAO (Data Access Object) responsável por realizar as operações de
+     * acesso aos dados relacionados com a aprovação de inscrições de atletas.
+     */
     private AprovarInscricaoAtletaDAO dao;
-
+    /**
+     * Método inicializador da interface gráfica, anotado com {@code @FXML}, que é
+     * chamado automaticamente após o carregamento do FXML correspondente.
+     *
+     * <p>
+     * Este método é responsável por estabelecer a ligação com a base de dados,
+     * utilizando a classe {@code ConnectionBD} para obter uma instância de conexão.
+     * Caso a conexão seja bem-sucedida, um objeto DAO ({@code AprovarInscricaoAtletaDAOImp})
+     * é inicializado, e o método {@code carregarInscricoesPendentes()} é chamado
+     * para apresentar as inscrições pendentes.
+     *
+     * @throws SQLException se ocorrer algum problema durante a conexão com a base de dados
+     */
     @FXML
     public void initialize() {
         try {
@@ -50,7 +73,21 @@ public class AprovarInscricaoAtletaController {
             alert.show();
         }
     }
-
+    /**
+     * Método responsável por carregar as inscrições pendentes e apresentá-las no
+     * contêiner gráfico ModalidadesContainer. Limpa previamente os elementos do
+     * contêiner e, em seguida, adiciona um cartão (card) correspondente a cada
+     * inscrição pendente.
+     *
+     * <p>
+     * O método utiliza a lista de inscrições pendentes obtida através do método
+     * {@code dao.listarInscricoesPendentes()} e converte-a num {@code ObservableList}.
+     * Cada inscrição é transformada num objeto do tipo {@code HBox} criado pelo
+     * método {@code criarCard(InscricaoAtletaEvento)}, que é então adicionado ao
+     * contêiner.
+     *
+     * @throws RuntimeException caso ocorra algum problema ao carregar as inscrições
+     */
     private void carregarInscricoesPendentes() {
         try {
             ModalidadesContainer.getChildren().clear();
@@ -103,7 +140,7 @@ public class AprovarInscricaoAtletaController {
     }
 
     /**
-     * Aprova uma inscrição, atualizando o estado para "Aprovado" no banco de dados.
+     * Aprova uma inscrição, atualizando o estado para "Aprovado" no base de dados.
      *
      * @param atletaId     O ID do atleta da inscrição.
      * @param modalidadeId O ID da modalidade da inscrição.
@@ -128,7 +165,7 @@ public class AprovarInscricaoAtletaController {
     }
 
     /**
-     * Rejeita uma inscrição, atualizando o estado para "Rejeitado" no banco de dados.
+     * Rejeita uma inscrição, atualizando o estado para "Rejeitado" no base de dados.
      *
      * @param atletaId     O ID do atleta da inscrição.
      * @param modalidadeId O ID da modalidade da inscrição.
@@ -149,7 +186,12 @@ public class AprovarInscricaoAtletaController {
         }
     }
 
-
+    /**
+     * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
+     * botão, permitindo assim ao utilizador voltar para a página anterior.
+     *
+     * @param event O evento de ação que desencadeia o método, gerado pelo clique no botão.
+     */
     @FXML
     void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();

@@ -7,21 +7,37 @@ import java.util.Date;
  * modalidade associada e atleta associado.
  */
 public class ResultadosModalidade {
-
+    /**
+     * Identificador único do resultado.
+     */
     private int id;
-
+    /**
+     * Data em que o resultado foi registado.
+     */
     private Date data;
-
+    /**
+     * Resultado alcançado.
+     */
     private String resultado;
-
+    /**
+     * Tipo do resultado (por exemplo, individual).
+     */
     private String tipo;
-
+    /**
+     * Medalha atribuída (ouro, prata, bronze ou nenhuma).
+     */
     private String medalha;
-
+    /**
+     * Identificador único da modalidade associada ao resultado.
+     */
     private int modalidadeID;
-
+    /**
+     * Identificador único do atleta associado ao resultado (caso aplicável).
+     */
     private int atletaID;
-
+    /**
+     * Identificador único da equipa associada ao resultado (caso aplicável).
+     */
     private int equipaID;
 
     /**

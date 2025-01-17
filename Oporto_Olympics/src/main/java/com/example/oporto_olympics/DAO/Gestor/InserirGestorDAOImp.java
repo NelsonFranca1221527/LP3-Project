@@ -15,7 +15,9 @@ import java.time.LocalDate;
  * e converter strings para um hash utilizando o algoritmo SHA-256.
  */
 public class InserirGestorDAOImp implements InserirGestorDAO{
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection conexao;
 
     /**

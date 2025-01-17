@@ -18,7 +18,9 @@ import java.util.Optional;
  * A comunicação com a base de dados é feita através de uma conexão {@link Connection}.
  */
 public class UserDAOImp implements DAO<User> {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private static Connection connection;
     private ConnectionBD database;
     /**

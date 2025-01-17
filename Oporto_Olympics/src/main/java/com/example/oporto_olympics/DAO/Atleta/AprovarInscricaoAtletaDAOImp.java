@@ -8,9 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Implementação da interface {@link AprovarInscricaoAtletaDAO} para gerir
+ * a aprovação das inscrições de atletas.
+ */
 public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection connection;
 
     /**
@@ -65,7 +70,6 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
      * @param eventoId O ID do evento ao qual o atleta será associado.
      * @throws SQLException Se ocorrer um erro durante a execução da inserção.
      */
-
     @Override
     public void associarAtletaAoEvento(int atletaId, int modalidadeId, int eventoId) {
         String insertQuery = "INSERT INTO atletas_modalidades (atleta_id, modalidade_id, evento_id) VALUES (?, ?, ?)";
@@ -143,7 +147,12 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
         }
         return inscricoesPendentes;
     }
-
+    /**
+     * Retorna o nome do atleta com base no seu ID.
+     *
+     * @param atletaId o ID do atleta
+     * @return o nome do atleta ou {@code null} se não encontrado
+     */
     public String getAtletaNome(int atletaId) {
         String query = "SELECT nome FROM atletas WHERE user_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -159,7 +168,12 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
             throw new RuntimeException("Erro ao buscar o nome do atleta: " + e.getMessage(), e);
         }
     }
-
+    /**
+     * Retorna o nome da modalidade com base no seu ID.
+     *
+     * @param modalidadeId o ID da modalidade
+     * @return o nome da modalidade ou {@code null} se não encontrado
+     */
     public String getModalidadeNome(int modalidadeId) {
         String query = "SELECT nome FROM modalidades WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -175,7 +189,12 @@ public class AprovarInscricaoAtletaDAOImp implements AprovarInscricaoAtletaDAO {
             throw new RuntimeException("Erro ao buscar o nome da modalidade: " + e.getMessage(), e);
         }
     }
-
+    /**
+     * Retorna o nome do local associado a um evento com base no seu ID.
+     *
+     * @param eventoId o ID do evento
+     * @return o nome do local ou {@code null} se não encontrado
+     */
     public String getLocalNome(int eventoId) {
         String queryEvento = "SELECT local_id FROM eventos WHERE id = ?";
         String queryLocal = "SELECT nome FROM locais WHERE id = ?";

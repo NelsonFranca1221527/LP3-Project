@@ -19,7 +19,9 @@ import java.util.Optional;
  * Esta classe fornece a lógica de acesso aos dados de históricos de atletas.
  */
 public class HistoricoDAOImp implements HistoricoDAO {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private static Connection connection;
     private ConnectionBD database;
     /**

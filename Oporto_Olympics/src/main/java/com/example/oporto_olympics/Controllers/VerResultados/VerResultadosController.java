@@ -29,7 +29,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * Controlador para exibição dos resultados de um atleta.
+ */
 public class VerResultadosController {
     /**
      * Contêiner de layout para a exibição dos resultados.
@@ -51,7 +53,10 @@ public class VerResultadosController {
      */
     @FXML
     private ComboBox<String> modalidadeCombo;
-
+    /**
+     * Mapa que armazena modalidades associadas a um valor inteiro.
+     * A chave é uma String representando o nome da modalidade e o valor é um Integer.
+     */
     private HashMap<String, Integer> ModalidadeHashMap = new HashMap<>();
 
     /**

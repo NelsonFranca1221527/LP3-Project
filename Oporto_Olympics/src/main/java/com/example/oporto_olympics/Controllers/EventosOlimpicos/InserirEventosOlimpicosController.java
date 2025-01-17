@@ -268,13 +268,21 @@ public class InserirEventosOlimpicosController {
             }
         }
     }
-
+    /**
+     * Método chamado ao clicar no botão para redirecionar para a tela de inserir local.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void onClickLocalRedirectButton(ActionEvent event) {
         Stage s = (Stage) LocalRedirectButton.getScene().getWindow();
         RedirecionarHelper.GotoInserirLocal().switchScene(s);
     }
-
+    /**
+     * Método chamado ao clicar no botão para voltar ao menu principal do gestor.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();

@@ -8,21 +8,37 @@ import java.util.List;
  * ano de fundação e lista de participações em eventos desportivos.
  */
 public class Equipa {
-
+    /**
+     * Identificador único da equipa.
+     */
     private int id;
-
+    /**
+     * Nome da equipa.
+     */
     private String nome;
-
+    /**
+     * País de origem da equipa.
+     */
     private String pais;
-
+    /**
+     * Género predominante dos membros da equipa.
+     */
     private String genero;
-
+    /**
+     * Desporto praticado pela equipa.
+     */
     private String desporto;
-
+    /**
+     * Identificador único da modalidade associada.
+     */
     private int modalidadeID;
-
+    /**
+     * Ano de fundação da equipa.
+     */
     private int anoFundacao;
-
+    /**
+     * Lista de participações da equipa em competições.
+     */
     private List<ParticipaçõesEquipa> participaçõesEquipa;
     /**
      * Construtor para a classe {@link Equipa}, que inicializa todos os atributos da equipa.

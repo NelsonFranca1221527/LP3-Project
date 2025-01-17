@@ -39,7 +39,9 @@ public class ListarEquipaController {
      * Instância do objeto responsável pela listagem das equipas.
      */
     private ListarEquipasDAO dao;
-
+    /**
+     * Campo de texto para realizar pesquisas.
+     */
     @FXML
     private TextField searchfield;
 

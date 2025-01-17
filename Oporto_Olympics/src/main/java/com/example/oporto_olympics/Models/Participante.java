@@ -2,7 +2,9 @@
  * Representa um participante nas Modalidades, que pode ser um atleta ou uma equipa.
  */
 package com.example.oporto_olympics.Models;
-
+/**
+ * Representa um participante de uma competição ou evento.
+ */
 public class Participante {
 
     /**

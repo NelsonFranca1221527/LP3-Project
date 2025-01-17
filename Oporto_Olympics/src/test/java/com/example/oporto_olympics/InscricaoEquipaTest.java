@@ -13,7 +13,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de teste para validar as funcionalidades relacionadas à inscrição de equipes em eventos.
+ */
 class InscricaoEquipaTest {
 
     /**

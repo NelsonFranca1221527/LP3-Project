@@ -34,28 +34,44 @@ public class ListAtletaCardController {
      * Objeto Atleta, armazenado para acesso ao seu id no método btnOnClickDetalhes.
      */
     private Atleta atleta;
-
+    /**
+     * Rótulo para exibir o nome.
+     */
     @FXML
     private Label NomeLabel;
-
+    /**
+     * Rótulo para exibir a data de nascimento.
+     */
     @FXML
     private Label DataNascLabel;
-
+    /**
+     * Rótulo para exibir o país.
+     */
     @FXML
     private Label PaisLabel;
-
+    /**
+     * Rótulo para exibir o género.
+     */
     @FXML
     private Label GeneroLabel;
-
+    /**
+     * Rótulo para exibir a altura.
+     */
     @FXML
     private Label AlturaLabel;
-
+    /**
+     * Imagem de perfil do utilizador.
+     */
     @FXML
     private ImageView img_perfil;
-
+    /**
+     * Rótulo para exibir o peso.
+     */
     @FXML
     private Label PesoLabel;
-
+    /**
+     * Botão para aceder aos detalhes do utilizador.
+     */
     @FXML
     private Button btnDetalhes;
 
@@ -93,7 +109,7 @@ public class ListAtletaCardController {
      * e exibe-o numa nova janela. Caso o atleta não tenha histórico, uma mensagem informativa é exibida.
      *
      * @param event O evento de clique no botão que chama este método.
-     * @throws SQLException Caso haja falhas ao recuperar os dados do banco de dados.
+     * @throws SQLException Caso haja falhas ao recuperar os dados do base de dados.
      */
     @FXML
     private void btnOnClickDetalhes(ActionEvent event) throws SQLException {

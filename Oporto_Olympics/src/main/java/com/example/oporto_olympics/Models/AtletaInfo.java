@@ -7,19 +7,33 @@ import java.util.List;
  * incluindo identificador, nome, país de origem, género, altura, peso e data de nascimento.
  */
 public class AtletaInfo {
-
+    /**
+     * Identificador único.
+     */
     private int id;
-
+    /**
+     * Nome do Atleta.
+     */
     private String nome;
-
+    /**
+     * País de origem.
+     */
     private String pais;
-
+    /**
+     * Género do Atleta.
+     */
     private String genero;
-
+    /**
+     * Altura em centímetros.
+     */
     private int altura;
-
+    /**
+     * Peso em quilogramas.
+     */
     private int peso;
-
+    /**
+     * Data de nascimento.
+     */
     private Date dataNascimento;
 
     /**

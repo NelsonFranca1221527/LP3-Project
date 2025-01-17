@@ -3,14 +3,33 @@ package com.example.oporto_olympics.Models;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
-
+/**
+ * Representa a relação entre um evento e uma modalidade, incluindo detalhes específicos.
+ */
 public class EventosModalidade {
-
+    /**
+     * Identificador único do evento.
+     */
     private int evento_id;
+    /**
+     * Identificador único da modalidade associada ao evento.
+     */
     private int modalidade_id;
+    /**
+     * Status da modalidade no evento (representado como um byte).
+     */
     private byte modalidade_status;
+    /**
+     * Data e hora associadas à modalidade no evento.
+     */
     private Timestamp data_modalidade;
+    /**
+     * Duração da modalidade no evento.
+     */
     private Time duracao;
+    /**
+     * Identificador único do local onde a modalidade será realizada.
+     */
     private int local_id;
     /**
      * Construtor para inicializar todos os atributos de {@code EventosModalidade}.

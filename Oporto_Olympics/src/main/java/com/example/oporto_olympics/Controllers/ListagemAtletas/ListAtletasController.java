@@ -36,10 +36,14 @@ public class ListAtletasController {
      */
     @FXML
     private Button VoltarBtn;
-
+    /**
+     * Campo de texto para realizar pesquisas.
+     */
     @FXML
     private TextField searchfield;
-
+    /**
+     * Objeto DAO para operações relacionadas com atletas.
+     */
     private AtletaDAOImp AtletaDAO;
 
 
@@ -77,7 +81,11 @@ public class ListAtletasController {
             ListarAtletas(newValue.trim()); // Atualizar a lista conforme o texto digitado
         });
     }
-
+    /**
+     * Método responsável por listar os atletas com base no filtro de nome fornecido.
+     *
+     * @param filtroNome o nome a ser utilizado como filtro para a busca dos atletas
+     */
     public void ListarAtletas(String filtroNome){
         try{
             List<Atleta> atletas = AtletaDAO.getAtletas(filtroNome);

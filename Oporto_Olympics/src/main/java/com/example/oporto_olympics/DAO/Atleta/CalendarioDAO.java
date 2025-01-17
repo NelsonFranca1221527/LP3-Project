@@ -3,7 +3,9 @@ package com.example.oporto_olympics.DAO.Atleta;
 import com.example.oporto_olympics.Models.*;
 
 import java.util.List;
-
+/**
+ * Interface para a gestão do calendário de eventos.
+ */
 public interface CalendarioDAO {
 
     /**
