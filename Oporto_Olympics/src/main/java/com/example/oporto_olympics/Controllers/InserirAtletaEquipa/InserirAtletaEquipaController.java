@@ -215,7 +215,7 @@ public class InserirAtletaEquipaController {
     private void onActionBack(ActionEvent event) {
         Stage s = (Stage) btnBack.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
+        RedirecionarHelper.GotoSubMenuInsercoes().switchScene(s);
     }
 
 }

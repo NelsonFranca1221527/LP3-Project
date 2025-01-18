@@ -251,6 +251,6 @@ public class InscricaoEquipaController {
     private void onActionBack(ActionEvent event) {
         Stage s = (Stage) btnBack.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
     }
 }

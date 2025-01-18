@@ -285,6 +285,6 @@ public class ListarEquipaController {
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
     }
 }

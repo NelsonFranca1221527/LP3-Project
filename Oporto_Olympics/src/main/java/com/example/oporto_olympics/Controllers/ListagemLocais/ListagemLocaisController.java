@@ -81,6 +81,6 @@ public class ListagemLocaisController {
     private void onActionBack(ActionEvent event) {
         Stage s = (Stage) VoltarBtn.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
     }
 }

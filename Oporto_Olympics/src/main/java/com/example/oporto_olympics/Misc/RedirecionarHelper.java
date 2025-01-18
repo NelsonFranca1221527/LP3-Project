@@ -41,6 +41,30 @@ public class RedirecionarHelper {
         }
     }
     /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu das Listagens.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu das Listagens.
+     */
+    public static RedirecionarHelper GotoSubMenuListagens(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Listagens.fxml","Listagens");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu das Inserções.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu das Inserções.
+     */
+    public static RedirecionarHelper GotoSubMenuInsercoes(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Insercoes.fxml","Inserções");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu do XML.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu do XML.
+     */
+    public static RedirecionarHelper GotoSubMenuXML(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-XML.fxml","XML");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu do cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a subMenu do Cliente.
+     */
+    public static RedirecionarHelper GotoSubMenuCliente(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Cliente.fxml","Cliente");}
+    /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de login.
      *
      * @return Um {@link RedirecionarHelper} para a página de login.

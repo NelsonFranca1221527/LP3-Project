@@ -113,7 +113,7 @@ public class InserirGestorController {
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuInsercoes().switchScene(s);
     }
     /**
      * Mostra um alerta com o tipo, título e mensagem especificados.

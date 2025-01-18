@@ -15,93 +15,41 @@ public class MenuGestorController {
      * Botão para aceder à secção de atletas.
      */
     @FXML
-    private Button AtletasBtn;
+    private Button ListagensBtn;
     /**
      * Botão para aceder à secção de inscrições.
      */
     @FXML
-    private Button InscricoesBtn;
+    private Button XMLBtn;
     /**
      * Botão para aceder à secção de equipas.
      */
     @FXML
-    private Button EquipasBtn;
+    private Button InsercoesBtn;
     /**
      * Botão para aceder à secção de eventos.
      */
     @FXML
-    private Button EventoBtn;
-    /**
-     * Botão para aceder à secção de locais.
-     */
-    @FXML
-    private Button LocalBtn;
-    /**
-     * Botão para inserir novos atletas.
-     */
-    @FXML
-    private Button InsertAtletasBtn;
-    /**
-     * Botão para inserir novos gestores.
-     */
-    @FXML
-    private Button InsertGestorBtn;
-    /**
-     * Botão para aceder à secção de modalidades.
-     */
-    @FXML
-    private Button ModalidadeBtn;
+    private Button ClienteBtn;
     /**
      * Botão para terminar a sessão e sair.
      */
     @FXML
     private Button SairBtn;
     /**
-     * Botão para inserir novos eventos.
-     */
-    @FXML
-    private Button InsertEventoBtn;
-    /**
-     * Botão para inserir novas modalidades.
-     */
-    @FXML
-    private Button InsertModalidadeBtn;
-    /**
-     * Botão para listar os ficheiros XML.
-     */
-    @FXML
-    private Button btnFXML;
-    /**
-     * Botão para listar os pedidos de inscrição em um Evento.
-     */
-    @FXML
-    private Button InscricoesBtnEvento;
-    /**
-     * Botão para aceder à secção de importação de dados via XML.
-     */
-    @FXML
-    private Button XMLBtn;
-    /**
-     * Botão para inserir novas equipas.
-     */
-    @FXML
-    private Button InsertEquipasBtn;
-    /**
      * Botão para aceder ao perfil do utilizador.
      */
     @FXML
     private Button PerfilBtn;
-    @FXML
-    private Button ResultadosBtn;
     /**
      * Ação para redirecionar o utilizador para a secção de inserção de equipas.
      */
     @FXML
-    protected void OnInsertEquipasButtonClick(){
+    protected void OnListagensButtonClick(){
         try {
-            Stage s = (Stage) InsertEquipasBtn.getScene().getWindow();
+            Stage s = (Stage) ListagensBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoInserirEquipa().switchScene(s);
+            RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -110,11 +58,11 @@ public class MenuGestorController {
      * Ação para redirecionar o utilizador para a secção de inserção de modalidades.
      */
     @FXML
-    protected void OnInsertModalidadesButtonClick(){
+    protected void OnXMLButtonClick(){
         try {
-            Stage s = (Stage) InsertModalidadeBtn.getScene().getWindow();
+            Stage s = (Stage) XMLBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoInserirModalidade().switchScene(s);
+            RedirecionarHelper.GotoSubMenuXML().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -123,11 +71,11 @@ public class MenuGestorController {
      * Ação para redirecionar o utilizador para a secção de inserção de eventos.
      */
     @FXML
-    protected void OnInsertEventosButtonClick(){
+    protected void OnInsercoesButtonClick(){
         try {
-            Stage s = (Stage) InsertEventoBtn.getScene().getWindow();
+            Stage s = (Stage) InsercoesBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoInserirEventosOlimpicos().switchScene(s);
+            RedirecionarHelper.GotoSubMenuInsercoes().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -136,115 +84,11 @@ public class MenuGestorController {
      * Ação para redirecionar o utilizador para a secção de inserção de atletas.
      */
     @FXML
-    protected void OnInsertAtletasButtonClick(){
+    protected void OnClienteButtonClick(){
         try {
-            Stage s = (Stage) InsertAtletasBtn.getScene().getWindow();
+            Stage s = (Stage) ClienteBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoInserirAtleta().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de inserção de gestores.
-     */
-    @FXML
-    protected void OnInsertGestorButtonClick(){
-        try {
-            Stage s = (Stage) InsertGestorBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoInserirGestor().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de inscrições.
-     */
-    @FXML
-    protected void OnInscricoesButtonClick(){
-        try {
-            Stage s = (Stage) InscricoesBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoInscricoesEquipa().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de listagem de atletas.
-     */
-    @FXML
-    protected void OnAtletasButtonClick() {
-        try {
-            Stage s = (Stage) AtletasBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoListagemAtleta().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de listagem de equipas.
-     */
-    @FXML
-    protected void OnEquipasButtonClick() {
-        try {
-            Stage s = (Stage) EquipasBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoListagemEquipas().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de listagem de eventos.
-     */
-    @FXML
-    protected void OnEventosButtonClick() {
-        try {
-            Stage s = (Stage) EventoBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoListagemEventos().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de seleção de XML.
-     */
-    @FXML
-    protected void OnInserirXMLButtonClick() {
-        try {
-            Stage s = (Stage) XMLBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoSeleçãoXML().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de listagem de locais.
-     */
-    @FXML
-    protected void OnLocaisButtonClick( ) {
-        try {
-            Stage s = (Stage) LocalBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoListagemLocais().switchScene(s);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Ação para redirecionar o utilizador para a secção de listagem de modalidades.
-     */
-    @FXML
-    protected void OnModalidadesButtonClick() {
-        try {
-            Stage s = (Stage) ModalidadeBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoListagemModalidades().switchScene(s);
+            RedirecionarHelper.GotoSubMenuCliente().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -263,19 +107,6 @@ public class MenuGestorController {
         }
     }
     /**
-     * Ação para redirecionar o utilizador para os resultados.
-     */
-    @FXML
-    protected void OnVerResultadosButtonClick(){
-        try{
-            Stage s = (Stage) ResultadosBtn.getScene().getWindow();
-
-            RedirecionarHelper.GotoVerResultados().switchScene(s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-    /**
      * Ação para terminar a sessão e redirecionar o utilizador para o ecrã de login.
      */
     @FXML
@@ -285,32 +116,6 @@ public class MenuGestorController {
 
             RedirecionarHelper.GotoLogin().switchScene(s);
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Método chamado ao clicar no botão para redirecionar para a tela de listar XML.
-     */
-    @FXML
-    protected void OnListarXMLButtonClick(){
-        try{
-            Stage s = (Stage) btnFXML.getScene().getWindow();
-
-            RedirecionarHelper.GotoListarXML().switchScene(s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * Método chamado ao clicar no botão para redirecionar para a tela de aprovar inscrições de atletas para o evento.
-     */
-    @FXML
-    protected void OnInscricoesEventoButtonClick(){
-        try{
-            Stage s = (Stage) InscricoesBtnEvento.getScene().getWindow();
-
-            RedirecionarHelper.GotoAprovarAtletaEvento().switchScene(s);
-        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
