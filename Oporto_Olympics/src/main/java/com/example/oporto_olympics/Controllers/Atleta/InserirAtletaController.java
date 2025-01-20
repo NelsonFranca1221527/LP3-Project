@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 /**
  * Controlador responsável pela criação de um novo atleta.
  * Esta classe lida com a interface gráfica de inserção de dados de um atleta,
@@ -186,6 +189,14 @@ public class InserirAtletaController {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             dataNascimento = LocalDate.parse(dataNasc, formatter);
+
+            //Data Atual Menos 200 Anos
+            LocalDate dataLimite = LocalDate.now().minusYears(200);
+
+            if (dataNascimento.isBefore(dataLimite)) {
+                showAlert(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser anterior a 200 anos atrás.");
+                return;
+            }
 
             if (dataNascimento.isAfter(LocalDate.now())) {
                 showAlert(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser maior que a data de hoje.");
