@@ -199,6 +199,34 @@ public class LocaisDAOImp implements DAO<Local> {
         }
     }
     /**
+     * Exclui um local da base de dados.
+     *
+     * @param nome o nome do local a ser excluído.
+     * @param tipo o tipo do local a ser excluído.
+     * @param morada a morada do local a ser excluído.
+     * @param cidade a cidade do local a ser excluído.
+     * @param pais o pais do local a ser excluído.
+     */
+    public void deleteByLocal(String nome, String tipo, String morada, String cidade, String pais) {
+        String query = "DELETE FROM locais WHERE nome = ? AND tipo = ? AND morada = ? AND cidade = ? AND pais_sigla = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, nome);
+            ps.setString(2, tipo);
+            ps.setString(3, morada);
+            ps.setString(4, cidade);
+            ps.setString(5, pais);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Nenhum local encontrado com o nome: " + nome);
+            }
+
+            System.out.println("Local com o nome " + nome + " foi apagado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao apagar local com o nome " + nome + ": " + e.getMessage(), e);
+        }
+    }
+    /**
      * Obtém um local com base no seu ID.
      *
      * @param i o ID do local a ser obtido.
