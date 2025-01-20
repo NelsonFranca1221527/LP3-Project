@@ -41,10 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -550,7 +547,17 @@ public class InsercaoXMLController {
                 continue;
             }
 
-            if (atleta.getDataNascimento().before(Date.from(Instant.from(LocalDate.now().minusYears(200))))) {
+            Date dataNascimento = atleta.getDataNascimento();
+
+            //Converto o objeto Date dataNascimento em um Objeto LocalDate
+            LocalDate localDateNascimento = dataNascimento.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            //Data Atual Menos 200 Anos
+            LocalDate dataLimite = LocalDate.now().minusYears(200);
+
+            if (localDateNascimento.isBefore(dataLimite)) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento do atleta " + atleta.getNome() + " não pode ser anterior a 200 anos atrás.");
                 alertHandler.getAlert().showAndWait();
                 continue;
