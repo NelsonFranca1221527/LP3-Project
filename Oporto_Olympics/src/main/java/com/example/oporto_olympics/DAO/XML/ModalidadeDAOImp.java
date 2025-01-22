@@ -320,15 +320,16 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      * @param modalidadeID  ID da modalidade a ser associada ao evento.
      * @throws RuntimeException Se ocorrer um erro ao inserir a relação na base de dados.
      */
-    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id){
+    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id, String gameID){
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id) VALUES(?,?,?,?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id, game_id) VALUES(?,?,?,?,?,?)");
 
             ps.setInt(1, eventoID);
             ps.setInt(2, modalidadeID);
             ps.setTimestamp(3, Timestamp.valueOf(dataTempo));
             ps.setTime(4, Time.valueOf(duracao));
             ps.setInt(5, local_id);
+            ps.setString(6, gameID);
             ps.executeUpdate();
             ps.close();
 
