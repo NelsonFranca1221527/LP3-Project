@@ -1,7 +1,9 @@
 package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML;
 
+import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
+import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
-import com.example.oporto_olympics.DAO.Atleta.InserirAtletaDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
 import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
@@ -26,7 +28,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -39,10 +40,10 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -892,10 +893,6 @@ public class InsercaoXMLController {
         HorarioStage.setScene(new Scene(grid, 350, 200));
         HorarioStage.setTitle("Inserir Horário");
 
-        DataPicker.setValue(LocalDate.of(2026,1,22));
-        HoraInicio.setText("12:00:00");
-        Duracao.setText("02:00:00");
-
         OKButton.setOnAction(e -> {
             AlertHandler alertHandler;
 
@@ -980,7 +977,29 @@ public class InsercaoXMLController {
 
                 Local local = LocaisDisponiveis.get(locaisChoice.getValue());
 
-                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
+                LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
+
+
+                try {
+
+                    ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
+                    HttpURLConnection httpURLConnection = connectionAPI.getConexao();
+
+                    JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
+
+                    String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
+
+                    if(GameID == null || GameID.trim().isEmpty()){
+                        alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade");
+                        alertHandler.getAlert().showAndWait();
+                        return;
+                    }
+
+                    modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(), GameID);
+
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 HorarioStage.close();
             }

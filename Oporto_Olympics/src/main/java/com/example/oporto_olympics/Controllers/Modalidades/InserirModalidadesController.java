@@ -1,5 +1,8 @@
 package com.example.oporto_olympics.Controllers.Modalidades;
 
+import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
+import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
@@ -17,14 +20,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalDateTimeStringConverter;
-
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+
 
 /**
  * Classe de controlador para a interface de inserção de modalidades.
@@ -288,7 +292,7 @@ public class InserirModalidadesController {
      * @throws SQLException se ocorrer um erro de SQL durante a inserção.
      */
     @FXML
-    void OnClickCriarModalidadeButton(ActionEvent event) throws SQLException {
+    void OnClickCriarModalidadeButton(ActionEvent event) throws SQLException, IOException {
         AlertHandler alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Modalidade a Inserir", "Deseja inserir a modalidade preenchida?");
         Optional<ButtonType> rs = alertHandler.getAlert().showAndWait();
 
@@ -417,6 +421,12 @@ public class InserirModalidadesController {
 
             Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
+            ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
+            HttpURLConnection httpURLConnection = connectionAPI.getConexao();
+            JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
+
+            LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
+
             if (ModalidadeExistente != null) {
 
                 if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
@@ -425,12 +435,31 @@ public class InserirModalidadesController {
                     return;
                 }
 
-                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId());
+                String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
+
+                if(GameID == null || GameID.trim().isEmpty()){
+                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a modalidade!");
+                    alertHandler.getAlert().showAndWait();
+                    return;
+                }
+
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId(),GameID);
                 return;
             }
 
             modalidadeDAOImp.save(modalidade);
-            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
+
+            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
+
+            System.out.println("ID: " + GameID);
+
+            if(GameID == null || GameID.trim().isEmpty()){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade!");
+                alertHandler.getAlert().showAndWait();
+                return;
+            }
+
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(),GameID);
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
             alertHandler.getAlert().showAndWait();

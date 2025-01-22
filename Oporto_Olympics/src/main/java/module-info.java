@@ -4,6 +4,7 @@ module com.example.oporto_olympics {
     requires java.sql;
     requires java.desktop;
     requires java.compiler;
+    requires com.fasterxml.jackson.databind;
 
 
     opens com.example.oporto_olympics to javafx.fxml;
