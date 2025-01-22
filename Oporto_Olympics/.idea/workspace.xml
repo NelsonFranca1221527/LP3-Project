@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Storage Procedures">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Jogos/ClienteDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Jogos/ClienteDAOImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/Models/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Client/MenuInicialController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Singleton/ClientSingleton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Cliente/Perfil.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/MenuPrincipal-Cliente/MenuPrincipalCliente.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/oporto_olympics/InscricaoAtletaEventoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/oporto_olympics/InscricaoAtletaEventoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Login/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Misc/RedirecionarHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,15 +51,15 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="FxmlFile" />
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -90,9 +99,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "feature-082-API",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Danie/Desktop/Projeto/Oporto_Olympics",
+    "last_opened_file_path": "C:/Users/Danie/Desktop/LP3/Oporto_Olympics",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -118,6 +127,7 @@
       <recent name="C:\Users\eduar\Desktop\LP3 - Oporto Olympics\Oporto_Olympics\src\main\resources\org\example\oporto_olympics" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.oporto_olympics.API.Models" />
       <recent name="com.example.oporto_olympics" />
       <recent name="com.example.oporto_olympics.Misc" />
     </key>
@@ -127,7 +137,7 @@
       <command value=";" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.InscricaoAtletaEventoTest.InscricaoInvalidaCamposObrigatorios">
+  <component name="RunManager" selected="Application.HelloApplication">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true">
       <option name="ALTERNATIVE_JRE_PATH" value="19" />
       <option name="MAIN_CLASS_NAME" value="com.example.oporto_olympics.HelloApplication" />
@@ -289,6 +299,7 @@
       <workItem from="1734650077232" duration="1718000" />
       <workItem from="1736454918821" duration="10953000" />
       <workItem from="1736508821940" duration="519000" />
+      <workItem from="1737553788196" duration="8796000" />
     </task>
     <task id="LOCAL-00001" summary="Update do Inserir atleta em equipa">
       <option name="closed" value="true" />

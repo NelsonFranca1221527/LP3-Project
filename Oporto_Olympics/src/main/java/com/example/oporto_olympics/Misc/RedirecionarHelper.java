@@ -267,4 +267,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoCalendario() {
         return new RedirecionarHelper("Views/Atleta/CalendarioAtleta.fxml", "Calendário");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página inicial do Cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a página inicial do cliente.
+     */
+    public static RedirecionarHelper GotoHomeClient() {
+        return new RedirecionarHelper("Views/MenuPrincipal-Cliente/MenuPrincipalCliente.fxml", "Home Page");
+    }
 }
