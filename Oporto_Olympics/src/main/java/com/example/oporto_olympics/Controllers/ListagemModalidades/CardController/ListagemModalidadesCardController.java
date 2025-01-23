@@ -2,6 +2,7 @@ package com.example.oporto_olympics.Controllers.ListagemModalidades.CardControll
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
 import com.example.oporto_olympics.API.DAO.Tickets.TicketsDAOImp;
+import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.API.Models.Ticket;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
@@ -14,6 +15,7 @@ import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Models.*;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -170,9 +172,10 @@ public class ListagemModalidadesCardController {
 
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
+        ClientSingleton ClienteSingle = ClientSingleton.getInstance();
 
         //Verifica se o Utilizador é um Atleta
-        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() != null) {
+        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() != null && ClienteSingle.getClient() == null) {
             IniciarModalidadeButton.setDisable(true);
             IniciarModalidadeButton.setVisible(false);
             InscreverJogoButton.setDisable(true);
@@ -180,13 +183,13 @@ public class ListagemModalidadesCardController {
         }
 
         //Verifica se o Utilizador é um Gestor
-        if (GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null) {
-            //InscreverJogoButton.setDisable(true);
-            //InscreverJogoButton.setVisible(false);
+        if (GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null && ClienteSingle.getClient() == null) {
+            InscreverJogoButton.setDisable(true);
+            InscreverJogoButton.setVisible(false);
         }
 
         //Verifica se o Utilizador é um Cliente
-        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() == null) {
+        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() == null && ClienteSingle.getClient() != null) {
             IniciarModalidadeButton.setDisable(true);
             IniciarModalidadeButton.setVisible(false);
         }
@@ -899,8 +902,9 @@ public class ListagemModalidadesCardController {
                 return;
             }
 
-            //TODO: Pegar ClientID
-            String ClienteID = "";
+            Client client = ClientSingleton.getInstance().getClient();
+
+            String ClienteID = client.getId();
 
             //Verifica se o local é exterior, caso seja, permite criar um ticket
             if(local.get().getCapacidade() <= 0){
