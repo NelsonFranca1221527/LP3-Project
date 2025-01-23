@@ -34,6 +34,7 @@ public class SubMenuGestorClienteController {
         try {
             Stage s = (Stage) CriarClienteBtn.getScene().getWindow();
 
+            RedirecionarHelper.GotoInsertClient().switchScene(s);
             //Adicionar Redirecionar
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -51,7 +52,7 @@ public class SubMenuGestorClienteController {
         try {
             Stage s = (Stage) ClientesBtn.getScene().getWindow();
 
-            //Adicionar Redirecionar
+            RedirecionarHelper.GotoListClient().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

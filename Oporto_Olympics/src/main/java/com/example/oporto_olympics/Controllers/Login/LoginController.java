@@ -1,7 +1,7 @@
 package com.example.oporto_olympics.Controllers.Login;
 
-import com.example.oporto_olympics.API.DAO.Jogos.ClienteDAO;
-import com.example.oporto_olympics.API.DAO.Jogos.ClienteDAOImp;
+import com.example.oporto_olympics.API.DAO.Client.ClienteDAO;
+import com.example.oporto_olympics.API.DAO.Client.ClienteDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.Gestor;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;

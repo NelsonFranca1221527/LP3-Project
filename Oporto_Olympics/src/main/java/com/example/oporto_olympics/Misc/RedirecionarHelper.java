@@ -275,4 +275,20 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoHomeClient() {
         return new RedirecionarHelper("Views/MenuPrincipal-Cliente/MenuPrincipalCliente.fxml", "Home Page");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inserir um Cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de inserir um cliente.
+     */
+    public static RedirecionarHelper GotoInsertClient() {
+        return new RedirecionarHelper("Views/Cliente/InserirClient.fxml", "Inserir Cliente");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de Clientes.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de listagem de clientes.
+     */
+    public static RedirecionarHelper GotoListClient() {
+        return new RedirecionarHelper("Views/Cliente/ListagemClientes.fxml", "Listagem Clientes");
+    }
 }

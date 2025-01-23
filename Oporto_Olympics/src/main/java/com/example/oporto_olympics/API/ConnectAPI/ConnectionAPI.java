@@ -2,7 +2,6 @@ package com.example.oporto_olympics.API.ConnectAPI;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 
-import javax.swing.text.html.HTML;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
