@@ -25,16 +25,23 @@ public class HorarioModalidade {
     private int localID;
 
     /**
+     * Identificador do jogo.
+     */
+    private String gameID;
+
+    /**
      * Construtor para inicializar um horário de modalidade com os detalhes fornecidos.
      *
      * @param dataHora A data e hora do início da modalidade.
      * @param duracao  A duração da modalidade.
      * @param localID  O identificador do local onde a modalidade será realizada.
+     * @param gameID  O identificador do jogo.
      */
-    public HorarioModalidade(LocalDateTime dataHora, LocalTime duracao, int localID) {
+    public HorarioModalidade(LocalDateTime dataHora, LocalTime duracao, int localID, String gameID) {
         this.dataHora = dataHora;
         this.duracao = duracao;
         this.localID = localID;
+        this.gameID = gameID;
     }
 
     /**
@@ -89,5 +96,23 @@ public class HorarioModalidade {
      */
     public void setLocalID(int localID) {
         this.localID = localID;
+    }
+
+    /**
+     * Obtém o ID do jogo associado.
+     *
+     * @return o ID do jogo como uma String.
+     */
+    public String getGameID() {
+        return gameID;
+    }
+
+    /**
+     * Define o ID do jogo associado.
+     *
+     * @param gameID o ID do jogo a ser definido como uma String.
+     */
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
     }
 }

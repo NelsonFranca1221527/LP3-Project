@@ -206,6 +206,22 @@ public class LocaisDAOImp implements DAO<Local> {
      */
     @Override
     public Optional<Local> get(int i) {
-        return Optional.empty();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM locais WHERE id = ?");
+            ps.setInt(1, i);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return Optional.of(new Local(rs.getInt("id"), rs.getString("nome"),
+                        rs.getString("tipo"), rs.getString("morada"), rs.getString("cidade"),
+                        rs.getString("pais_sigla"), rs.getInt("capacidade"), rs.getDate("data_construcao")));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o local: " + ex.getMessage());
+        }
+        return Optional.empty();  // Retorna Optional.empty() se o local não for encontrado
     }
 }

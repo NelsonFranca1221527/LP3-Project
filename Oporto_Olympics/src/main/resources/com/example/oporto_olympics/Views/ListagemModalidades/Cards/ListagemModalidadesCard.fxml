@@ -98,5 +98,6 @@
          </font>
       </Label>
       <Button fx:id="IniciarModalidadeButton" layoutX="302.0" layoutY="241.0" mnemonicParsing="false" onAction="#onClickIniciarModalidadeButton" prefWidth="114.0" text="Iniciar Modalidade" />
+      <Button fx:id="InscreverJogoButton" layoutX="159.0" layoutY="241.0" mnemonicParsing="false" onAction="#onClickInscreverJogoButton" prefWidth="114.0" text="Inscrever no Jogo" />
    </children>
 </AnchorPane>
