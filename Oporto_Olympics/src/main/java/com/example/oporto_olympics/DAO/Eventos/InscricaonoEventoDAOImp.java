@@ -59,7 +59,7 @@ public class InscricaonoEventoDAOImp {
     public List<HorarioModalidade> getAllHorarioModalidadeByAtleta(int atletaId) {
         try {
 
-            PreparedStatement ps = connection.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN atletas_modalidades as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.atleta_id= ? ");
+            PreparedStatement ps = connection.prepareStatement("select m.data_modalidade, m.duracao, m.local_id, m.game_id from eventos_modalidades as m JOIN atletas_modalidades as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.atleta_id= ? ");
             ps.setInt(1, atletaId);
             ResultSet rs = ps.executeQuery();
 
@@ -73,7 +73,7 @@ public class InscricaonoEventoDAOImp {
                     continue;
                 }
 
-                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id"), rs.getString("game_id")));
             }
 
             return list;
@@ -189,8 +189,4 @@ public class InscricaonoEventoDAOImp {
         }
         return null;
     }
-
-
-
-
 }

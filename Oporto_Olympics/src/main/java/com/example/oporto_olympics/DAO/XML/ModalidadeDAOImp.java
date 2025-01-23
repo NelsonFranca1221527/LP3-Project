@@ -290,7 +290,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public List<HorarioModalidade> getAllHorarioModalidade() {
         try {
 
-            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id FROM eventos_modalidades");
+            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id, game_id FROM eventos_modalidades");
             ResultSet rs = ps.executeQuery();
 
             List<HorarioModalidade> list = new ArrayList<>();
@@ -303,7 +303,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     continue;
                 }
 
-                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id"), rs.getString("game_id")));
             }
 
                 return list;
@@ -652,7 +652,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      */
     public HorarioModalidade getHorarioModalidadeById(int modalidadeId, int eventoId) throws SQLException {
         HorarioModalidade horariomodalidade = null;
-        String query = "SELECT data_modalidade, duracao, local_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
+        String query = "SELECT data_modalidade, duracao, local_id, game_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             stmt.setInt(1, modalidadeId);
@@ -673,8 +673,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     localId = null;
                 }
 
-                if (dataHora != null && duracao != null && localId != null) {
-                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId);
+                String gameId = rs.getString("game_id");
+                if (rs.wasNull()) {
+                    gameId = null;
+                }
+
+                if (dataHora != null && duracao != null && localId != null && gameId != null) {
+                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId, rs.getString("game_id"));
                 }
             }
         }
@@ -692,7 +697,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public List<HorarioModalidade> getAllHorarioModalidadeByEquipa(int equipaId) {
         try {
 
-            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
+            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id, m.game_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
             ps.setInt(1, equipaId);
             ResultSet rs = ps.executeQuery();
 
@@ -706,7 +711,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     continue;
                 }
 
-                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id"), rs.getString("game_id")));
             }
 
             return list;
