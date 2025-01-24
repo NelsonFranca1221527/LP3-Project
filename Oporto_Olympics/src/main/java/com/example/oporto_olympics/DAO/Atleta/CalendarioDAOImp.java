@@ -264,6 +264,33 @@ public class CalendarioDAOImp implements CalendarioDAO {
         }
     }
 
+    public List<EventosModalidade> getEventosDataAtleta(Timestamp firstData, Timestamp secondData, int atletaId){
+        List<EventosModalidade> lstR = new ArrayList<>();
+        String sql = "SELECT em.* FROM eventos_modalidades em JOIN atletas_modalidades am ON em.modalidade_id = am.modalidade_id WHERE em.data_modalidade BETWEEN ? AND ? AND am.atleta_id = ?;";
 
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {  // Usar 'conexao', não 'connection'
+            stmt.setTimestamp(1, firstData);
+            stmt.setTimestamp(2, secondData);
+            stmt.setInt(3, atletaId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int eventoId = rs.getInt("evento_id");
+                int modalidadeId = rs.getInt("modalidade_id");
+                byte modalidadeStatus = rs.getByte("modalidade_status");
+                Timestamp dataModalidade = rs.getTimestamp("data_modalidade");
+                Time duracao = rs.getTime("duracao");
+                int localId = rs.getInt("local_id");
+
+                EventosModalidade evento = new EventosModalidade(eventoId, modalidadeId, modalidadeStatus, dataModalidade, duracao, localId);
+                lstR.add(evento);
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao mostrar os resultados: " + ex.getMessage());
+        }
+
+        return lstR;
+    }
 
 }

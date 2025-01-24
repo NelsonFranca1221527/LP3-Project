@@ -1,22 +1,28 @@
 package com.example.oporto_olympics.Controllers.MenuAtleta;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Controllers.MenuAtleta.CardController.CalendarioModalidadeCardController;
 import com.example.oporto_olympics.DAO.Atleta.CalendarioDAOImp;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Models.*;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
@@ -171,7 +177,7 @@ public class CalendarioAtletaController {
                 if (eventDate != null && eventDate.equals(date)) {
                     Button eventButton = new Button("Ver Inscrição");
                     eventButton.setStyle("-fx-font-size: 12px; -fx-text-fill: white; -fx-background-color: #007bff; -fx-cursor: hand;");
-                    eventButton.setOnAction(e -> abrirDetalhesEvento(evento.getEvento_id(), evento.getModalidade_id(), evento.getLocal_id()));
+                    eventButton.setOnAction(e -> abrirDetalhesEvento(eventDate, atletaId));
 
                     StackPane.setAlignment(eventButton, javafx.geometry.Pos.CENTER);
                     dayPane.getChildren().add(eventButton);
@@ -195,56 +201,56 @@ public class CalendarioAtletaController {
      * em uma janela pop-up. Caso algum dos dados não seja encontrado ou ocorra um erro, uma
      * mensagem de erro será exibida.
      *
-     * @param eventoId o identificador único do evento.
-     * @param modalidadeId o identificador único da modalidade associada ao evento.
-     * @param localId o identificador único do local associado ao evento.
      */
-    private void abrirDetalhesEvento(int eventoId, int modalidadeId, int localId) {
+    private void abrirDetalhesEvento(LocalDate dataOriginal, int atletaId) {
         try {
+            // Converter dataOriginal para o início do dia em Timestamp
+            Timestamp firstData = Timestamp.valueOf(dataOriginal.atStartOfDay());
 
-            Evento evento = dao.getById(eventoId);
+            // Adicionar um dia e converter para o início do próximo dia em Timestamp
+            Timestamp secondData = Timestamp.valueOf(dataOriginal.plusDays(1).atStartOfDay());
 
-            Modalidade modalidade = dao.getModalidadeById(modalidadeId);
+            List<EventosModalidade> eventosModalidade = dao.getEventosDataAtleta(firstData, secondData, atletaId);
 
-            Local locais = dao.getLocalById(localId);
-
-            EventosModalidade eventosModalidade = dao.getEventoModalidade(eventoId, modalidadeId);
-
-            if (evento != null && modalidade != null && eventosModalidade != null) {
-
+            if (eventosModalidade != null && !eventosModalidade.isEmpty()) {
+                // Criar o Stage para o popup
                 Stage popupStage = new Stage();
                 popupStage.initModality(Modality.APPLICATION_MODAL);
                 popupStage.setTitle("Detalhes do Evento");
 
+                // Criar o VBox para conter os cards
                 VBox vbox = new VBox(10);
                 vbox.setPadding(new javafx.geometry.Insets(10));
 
+                // Criar o Pane que será usado dentro do ScrollPane
+                Pane pane = new Pane();
+                pane.setPrefWidth(380); // Ajustar largura conforme necessário
 
-                Label anoEdicaoLabel = new Label("Ano de Edição: " + evento.getAno_edicao());
-                Label paisAnfitriaoLabel = new Label("País Anfitrião: " + evento.getPais());
+                // Adicionar o VBox ao Pane
+                pane.getChildren().add(vbox);
 
+                // Criar o ScrollPane e adicionar o Pane
+                ScrollPane scrollPane = new ScrollPane();
+                scrollPane.setContent(pane);
+                scrollPane.setFitToWidth(true);
+                scrollPane.setPannable(true);
 
-                Label modalidadeNomeLabel = new Label("Nome da Modalidade: " + modalidade.getNome());
-                Label modalidadeDescricaoLabel = new Label("Descrição: " + modalidade.getDescricao());
-                Label modalidadeGeneroLabel = new Label("Gênero: " + modalidade.getGenero());
-                Label modalidadeRegrasLabel = new Label("Regras: " + modalidade.getRegras());
+                for (EventosModalidade em : eventosModalidade) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/Atleta/Cards/CalendarioModalidadeCard.fxml"));
+                        Pane card = loader.load();
+                        CalendarioModalidadeCardController cardController = loader.getController();
+                        cardController.PreencherDados(em);
 
-                Label localnome = new Label("Nome do local: " + locais.getNome());
-                Label localtipo = new Label("Tipo de recinto: " + locais.getTipo());
-                Label localmorada = new Label("Morada: " + locais.getMorada());
-                Label localcidade = new Label("Cidade: " + locais.getCidade());
+                        card.setUserData(em);
+                        vbox.getChildren().add(card);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-
-                Label dataModalidadeLabel = new Label("Data do Evento: " + eventosModalidade.getData_modalidade());
-                Label duracaoLabel = new Label("Duração: " + eventosModalidade.getDuracao());
-
-                vbox.getChildren().addAll(
-                        anoEdicaoLabel, paisAnfitriaoLabel,
-                        modalidadeNomeLabel, modalidadeDescricaoLabel, modalidadeGeneroLabel, modalidadeRegrasLabel,
-                        dataModalidadeLabel, duracaoLabel, localnome, localtipo, localmorada, localcidade
-                );
-
-                Scene scene = new Scene(vbox, 400, 400);
+                // Configurar e exibir o popup
+                Scene scene = new Scene(scrollPane, 820, 400);
                 popupStage.setScene(scene);
                 popupStage.showAndWait();
             } else {
@@ -254,6 +260,7 @@ public class CalendarioAtletaController {
             mostrarErro("Erro ao abrir detalhes do evento", e.getMessage());
         }
     }
+
 
     /**
      * Obtém a lista de eventos associados a um atleta específico.
