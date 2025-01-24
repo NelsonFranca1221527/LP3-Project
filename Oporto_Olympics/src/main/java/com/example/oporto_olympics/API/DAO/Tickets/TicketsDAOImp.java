@@ -159,19 +159,17 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
         JsonNode rootNode = mapper.readTree(response.toString());
 
         List<Ticket> tickets = new ArrayList<>();
-        if (rootNode.isArray()) {
 
-            ArrayNode arrayNode = (ArrayNode) rootNode;
-            for (JsonNode node : arrayNode) {
+        if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
 
-                String ClientID = String.valueOf(node.get("ClientID"));
+            ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
 
-                String GameID = String.valueOf(node.get("GameID"));
-
-                int lugar = Integer.parseInt(String.valueOf(node.get("Seat")));
-
-                Ticket ticket = new Ticket(ClientID, GameID, lugar);
-                tickets.add(ticket);
+            for (JsonNode node : ticketInfoArray) {
+                if (node.has("Seat")) {
+                    int seat = node.get("Seat").asInt();
+                    Ticket ticket = new Ticket(null, null, seat);
+                    tickets.add(ticket);
+                }
             }
 
             return Optional.of(tickets);
