@@ -18,7 +18,7 @@ public interface JogosDAO<T> {
      *
      * @return Uma lista de objetos {@code T} que representam todos os dados armazenados.
      */
-    List<T> getAll();
+    List<T> getAll() throws IOException;
 
     /**
      * Guarda um objeto do tipo {@code T} no armazenamento.

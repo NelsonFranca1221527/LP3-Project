@@ -1,6 +1,7 @@
 package com.example.oporto_olympics.Controllers.Modalidades;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAO;
 import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
 import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
@@ -427,6 +428,20 @@ public class InserirModalidadesController {
 
             LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
 
+            int eventoID = 0;
+
+            List<Jogo> jogos = jogosDAOImp.getAll();
+
+            if(!jogos.isEmpty()) {
+                for (Jogo jogo : jogos) {
+                    if (jogo.getEventoID() > eventoID) {
+                        eventoID = jogo.getEventoID() + 1;
+                    }
+                }
+            }else {
+                eventoID = 1;
+            }
+
             if (ModalidadeExistente != null) {
 
                 if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
@@ -435,7 +450,7 @@ public class InserirModalidadesController {
                     return;
                 }
 
-                String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
+                String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
 
                 if(GameID == null || GameID.trim().isEmpty()){
                     alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a modalidade!");
@@ -449,9 +464,7 @@ public class InserirModalidadesController {
 
             modalidadeDAOImp.save(modalidade);
 
-            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
-
-            System.out.println("ID: " + GameID);
+            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
 
             if(GameID == null || GameID.trim().isEmpty()){
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade!");
