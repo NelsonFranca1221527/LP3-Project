@@ -987,7 +987,21 @@ public class InsercaoXMLController {
 
                     JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
 
-                    String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), evento.getId()));
+                    int eventoID = 0;
+
+                    List<Jogo> jogos = jogosDAOImp.getAll();
+
+                    if(!jogos.isEmpty()) {
+                        for (Jogo jogo : jogos) {
+                            if (jogo.getEventoID() > eventoID) {
+                                eventoID = jogo.getEventoID() + 1;
+                            }
+                        }
+                    }else {
+                        eventoID = 1;
+                    }
+
+                    String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
 
                     if(GameID == null || GameID.trim().isEmpty()){
                         alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade");
