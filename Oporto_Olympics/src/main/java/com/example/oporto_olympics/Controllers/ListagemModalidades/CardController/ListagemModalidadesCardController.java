@@ -614,7 +614,7 @@ public class ListagemModalidadesCardController {
 
         Random random = new Random();
 
-        // Simular jogos entre participantes
+        // Simular jogos
         List<Participante> participantes = new ArrayList<>(pontosParticipantes.keySet());
         for (int i = 0; i < participantes.size(); i++) {
             for (int j = i + 1; j < participantes.size(); j++) {
