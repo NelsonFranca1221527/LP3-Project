@@ -246,7 +246,45 @@ public class ClienteDAOImp implements ClienteDAO {
             return "Erro ao remover cliente: " + connection.getResponseMessage();
         }
     }
+    /**
+     * Remove um cliente da API com base no ID fornecido.
+     *
+     * Este método envia uma solicitação DELETE para a API, com o ID do cliente que se deseja remover.
+     * Se a resposta da API for bem-sucedida (código de resposta HTTP 200), o cliente será removido e
+     * uma mensagem de sucesso será retornada. Caso contrário, uma mensagem de erro será retornada.
+     *
+     * @param id O ID do cliente a ser removido.
+     *
+     * @return Uma mensagem indicando o sucesso ou falha na remoção do cliente.
+     *
+     * @throws IOException Se ocorrer um erro ao fazer a solicitação ou ao processar a resposta.
+     */
+    @Override
+    public String UpdatePassword(String id, String password) throws IOException {
+        String baseUrl = ConnectionAPI.getInstance().getURL();
+        String url = baseUrl + "client/" + id;
 
+        URL obj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        String jsonInputString = String.format("{\"Password\":\"%s\"}", password);
+        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+            wr.writeBytes(jsonInputString);
+            wr.flush();
+        }
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de resposta HTTP: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            return "Password alterada com sucesso!";
+        } else {
+            return "Erro ao alterar password: " + connection.getResponseMessage();
+        }
+    }
 
 
 

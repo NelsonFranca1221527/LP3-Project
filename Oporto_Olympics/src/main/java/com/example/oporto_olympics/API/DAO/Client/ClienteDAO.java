@@ -62,4 +62,5 @@ public interface ClienteDAO {
      * @throws IOException Se ocorrer um erro ao fazer a solicitação ou ao processar a resposta.
      */
     String removeClient(String id) throws IOException;
+    String UpdatePassword(String id, String password) throws IOException;
 }
