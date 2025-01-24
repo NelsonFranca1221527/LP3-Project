@@ -991,13 +991,14 @@ public class InsercaoXMLController {
 
                     List<Jogo> jogos = jogosDAOImp.getAll();
 
-                    if(!jogos.isEmpty()) {
+                    if (!jogos.isEmpty()) {
                         for (Jogo jogo : jogos) {
                             if (jogo.getEventoID() > eventoID) {
-                                eventoID = jogo.getEventoID() + 1;
+                                eventoID = jogo.getEventoID();
                             }
                         }
-                    }else {
+                        eventoID++;
+                    } else {
                         eventoID = 1;
                     }
 
