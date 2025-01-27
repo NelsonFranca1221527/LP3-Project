@@ -72,7 +72,7 @@ public class MenuInicialController {
         try {
             Stage s = (Stage) btnJogos.getScene().getWindow();
 
-            RedirecionarHelper.GotoListagemModalidades().switchScene(s);
+            RedirecionarHelper.GotoListagemJogos().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

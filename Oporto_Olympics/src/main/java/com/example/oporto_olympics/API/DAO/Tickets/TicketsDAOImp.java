@@ -146,33 +146,36 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
         int responseCode = connection.getResponseCode();
         System.out.println("Código de Resposta: " + responseCode);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
+        //Verifica se o código de resposta é igual a 200
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(response.toString());
-
-        List<Ticket> tickets = new ArrayList<>();
-
-        if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
-
-            ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
-
-            for (JsonNode node : ticketInfoArray) {
-                if (node.has("Seat")) {
-                    int seat = node.get("Seat").asInt();
-                    Ticket ticket = new Ticket(null, null, seat);
-                    tickets.add(ticket);
-                }
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
             }
+            in.close();
 
-            return Optional.of(tickets);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response.toString());
+
+            List<Ticket> tickets = new ArrayList<>();
+
+            if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
+
+                ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
+
+                for (JsonNode node : ticketInfoArray) {
+                    if (node.has("Seat")) {
+                        int seat = node.get("Seat").asInt();
+                        Ticket ticket = new Ticket(null, null, seat);
+                        tickets.add(ticket);
+                    }
+                }
+
+                return Optional.of(tickets);
+            }
         }
 
         return Optional.empty();

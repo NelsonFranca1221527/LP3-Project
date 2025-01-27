@@ -2,7 +2,6 @@ package com.example.oporto_olympics.API.DAO.Jogos;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
 import com.example.oporto_olympics.API.Models.Jogo;
-import com.example.oporto_olympics.API.Models.Ticket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -76,7 +75,7 @@ public class JogosDAOImp implements JogosDAO<Jogo> {
                     continue;
                 }
 
-                games.add(new Jogo("0", LocalDateTime.parse(node.get("StartDate").asText()),LocalDateTime.parse(node.get("EndDate").asText()),node.get("Location").asText(),node.get("Sport").asText(), node.get("Capacity").asInt(),node.get("EventId").asInt()));
+                games.add(new Jogo(node.get("Id").asText(), LocalDateTime.parse(node.get("StartDate").asText()),LocalDateTime.parse(node.get("EndDate").asText()),node.get("Location").asText(),node.get("Sport").asText(), node.get("Capacity").asInt(),node.get("EventId").asInt()));
             }
         }
 
