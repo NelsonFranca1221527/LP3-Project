@@ -969,7 +969,7 @@ public class InsercaoXMLController {
 
                 Local local = LocaisDisponiveis.get(locaisChoice.getValue());
 
-                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(), null);
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
 
                 HorarioStage.close();
             }

@@ -32,7 +32,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="325.0" layoutY="42.0" text="Capacidade">
+      <Label layoutX="325.0" layoutY="42.0" text="Capacidade:">
          <font>
             <Font size="18.0" />
          </font>
@@ -47,7 +47,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="CapacidadeLocal" layoutX="422.0" layoutY="42.0" text="#####">
+      <Label fx:id="CapacidadeLocal" layoutX="429.0" layoutY="42.0" text="#####">
          <font>
             <Font size="18.0" />
          </font>

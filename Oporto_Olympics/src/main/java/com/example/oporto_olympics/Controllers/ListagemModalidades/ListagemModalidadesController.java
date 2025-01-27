@@ -56,7 +56,13 @@ public class ListagemModalidadesController {
 
         List<Modalidade> AllModalidades = ModalidadeDAO.getAll();
 
+        int i = 0;
+
         for (Modalidade modalidade : AllModalidades) {
+
+            if(i > 5){
+                return;
+            }
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/ListagemModalidades/Cards/ListagemModalidadesCard.fxml"));
@@ -67,6 +73,8 @@ public class ListagemModalidadesController {
                 Locais.setUserData(modalidade);
 
                 ModalidadesContainer.getChildren().add(Locais);
+
+                i++;
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -430,13 +430,13 @@ public class InserirModalidadesController {
                     return;
                 }
 
-                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId(), null);
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId());
                 return;
             }
 
             modalidadeDAOImp.save(modalidade);
 
-            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(), null);
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
             alertHandler.getAlert().showAndWait();

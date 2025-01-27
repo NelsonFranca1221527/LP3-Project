@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -67,15 +68,16 @@ public class ListagemModalidadesCardController {
      */
     @FXML
     private Label NomeLabel;
-
+    /**
+     * Botão para mostrar o iniciar uma modalidade.
+     */
     @FXML
     private Button IniciarModalidadeButton;
-
-
+    /**
+     * Botão para mostrar o in uma modalidade.
+     */
     @FXML
-    private Button InscreverJogoButton;
-
-
+    private Button CriarJogoButton;
     /**
      * Rótulo para mostrar o tipo da modalidade.
      */
@@ -175,23 +177,11 @@ public class ListagemModalidadesCardController {
         ClientSingleton ClienteSingle = ClientSingleton.getInstance();
 
         //Verifica se o Utilizador é um Atleta
-        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() != null && ClienteSingle.getClient() == null) {
+        if (AtletaSingle.getAtleta() != null && GestorSingle.getGestor() == null && ClienteSingle.getClient() == null) {
             IniciarModalidadeButton.setDisable(true);
             IniciarModalidadeButton.setVisible(false);
-            InscreverJogoButton.setDisable(true);
-            InscreverJogoButton.setVisible(false);
-        }
-
-        //Verifica se o Utilizador é um Gestor
-        if (GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null && ClienteSingle.getClient() == null) {
-            InscreverJogoButton.setDisable(true);
-            InscreverJogoButton.setVisible(false);
-        }
-
-        //Verifica se o Utilizador é um Cliente
-        if (GestorSingle.getGestor() == null && AtletaSingle.getAtleta() == null && ClienteSingle.getClient() != null) {
-            IniciarModalidadeButton.setDisable(true);
-            IniciarModalidadeButton.setVisible(false);
+            CriarJogoButton.setDisable(true);
+            CriarJogoButton.setVisible(false);
         }
     }
 
@@ -877,13 +867,13 @@ public class ListagemModalidadesCardController {
 
         if (result.isPresent()) {
             ButtonType clickedButton = result.get();
-            if (clickedButton != ButtonType.OK) {
+            if (clickedButton == ButtonType.CANCEL) {
                 return;
             }
 
             int eventoID = EventoMap.get(clickedButton.getText());
 
-            HorarioModalidade horarioModalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), EventoMap.get(eventoID));
+            HorarioModalidade horarioModalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), eventoID);
 
             LocalDateTime dataHora = horarioModalidade.getDataHora();
 
@@ -897,28 +887,33 @@ public class ListagemModalidadesCardController {
 
             if (!jogos.isEmpty()) {
                 for (Jogo jogo : jogos) {
-                    if (jogo.getEventoID() > eventoID) {
-                        eventoID = jogo.getEventoID();
+                    if (jogo.getEventoID() > eventoJogoID) {
+                        eventoJogoID = jogo.getEventoID();
                     }
                 }
-                eventoID++;
+                eventoJogoID++;
             } else {
-                eventoID = 1;
+                eventoJogoID = 1;
             }
 
             LocaisDAOImp locaisDAOImp = new LocaisDAOImp(connection);
 
             Optional<Local> local = locaisDAOImp.get(horarioModalidade.getLocalID());
 
-            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.get().getNome(), modalidade.getNome(), local.get().getCapacidade(), eventoJogoID));
+            String localSemAcento = Normalizer.normalize(local.get().getNome(), Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+
+            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, localSemAcento, modalidade.getNome(), local.get().getCapacidade(), eventoJogoID));
 
             if (GameID == null || GameID.trim().isEmpty()) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade!");
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Jogo Inválido", "Houve um problema a inserir o novo jogo!");
                 alertHandler.getAlert().showAndWait();
                 return;
             }
 
-            //TODO: Guardar ID do Jogo na BD
+            modalidadeDAOImp.saveGameID(modalidade, GameID);
+
+            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Jogo Bem Sucedido!!", "Jogo Criado com Sucesso!");
+            alertHandler.getAlert().showAndWait();
         }
     }
 }
