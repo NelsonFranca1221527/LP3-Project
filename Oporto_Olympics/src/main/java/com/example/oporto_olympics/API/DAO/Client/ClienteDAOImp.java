@@ -242,9 +242,15 @@ public class ClienteDAOImp implements ClienteDAO {
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             return "Cliente removido com sucesso!";
-        } else {
+
+        } else if(responseCode == 406){
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "O Cliente tem um ticket associado, por isso não é permitido remover!");
+            alertHandler.getAlert().show();
+        }else {
             return "Erro ao remover cliente: " + connection.getResponseMessage();
         }
+
+        return null;
     }
     /**
      * Remove um cliente da API com base no ID fornecido.

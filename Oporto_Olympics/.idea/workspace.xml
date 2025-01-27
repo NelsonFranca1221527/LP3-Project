@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Listagem e inserção de cliente">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Cliente/AlterarPasswordCliente.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Client/ClienteDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Client/ClienteDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Client/ClienteDAOImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/API/DAO/Client/ClienteDAOImp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -244,6 +242,13 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.HelloApplication" />
+      <item itemvalue="Gradle.InscricaoAtletaEventoTest" />
+      <item itemvalue="Gradle.InscricaoAtletaEventoTest.InscricaoInvalidaCamposObrigatorios" />
+      <item itemvalue="Gradle.InserirModalidadesTest" />
+      <item itemvalue="Gradle.InserirModalidadeTest" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.InserirModalidadeTest" />
