@@ -969,43 +969,7 @@ public class InsercaoXMLController {
 
                 Local local = LocaisDisponiveis.get(locaisChoice.getValue());
 
-                LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
-
-                try {
-
-                    ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
-                    HttpURLConnection httpURLConnection = connectionAPI.getConexao();
-
-                    JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
-
-                    int eventoID = 0;
-
-                    List<Jogo> jogos = jogosDAOImp.getAll();
-
-                    if (!jogos.isEmpty()) {
-                        for (Jogo jogo : jogos) {
-                            if (jogo.getEventoID() > eventoID) {
-                                eventoID = jogo.getEventoID();
-                            }
-                        }
-                        eventoID++;
-                    } else {
-                        eventoID = 1;
-                    }
-
-                    String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
-
-                    if(GameID == null || GameID.trim().isEmpty()){
-                        alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade");
-                        alertHandler2.getAlert().showAndWait();
-                        return;
-                    }
-
-                    modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(), GameID);
-
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(), null);
 
                 HorarioStage.close();
             }

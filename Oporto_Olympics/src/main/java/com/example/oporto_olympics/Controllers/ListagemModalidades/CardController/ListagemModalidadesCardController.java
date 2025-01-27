@@ -1,9 +1,8 @@
 package com.example.oporto_olympics.Controllers.ListagemModalidades.CardController;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
-import com.example.oporto_olympics.API.DAO.Tickets.TicketsDAOImp;
-import com.example.oporto_olympics.API.Models.Client;
-import com.example.oporto_olympics.API.Models.Ticket;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
+import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
@@ -27,6 +26,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -822,23 +822,26 @@ public class ListagemModalidadesCardController {
     }
 
     /**
-     * Este método permite ao cliente inscrever-se num evento para assistir a uma modalidade específica.
+     * Este método permite ao gestor criar um jogo num evento numa modalidade específica.
      *
      * @param event o evento de clique associado ao botão
-     * @throws SQLException se ocorrer um erro de SQL durante a execução
-     * @throws IOException se ocorrer um erro de entrada/saída durante a execução
      */
     @FXML
-    void onClickInscreverJogoButton(ActionEvent event) throws SQLException, IOException {
+    void onClickCriarJogoButton(ActionEvent event) throws IOException, SQLException {
 
         AlertHandler alertHandler;
 
-        ConnectionBD conexaoBD = ConnectionBD.getInstance();
-        Connection conexao = conexaoBD.getConexao();
+        ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
+        HttpURLConnection httpURLConnection = connectionAPI.getConexao();
 
-        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+        ConnectionBD connectionBD = ConnectionBD.getInstance();
+        Connection connection = connectionBD.getConexao();
+
+        ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(connection);
 
         Modalidade modalidade = getModalidadeEspecifica();
+
+        JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
 
         Iterator<Map.Entry<String, Integer>> iterator = EventoMap.entrySet().iterator();
 
@@ -855,12 +858,12 @@ public class ListagemModalidadesCardController {
         }
 
         if (EventoMap.isEmpty()) {
-            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Eventos Disponiveis!!", "Não existe eventos em que possa inscrever para ver a modalidade " + NomeLabel.getText());
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Sem Eventos Disponiveis!!", "Não existe eventos em que possa criar um jogo da modalidade " + NomeLabel.getText());
             alertHandler.getAlert().showAndWait();
             return;
         }
 
-        alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Selecione um Evento!!", "De que evento é que deseja inscrever-se para ver a modalidade " + NomeLabel.getText() + " ?");
+        alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Selecione um Evento!!", "De que evento é que deseja criar um jogo da modalidade " + NomeLabel.getText() + " ?");
 
         List<ButtonType> buttonTypes = new ArrayList<>();
 
@@ -874,71 +877,48 @@ public class ListagemModalidadesCardController {
 
         if (result.isPresent()) {
             ButtonType clickedButton = result.get();
-            if (clickedButton == ButtonType.CANCEL) {
+            if (clickedButton != ButtonType.OK) {
                 return;
             }
-
-            alertHandler = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inscrever na Modalidade!!!", "Deseja inscrever-se para ver a modalidade " + NomeLabel.getText() + " ( " + clickedButton.getText() + " ) ? \n");
-            alertHandler.getAlert().getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alertHandler.getAlert().getDialogPane().setMaxHeight(Region.USE_PREF_SIZE);
-            Optional<ButtonType> rs = alertHandler.getAlert().showAndWait();
-
-            if (rs.isPresent() && rs.get() != ButtonType.OK) {
-                return;
-            }
-
-            ConnectionAPI connectionAPI = new ConnectionAPI();
-            HttpURLConnection httpURLConnection = connectionAPI.getConexao();
-
-            int modalidadeID = modalidade.getId();
 
             int eventoID = EventoMap.get(clickedButton.getText());
 
-            TicketsDAOImp ticketsDAOImp = new TicketsDAOImp(httpURLConnection);
+            HorarioModalidade horarioModalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), EventoMap.get(eventoID));
 
-            HorarioModalidade horarioModalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidadeID, eventoID);
+            LocalDateTime dataHora = horarioModalidade.getDataHora();
 
-            Optional<List<Ticket>> list = ticketsDAOImp.getbyGame(horarioModalidade.getGameID());
+            LocalTime duracao = horarioModalidade.getDuracao();
 
-            int quantidadeLugares = 0;
+            LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
 
-            if (list.isPresent()) {
-                quantidadeLugares = list.get().size();
+            int eventoJogoID = 0;
+
+            List<Jogo> jogos = jogosDAOImp.getAll();
+
+            if (!jogos.isEmpty()) {
+                for (Jogo jogo : jogos) {
+                    if (jogo.getEventoID() > eventoID) {
+                        eventoID = jogo.getEventoID();
+                    }
+                }
+                eventoID++;
+            } else {
+                eventoID = 1;
             }
 
-            LocaisDAOImp locaisDAOImp = new LocaisDAOImp(conexao);
+            LocaisDAOImp locaisDAOImp = new LocaisDAOImp(connection);
 
             Optional<Local> local = locaisDAOImp.get(horarioModalidade.getLocalID());
 
-            if(!local.isPresent()) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Local Não Encontrado", "Não foi encontrado o local onde a modalidade " + NomeLabel.getText() + " irá ser realizada!!");
+            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.get().getNome(), modalidade.getNome(), local.get().getCapacidade(), eventoJogoID));
+
+            if (GameID == null || GameID.trim().isEmpty()) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade!");
                 alertHandler.getAlert().showAndWait();
                 return;
             }
 
-            Client client = ClientSingleton.getInstance().getClient();
-
-            String ClienteID = client.getId();
-
-            //Verifica se o local é exterior, caso seja, permite criar um ticket
-            if(local.get().getCapacidade() <= 0){
-
-                ticketsDAOImp.save(new Ticket(ClienteID,horarioModalidade.getGameID(), quantidadeLugares + 1));
-                alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrição Bem Sucedida!!", "A inscrição para o jogo " + NomeLabel.getText() + " foi realizada com Sucesso!!");
-                alertHandler.getAlert().showAndWait();
-                return;
-            }
-
-            //Verifica se ao gerar mais 1 ticket ultrapaçasse a capacidade
-            if(quantidadeLugares + 1 > local.get().getCapacidade()) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Capacidade Máxima Alcançada!!", "Lamento mas o evento selecionado já está cheio!!");
-                alertHandler.getAlert().showAndWait();
-                return;
-            }
-
-            ticketsDAOImp.save(new Ticket(ClienteID,horarioModalidade.getGameID(), quantidadeLugares + 1));
-            alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrição Bem Sucedida!!", "A inscrição para o jogo " + NomeLabel.getText() + " foi realizada com Sucesso!!");
-            alertHandler.getAlert().showAndWait();
+            //TODO: Guardar ID do Jogo na BD
         }
     }
 }

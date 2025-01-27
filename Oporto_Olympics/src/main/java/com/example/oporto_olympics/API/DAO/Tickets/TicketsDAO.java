@@ -1,7 +1,7 @@
 package com.example.oporto_olympics.API.DAO.Tickets;
 
 
-import com.example.oporto_olympics.API.Models.Ticket;
+import com.example.oporto_olympics.API.Models.TicketInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +46,7 @@ public interface TicketsDAO<T> {
      * @param i O identificador único do objeto (geralmente o ID).
      * @return Um {@link Optional} contendo o objeto {@code T} se encontrado, ou vazio caso não exista.
      */
-    Optional<T> getbyClient(int i);
+    Optional<List<TicketInfo>> getbyClient(String i) throws IOException;
 
     /**
      * Obtém um objeto do tipo {@code T} através de um identificador único de um Jogo.
@@ -54,5 +54,5 @@ public interface TicketsDAO<T> {
      * @param i O identificador único do objeto (geralmente o ID).
      * @return Um {@link Optional} contendo o objeto {@code T} se encontrado, ou vazio caso não exista.
      */
-    Optional<List<Ticket>> getbyGame(String i) throws IOException;
+    Optional<List<TicketInfo>> getbyGame(String i) throws IOException;
 }

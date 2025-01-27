@@ -299,4 +299,12 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoListagemJogos() {
         return new RedirecionarHelper("Views/ListagemJogos/ListagemJogos.fxml", "Listagem Jogos");
     }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de Tickets.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de listagem de tickets.
+     */
+    public static RedirecionarHelper GotoListagemTickets() {
+        return new RedirecionarHelper("Views/ListagemTickets/ListagemTickets.fxml", "Listagem Tickets");
+    }
 }

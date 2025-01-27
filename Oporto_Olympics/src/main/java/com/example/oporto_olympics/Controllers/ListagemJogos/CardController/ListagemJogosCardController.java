@@ -5,6 +5,7 @@ import com.example.oporto_olympics.API.DAO.Tickets.TicketsDAOImp;
 import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.API.Models.Ticket;
+import com.example.oporto_olympics.API.Models.TicketInfo;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
@@ -118,7 +119,7 @@ public class ListagemJogosCardController {
 
         String GameID = jogo.getId();
 
-        Optional<List<Ticket>> list = ticketsDAOImp.getbyGame(GameID);
+        Optional<List<TicketInfo>> list = ticketsDAOImp.getbyGame(GameID);
 
         int quantidadeLugares = 0;
 

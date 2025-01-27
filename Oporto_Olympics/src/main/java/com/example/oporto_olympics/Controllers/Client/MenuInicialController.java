@@ -58,7 +58,7 @@ public class MenuInicialController {
         try {
             Stage s = (Stage) btnBilhetes.getScene().getWindow();
 
-
+            RedirecionarHelper.GotoListagemTickets().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
