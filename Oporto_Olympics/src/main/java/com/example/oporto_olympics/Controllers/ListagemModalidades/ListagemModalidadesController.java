@@ -7,6 +7,7 @@ import com.example.oporto_olympics.Controllers.ListagemModalidades.CardControlle
 import com.example.oporto_olympics.Models.Atleta;
 import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
+import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,6 +86,7 @@ public class ListagemModalidadesController {
 
         AtletaSingleton AtletaSingle = AtletaSingleton.getInstance();
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
+        ClientSingleton ClienteSingle = ClientSingleton.getInstance();
 
         if(AtletaSingle.getAtleta() != null){
             RedirecionarHelper.GotoMenuPrincipalAtleta().switchScene(s);
@@ -94,5 +96,8 @@ public class ListagemModalidadesController {
             RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
         }
 
+        if(ClienteSingle.getClient() != null){
+            RedirecionarHelper.GotoHomeClient().switchScene(s);
+        }
     }
 }

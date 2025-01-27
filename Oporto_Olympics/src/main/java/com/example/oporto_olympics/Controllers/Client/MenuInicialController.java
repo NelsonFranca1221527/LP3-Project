@@ -4,6 +4,7 @@ import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -19,25 +20,25 @@ public class MenuInicialController {
     @FXML
     private Label txtNome;
     /**
-     * Botão (Pane) que permite ao utilizador sair da aplicação.
+     * Botão que permite ao utilizador sair da aplicação.
      */
     @FXML
-    private Pane SairBtn;
+    private Button SairBtn;
     /**
-     * Botão (Pane) que redireciona para a secção de jogos.
+     * Botão que redireciona para a secção de jogos.
      */
     @FXML
-    private Pane btnJogos;
+    private Button btnJogos;
     /**
-     * Botão (Pane) que redireciona para a secção de bilhetes.
+     * Botão que redireciona para a secção de bilhetes.
      */
     @FXML
-    private Pane btnBilhetes;
+    private Button btnBilhetes;
     /**
-     * Botão (Pane) que redireciona para a secção do perfil do cliente.
+     * Botão que redireciona para a secção do perfil do cliente.
      */
     @FXML
-    private Pane btnPerfil;
+    private Button PerfilBtn;
     /**
      * Método de inicialização do controlador.
      * Este método é executado automaticamente ao carregar a interface gráfica,
@@ -47,6 +48,48 @@ public class MenuInicialController {
     public void initialize() {
         Client client = ClientSingleton.getInstance().getClient();
         txtNome.setText(client.getName());
+    }
+    /**
+     * Ação associada ao botão "Bilhetes".
+     * Este método redireciona o utilizador para a janela de Bilhetes.
+     */
+    @FXML
+    protected void OnBilhetesButtonClick(){
+        try {
+            Stage s = (Stage) btnBilhetes.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação associada ao botão "Jogos".
+     * Este método redireciona o utilizador para a janela de Jogos.
+     */
+    @FXML
+    protected void OnJogosButtonClick() {
+        try {
+            Stage s = (Stage) btnJogos.getScene().getWindow();
+
+            RedirecionarHelper.GotoListagemModalidades().switchScene(s);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação associada ao botão "Perfil".
+     * Este método redireciona o utilizador para a janela do perfil do utilizador.
+     */
+    @FXML
+    protected void OnPerfilButtonClick(){
+        try {
+            Stage s = (Stage) PerfilBtn.getScene().getWindow();
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     /**
      * Ação associada ao botão "Sair".

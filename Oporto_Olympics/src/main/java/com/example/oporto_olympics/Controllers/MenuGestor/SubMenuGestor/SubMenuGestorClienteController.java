@@ -70,7 +70,7 @@ public class SubMenuGestorClienteController {
         try {
             Stage s = (Stage) VoltarBtn.getScene().getWindow();
 
-            RedirecionarHelper.GotoSubMenuCliente().switchScene(s);
+            RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

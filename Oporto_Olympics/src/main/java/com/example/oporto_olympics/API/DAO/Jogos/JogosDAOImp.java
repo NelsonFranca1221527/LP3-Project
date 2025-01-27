@@ -2,8 +2,10 @@ package com.example.oporto_olympics.API.DAO.Jogos;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
 import com.example.oporto_olympics.API.Models.Jogo;
+import com.example.oporto_olympics.API.Models.Ticket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +33,54 @@ public class JogosDAOImp implements JogosDAO<Jogo> {
      * @return Uma lista de objetos {@code T} que representam todos os dados armazenados.
      */
     @Override
-    public List<Jogo> getAll() {
-        return List.of();
+    public List<Jogo> getAll() throws IOException {
+
+        String url = ConnectionAPI.getInstance().getURL() + "/game/";
+
+        URL obj = new URL(url);
+
+        connection = (HttpURLConnection) obj.openConnection();
+
+        connection.setRequestMethod("GET");
+
+        connection.setDoOutput(true);
+
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de Resposta: " + responseCode);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(response.toString());
+
+        List<Jogo> games = new ArrayList<>();
+
+        if (rootNode.has("Games") && rootNode.get("Games").isArray()) {
+
+            ArrayNode gameArray = (ArrayNode) rootNode.get("Games");
+
+            for (JsonNode node : gameArray) {
+
+                if(String.valueOf(node.get("Active").asText()).equals("False")) {
+                    continue;
+                }
+
+                games.add(new Jogo("0", LocalDateTime.parse(node.get("StartDate").asText()),LocalDateTime.parse(node.get("EndDate").asText()),node.get("Location").asText(),node.get("Sport").asText(), node.get("Capacity").asInt(),node.get("EventId").asInt()));
+            }
+        }
+
+        return games;
     }
 
     /**
