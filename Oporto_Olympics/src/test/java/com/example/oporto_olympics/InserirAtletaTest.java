@@ -41,16 +41,11 @@ class InserirAtletaTest {
         InserirAtletaDAOImp dao = new InserirAtletaDAOImp(conexao);
         AtletaDAOImp dao2 = new AtletaDAOImp(conexao);
 
-        if(!dao.getPais(pais)){
-            assertFalse(criado, "País inválido.");
-        }
+        assertTrue(dao.getPais(pais), "País inválido.");
 
-        if(altura < 120.00){
-            assertFalse(criado,"O atleta não deve menor a 120 cm.");
-        }
-        if(peso < 20){
-            assertFalse(criado, "O alteta não pode pesar menor de 20 Kg.");
-        }
+        assertTrue(altura > 120.00,"O atleta não deve menor a 120 cm.");
+
+        assertTrue(peso > 20, "O alteta não pode pesar menor de 20 Kg.");
 
         dao.saveAtleta(nome,pais,altura,peso,DataNasc,genero);
 
@@ -85,19 +80,10 @@ class InserirAtletaTest {
 
         InserirAtletaDAOImp dao = new InserirAtletaDAOImp(conexao);
 
-        if(!dao.getPais(pais)){
-            assertTrue(true, "País inválido.");
-        }
+        assertFalse(dao.getPais(pais), "País válido.");
 
-        if(altura < 120){
-            assertTrue(true,"O atleta não deve menor a 120 cm.");
-        }
-        if(peso < 20){
-            assertTrue(true, "O alteta não pode pesar menor de 20 Kg.");
-        }
+        assertTrue(altura < 120.00,"O atleta deve menor a 120 cm.");
 
-
+        assertTrue(peso < 20, "O alteta pode pesar menor de 20 Kg.");
     }
-
-
 }
