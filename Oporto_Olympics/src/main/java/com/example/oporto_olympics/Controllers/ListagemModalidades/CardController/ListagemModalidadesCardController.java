@@ -900,9 +900,7 @@ public class ListagemModalidadesCardController {
 
             Optional<Local> local = locaisDAOImp.get(horarioModalidade.getLocalID());
 
-            String localSemAcento = Normalizer.normalize(local.get().getNome(), Normalizer.Form.NFD).replaceAll("\\p{M}", "");
-
-            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, localSemAcento, modalidade.getNome(), local.get().getCapacidade(), eventoJogoID));
+            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.get().getNome(), modalidade.getNome(), local.get().getCapacidade(), eventoJogoID));
 
             if (GameID == null || GameID.trim().isEmpty()) {
                 alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Jogo Inválido", "Houve um problema a inserir o novo jogo!");

@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class JogosDAOImp implements JogosDAO<Jogo> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
 
@@ -100,7 +98,7 @@ public class JogosDAOImp implements JogosDAO<Jogo> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic "+ ConnectionAPI.getInstance().getBase64Auth());
 
@@ -119,10 +117,9 @@ public class JogosDAOImp implements JogosDAO<Jogo> {
                 + "\"EventId\": " + jogo.getEventoID()
                 + "}";
 
-        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-        wr.writeBytes(corpo);
-        wr.flush();
-        wr.close();
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
+            writer.write(corpo);
+            writer.flush();
 
         int responseCode = connection.getResponseCode();
         System.out.println("Código de resposta: " + responseCode);
