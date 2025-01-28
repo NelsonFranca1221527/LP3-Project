@@ -1,11 +1,14 @@
 package com.example.oporto_olympics.Controllers.ListagemTickets;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
 import com.example.oporto_olympics.API.DAO.Tickets.TicketsDAOImp;
 import com.example.oporto_olympics.API.Models.Client;
+import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.API.Models.TicketInfo;
 import com.example.oporto_olympics.Controllers.ListagemTickets.CardController.ListagemTicketsCardController;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.event.ActionEvent;
@@ -19,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,26 +58,59 @@ public class ListagemTicketsController {
 
         TicketsDAOImp ticketsDAOImp = new TicketsDAOImp(httpURLConnection);
 
-        Client client = ClientSingleton.getInstance().getClient();
+        GestorSingleton GestorSingle = GestorSingleton.getInstance();
+        ClientSingleton ClienteSingle = ClientSingleton.getInstance();
 
-        String ClienteID = client.getId();
+        List<TicketInfo> list = new ArrayList<>();
 
-        Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyClient(ClienteID);
+        //Verifica se o Utilizador é um Cliente
+        if (ClienteSingle.getClient() != null) {
 
-        if(ticketList.isPresent()) {
-            for (TicketInfo ticket : ticketList.get()) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/ListagemTickets/Cards/ListagemTicketsCard.fxml"));
-                    Pane Tickets = loader.load();
-                    ListagemTicketsCardController cardsController = loader.getController();
-                    cardsController.PreencherDados(ticket);
+            String ClienteID = ClienteSingle.getClient().getId();
 
-                    Tickets.setUserData(ticket);
+            Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyClient(ClienteID);
 
-                    TicketsContainer.getChildren().add(Tickets);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if(ticketList.isPresent()) {
+                list = ticketList.get();
+            }
+
+        }
+
+        //Verifica se o Utilizador é um Gestor
+        if(GestorSingle.getGestor() != null ) {
+
+            JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
+
+             List<Jogo> jogosList = jogosDAOImp.getAll();
+
+             for (Jogo jogo : jogosList){
+
+                 Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyGame(jogo.getId());
+
+                 if(ticketList.isPresent()) {
+                     list = ticketList.get();
+                 }
+             }
+        }
+
+        if(!list.isEmpty()) {
+            ListarCards(list);
+        }
+    }
+    
+    public void ListarCards(List<TicketInfo> listaTickets) {
+        for (TicketInfo ticket : listaTickets) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/oporto_olympics/Views/ListagemTickets/Cards/ListagemTicketsCard.fxml"));
+                Pane Tickets = loader.load();
+                ListagemTicketsCardController cardsController = loader.getController();
+                cardsController.PreencherDados(ticket);
+
+                Tickets.setUserData(ticket);
+
+                TicketsContainer.getChildren().add(Tickets);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
