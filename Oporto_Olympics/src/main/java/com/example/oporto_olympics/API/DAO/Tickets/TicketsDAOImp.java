@@ -53,7 +53,7 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic "+ ConnectionAPI.getInstance().getBase64Auth());
 
@@ -128,7 +128,7 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
 
@@ -201,7 +201,7 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
 
