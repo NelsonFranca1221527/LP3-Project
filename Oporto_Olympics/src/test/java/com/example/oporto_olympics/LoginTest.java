@@ -41,12 +41,10 @@ class LoginTest {
         Connection conexao = connectionBD.getConexao();
 
         String User = "1000024" ;
-        String Password = StringtoHash("1000024");
+        String Password = StringtoHash("1234");
         UserDAOImp userDAO = new UserDAOImp(conexao);
 
-        String TipoUser = userDAO.getUserType(Integer.parseInt(User), Password);
-
-        assertEquals("Gestor", TipoUser, "O utilizador devia ser gestor...");
+        assertEquals("Gestor", userDAO.getUserType(Integer.parseInt(User), Password), "O utilizador devia ser gestor...");
     }
 
     /**
