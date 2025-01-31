@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -39,6 +40,10 @@ public class ListagemClientesController {
      */
     @FXML
     private VBox clientesVBox;
+
+    @FXML
+    private ScrollPane clientesScrollPane;
+
     /**
      * Instância do DAO de clientes.
      *
@@ -63,18 +68,14 @@ public class ListagemClientesController {
      */
     @FXML
     public void initialize() {
+        clientesScrollPane.setContent(clientesVBox);
+        clientesScrollPane.setFitToWidth(true);
         loadClients();
     }
 
-    /**
-     * Evento para carregar todos os clientes na VBox.
-     * Esse método será chamado para preencher a VBox com os clientes obtidos da API.
-     */
     private void loadClients() {
         try {
-
             List<Client> clients = clienteDAO.getAllClients();
-
             clientesVBox.getChildren().clear();
 
             for (Client client : clients) {
@@ -85,16 +86,11 @@ public class ListagemClientesController {
                 Label nameLabel = new Label("Nome: " + client.getName());
                 Label emailLabel = new Label("Email: " + client.getEmail());
                 Label statusLabel = new Label("Status: " + (client.getActive() ? "Ativo" : "Inativo"));
-                Button disableButton;
+
+                Button disableButton = new Button(client.getActive() ? "Desativar" : "Ativar");
                 Button removeButton = new Button("Remover");
+
                 removeButton.setOnAction(e -> removeClient(client.getId()));
-                if (client.getActive() == true){
-                     disableButton = new Button("Desativar");
-
-                } else {
-                     disableButton = new Button("Ativar");
-
-                }
                 disableButton.setOnAction(e -> deactivateClient(client.getId(), client.getActive()));
 
                 BorderPane clientContainer = new BorderPane();
@@ -104,7 +100,6 @@ public class ListagemClientesController {
 
                 HBox footer = new HBox(10, removeButton, disableButton);
                 clientContainer.setBottom(footer);
-
                 clientContainer.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: #f5f5f5;");
 
                 clientesVBox.getChildren().add(clientContainer);
@@ -113,6 +108,7 @@ public class ListagemClientesController {
             System.out.println("Erro ao buscar clientes: " + e.getMessage());
         }
     }
+
 
     /**
      * Método para remover o cliente.

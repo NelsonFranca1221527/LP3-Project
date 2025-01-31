@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Storage Procedures">
+    <list default="true" id="aabb671f-db55-4e36-b65e-b7c66de86a4f" name="Changes" comment="Update ao inserir client">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Client/InsertClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Client/InsertClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Client/ListagemClientesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oporto_olympics/Controllers/Client/ListagemClientesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Cliente/ListagemClientes.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oporto_olympics/Views/Cliente/ListagemClientes.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="dev" />
+        <entry key="$PROJECT_DIR$/.." value="feature-082-API" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -79,33 +80,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.InscricaoAtletaEventoTest.InscricaoInvalidaCamposObrigatorios.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.InscricaoAtletaEventoTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.InserirLocalTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.InserirModalidadeTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.InserirModalidadesTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature-082-API&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views/ListagemTickets/Cards&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.4597701&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.InscricaoAtletaEventoTest.InscricaoInvalidaCamposObrigatorios.executor": "Run",
+    "Gradle.InscricaoAtletaEventoTest.executor": "Run",
+    "Gradle.InserirLocalTest.executor": "Run",
+    "Gradle.InserirModalidadeTest.executor": "Run",
+    "Gradle.InserirModalidadesTest.executor": "Run",
+    "Gradle.Oporto_Olympics [:com.example.oporto_olympics.HelloApplication.main()].executor": "Run",
+    "Gradle.Oporto_Olympics [:org.example.oporto_olympics.HelloApplication.main()].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views/ListagemTickets/Cards",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.4597701",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ruben\Desktop\Oporto_Olympics\Oporto_Olympics\src\main\resources\com\example\oporto_olympics\Views\ListagemTickets\Cards" />
@@ -336,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732829362002</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update ao inserir client">
+      <option name="closed" value="true" />
+      <created>1738351147396</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738351147396</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,7 +370,8 @@
     <MESSAGE value="Fix da inscrição em evento" />
     <MESSAGE value="Update do calendario com informações do local" />
     <MESSAGE value="Login e Singleton e MenuPrincipal do Cliente" />
-    <option name="LAST_COMMIT_MESSAGE" value="Login e Singleton e MenuPrincipal do Cliente" />
+    <MESSAGE value="Update ao inserir client" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update ao inserir client" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
