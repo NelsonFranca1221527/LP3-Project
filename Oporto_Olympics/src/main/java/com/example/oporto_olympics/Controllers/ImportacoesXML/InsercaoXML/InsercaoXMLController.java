@@ -1003,7 +1003,7 @@ public class InsercaoXMLController {
 
         if(listaHorarios == null || listaHorarios.isEmpty() ||
                 locais == null || locais.isEmpty()){
-            return null;
+            return locais;
         }
 
         Iterator<Map.Entry<String, Local>> iterator = locais.entrySet().iterator();
