@@ -8,13 +8,18 @@ import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.API.Models.TicketInfo;
 import com.example.oporto_olympics.Controllers.ListagemTickets.CardController.ListagemTicketsCardController;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import com.example.oporto_olympics.Models.Local;
 import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,9 +27,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Controlador responsável pela listagem de tickets de um cliente.
@@ -37,7 +40,15 @@ public class ListagemTicketsController {
      */
     @FXML
     private VBox TicketsContainer;
-
+    /**
+     * ChoiceBox para selecionar um jogo da lista.
+     */
+    @FXML
+    private ChoiceBox<String> ChoiceJogo;
+    /**
+     * Mapa que armazena o nome dos jogos e os respetivos IDs.
+     */
+    private HashMap<String,String> jogoMap = new HashMap<>();
     /**
      * Botão que permite voltar à tela anterior.
      */
@@ -56,48 +67,116 @@ public class ListagemTicketsController {
         ConnectionAPI connectionAPI = new ConnectionAPI();
         HttpURLConnection httpURLConnection = connectionAPI.getConexao();
 
+        JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
+
+        List<Jogo> jogoList = jogosDAOImp.getAll();
+
+        for (Jogo jogo : jogoList) {
+            jogoMap.put(jogo.getDesporto() + " - " + jogo.getLocal(), jogo.getId());
+        }
+
+        ChoiceJogo.setItems(FXCollections.observableArrayList(jogoMap.keySet()));
+        ChoiceJogo.getItems().add("-------");
+        ChoiceJogo.setValue("-------");
+
         TicketsDAOImp ticketsDAOImp = new TicketsDAOImp(httpURLConnection);
 
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
         ClientSingleton ClienteSingle = ClientSingleton.getInstance();
 
-        List<TicketInfo> list = new ArrayList<>();
+        //Verifica se o jogo escolhido foi alterado
+        ChoiceJogo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
-        //Verifica se o Utilizador é um Cliente
-        if (ClienteSingle.getClient() != null) {
+            Label SemBilhetes = new Label("Não possui bilhetes para este Jogo!");
+            SemBilhetes.paddingProperty().set(new Insets(10));
+            Label SemJogoSelecionado = new Label("Selecione um jogo para ver os bilhetes!!");
+            SemJogoSelecionado.paddingProperty().set(new Insets(10));
 
-            String ClienteID = ClienteSingle.getClient().getId();
+            TicketsContainer.getChildren().clear();
 
-            Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyClient(ClienteID);
+            List<TicketInfo> list = new ArrayList<>();
 
-            if(ticketList.isPresent()) {
-                list = ticketList.get();
+            if(newValue.equals("-------")){
+                TicketsContainer.getChildren().add(SemJogoSelecionado);
+                return;
             }
 
-        }
+            String gameID = jogoMap.get(newValue);
 
-        //Verifica se o Utilizador é um Gestor
-        if(GestorSingle.getGestor() != null ) {
+            try {
+                Optional<List<TicketInfo>> ticketListByGame = ticketsDAOImp.getbyGame(gameID);
 
-            JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
+                if (!ticketListByGame.isPresent()) {
+                    TicketsContainer.getChildren().add(SemBilhetes);
+                    return;
+                }
 
-             List<Jogo> jogosList = jogosDAOImp.getAll();
+                //Verifica se o Utilizador é um Cliente
+                if (ClienteSingle.getClient() != null) {
 
-             for (Jogo jogo : jogosList){
+                    String ClienteID = ClienteSingle.getClient().getId();
 
-                 Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyGame(jogo.getId());
+                    //Lista de Todos os Tickets de todos Jogos
+                    List<TicketInfo> gameTickets = ticketListByGame.get();
 
-                 if(ticketList.isPresent()) {
-                     list = ticketList.get();
-                 }
-             }
-        }
+                    Optional<List<TicketInfo>> ticketList = ticketsDAOImp.getbyClient(ClienteID);
 
-        if(!list.isEmpty()) {
-            ListarCards(list);
-        }
+                    if (ticketList.isEmpty()) {
+                        TicketsContainer.getChildren().add(SemBilhetes);
+                        return;
+                    }
+
+                    //Lista de Todos os Tickets do Cliente
+                    List<TicketInfo> clientTickets = ticketList.get();
+
+
+                    Iterator<TicketInfo> iterator = gameTickets.iterator();
+                    while (iterator.hasNext()) {
+                        TicketInfo gameTicket = iterator.next();
+
+                        boolean TicketEncontrado = false;
+
+                        for (TicketInfo clientTicket : clientTickets) {
+                            /*Se encontrar o ticket do cliente para o jogo indicado não o remove
+                            caso contrário remove o ticket (que estava a ser lido) da lista de tickets de todos os jogos*/
+                            if (gameTicket.getId().equals(clientTicket.getId())) {
+                                TicketEncontrado = true;
+                                break;
+                            }
+                        }
+
+                        if (!TicketEncontrado) {
+                            iterator.remove();
+                        }
+                    }
+
+                    if (!gameTickets.isEmpty()) {
+                        list = gameTickets;
+                    }
+                }
+
+                //Verifica se o Utilizador é um Gestor
+                if(GestorSingle.getGestor() != null ) {
+                    if(!ticketListByGame.get().isEmpty()) {
+                        list = ticketListByGame.get();
+                    }
+                }
+
+                if(!list.isEmpty()) {
+                    ListarCards(list);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
-    
+
+    /**
+     * Este método recebe uma lista de tickets e cria um card para cada ticket,
+     * exibindo os dados do ticket na interface gráfica.
+     *
+     * @param listaTickets A lista de tickets a ser exibida como cards na interface.
+     */
     public void ListarCards(List<TicketInfo> listaTickets) {
         for (TicketInfo ticket : listaTickets) {
             try {
