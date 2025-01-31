@@ -194,9 +194,9 @@ public class CalendarioAtletaController {
         }
     }
     /**
-     * Abre uma janela pop-up com os detalhes de um evento e sua modalidade associada.
+     * Abre uma janela pop-up com os detalhes de um evento e suas modalidades associadas.
      *
-     * Este método busca as informações de um evento, sua modalidade e os detalhes relacionados
+     * Este método busca as informações de um evento, suas modalidades e os detalhes relacionados
      * (como data e duração) a partir de seus respectivos IDs. Em seguida, exibe essas informações
      * em uma janela pop-up. Caso algum dos dados não seja encontrado ou ocorra um erro, uma
      * mensagem de erro será exibida.

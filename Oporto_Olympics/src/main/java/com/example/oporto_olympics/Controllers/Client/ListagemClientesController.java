@@ -17,44 +17,50 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+
 /**
  * Controlador da interface de listagem de clientes.
  *
- * Esta classe é responsável por gerenciar a interface de listagem de clientes,
- * incluindo a visualização dos clientes e a navegação entre as telas. Utiliza
- * o DAO {@link ClienteDAO} para obter os dados dos clientes e exibi-los.
+ * Esta classe gere a interface gráfica responsável por exibir a lista de clientes.
+ * Permite a visualização dos clientes, bem como a navegação entre as telas da aplicação.
+ * Utiliza o DAO {@link ClienteDAO} para obter e manipular os dados dos clientes.
  */
 public class ListagemClientesController {
+
     /**
-     * Botão de navegação para voltar à tela anterior.
-     *
-     * Este botão é usado para permitir ao utilizador voltar à tela anterior.
+     * Botão utilizado para voltar à tela anterior.
      */
     @FXML
     private Button VoltarBtn;
+
     /**
      * VBox que contém os itens de clientes na interface gráfica.
      *
-     * Esta VBox é usada para armazenar e organizar os elementos de cliente
-     * que serão exibidos na interface do utilizador.
+     * Esta VBox organiza e apresenta os clientes na interface do utilizador.
      */
     @FXML
     private VBox clientesVBox;
 
+    /**
+     * ScrollPane utilizado para permitir a rolagem da lista de clientes.
+     */
     @FXML
     private ScrollPane clientesScrollPane;
 
     /**
-     * Instância do DAO de clientes.
+     * Instância do DAO responsável pela gestão dos clientes.
      *
-     * O {@link ClienteDAO} é usado para interagir com a base de dados ou
-     * com o serviço de clientes, obtendo, inserindo ou removendo dados de
-     * clientes conforme necessário.
+     * O {@link ClienteDAO} permite interagir com a base de dados ou serviço de clientes,
+     * possibilitando a obtenção, inserção e remoção de dados.
      */
     private ClienteDAO clienteDAO = new ClienteDAOImp();
 
     /**
-     * Evento para o botão "Voltar". Este método redireciona o utilizador para o menu de inserções.
+     * Evento acionado ao clicar no botão "Voltar".
+     *
+     * Este método redireciona o utilizador para o menu de inserções.
+     *
+     * @param event Evento do clique no botão.
      */
     @FXML
     void OnVoltarButtonClick(ActionEvent event) {
@@ -63,8 +69,9 @@ public class ListagemClientesController {
     }
 
     /**
-     * Método para carregar todos os clientes na VBox.
-     * Este método é chamado durante a inicialização para popular a lista de clientes.
+     * Método chamado durante a inicialização do controlador.
+     *
+     * Configura o ScrollPane e carrega a lista de clientes.
      */
     @FXML
     public void initialize() {
@@ -73,6 +80,11 @@ public class ListagemClientesController {
         loadClients();
     }
 
+    /**
+     * Carrega e exibe a lista de clientes na interface gráfica.
+     *
+     * Obtém os clientes do DAO e adiciona-os dinamicamente à VBox.
+     */
     private void loadClients() {
         try {
             List<Client> clients = clienteDAO.getAllClients();
@@ -109,12 +121,10 @@ public class ListagemClientesController {
         }
     }
 
-
     /**
-     * Método para remover o cliente.
-     * Este método pode ser chamado quando o botão "Remover" for pressionado.
+     * Remove um cliente da base de dados e atualiza a lista na interface.
      *
-     * @param clientId O ID do cliente a ser removido.
+     * @param clientId ID do cliente a ser removido.
      */
     private void removeClient(String clientId) {
         try {
@@ -126,25 +136,23 @@ public class ListagemClientesController {
     }
 
     /**
-     * Método para desativar o cliente.
-     * Este método pode ser chamado quando o botão "Desativar" for pressionado.
+     * Ativa ou desativa um cliente na base de dados e atualiza a lista na interface.
      *
-     * @param clientid O cliente a ser desativado.
+     * Se o cliente estiver ativo, será desativado. Se estiver inativo, será reativado.
+     *
+     * @param clientId ID do cliente a ser alterado.
+     * @param status Estado atual do cliente (ativo ou inativo).
      */
-    private void deactivateClient(String clientid, Boolean status) {
-
+    private void deactivateClient(String clientId, Boolean status) {
         try {
-
-            if (status == true) {
-                clienteDAO.BanClient(clientid);
-                loadClients();
-            }else {
-                clienteDAO.UnBanClient(clientid);
-                loadClients();
+            if (status) {
+                clienteDAO.BanClient(clientId);
+            } else {
+                clienteDAO.UnBanClient(clientId);
             }
+            loadClients();
         } catch (IOException e) {
-            System.out.println("Erro ao remover cliente: " + e.getMessage());
+            System.out.println("Erro ao alterar estado do cliente: " + e.getMessage());
         }
-
     }
 }

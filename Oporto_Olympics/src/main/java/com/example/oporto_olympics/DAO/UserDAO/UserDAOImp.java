@@ -75,6 +75,17 @@ public class UserDAOImp implements DAO<User> {
 
     }
 
+    /**
+     * Verifica se a password fornecida é igual à password atual do utilizador com o ID especificado.
+     *
+     * Este método consulta a base de dados para verificar se a password inserida coincide com a armazenada
+     * para o utilizador correspondente. Se as passwords coincidirem, um alerta informativo será exibido.
+     * Em caso de erro na consulta, um alerta de erro será mostrado.
+     *
+     * @param password A password a ser verificada.
+     * @param id O ID do utilizador cuja password será comparada.
+     * @return {@code true} se a password fornecida for igual à armazenada na base de dados, {@code false} caso contrário.
+     */
     public boolean VerificarPasswordIgual(String password, int id) {
         try {
             database = ConnectionBD.getInstance();
