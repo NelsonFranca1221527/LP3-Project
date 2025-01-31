@@ -20,12 +20,12 @@ public class ConnectionAPI {
     private static ConnectionAPI instancia = null;
 
     /**
-     * Construtor privado que inicializa a conexão com a API, carregando as credenciais do ficheiro
+     * Construtor que inicializa a conexão com a API, carregando as credenciais do ficheiro
      * e codificando-as em Base64 para autenticação.
      *
      * @throws IOException Se ocorrer um erro ao carregar as credenciais da API.
      */
-    private ConnectionAPI() throws IOException {
+    public ConnectionAPI() throws IOException {
         try {
             ConnectionAPI.APIInfo loadApi = load();
 
