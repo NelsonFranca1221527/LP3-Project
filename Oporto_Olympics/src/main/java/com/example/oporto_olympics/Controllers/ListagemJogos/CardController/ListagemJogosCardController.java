@@ -134,7 +134,7 @@ public class ListagemJogosCardController {
         //Verifica se o local é exterior, caso seja, permite criar um ticket
         if (Integer.parseInt(CapacidadeLocal.getText()) <= 0) {
 
-            ticketsDAOImp.save(new Ticket(ClienteID, GameID, quantidadeLugares + 1));
+            ticketsDAOImp.save(new Ticket("",ClienteID, GameID, quantidadeLugares + 1));
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrição Bem Sucedida!!", "A inscrição para o jogo " + DesportoLabel.getText() + " foi realizada com Sucesso!!");
             alertHandler.getAlert().showAndWait();
             return;
@@ -147,7 +147,7 @@ public class ListagemJogosCardController {
             return;
         }
 
-        ticketsDAOImp.save(new Ticket(ClienteID, GameID, quantidadeLugares + 1));
+        ticketsDAOImp.save(new Ticket("",ClienteID, GameID, quantidadeLugares + 1));
         alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrição Bem Sucedida!!", "A inscrição para o jogo " + DesportoLabel.getText() + " foi realizada com Sucesso!!");
         alertHandler.getAlert().showAndWait();
     }

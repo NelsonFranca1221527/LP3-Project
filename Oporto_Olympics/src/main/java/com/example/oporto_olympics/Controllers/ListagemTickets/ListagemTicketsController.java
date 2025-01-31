@@ -3,13 +3,10 @@ package com.example.oporto_olympics.Controllers.ListagemTickets;
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
 import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
 import com.example.oporto_olympics.API.DAO.Tickets.TicketsDAOImp;
-import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.API.Models.TicketInfo;
 import com.example.oporto_olympics.Controllers.ListagemTickets.CardController.ListagemTicketsCardController;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
-import com.example.oporto_olympics.Models.Local;
-import com.example.oporto_olympics.Singleton.AtletaSingleton;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
 import com.example.oporto_olympics.Singleton.GestorSingleton;
 import javafx.collections.FXCollections;
@@ -79,6 +76,13 @@ public class ListagemTicketsController {
         ChoiceJogo.getItems().add("-------");
         ChoiceJogo.setValue("-------");
 
+        Label SemBilhetes = new Label("Não possui bilhetes para este Jogo!");
+        SemBilhetes.paddingProperty().set(new Insets(10));
+        Label SemJogoSelecionado = new Label("Selecione um jogo para ver os bilhetes!!");
+        SemJogoSelecionado.paddingProperty().set(new Insets(10));
+
+        TicketsContainer.getChildren().add(SemJogoSelecionado);
+
         TicketsDAOImp ticketsDAOImp = new TicketsDAOImp(httpURLConnection);
 
         GestorSingleton GestorSingle = GestorSingleton.getInstance();
@@ -86,11 +90,6 @@ public class ListagemTicketsController {
 
         //Verifica se o jogo escolhido foi alterado
         ChoiceJogo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-
-            Label SemBilhetes = new Label("Não possui bilhetes para este Jogo!");
-            SemBilhetes.paddingProperty().set(new Insets(10));
-            Label SemJogoSelecionado = new Label("Selecione um jogo para ver os bilhetes!!");
-            SemJogoSelecionado.paddingProperty().set(new Insets(10));
 
             TicketsContainer.getChildren().clear();
 

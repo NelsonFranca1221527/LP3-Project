@@ -105,8 +105,19 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
      * @param ticket O objeto a ser removido.
      */
     @Override
-    public void delete(Ticket ticket) {
+    public void delete(Ticket ticket) throws IOException {
 
+        String url = ConnectionAPI.getInstance().getURL() + "ticket/delete/" + ticket.getId();
+
+        URL obj = new URL(url);
+
+        connection = (HttpURLConnection) obj.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de resposta HTTP: " + responseCode);
     }
 
     /**

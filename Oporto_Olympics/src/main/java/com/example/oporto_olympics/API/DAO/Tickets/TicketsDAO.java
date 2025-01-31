@@ -39,7 +39,7 @@ public interface TicketsDAO<T> {
      *
      * @param t O objeto a ser removido.
      */
-    void delete(T t);
+    void delete(T t) throws IOException;
     /**
      * Obtém um objeto do tipo {@code T} através de um identificador único de um Cliente.
      *
