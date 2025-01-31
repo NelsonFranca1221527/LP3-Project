@@ -587,7 +587,7 @@ public class InsercaoXMLController {
             }
 
             if (equipa.getModalidadeID() == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar!!");
                 alertHandler.getAlert().showAndWait();
                 continue;
             }
@@ -1003,7 +1003,7 @@ public class InsercaoXMLController {
 
         if(listaHorarios == null || listaHorarios.isEmpty() ||
                 locais == null || locais.isEmpty()){
-            return null;
+            return locais;
         }
 
         Iterator<Map.Entry<String, Local>> iterator = locais.entrySet().iterator();

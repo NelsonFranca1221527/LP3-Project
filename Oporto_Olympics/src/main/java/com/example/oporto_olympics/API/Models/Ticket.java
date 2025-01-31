@@ -7,6 +7,11 @@ package com.example.oporto_olympics.API.Models;
 public class Ticket {
 
     /**
+     * Identificador único do Ticket.
+     */
+    private String id;
+
+    /**
      * Identificador único do cliente.
      */
     private String clientID;
@@ -24,14 +29,34 @@ public class Ticket {
     /**
      * Construtor da classe Ticket.
      *
+     * @param id o identificador único do ticket
      * @param clientID o identificador único do cliente
      * @param gameID o identificador único do jogo
      * @param lugar o número do lugar associado ao bilhete
      */
-    public Ticket(String clientID, String gameID, int lugar) {
+    public Ticket(String id, String clientID, String gameID, int lugar) {
+        this.id = id;
         this.clientID = clientID;
         this.gameID = gameID;
         this.lugar = lugar;
+    }
+
+    /**
+     * Obtém o identificador único do bilhete.
+     *
+     * @return o identificador único do bilhete
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Define o identificador único do bilhete.
+     *
+     * @param id o novo identificador único do bilhete
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
