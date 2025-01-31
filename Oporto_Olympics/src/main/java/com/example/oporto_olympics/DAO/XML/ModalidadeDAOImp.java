@@ -1,6 +1,7 @@
 package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Models.Evento;
 import com.example.oporto_olympics.Models.HorarioModalidade;
 import com.example.oporto_olympics.Models.Modalidade;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
@@ -290,7 +291,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public List<HorarioModalidade> getAllHorarioModalidade() {
         try {
 
-            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id, game_id FROM eventos_modalidades");
+            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id FROM eventos_modalidades");
             ResultSet rs = ps.executeQuery();
 
             List<HorarioModalidade> list = new ArrayList<>();
@@ -303,7 +304,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     continue;
                 }
 
-                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id"), rs.getString("game_id")));
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
             }
 
                 return list;
@@ -320,16 +321,15 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      * @param modalidadeID  ID da modalidade a ser associada ao evento.
      * @throws RuntimeException Se ocorrer um erro ao inserir a relação na base de dados.
      */
-    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id, String gameID){
+    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id){
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id, game_id) VALUES(?,?,?,?,?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id) VALUES(?,?,?,?,?)");
 
             ps.setInt(1, eventoID);
             ps.setInt(2, modalidadeID);
             ps.setTimestamp(3, Timestamp.valueOf(dataTempo));
             ps.setTime(4, Time.valueOf(duracao));
             ps.setInt(5, local_id);
-            ps.setString(6, gameID);
             ps.executeUpdate();
             ps.close();
 
@@ -652,7 +652,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      */
     public HorarioModalidade getHorarioModalidadeById(int modalidadeId, int eventoId) throws SQLException {
         HorarioModalidade horariomodalidade = null;
-        String query = "SELECT data_modalidade, duracao, local_id, game_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
+        String query = "SELECT data_modalidade, duracao, local_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(query)) {
             stmt.setInt(1, modalidadeId);
@@ -673,13 +673,8 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     localId = null;
                 }
 
-                String gameId = rs.getString("game_id");
-                if (rs.wasNull()) {
-                    gameId = null;
-                }
-
-                if (dataHora != null && duracao != null && localId != null && gameId != null) {
-                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId, rs.getString("game_id"));
+                if (dataHora != null && duracao != null && localId != null) {
+                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId);
                 }
             }
         }
@@ -697,7 +692,7 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     public List<HorarioModalidade> getAllHorarioModalidadeByEquipa(int equipaId) {
         try {
 
-            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id, m.game_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
+            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
             ps.setInt(1, equipaId);
             ResultSet rs = ps.executeQuery();
 
@@ -711,13 +706,39 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                     continue;
                 }
 
-                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id"), rs.getString("game_id")));
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
             }
 
             return list;
 
         } catch(SQLException ex){
             throw new RuntimeException("Erro ao listar Horarios pela Equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Associa um identificador de jogo (gameID) a uma modalidade específica na base de dados.
+     *
+     * Este método insere um registo na tabela "modalidade_gameID", que relaciona a modalidade fornecida
+     * com o identificador do jogo passado como argumento.
+     *
+     * @param modalidade a modalidade a ser associada, representada por um objeto da classe {@link Modalidade}.
+     *                   Este objeto deve conter um identificador válido que será utilizado na operação.
+     * @param gameID o identificador único do jogo a ser associado à modalidade.
+     *
+     * @throws RuntimeException se ocorrer uma falha na associação do identificador do jogo à modalidade.
+     *                          A mensagem de erro original será incluída na exceção lançada.
+     */
+    public void saveGameID(Modalidade modalidade, String gameID) throws SQLException {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("Insert into modalidade_gameID (modalidade_id, game_id) Values (?,?)");
+            ps.setInt(1, modalidade.getId());
+            ps.setString(2, gameID);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em associar o Jogo à modalidade: " + ex.getMessage());
         }
     }
 }

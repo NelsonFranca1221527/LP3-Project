@@ -49,27 +49,13 @@ class InserirLocalTest {
 
         LocaisDAOImp locaisDAO = new LocaisDAOImp(conexao);
 
-        // Verifica se o país é válido
-        if (!locaisDAO.getSigla(pais)) {
-            assertTrue(criado, "País inválido.");
-        }
+        assertTrue(locaisDAO.getSigla(pais), "País inválido.");
 
-        if (locaisDAO.existsByLocal(nome, tipo, morada, cidade, pais)) {
-            assertTrue(criado, "Este local já existe.");
-        }
+        assertFalse(locaisDAO.existsByLocal(nome, tipo, morada, cidade, pais), "Este local já existe.");
 
-        if (capacidade <= 0) {
-            assertTrue(criado, "Um local interior deve possuir uma capacidade superior a 0!");
-        }
+        assertTrue(capacidade > 0, "Um local interior deve possuir uma capacidade superior a 0!");
 
-        // Verifica se o ano de construção é válido (superior ao ano atual)
-        if (AnoPicker.isAfter(LocalDate.now())) {
-            assertTrue(criado, "O ano de construção deve ser superior ao ano atual.");
-        }
-
-        if (anoConstrucao.getYear() > 1000) {
-            assertTrue(criado, "O ano de construção deve ser superior a 1000!");
-        }
+        assertTrue(AnoPicker.isBefore(LocalDate.now()), "O ano de construção deve ser inferior ao ano atual.");
 
         // Insere o novo local
         locaisDAO.save(novolocal);
@@ -105,8 +91,8 @@ class InserirLocalTest {
         String pais = "POR";
         String morada = "Via Futebol Clube do Porto, 4350-415";
         String cidade = "Porto";
-        int capacidade = 10;
-        String data = "2025-01-07";
+        int capacidade = 0;
+        String data = "2026-01-07";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate AnoPicker;
         Date anoConstrucao = null;
@@ -117,26 +103,12 @@ class InserirLocalTest {
 
         LocaisDAOImp locaisDAO = new LocaisDAOImp(conexao);
 
-        // Verifica se o país é válido
-        if (!locaisDAO.getSigla(pais)) {
-            assertFalse(criado, "País inválido.");
-        }
+        assertFalse(locaisDAO.getSigla(pais), "País válido.");
 
-        if (locaisDAO.existsByLocal(nome, tipo, morada, cidade, pais)) {
-            assertFalse(criado, "Este local já existe.");
-        }
+        assertTrue(locaisDAO.existsByLocal(nome, tipo, morada, cidade, pais), "Este local não existe.");
 
-        if (capacidade <= 0) {
-            assertFalse(criado, "Um local interior deve possuir uma capacidade superior a 0!");
-        }
+        assertTrue(capacidade <= 0, "Um local interior deve possuir uma capacidade inferior ou igual a 0!");
 
-        // Verifica se o ano de construção é válido (superior ao ano atual)
-        if (AnoPicker.isAfter(LocalDate.now())) {
-            assertFalse(criado, "O ano de construção deve ser superior ao ano atual.");
-        }
-
-        if (anoConstrucao.getYear() > 1000) {
-            assertFalse(criado, "O ano de construção deve ser superior a 1000!");
-        }
+        assertTrue(AnoPicker.isAfter(LocalDate.now()), "O ano de construção deve ser superior ao ano atual.");
     }
 }

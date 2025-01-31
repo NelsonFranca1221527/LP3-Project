@@ -34,7 +34,7 @@ class InserirEventoTest {
         Boolean criado = false;
         Year thisYear = Year.now();
 
-        int anoEdicao = 2050;
+        int anoEdicao = 2060;
         String pais = "PRT";
         String logoURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/logo.jpg";
         String mascoteURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/mascote.jpg";
@@ -48,20 +48,11 @@ class InserirEventoTest {
 
         EventosDAOImp eventosDAO = new EventosDAOImp(conexao);
 
-        // Verifica se o país é válido
-        if (!eventosDAO.getSigla(pais)) {
-            assertTrue(criado, "País inválido.");
-        }
+        assertTrue(eventosDAO.getSigla(pais), "País inválido.");
 
-        // Verifica se já existe um evento com o mesmo ano de edição
-        if (eventosDAO.existsByAnoEdicao(anoEdicao)) {
-            assertTrue(criado, "Já existe um evento com esse ano de edição.");
-        }
+        assertFalse(eventosDAO.existsByAnoEdicao(anoEdicao), "Já existe um evento com esse ano de edição.");
 
-        // Verifica se o ano de edição é válido (superior ao ano atual)
-        if (anoEdicao < Integer.valueOf(String.valueOf(thisYear))) {
-            assertTrue(criado, "O ano de edição deve ser superior ao ano atual.");
-        }
+        assertTrue(anoEdicao > Integer.valueOf(String.valueOf(thisYear)), "O ano de edição deve ser superior ao ano atual.");
 
         // Insere o novo evento
         eventosDAO.save(novoEvento);
@@ -91,7 +82,6 @@ class InserirEventoTest {
     void InserirEventoInvalido() throws SQLException, IOException {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
-        Boolean criado = false;
         Year thisYear = Year.now();
 
         int anoEdicao = 2019;
@@ -108,19 +98,10 @@ class InserirEventoTest {
 
         EventosDAOImp eventosDAO = new EventosDAOImp(conexao);
 
-        // Verifica se o país é inválido
-        if (!eventosDAO.getSigla(pais)) {
-            assertFalse(criado, "País inválido.");
-        }
+        assertFalse(eventosDAO.getSigla(pais), "País válido.");
 
-        // Verifica se já existe um evento com o mesmo ano de edição
-        if (eventosDAO.existsByAnoEdicao(anoEdicao)) {
-            assertFalse(criado, "Já existe um evento com esse ano de edição.");
-        }
+        assertTrue(eventosDAO.existsByAnoEdicao(anoEdicao), "Não existe nenhum evento com esse ano de edição.");
 
-        // Verifica se o ano de edição é inválido (inferior ao ano atual)
-        if (anoEdicao < Integer.valueOf(String.valueOf(thisYear))) {
-            assertFalse(criado, "O ano de edição deve ser superior ao ano atual.");
-        }
+        assertFalse(anoEdicao > Integer.valueOf(String.valueOf(thisYear)), "O ano de edição deve ser inferior ao ano atual.");
     }
 }

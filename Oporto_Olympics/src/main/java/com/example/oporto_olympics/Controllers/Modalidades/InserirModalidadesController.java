@@ -422,27 +422,6 @@ public class InserirModalidadesController {
 
             Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
-            ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
-            HttpURLConnection httpURLConnection = connectionAPI.getConexao();
-            JogosDAOImp jogosDAOImp = new JogosDAOImp(httpURLConnection);
-
-            LocalDateTime dataFim = dataHora.plusSeconds(duracao.toSecondOfDay());
-
-            int eventoID = 0;
-
-            List<Jogo> jogos = jogosDAOImp.getAll();
-
-            if (!jogos.isEmpty()) {
-                for (Jogo jogo : jogos) {
-                    if (jogo.getEventoID() > eventoID) {
-                        eventoID = jogo.getEventoID();
-                    }
-                }
-                eventoID++;
-            } else {
-                eventoID = 1;
-            }
-
             if (ModalidadeExistente != null) {
 
                 if (ModalidadeExistente.getListEventosID().contains(evento.getId())) {
@@ -451,29 +430,13 @@ public class InserirModalidadesController {
                     return;
                 }
 
-                String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
-
-                if(GameID == null || GameID.trim().isEmpty()){
-                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a modalidade!");
-                    alertHandler.getAlert().showAndWait();
-                    return;
-                }
-
-                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId(),GameID);
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), ModalidadeExistente.getId(), dataHora, duracao, local.getId());
                 return;
             }
 
             modalidadeDAOImp.save(modalidade);
 
-            String GameID = jogosDAOImp.save(new Jogo("0", dataHora, dataFim, local.getNome(), modalidade.getNome(), local.getCapacidade(), eventoID));
-
-            if(GameID == null || GameID.trim().isEmpty()){
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidada Inválida", "Houve um problema a inserir a nova modalidade!");
-                alertHandler.getAlert().showAndWait();
-                return;
-            }
-
-            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId(),GameID);
+            modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
 
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Modalidade inserida com sucesso!");
             alertHandler.getAlert().showAndWait();

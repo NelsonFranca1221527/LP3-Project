@@ -2,6 +2,7 @@ package com.example.oporto_olympics.API.DAO.Tickets;
 
 import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
 import com.example.oporto_olympics.API.Models.Ticket;
+import com.example.oporto_olympics.API.Models.TicketInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,7 +24,6 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
     public TicketsDAOImp(HttpURLConnection conection) {
         this.connection = conection;
     }
-
 
     /**
      * Obtém todos os objetos do tipo {@code T} armazenados.
@@ -53,7 +53,7 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic "+ ConnectionAPI.getInstance().getBase64Auth());
 
@@ -116,7 +116,69 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
      * @return Um {@link Optional} contendo o objeto {@code T} se encontrado, ou vazio caso não exista.
      */
     @Override
-    public Optional<Ticket> getbyClient(int i) {
+    public Optional<List<TicketInfo>> getbyClient(String i) throws IOException {
+
+        String url = ConnectionAPI.getInstance().getURL() + "ticket/client/" + i;
+
+        URL obj = new URL(url);
+
+        connection = (HttpURLConnection) obj.openConnection();
+
+        connection.setRequestMethod("GET");
+
+        connection.setDoOutput(true);
+
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de Resposta: " + responseCode);
+
+        //Verifica se o código de resposta é igual a 200
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response.toString());
+
+            List<TicketInfo> tickets = new ArrayList<>();
+
+            if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
+
+                ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
+
+                for (JsonNode node : ticketInfoArray) {
+                    if (node.has("Id") &&
+                            node.has("StartDate") &&
+                            node.has("EndDate") &&
+                            node.has("Location") &&
+                            node.has("Seat") &&
+                            node.has("TicketQR")) {
+
+                        String Id = node.get("Id").asText();
+                        String dataInicio = node.get("StartDate").asText();
+                        String dataFim = node.get("EndDate").asText();
+                        String local = node.get("Location").asText();
+                        int lugar = node.get("Seat").asInt();
+                        String codigoQR = node.get("TicketQR").asText();
+
+                        TicketInfo ticket = new TicketInfo(Id,dataInicio,dataFim,local,lugar,codigoQR);
+                        tickets.add(ticket);
+                    }
+                }
+
+                return Optional.of(tickets);
+            }
+        }
+
         return Optional.empty();
     }
 
@@ -127,7 +189,7 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
      * @return Um {@link Optional} contendo o objeto {@code T} se encontrado, ou vazio caso não exista.
      */
     @Override
-    public Optional<List<Ticket>> getbyGame(String i) throws IOException {
+    public Optional<List<TicketInfo>> getbyGame(String i) throws IOException {
 
         String url = ConnectionAPI.getInstance().getURL() + "ticket/game/" + i;
 
@@ -139,40 +201,55 @@ public class TicketsDAOImp implements TicketsDAO<Ticket> {
 
         connection.setDoOutput(true);
 
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
 
         int responseCode = connection.getResponseCode();
         System.out.println("Código de Resposta: " + responseCode);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
+        //Verifica se o código de resposta é igual a 200
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(response.toString());
-
-        List<Ticket> tickets = new ArrayList<>();
-
-        if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
-
-            ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
-
-            for (JsonNode node : ticketInfoArray) {
-                if (node.has("Seat")) {
-                    int seat = node.get("Seat").asInt();
-                    Ticket ticket = new Ticket(null, null, seat);
-                    tickets.add(ticket);
-                }
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
             }
+            in.close();
 
-            return Optional.of(tickets);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response.toString());
+
+            List<TicketInfo> tickets = new ArrayList<>();
+
+            if (rootNode.has("TicketInfo") && rootNode.get("TicketInfo").isArray()) {
+
+                ArrayNode ticketInfoArray = (ArrayNode) rootNode.get("TicketInfo");
+
+                for (JsonNode node : ticketInfoArray) {
+                    if (node.has("Id") &&
+                            node.has("StartDate") &&
+                            node.has("EndDate") &&
+                            node.has("Location") &&
+                            node.has("Seat") &&
+                            node.has("TicketQR")) {
+
+                        String Id = node.get("Id").asText();
+                        String dataInicio = node.get("StartDate").asText();
+                        String dataFim = node.get("EndDate").asText();
+                        String local = node.get("Location").asText();
+                        int lugar = node.get("Seat").asInt();
+                        String codigoQR = node.get("TicketQR").asText();
+
+                        TicketInfo ticket = new TicketInfo(Id,dataInicio,dataFim,local,lugar,codigoQR);
+                        tickets.add(ticket);
+                    }
+                }
+
+                return Optional.of(tickets);
+            }
         }
 
         return Optional.empty();

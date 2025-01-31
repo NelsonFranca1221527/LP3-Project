@@ -1,6 +1,7 @@
 package com.example.oporto_olympics.Controllers.MenuGestor.SubMenuGestor;
 
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -36,6 +37,16 @@ public class SubMenuGestorListagensController {
      */
     @FXML
     private Button ModalidadeBtn;
+    /**
+     * Botão para aceder à secção de Jogos.
+     */
+    @FXML
+    private Button JogosBtn;
+    /**
+     * Botão para aceder à secção de bilhetes.
+     */
+    @FXML
+    private Button BilhetesBtn;
     /**
      * Botão para terminar a sessão e sair.
      */
@@ -133,6 +144,32 @@ public class SubMenuGestorListagensController {
             Stage s = (Stage) ResultadosBtn.getScene().getWindow();
 
             RedirecionarHelper.GotoVerResultados().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação para redirecionar o utilizador para os jogos.
+     */
+    @FXML
+    void OnClickJogosButton(ActionEvent event) {
+        try{
+            Stage s = (Stage) JogosBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoListagemJogos().switchScene(s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Ação para redirecionar o utilizador para os bilhetes.
+     */
+    @FXML
+    void OnClickBilhetesButton(ActionEvent event) {
+        try{
+            Stage s = (Stage) BilhetesBtn.getScene().getWindow();
+
+            RedirecionarHelper.GotoListagemTickets().switchScene(s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
