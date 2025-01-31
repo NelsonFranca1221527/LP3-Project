@@ -2,6 +2,7 @@ package com.example.oporto_olympics.Controllers.Client;
 
 import com.example.oporto_olympics.API.DAO.Client.ClienteDAO;
 import com.example.oporto_olympics.API.DAO.Client.ClienteDAOImp;
+import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.Misc.AlertHandler;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import org.apache.commons.mail.HtmlEmail;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -116,16 +118,29 @@ public class InsertClientController {
 
         ClienteDAO clienteDAO = new ClienteDAOImp();
         try {
+
+            List<Client> clientes = clienteDAO.getAllClients();
+            boolean emailJaCadastrado = clientes.stream()
+                    .anyMatch(cliente -> cliente.getEmail().equalsIgnoreCase(email));
+
+            if (emailJaCadastrado) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.WARNING, "E-mail já cadastrado",
+                        "O e-mail informado já está registrado. Por favor, utilize outro e-mail.");
+                alertHandler.getAlert().show();
+                return;
+            }
+
+            // Insere o cliente se o e-mail não estiver cadastrado
             String response = clienteDAO.insertClient(name, email, password);
 
             if (response != null && !response.isEmpty()) {
-
                 sendEmailToClient(email,name, password);
 
                 AlertHandler alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso",
                         "Cliente inserido com sucesso. Um email com as credenciais foi enviado.");
                 alertHandler.getAlert().show();
 
+                // Limpar campos após inserção bem-sucedida
                 txtName.clear();
                 txtEmail.clear();
                 txtpass.clear();
