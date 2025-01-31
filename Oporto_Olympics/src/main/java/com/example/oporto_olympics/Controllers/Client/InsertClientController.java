@@ -176,17 +176,16 @@ public class InsertClientController {
      * @param password Senha gerada para o cliente.
      */
     private void sendEmailToClient(String email, String password) {
-        final String smtpHost = "smtp.gmail.com";
-        final int smtpPort = 587;
-        final String systemEmail = "gl4648080@gmail.com";
-        final String systemPassword = "syz5MKpSCAZ6BBF";
+        final String smtpHost = "mail.smtp2go.com";
+        final int smtpPort = 2525;
+        final String systemEmail = "OPortoOlympics";
+        final String systemPassword = "Cj7po5Tzqwf5f6SK";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", smtpHost);
         properties.put("mail.smtp.port", smtpPort);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
@@ -197,7 +196,7 @@ public class InsertClientController {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(systemEmail));
+            message.setFrom(new InternetAddress("lp3g4projooportoolympics@outlook.com   "));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Bem-vindo à Oporto Olympics!");
             message.setText("Olá " + email + ",\n\nAs suas credenciais foram criadas com sucesso!\n\n" +
