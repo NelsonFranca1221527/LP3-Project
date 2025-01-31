@@ -262,7 +262,7 @@
 													"top": 47,
 													"width": 127,
 													"height": 13,
-													"text": "API"
+													"text": "System"
 												},
 												{
 													"_type": "LabelView",
@@ -385,7 +385,7 @@
 													"top": 47,
 													"width": 135,
 													"height": 13,
-													"text": "Data Base"
+													"text": "API"
 												},
 												{
 													"_type": "LabelView",
@@ -727,7 +727,7 @@
 												"$ref": "AAAAAAGUvNAbtHT9luE="
 											},
 											"edgePosition": 1,
-											"text": "3 : Consulta Data base"
+											"text": "3 : Consulta API"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -1192,7 +1192,7 @@
 												"$ref": "AAAAAAGUvNKKVnVlQYg="
 											},
 											"edgePosition": 1,
-											"text": "7 : Atualiza os dados da data base"
+											"text": "7 : Atualiza os dados"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -1549,7 +1549,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUvMpNknRUVyg="
 							},
-							"name": "Consulta Data base",
+							"name": "Consulta API",
 							"source": {
 								"$ref": "AAAAAAGUvM8TBXSFNk8="
 							},
@@ -1606,7 +1606,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUvMpNknRUVyg="
 							},
-							"name": "Atualiza os dados da data base",
+							"name": "Atualiza os dados",
 							"source": {
 								"$ref": "AAAAAAGUvM8TBXSFNk8="
 							},
@@ -1664,7 +1664,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUvMpNknRUVyg="
 							},
-							"name": "API",
+							"name": "System",
 							"represent": {
 								"$ref": "AAAAAAGUvM8TBXSEXjA="
 							},
@@ -1676,7 +1676,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUvMpNknRUVyg="
 							},
-							"name": "Data Base",
+							"name": "API",
 							"represent": {
 								"$ref": "AAAAAAGUvM8lJ3Sk8i8="
 							},
@@ -1701,8 +1701,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGUvMpNkXRTFWI="
 					},
-					"name": "Role2",
-					"type": ""
+					"name": "Role2"
 				},
 				{
 					"_type": "UMLAttribute",
@@ -1710,8 +1709,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGUvMpNkXRTFWI="
 					},
-					"name": "Role3",
-					"type": ""
+					"name": "Role3"
 				}
 			]
 		}

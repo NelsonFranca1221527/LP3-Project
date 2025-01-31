@@ -262,7 +262,7 @@
 													"top": 47,
 													"width": 135,
 													"height": 13,
-													"text": "API"
+													"text": "System"
 												},
 												{
 													"_type": "LabelView",
@@ -385,7 +385,7 @@
 													"top": 47,
 													"width": 135,
 													"height": 13,
-													"text": "Data Base"
+													"text": "API"
 												},
 												{
 													"_type": "LabelView",
@@ -1274,7 +1274,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUuD7q8VL9jXg="
 							},
-							"name": "API",
+							"name": "System",
 							"represent": {
 								"$ref": "AAAAAAGUuEAmjVN4RR4="
 							},
@@ -1286,7 +1286,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGUuD7q8VL9jXg="
 							},
-							"name": "Data Base",
+							"name": "API",
 							"represent": {
 								"$ref": "AAAAAAGUuEBptFOacq4="
 							},
@@ -1311,8 +1311,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGUuD7q8VL8Xsk="
 					},
-					"name": "Role2",
-					"type": ""
+					"name": "Role2"
 				},
 				{
 					"_type": "UMLAttribute",
@@ -1320,8 +1319,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGUuD7q8VL8Xsk="
 					},
-					"name": "Role3",
-					"type": ""
+					"name": "Role3"
 				}
 			]
 		}
