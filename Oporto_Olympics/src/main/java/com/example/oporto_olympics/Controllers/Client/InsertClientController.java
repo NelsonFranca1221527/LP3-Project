@@ -120,7 +120,7 @@ public class InsertClientController {
 
             if (response != null && !response.isEmpty()) {
 
-                sendEmailToClient(email, password);
+                sendEmailToClient(email,name, password);
 
                 AlertHandler alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso",
                         "Cliente inserido com sucesso. Um email com as credenciais foi enviado.");
@@ -175,7 +175,7 @@ public class InsertClientController {
      * @param email    Email do cliente.
      * @param password Senha gerada para o cliente.
      */
-    private void sendEmailToClient(String email, String password) {
+    private void sendEmailToClient(String email,String Nome, String password) {
         final String smtpHost = "mail.smtp2go.com";
         final int smtpPort = 2525;
         final String systemEmail = "OPortoOlympics";
@@ -199,7 +199,7 @@ public class InsertClientController {
             message.setFrom(new InternetAddress("lp3g4projooportoolympics@outlook.com   "));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Bem-vindo à Oporto Olympics!");
-            message.setText("Olá " + email + ",\n\nAs suas credenciais foram criadas com sucesso!\n\n" +
+            message.setText("Olá " + Nome    + ",\n\nAs suas credenciais foram criadas com sucesso!\n\n" +
                     "Email: " + email + "\nSenha: " + password + "\n\n" +
                     "Por favor, altere a senha após o primeiro login.\n\nObrigado.");
 

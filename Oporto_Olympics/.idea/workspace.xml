@@ -50,7 +50,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="dev" />
+        <entry key="$PROJECT_DIR$/.." value="feature-082-API" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -91,7 +91,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "feature-082-API",
+    "git-widget-placeholder": "dev",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/ruben/Desktop/Oporto_Olympics/Oporto_Olympics/src/main/resources/com/example/oporto_olympics/Views/ListagemTickets/Cards",
     "node.js.detected.package.eslint": "true",
@@ -336,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732829362002</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="SMTP done, a enviar emails">
+      <option name="closed" value="true" />
+      <created>1738324327355</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738324327355</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,7 +369,8 @@
     <MESSAGE value="Fix da inscrição em evento" />
     <MESSAGE value="Update do calendario com informações do local" />
     <MESSAGE value="Login e Singleton e MenuPrincipal do Cliente" />
-    <option name="LAST_COMMIT_MESSAGE" value="Login e Singleton e MenuPrincipal do Cliente" />
+    <MESSAGE value="SMTP done, a enviar emails" />
+    <option name="LAST_COMMIT_MESSAGE" value="SMTP done, a enviar emails" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
