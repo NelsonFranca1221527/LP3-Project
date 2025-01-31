@@ -31,6 +31,7 @@
                </font>
             </Label>
             <Button fx:id="btnResetPassword" layoutX="23.0" layoutY="113.0" mnemonicParsing="false" onAction="#onCllickResetPassword" style="-fx-background-color: white;" text="Repor Password" />
+            <Button fx:id="btnDelete" layoutX="419.0" layoutY="244.0" mnemonicParsing="false" onAction="#onClickDelete" text="Apagar Conta" />
          </children>
         </Pane>
       <Button fx:id="btnVoltar" layoutX="21.0" layoutY="24.0" mnemonicParsing="false" onAction="#onClickVoltar" style="-fx-background-color: transparente;" text="Voltar" />

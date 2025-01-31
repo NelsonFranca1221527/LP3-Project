@@ -230,6 +230,9 @@ public class ClienteDAOImp implements ClienteDAO {
         String baseUrl = ConnectionAPI.getInstance().getURL();
         String url = baseUrl + "client/" + id;
 
+        System.out.println("Tentando remover cliente com ID: " + id);
+        System.out.println("URL da requisição: " + url);
+
         URL obj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
@@ -240,18 +243,21 @@ public class ClienteDAOImp implements ClienteDAO {
         int responseCode = connection.getResponseCode();
         System.out.println("Código de resposta HTTP: " + responseCode);
 
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            return "Cliente removido com sucesso!";
-
-        } else if(responseCode == 406){
-            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "O Cliente tem um ticket associado, por isso não é permitido remover!");
+        if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_ACCEPTED) {
+            // Se a API retornar 200 (OK) ou 202 (Accepted), consideramos como sucesso.
+            System.out.println("Cliente removido com sucesso!");
+            return "200";
+        } else if (responseCode == 406) {
+            System.out.println("Erro 406: Existe um ticket associado.");
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Existe pelo menos um ticket associado, por isso não é permitido remover!");
             alertHandler.getAlert().show();
-        }else {
-            return "Erro ao remover cliente: " + connection.getResponseMessage();
+            return "406";
+        } else {
+            System.out.println("Erro desconhecido ao remover: " + connection.getResponseMessage());
+            return String.valueOf(responseCode);
         }
-
-        return null;
     }
+
     /**
      * Remove um cliente da API com base no ID fornecido.
      *
@@ -368,7 +374,5 @@ public class ClienteDAOImp implements ClienteDAO {
             return "Erro ao ao banir espectador: " + connection.getResponseMessage();
         }
     }
-
-
 
 }
