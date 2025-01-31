@@ -8,7 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
+/**
+ * Controlador para a página de perfil do cliente.
+ *
+ * Esta classe gere a interface gráfica da página de perfil do utilizador,
+ * exibindo as informações do cliente e fornecendo opções para alterar a palavra-passe
+ * ou voltar ao menu principal.
+ */
 public class ProfilePageController {
 
     @FXML
@@ -23,6 +29,12 @@ public class ProfilePageController {
     @FXML
     private Button btnVoltar;
 
+    /**
+     * Inicializa a página de perfil carregando as informações do cliente.
+     *
+     * Obtém os dados do cliente autenticado através do {@link ClientSingleton}
+     * e exibe o nome e o e-mail na interface gráfica.
+     */
     @FXML
     public void initialize() {
         Client client = ClientSingleton.getInstance().getClient();
@@ -31,13 +43,24 @@ public class ProfilePageController {
     }
 
     /**
-     * Evento para o botão "Voltar". Este método redireciona o utilizador para o menu de inserções.
+     * Manipula o evento de clique no botão "Voltar".
+     *
+     * Redireciona o utilizador de volta para o menu principal.
+     *
+     * @param event O evento de clique no botão.
      */
     @FXML
     void onClickVoltar(ActionEvent event) {
         Stage s = (Stage) btnVoltar.getScene().getWindow();
         RedirecionarHelper.GotoHomeClient().switchScene(s);
     }
+    /**
+     * Manipula o evento de clique no botão "Alterar Palavra-Passe".
+     *
+     * Redireciona o utilizador para a página de atualização da palavra-passe.
+     *
+     * @param event O evento de clique no botão.
+     */
     @FXML
     void onCllickResetPassword(ActionEvent event) {
         Stage s = (Stage) btnResetPassword.getScene().getWindow();

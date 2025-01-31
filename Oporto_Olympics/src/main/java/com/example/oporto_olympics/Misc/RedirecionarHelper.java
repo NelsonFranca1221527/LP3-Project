@@ -291,9 +291,20 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoListClient() {
         return new RedirecionarHelper("Views/Cliente/ListagemClientes.fxml", "Listagem Clientes");
     }
+    /**
+     * Redireciona o utilizador para a página de perfil do cliente.
+     *
+     * @return Uma instância de {@link RedirecionarHelper} configurada para carregar a vista do perfil do cliente.
+     */
     public static RedirecionarHelper GotoProfileCliente() {
         return new RedirecionarHelper("Views/Cliente/Perfil.fxml", "Perfil");
     }
+
+    /**
+     * Redireciona o utilizador para a página de alteração de palavra-passe.
+     *
+     * @return Uma instância de {@link RedirecionarHelper} configurada para carregar a vista de alteração de palavra-passe do cliente.
+     */
     public static RedirecionarHelper GotoUpdatePasswordClient() {
         return new RedirecionarHelper("Views/Cliente/AlterarPasswordCliente.fxml", "Alterar Password");
     }

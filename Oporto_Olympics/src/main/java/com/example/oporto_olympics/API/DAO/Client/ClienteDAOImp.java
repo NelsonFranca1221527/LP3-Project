@@ -296,7 +296,13 @@ public class ClienteDAOImp implements ClienteDAO {
         }
         return null;
     }
-
+    /**
+     * Bane um cliente, desativando a sua conta no sistema.
+     *
+     * @param id O identificador único do cliente a ser banido.
+     * @return Uma mensagem indicando o sucesso ou falha da operação de banimento.
+     * @throws IOException Se ocorrer um erro de entrada/saída durante o processo.
+     */
     @Override
     public String BanClient(String id) throws IOException {
         String baseUrl = ConnectionAPI.getInstance().getURL();
@@ -326,7 +332,13 @@ public class ClienteDAOImp implements ClienteDAO {
             return "Erro ao ao banir espectador: " + connection.getResponseMessage();
         }
     }
-
+    /**
+     * Desbane um cliente, reativando a sua conta no sistema.
+     *
+     * @param id O identificador único do cliente a ser desbanido.
+     * @return Uma mensagem indicando o sucesso ou falha da operação de desbanimento.
+     * @throws IOException Se ocorrer um erro de entrada/saída durante o processo.
+     */
     @Override
     public String UnBanClient(String id) throws IOException {
         String baseUrl = ConnectionAPI.getInstance().getURL();
