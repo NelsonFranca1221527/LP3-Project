@@ -85,11 +85,17 @@ public class ListagemClientesController {
                 Label nameLabel = new Label("Nome: " + client.getName());
                 Label emailLabel = new Label("Email: " + client.getEmail());
                 Label statusLabel = new Label("Status: " + (client.getActive() ? "Ativo" : "Inativo"));
-
+                Button disableButton;
                 Button removeButton = new Button("Remover");
                 removeButton.setOnAction(e -> removeClient(client.getId()));
-                Button disableButton = new Button("Desativar");
-                //disableButton.setOnAction(e -> deactivateClient("");
+                if (client.getActive() == true){
+                     disableButton = new Button("Desativar");
+
+                } else {
+                     disableButton = new Button("Ativar");
+
+                }
+                disableButton.setOnAction(e -> deactivateClient(client.getId(), client.getActive()));
 
                 BorderPane clientContainer = new BorderPane();
                 clientContainer.setLeft(nameLabel);
@@ -116,10 +122,7 @@ public class ListagemClientesController {
      */
     private void removeClient(String clientId) {
         try {
-
-            String result = clienteDAO.removeClient(clientId);
-            System.out.println(result);
-
+            clienteDAO.removeClient(clientId);
             loadClients();
         } catch (IOException e) {
             System.out.println("Erro ao remover cliente: " + e.getMessage());
@@ -130,11 +133,22 @@ public class ListagemClientesController {
      * Método para desativar o cliente.
      * Este método pode ser chamado quando o botão "Desativar" for pressionado.
      *
-     * @param client O cliente a ser desativado.
+     * @param clientid O cliente a ser desativado.
      */
-    private void deactivateClient(Client client) {
+    private void deactivateClient(String clientid, Boolean status) {
 
-        System.out.println("Cliente desativado: " + client.getName());
+        try {
+
+            if (status == true) {
+                clienteDAO.BanClient(clientid);
+                loadClients();
+            }else {
+                clienteDAO.UnBanClient(clientid);
+                loadClients();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao remover cliente: " + e.getMessage());
+        }
 
     }
 }

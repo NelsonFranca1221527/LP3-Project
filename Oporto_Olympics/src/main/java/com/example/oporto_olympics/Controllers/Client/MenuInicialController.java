@@ -85,7 +85,7 @@ public class MenuInicialController {
     protected void OnPerfilButtonClick(){
         try {
             Stage s = (Stage) PerfilBtn.getScene().getWindow();
-
+            RedirecionarHelper.GotoProfileCliente().switchScene(s);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

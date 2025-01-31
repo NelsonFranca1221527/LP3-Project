@@ -273,7 +273,8 @@ public class ClienteDAOImp implements ClienteDAO {
         URL obj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
-        connection.setRequestMethod("DELETE");
+        connection.setRequestMethod("PUT");
+        connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
 
@@ -287,8 +288,72 @@ public class ClienteDAOImp implements ClienteDAO {
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             return "Password alterada com sucesso!";
-        } else {
+        } else if(responseCode == 202){
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Password alterada", "A sua password foi atualizada com sucesso!");
+            alertHandler.getAlert().show();
+        }else {
             return "Erro ao alterar password: " + connection.getResponseMessage();
+        }
+        return null;
+    }
+
+    @Override
+    public String BanClient(String id) throws IOException {
+        String baseUrl = ConnectionAPI.getInstance().getURL();
+        String url = baseUrl + "client/" + id;
+
+        URL obj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+
+        connection.setRequestMethod("PUT");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        String jsonInputString = String.format("{\"Active\":\"%s\"}", "false");
+        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+            wr.writeBytes(jsonInputString);
+            wr.flush();
+        }
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de resposta HTTP: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Concluído", "O espectador foi desativado com sucesso");
+            alertHandler.getAlert().show();
+            return "Password alterada com sucesso!";
+        } else {
+            return "Erro ao ao banir espectador: " + connection.getResponseMessage();
+        }
+    }
+
+    @Override
+    public String UnBanClient(String id) throws IOException {
+        String baseUrl = ConnectionAPI.getInstance().getURL();
+        String url = baseUrl + "client/" + id;
+
+        URL obj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+
+        connection.setRequestMethod("PUT");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Authorization", "Basic " + ConnectionAPI.getInstance().getBase64Auth());
+
+        String jsonInputString = String.format("{\"Active\":\"%s\"}", "true");
+        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+            wr.writeBytes(jsonInputString);
+            wr.flush();
+        }
+        int responseCode = connection.getResponseCode();
+        System.out.println("Código de resposta HTTP: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Concluído", "O espectador foi desativado com sucesso");
+            alertHandler.getAlert().show();
+            return "Password alterada com sucesso!";
+        } else {
+            return "Erro ao ao banir espectador: " + connection.getResponseMessage();
         }
     }
 

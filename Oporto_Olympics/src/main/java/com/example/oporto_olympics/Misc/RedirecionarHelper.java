@@ -291,4 +291,10 @@ public class RedirecionarHelper {
     public static RedirecionarHelper GotoListClient() {
         return new RedirecionarHelper("Views/Cliente/ListagemClientes.fxml", "Listagem Clientes");
     }
+    public static RedirecionarHelper GotoProfileCliente() {
+        return new RedirecionarHelper("Views/Cliente/Perfil.fxml", "Perfil");
+    }
+    public static RedirecionarHelper GotoUpdatePasswordClient() {
+        return new RedirecionarHelper("Views/Cliente/AlterarPasswordCliente.fxml", "Alterar Password");
+    }
 }

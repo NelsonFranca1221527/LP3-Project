@@ -62,5 +62,29 @@ public interface ClienteDAO {
      * @throws IOException Se ocorrer um erro ao fazer a solicitação ou ao processar a resposta.
      */
     String removeClient(String id) throws IOException;
+    /**
+     * Atualiza a palavra-passe de um cliente.
+     *
+     * @param id O identificador único do cliente.
+     * @param password A nova palavra-passe a ser atribuída ao cliente.
+     * @return Uma mensagem indicando o sucesso ou falha da operação.
+     * @throws IOException Se ocorrer um erro de entrada/saída durante o processo de atualização da palavra-passe.
+     */
     String UpdatePassword(String id, String password) throws IOException;
+    /**
+     * Banir um cliente, impedindo-o de aceder ao sistema.
+     *
+     * @param id O identificador único do cliente a ser banido.
+     * @return Uma mensagem indicando o sucesso ou falha da operação de banimento.
+     * @throws IOException Se ocorrer um erro de entrada/saída durante o processo de banimento.
+     */
+    String BanClient(String id) throws IOException;
+    /**
+     * Desbanir um cliente, permitindo-lhe aceder novamente ao sistema.
+     *
+     * @param id O identificador único do cliente a ser desbanido.
+     * @return Uma mensagem indicando o sucesso ou falha da operação de desbanimento.
+     * @throws IOException Se ocorrer um erro de entrada/saída durante o processo de desbanimento.
+     */
+    String UnBanClient(String id) throws IOException;
 }
