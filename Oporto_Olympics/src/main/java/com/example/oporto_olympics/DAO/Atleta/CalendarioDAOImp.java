@@ -264,6 +264,18 @@ public class CalendarioDAOImp implements CalendarioDAO {
         }
     }
 
+    /**
+     * Obtém uma lista de eventos das modalidades nos quais um atleta está inscrito dentro de um intervalo de datas.
+     *
+     * Este método consulta a base de dados para recuperar os eventos das modalidades em que um atleta participa,
+     * desde que ocorram dentro do intervalo de tempo especificado.
+     *
+     * @param firstData  Data inicial do intervalo a ser pesquisado.
+     * @param secondData Data final do intervalo a ser pesquisado.
+     * @param atletaId   ID do atleta para filtrar os eventos.
+     * @return Uma lista de {@link EventosModalidade} contendo os eventos encontrados.
+     * @throws RuntimeException Se ocorrer um erro ao executar a consulta na base de dados.
+     */
     public List<EventosModalidade> getEventosDataAtleta(Timestamp firstData, Timestamp secondData, int atletaId){
         List<EventosModalidade> lstR = new ArrayList<>();
         String sql = "SELECT em.* FROM eventos_modalidades em JOIN atletas_modalidades am ON em.modalidade_id = am.modalidade_id WHERE em.data_modalidade BETWEEN ? AND ? AND am.atleta_id = ?;";

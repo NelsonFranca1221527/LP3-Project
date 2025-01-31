@@ -11,65 +11,65 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Classe de testes para verificar o login de utilizadores no sistema.
+ */
 class LoginTest {
 
     /**
-     * Teste 1: Verificar login
+     * Testa se um utilizador do tipo "Atleta" é corretamente identificado.
      *
-     * @throws NoSuchAlgorithmException
-     * @throws SQLException
+     * @throws NoSuchAlgorithmException Se o algoritmo de encriptação não estiver disponível.
+     * @throws SQLException Se houver erro na conexão com a base de dados.
      */
     @Test
-    void VerificarAtleta() throws NoSuchAlgorithmException, SQLException {
+    void verificarAtleta() throws NoSuchAlgorithmException, SQLException {
+        Connection conexao = ConnectionBD.getInstance().getConexao();
 
-        ConnectionBD connectionBD = ConnectionBD.getInstance();
-        Connection conexao = connectionBD.getConexao();
-
-        String User = "1000000" ;
-        String Password = StringtoHash("1000000");
+        String user = "1000000";
+        String password = stringToHash(user);
         UserDAOImp userDAO = new UserDAOImp(conexao);
 
-        String TipoUser = userDAO.getUserType(Integer.parseInt(User), Password);
+        String tipoUser = userDAO.getUserType(Integer.parseInt(user), password);
 
-        assertEquals("Atleta", TipoUser, "O utilizador devia ser atleta...");
-    }
-
-    @Test
-    void VerificarGestor() throws NoSuchAlgorithmException, SQLException {
-
-        ConnectionBD connectionBD = ConnectionBD.getInstance();
-        Connection conexao = connectionBD.getConexao();
-
-        String User = "1000024" ;
-        String Password = StringtoHash("1000024");
-        UserDAOImp userDAO = new UserDAOImp(conexao);
-
-        String TipoUser = userDAO.getUserType(Integer.parseInt(User), Password);
-
-        assertEquals("Gestor", TipoUser, "O utilizador devia ser gestor...");
+        assertEquals("Atleta", tipoUser, "O utilizador devia ser atleta...");
     }
 
     /**
+     * Testa se um utilizador do tipo "Gestor" é corretamente identificado.
      *
-     * Encripta dados recebidos em hash ("SHA-256")
-     *
-     * @param dado Recebe o dado para ser encriptado
-     * @return Retorna o dado encriptado
-     * @throws NoSuchAlgorithmException se o algortimo para encriptação não está disponível.
+     * @throws NoSuchAlgorithmException Se o algoritmo de encriptação não estiver disponível.
+     * @throws SQLException Se houver erro na conexão com a base de dados.
      */
+    @Test
+    void verificarGestor() throws NoSuchAlgorithmException, SQLException {
+        Connection conexao = ConnectionBD.getInstance().getConexao();
 
-    public String StringtoHash(String dado) throws NoSuchAlgorithmException {
+        String user = "1000024";
+        String password = stringToHash(user);
+        UserDAOImp userDAO = new UserDAOImp(conexao);
 
+        String tipoUser = userDAO.getUserType(Integer.parseInt(user), password);
+
+        assertEquals("Gestor", tipoUser, "O utilizador devia ser gestor...");
+    }
+
+    /**
+     * Converte uma string para um hash SHA-256.
+     *
+     * @param dado A string a ser encriptada.
+     * @return O hash SHA-256 correspondente à string.
+     * @throws NoSuchAlgorithmException Se o algoritmo de encriptação não estiver disponível.
+     */
+    private String stringToHash(String dado) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        byte[] hashdado = md.digest(dado.getBytes());
+        byte[] hashDado = md.digest(dado.getBytes());
 
         StringBuilder hexString = new StringBuilder();
-        for (byte b : hashdado) {
+        for (byte b : hashDado) {
             hexString.append(String.format("%02x", b));
         }
 
         return hexString.toString();
-
     }
 }
