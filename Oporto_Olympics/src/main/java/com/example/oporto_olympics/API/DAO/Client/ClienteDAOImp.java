@@ -369,6 +369,4 @@ public class ClienteDAOImp implements ClienteDAO {
         }
     }
 
-
-
 }

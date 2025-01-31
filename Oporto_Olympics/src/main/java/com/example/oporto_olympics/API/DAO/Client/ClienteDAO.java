@@ -87,4 +87,5 @@ public interface ClienteDAO {
      * @throws IOException Se ocorrer um erro de entrada/saída durante o processo de desbanimento.
      */
     String UnBanClient(String id) throws IOException;
+
 }

@@ -1,5 +1,7 @@
 package com.example.oporto_olympics.Controllers.Client;
 
+import com.example.oporto_olympics.API.DAO.Client.ClienteDAO;
+import com.example.oporto_olympics.API.DAO.Client.ClienteDAOImp;
 import com.example.oporto_olympics.API.Models.Client;
 import com.example.oporto_olympics.Misc.RedirecionarHelper;
 import com.example.oporto_olympics.Singleton.ClientSingleton;
@@ -8,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+
 /**
  * Controlador para a página de perfil do cliente.
  *
@@ -28,6 +33,12 @@ public class ProfilePageController {
 
     @FXML
     private Button btnVoltar;
+
+    @FXML
+    private Button btnDelete;
+
+    private ClienteDAO clienteDAO = new ClienteDAOImp();
+
 
     /**
      * Inicializa a página de perfil carregando as informações do cliente.
@@ -65,5 +76,25 @@ public class ProfilePageController {
     void onCllickResetPassword(ActionEvent event) {
         Stage s = (Stage) btnResetPassword.getScene().getWindow();
         RedirecionarHelper.GotoUpdatePasswordClient().switchScene(s);
+    }
+    /**
+     * Manipula o evento de clique no botão "Apagar Conta".
+     *
+     * Redireciona o utilizador para a página do login após confirmar apagar conta.
+     *
+     * @param event O evento de clique no botão.
+     */
+    @FXML
+    void onClickDelete(ActionEvent event) {
+        try {
+            Client client = ClientSingleton.getInstance().getClient();
+            clienteDAO.removeClient(client.getId());
+
+
+        } catch (IOException e) {
+            System.out.println("Erro ao apagar a conta");
+        }
+
+
     }
 }
