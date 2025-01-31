@@ -587,7 +587,7 @@ public class InsercaoXMLController {
             }
 
             if (equipa.getModalidadeID() == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar!!");
                 alertHandler.getAlert().showAndWait();
                 continue;
             }
