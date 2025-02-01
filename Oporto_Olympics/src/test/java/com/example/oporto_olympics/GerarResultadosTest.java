@@ -52,7 +52,7 @@ class GerarResultadosTest {
         String genero = "Men";
         String tipo = "Individual";
         int min_part = 2;
-        int eventoID = 9;
+        int eventoID = 42;
 
         // Obter a modalidade da base de dados
         Modalidade modalidade = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(nomeModalidade, genero, tipo, min_part);
@@ -82,7 +82,7 @@ class GerarResultadosTest {
         String genero = "Men";
         String tipo = "Individual";
         int min_part = 2;
-        int eventoID = 9;
+        int eventoID = 42;
 
         // Obter a modalidade da base de dados
         Modalidade modalidade = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(nomeModalidade, genero, tipo, min_part);
@@ -112,7 +112,7 @@ class GerarResultadosTest {
         String genero = "Men";
         String tipo = "Coletivo";
         int min_part = 2;
-        int eventoID = 9;
+        int eventoID = 42;
 
         // Obter a modalidade da base de dados
         Modalidade modalidade = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(nomeModalidade, genero, tipo, min_part);

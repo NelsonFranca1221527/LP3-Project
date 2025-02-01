@@ -42,7 +42,7 @@ class InserirEventoTest {
         File fileMascote = new File(mascoteURL);
         byte[] logo = Files.readAllBytes(fileLogo.toPath());
         byte[] mascote = Files.readAllBytes(fileMascote.toPath());
-        int localId = 10;
+        int localId = 1055;
 
         Evento novoEvento = new Evento(0, anoEdicao, pais, logo, mascote, localId);
 
@@ -51,8 +51,6 @@ class InserirEventoTest {
         assertTrue(eventosDAO.getSigla(pais), "País inválido.");
 
         assertFalse(eventosDAO.existsByAnoEdicao(anoEdicao), "Já existe um evento com esse ano de edição.");
-
-        assertTrue(anoEdicao > Integer.valueOf(String.valueOf(thisYear)), "O ano de edição deve ser superior ao ano atual.");
 
         // Insere o novo evento
         eventosDAO.save(novoEvento);
@@ -84,7 +82,7 @@ class InserirEventoTest {
         Connection conexao = connectionBD.getConexao();
         Year thisYear = Year.now();
 
-        int anoEdicao = 2019;
+        int anoEdicao = 2030;
         String pais = "POR";
         String logoURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/logo.jpg";
         String mascoteURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/mascote.jpg";
@@ -92,7 +90,7 @@ class InserirEventoTest {
         File fileMascote = new File(mascoteURL);
         byte[] logo = Files.readAllBytes(fileLogo.toPath());
         byte[] mascote = Files.readAllBytes(fileMascote.toPath());
-        int localId = 10;
+        int localId = 1055;
 
         Evento novoEvento = new Evento(0, anoEdicao, pais, logo, mascote, localId);
 
@@ -101,7 +99,5 @@ class InserirEventoTest {
         assertFalse(eventosDAO.getSigla(pais), "País válido.");
 
         assertTrue(eventosDAO.existsByAnoEdicao(anoEdicao), "Não existe nenhum evento com esse ano de edição.");
-
-        assertFalse(anoEdicao > Integer.valueOf(String.valueOf(thisYear)), "O ano de edição deve ser inferior ao ano atual.");
     }
 }

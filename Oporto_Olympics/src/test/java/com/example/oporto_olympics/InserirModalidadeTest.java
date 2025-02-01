@@ -61,8 +61,8 @@ class InserirModalidadeTest {
                 medida,
                 quant,
                 null,
-                new RegistoPontos("", 0, ""),
-                new RegistoPontos("", 0, ""),
+                new RegistoPontos(null, 0, null),
+                new RegistoPontos(null, 0, null),
                 regras
         );
 

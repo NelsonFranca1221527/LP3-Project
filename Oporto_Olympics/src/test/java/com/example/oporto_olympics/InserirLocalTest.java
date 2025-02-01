@@ -89,7 +89,7 @@ class InserirLocalTest {
         String nome = "Estádio do Dragão";
         String tipo = "interior";
         String pais = "POR";
-        String morada = "Via Futebol Clube do Porto, 4350-415";
+        String morada = "Rua do Dragão";
         String cidade = "Porto";
         int capacidade = 0;
         String data = "2026-01-07";
