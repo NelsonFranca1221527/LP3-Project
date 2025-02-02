@@ -27,15 +27,15 @@ public class InscricaoAtletaEventoTest {
         Connection conexao = connectionBD.getConexao();
         InscricaonoEventoDAOImp dao = new InscricaonoEventoDAOImp(conexao);
 
-        int atletaId = 148;
-        int eventoId = 11;
+        int atletaId = 1329;
+        int eventoId = 42;
         String estado = "Pendente";
 
         // Inscrever atleta
-        dao.inserirInscricao(estado, eventoId, atletaId, 71);
+        dao.inserirInscricao(estado, eventoId, atletaId, 1160);
 
         // Verificar se a inscrição foi adicionada
-        assertTrue(dao.existeInscricaoPendente(atletaId, eventoId, 71),
+        assertTrue(dao.existeInscricaoPendente(atletaId, eventoId, 1160),
                 "A inscrição deveria estar pendente na base de dados.");
     }
 
@@ -53,11 +53,11 @@ public class InscricaoAtletaEventoTest {
         Connection conexao = connectionBD.getConexao();
         InscricaonoEventoDAOImp dao = new InscricaonoEventoDAOImp(conexao);
 
-        int atletaId = 148; // ID válido de atleta
+        int atletaId = 1329; // ID válido de atleta
         int eventoId = 1; // ID inexistente de evento
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            dao.inserirInscricao("Pendente", eventoId, atletaId, 71);
+            dao.inserirInscricao("Pendente", eventoId, atletaId, 1160);
         });
 
         assertFalse(exception.getMessage().contains("Evento inexistente"),
@@ -79,10 +79,10 @@ public class InscricaoAtletaEventoTest {
         InscricaonoEventoDAOImp dao = new InscricaonoEventoDAOImp(conexao);
 
         int atletaId = 12; // ID inexistente de atleta
-        int eventoId = 11; // ID válido de evento
+        int eventoId = 42; // ID válido de evento
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            dao.inserirInscricao("Pendente", eventoId, atletaId, 71);
+            dao.inserirInscricao("Pendente", eventoId, atletaId, 1160);
         });
 
         assertFalse(exception.getMessage().contains("Atleta inexistente"),
@@ -107,7 +107,7 @@ public class InscricaoAtletaEventoTest {
         int eventoId = 11;
 
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                dao.inserirInscricao("Pendente", eventoId, atletaId, 71)
+                dao.inserirInscricao("Pendente", eventoId, atletaId, 1160)
         );
 
         assertFalse(exception.getMessage().contains("Campo obrigatório ausente"),

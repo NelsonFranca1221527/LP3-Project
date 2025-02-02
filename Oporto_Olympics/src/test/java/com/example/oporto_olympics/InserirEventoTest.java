@@ -34,7 +34,7 @@ class InserirEventoTest {
         Boolean criado = false;
         Year thisYear = Year.now();
 
-        int anoEdicao = 2060;
+        int anoEdicao = 2065;
         String pais = "PRT";
         String logoURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/logo.jpg";
         String mascoteURL = System.getProperty("user.dir") + "/src/test/resources/EventoIMG/mascote.jpg";
@@ -48,7 +48,7 @@ class InserirEventoTest {
 
         EventosDAOImp eventosDAO = new EventosDAOImp(conexao);
 
-        assertTrue(eventosDAO.getSigla(pais), "País inválido.");
+        assertFalse(!eventosDAO.getSigla(pais), "País inválido.");
 
         assertFalse(eventosDAO.existsByAnoEdicao(anoEdicao), "Já existe um evento com esse ano de edição.");
 

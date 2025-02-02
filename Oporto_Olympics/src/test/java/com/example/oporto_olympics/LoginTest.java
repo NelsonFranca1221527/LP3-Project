@@ -28,8 +28,8 @@ class LoginTest {
         ConnectionBD connectionBD = ConnectionBD.getInstance();
         Connection conexao = connectionBD.getConexao();
 
-        String User = "1000000" ;
-        String Password = StringtoHash("1000000");
+        String User = "1000025" ;
+        String Password = StringtoHash("1000025");
         UserDAOImp userDAO = new UserDAOImp(conexao);
 
         String TipoUser = userDAO.getUserType(Integer.parseInt(User), Password);
