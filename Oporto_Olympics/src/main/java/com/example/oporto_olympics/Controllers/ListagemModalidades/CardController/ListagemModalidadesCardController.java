@@ -566,9 +566,7 @@ public class ListagemModalidadesCardController {
                             ));
 
                             EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
-                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(
-                                    evento.getAno_edicao(), medalha
-                            ));
+                            equipaDAOImp.saveHistorico(participante.getID(), eventoID, new ParticipaçõesEquipa(evento.getAno_edicao(), medalha));
 
                             ListarEquipasDAOImp listarEquipasDAOImp = new ListarEquipasDAOImp(conexao);
                             List<AtletaInfo> lstAtletaInfo = listarEquipasDAOImp.getAtletasByEquipaId(participante.getID());
