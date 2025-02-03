@@ -18,7 +18,9 @@ import java.util.Optional;
  * A comunicação com a base de dados é feita através de uma conexão {@link Connection}.
  */
 public class UserDAOImp implements DAO<User> {
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private static Connection connection;
     private ConnectionBD database;
     /**
@@ -70,6 +72,41 @@ public class UserDAOImp implements DAO<User> {
         }
 
 
+    }
+
+    /**
+     * Verifica se a password fornecida é igual à password atual do utilizador com o ID especificado.
+     *
+     * Este método consulta a base de dados para verificar se a password inserida coincide com a armazenada
+     * para o utilizador correspondente. Se as passwords coincidirem, um alerta informativo será exibido.
+     * Em caso de erro na consulta, um alerta de erro será mostrado.
+     *
+     * @param password A password a ser verificada.
+     * @param id O ID do utilizador cuja password será comparada.
+     * @return {@code true} se a password fornecida for igual à armazenada na base de dados, {@code false} caso contrário.
+     */
+    public boolean VerificarPasswordIgual(String password, int id) {
+        try {
+            database = ConnectionBD.getInstance();
+            connection = database.getConexao();
+
+            PreparedStatement ps = connection.prepareStatement("Select User_password from users where User_password = ? AND id = ?");
+            ps.setString(1, password);
+            ps.setInt(2, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Alteração da Password", "A password que insiriu é igual a sua atual..");
+                alertHandler.getAlert().show();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", e.getMessage());
+            alertHandler.getAlert().show();
+        }
+        return false;
     }
 
     /**

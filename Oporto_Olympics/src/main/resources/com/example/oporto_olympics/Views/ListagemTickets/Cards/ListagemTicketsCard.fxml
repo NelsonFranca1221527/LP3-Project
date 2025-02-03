@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="226.0" prefWidth="800.0" style="-fx-border-width: 1px; -fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.ListagemTickets.CardController.ListagemTicketsCardController">
+   <children>
+      <Label layoutX="18.0" layoutY="14.0" text="Data de Início:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="DataInicioLabel" layoutX="142.0" layoutY="14.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="64.0" text="Data de Fim:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="DataFimLabel" layoutX="132.0" layoutY="64.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="325.0" layoutY="64.0" text="Lugar:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="327.0" layoutY="14.0" text="Local:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="LocalLabel" layoutX="383.0" layoutY="14.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="LugarLabel" layoutX="383.0" layoutY="64.0" text="#####">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="CodigoQR" fitHeight="200.0" fitWidth="200.0" layoutX="545.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="EliminarTicketButton" layoutX="255.0" layoutY="153.0" mnemonicParsing="false" onAction="#OnClickEliminarTicketButton" text="Eliminar Ticket" />
+   </children>
+</AnchorPane>

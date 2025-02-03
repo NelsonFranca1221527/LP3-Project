@@ -13,6 +13,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -36,7 +41,7 @@ public class InserirLocalController {
      * Campo de texto para introdução do ano de construção do local.
      */
     @FXML
-    private TextField anoconstrucaoField;
+    private DatePicker anoconstrucaoPicker;
     /**
      * Rótulo para mostrar o ano de construção do local.
      */
@@ -95,7 +100,7 @@ public class InserirLocalController {
 
         // Define os campos como invisíveis por padrão
         capacidadeField.setVisible(false);
-        anoconstrucaoField.setVisible(false);
+        anoconstrucaoPicker.setVisible(false);
         capacidadeLabel.setVisible(false);
         anoconstrucaoLabel.setVisible(false);
 
@@ -104,15 +109,15 @@ public class InserirLocalController {
             if ("interior".equals(newValue)) {
                 // Torna os campos visíveis se a opção for "interior"
                 capacidadeField.setVisible(true);
-                anoconstrucaoField.setVisible(true);
+                anoconstrucaoPicker.setVisible(true);
                 capacidadeLabel.setVisible(true);
                 anoconstrucaoLabel.setVisible(true);
             } else {
                 // Torna os campos invisíveis se a opção for "exterior"
                 capacidadeField.clear();
-                anoconstrucaoField.clear();
+                anoconstrucaoPicker.setValue(null);
                 capacidadeField.setVisible(false);
-                anoconstrucaoField.setVisible(false);
+                anoconstrucaoPicker.setVisible(false);
                 capacidadeLabel.setVisible(false);
                 anoconstrucaoLabel.setVisible(false);
             }
@@ -120,7 +125,6 @@ public class InserirLocalController {
 
         // Configurar os TextFields para aceitar apenas números
         setNumericTextField(capacidadeField);
-        setNumericTextField(anoconstrucaoField);
 
         // Configurar paisField para aceitar no máximo 3 caracteres
         paisField.setTextFormatter(new TextFormatter<String>(change ->
@@ -169,40 +173,81 @@ public class InserirLocalController {
             return;
         }
 
-        String Tipo = String.valueOf(tipolocalCombo.getValue());
-        String Nome = String.valueOf(nomeField.getText());
-        String Morada = String.valueOf(moradaField.getText());
-        String Cidade = String.valueOf(cidadeField.getText());
-        String Pais = String.valueOf(paisField.getText());
+        String Tipo = tipolocalCombo.getValue() != null ? tipolocalCombo.getValue() : "";
+        String Nome = nomeField.getText().trim();
+        String Morada = moradaField.getText().trim();
+        String Cidade = cidadeField.getText().trim();
+        String Pais = paisField.getText().trim();
 
-        // Verificar se os campos estão vazios e definir as variáveis como null se necessário
-        Integer Capacidade = capacidadeField.getText().isEmpty() ? 0 : Integer.valueOf(capacidadeField.getText());
-        Integer Ano_construcao = anoconstrucaoField.getText().isEmpty() ? 0 : Integer.valueOf(anoconstrucaoField.getText());
-
-        Local L1 = new Local(0, Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
-
-        LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
-
-        // Verificar se os campos estão vazios ou contêm apenas espaços
-        if (isBlankOrEmpty(Tipo) || isBlankOrEmpty(Nome) || isBlankOrEmpty(Morada) || isBlankOrEmpty(Cidade) || isBlankOrEmpty(Pais) || isBlankOrEmpty(String.valueOf(Capacidade)) || isBlankOrEmpty(String.valueOf(Ano_construcao))) {
+        if (isBlankOrEmpty(Tipo) || isBlankOrEmpty(Nome) || isBlankOrEmpty(Morada) || isBlankOrEmpty(Cidade) || isBlankOrEmpty(Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Dados Não Preenchidos", "É necessário preencher todos os dados, para que possa inserir um novo Local.");
             AH1.getAlert().show();
             return;
         }
 
-        // Verificar se o local já existe
+        int Capacidade = 0;
+        if (!capacidadeField.getText().isEmpty()) {
+            Capacidade = Integer.parseInt(capacidadeField.getText());
+        }
+
+        String data = anoconstrucaoPicker.getValue().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate AnoPicker;
+        Date Ano_construcao = null;
+        if ("interior".equalsIgnoreCase(Tipo)) {
+            try {
+
+                if (anoconstrucaoPicker.getValue() == null) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "Tem de inserir um ano de contrução...");
+                    AH1.getAlert().show();
+                    return;
+                }
+
+                AnoPicker = LocalDate.parse(data,formatter);
+                Ano_construcao = java.sql.Date.valueOf(AnoPicker);
+
+                if (AnoPicker.isAfter(LocalDate.now())) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser maior que a data de hoje.");
+                    AH1.getAlert().show();
+                    return;
+                }
+
+                if (Ano_construcao.getYear() > 1000) {
+                    AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano Construção Inválido", "O ano de construção deve ser superior a 1000!");
+                    AH1.getAlert().show();
+                    return;
+                }
+
+            } catch (IllegalArgumentException e) {
+                AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Formato Inválido", "O formato da data de construção está inválido.");
+                AH1.getAlert().show();
+                return;
+            }
+        }
+
+        Local L1 = new Local(0, Nome, Tipo, Morada, Cidade, Pais, Capacidade, Ano_construcao);
+
+        LocaisDAOImp LDI1 = new LocaisDAOImp(conexao);
+
         if (LDI1.existsByLocal(Nome, Tipo, Morada, Cidade, Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Local Duplicado", "Este local já existe.");
             AH1.getAlert().show();
             return;
         }
 
-        if (!LDI1.getSigla(Pais)){
+        if (!LDI1.getSigla(Pais)) {
             AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Pais Inválido", "Insira a sigla de um País válido!");
             AH1.getAlert().show();
             return;
         }
 
+        if ("interior".equalsIgnoreCase(Tipo) && Capacidade <= 0) {
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Capacidade Inválida", "Um local interior deve possuir uma capacidade superior a 0!");
+            AH1.getAlert().show();
+            return;
+        }
+
+        // Solicitar confirmação antes de salvar
         AlertHandler AH2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Inserir um Local?", "Tem a certeza que deseja inserir este Local?");
         Optional<ButtonType> result = AH2.getAlert().showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -210,6 +255,7 @@ public class InserirLocalController {
                 LDI1.save(L1);
                 AlertHandler AH3 = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso !!", "Local Inserido com Sucesso !");
                 AH3.getAlert().show();
+                refreshPage();
             } catch (RuntimeException e) {
                 AlertHandler erro = new AlertHandler(Alert.AlertType.ERROR, "Erro ao inserir Local", e.getMessage());
                 erro.getAlert().show();
@@ -217,7 +263,29 @@ public class InserirLocalController {
         }
     }
 
+    /**
+     * Reseta os campos do formulário de criação do local para os valores padrão.
+     *
+     */
+    private void refreshPage() {
+        nomeField.clear();
+        moradaField.clear();
+        cidadeField.clear();
+        paisField.clear();
+        capacidadeField.clear();
+        anoconstrucaoPicker.setValue(null);
+        capacidadeField.setVisible(false);
+        anoconstrucaoPicker.setVisible(false);
+        capacidadeLabel.setVisible(false);
+        anoconstrucaoLabel.setVisible(false);
+        tipolocalCombo.setValue("");
+    }
 
+    /**
+     * Método chamado ao clicar no botão para voltar ao menu principal do gestor.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();

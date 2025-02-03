@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -38,7 +39,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="anoedicaoField" layoutX="269.0" layoutY="252.0" />
       <Button fx:id="LogoButton" layoutX="166.0" layoutY="407.0" mnemonicParsing="false" onAction="#onClickLogoButton" prefHeight="144.0" prefWidth="196.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Inserir">
          <font>
             <Font size="22.0" />
@@ -88,5 +88,6 @@
       </Label>
       <ComboBox fx:id="localCombo" layoutX="198.0" layoutY="307.0" prefWidth="150.0" />
       <Button fx:id="LocalRedirectButton" layoutX="355.0" layoutY="307.0" mnemonicParsing="false" onAction="#onClickLocalRedirectButton" style="-fx-background-color: transparent;" text="Não encontra o Local?" textFill="#0035e4" underline="true" />
+      <DatePicker fx:id="anoedicaoPicker" layoutX="268.0" layoutY="253.0" />
    </children>
 </AnchorPane>

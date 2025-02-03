@@ -13,7 +13,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Classe de teste para validar as funcionalidades relacionadas à inscrição de equipes em eventos.
+ */
 class InscricaoEquipaTest {
 
     /**
@@ -30,8 +32,8 @@ class InscricaoEquipaTest {
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-        int atleta_id = 199; // ID do atleta
-        int equipaId = 90;   // ID da equipa
+        int atleta_id = 1354; // ID do atleta
+        int equipaId = 1092;   // ID da equipa
 
         boolean existePedidoPendente = dao.existePedidoPendente(atleta_id, equipaId);
 
@@ -53,8 +55,8 @@ class InscricaoEquipaTest {
 
         InscricaoEquipaDAO dao = new InscricaonaEquipaDAOImp(conexao);
 
-        int atleta_id = 199; // ID do atleta
-        int equipaId = 89;   // ID da equipa
+        int atleta_id = 1354; // ID do atleta
+        int equipaId = 1091;   // ID da equipa
 
         boolean existePedidoAprovado = dao.existePedidoAprovado(atleta_id, equipaId);
 

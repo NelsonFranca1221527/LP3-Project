@@ -20,13 +20,21 @@ import java.util.Map;
  * a data de registo, o tipo dos dados do ficheiro e o próprio ficheiro XML.
  */
 public class HistoricoXML {
-
+    /**
+     * Identificador único do utilizador.
+     */
     private int userID;
-
+    /**
+     * Data e hora associadas à ação ou evento.
+     */
     private LocalDateTime data;
-
+    /**
+     * Tipo do evento ou ação.
+     */
     private String tipo;
-
+    /**
+     * Ficheiro XML associado.
+     */
     private File ficheiroXML;
 
     /**

@@ -12,6 +12,9 @@ import java.util.List;
  * o status de inscrições.
  */
 public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection connection;
 
     /**
@@ -116,7 +119,13 @@ public class InscricaonaEquipaDAOImp implements InscricaoEquipaDAO {
         }
         return false;
     }
-
+    /**
+     * Verifica se existe um pedido aprovado para um atleta em uma equipa específica.
+     *
+     * @param atletaId o ID do atleta
+     * @param equipaId o ID da equipa
+     * @return {@code true} se existir um pedido aprovado, {@code false} caso contrário
+     */
     public boolean existePedidoAprovado(int atletaId, int equipaId) {
         String query = "SELECT COUNT(*) FROM inscricoes WHERE atleta_id = ? AND equipa_id = ? AND status = 'Aprovado'";
 

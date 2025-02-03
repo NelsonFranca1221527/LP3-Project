@@ -1,5 +1,8 @@
 package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML;
 
+import com.example.oporto_olympics.API.ConnectAPI.ConnectionAPI;
+import com.example.oporto_olympics.API.DAO.Jogos.JogosDAOImp;
+import com.example.oporto_olympics.API.Models.Jogo;
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
 import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
@@ -16,11 +19,14 @@ import com.example.oporto_olympics.Singleton.GestorSingleton;
 import com.example.oporto_olympics.Singleton.InserçãoXMLSingleton;
 import com.example.oporto_olympics.HelloApplication;
 import com.example.oporto_olympics.Models.*;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -34,10 +40,10 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.*;
 
 /**
@@ -51,16 +57,6 @@ public class InsercaoXMLController {
      */
     @FXML
     private VBox Container;
-    /**
-     * Caixa de seleção para escolher o evento.
-     */
-    @FXML
-    private ChoiceBox<String> EventoChoice;
-    /**
-     * Grupo que contém os elementos do evento.
-     */
-    @FXML
-    private Group EventoGroup;
     /**
      * Botão para inserir um novo evento.
      */
@@ -82,9 +78,13 @@ public class InsercaoXMLController {
     @FXML
     private Label tituloTipoXML;
     /**
-     * Mapa que relaciona um item (evento, equipa, etc.) com um valor inteiro.
+     * Mapa para armazenar os eventos.
      */
-    private Map<String, Integer> itemMap = new HashMap<>();
+    private Map<String, Evento> EventoMap = new HashMap<>();
+    /**
+     * Mapa para armazenar os locais.
+     */
+    private HashMap<String, Local> localMap = new HashMap<>();
     /**
      * Caminho do arquivo XSD para a validação dos dados dos atletas.
      */
@@ -195,49 +195,19 @@ public class InsercaoXMLController {
      */
     public void initialize() throws SQLException {
 
-        itemMap.clear();
-
-        ConnectionBD conexaoBD = ConnectionBD.getInstance();
-        Connection conexao = conexaoBD.getConexao();
-
         InserçãoXMLSingleton inserçãoXMLSingleton = InserçãoXMLSingleton.getInstance();
-
-        EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
-        List<Evento> eventoList = eventosDAOImp.getAll();
-
-        LocaisDAOImp locaisDAOImp = new LocaisDAOImp(conexao);
-        List<Local> localList = locaisDAOImp.getAll();
 
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
-                EventoGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " um Atleta");
                 return;
             case "Equipa":
-                EventoGroup.setVisible(false);
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Equipa");
                 return;
             case "Modalidade":
                 tituloTipoXML.setText(tituloTipoXML.getText() + " uma Modalidade");
                 break;
         }
-
-        EventoChoice.getItems().add("-------");
-
-        for (int i = 0; i < localList.size(); i++) {
-            Local local = localList.get(i);
-            for (int j = 0; j < eventoList.size(); j++) {
-                Evento evento = eventoList.get(j);
-
-                if(local.getId() == evento.getLocal_id()){
-                    EventoChoice.getItems().add(local.getNome() + " - " + evento.getAno_edicao());
-                    itemMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento.getId());
-                }
-
-            }
-        }
-
-        EventoChoice.setValue("-------");
     }
 
     /**
@@ -273,6 +243,10 @@ public class InsercaoXMLController {
         boolean valido = false;
 
         Container.getChildren().clear();
+
+        setListaAtletas(new ArrayList<>());
+        setListaEquipas(new ArrayList<>());
+        setListaModalidades(new ArrayList<>());
 
         switch (inserçãoXMLSingleton.getTipoXML()){
             case "Atleta":
@@ -385,13 +359,7 @@ public class InsercaoXMLController {
                     return;
                 }
 
-                if(EventoChoice.getValue().equals("-------")){
-                    alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir uma ou mais modalidades deve inserir um evento");
-                    alertHandler.getAlert().showAndWait();
-                    return;
-                }
-
-                InserirModalidades(getListaModalidades(), itemMap.get(EventoChoice.getValue()));
+                InserirModalidades(getListaModalidades());
 
                 break;
         }
@@ -497,6 +465,8 @@ public class InsercaoXMLController {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
 
+        AlertHandler alertHandler;
+
         int quantAtletas = lst.size();
 
         AtletaDAOImp atletaDAOImp = new AtletaDAOImp(conexao);
@@ -504,13 +474,66 @@ public class InsercaoXMLController {
         Iterator<Atleta> iterator = lst.iterator();
         while (iterator.hasNext()) {
             Atleta atleta = iterator.next();
+
+            if (atleta.getNome() == null || atleta.getNome().isEmpty() ||
+                    atleta.getGenero() == null || atleta.getGenero().isEmpty() ||
+                    atleta.getDataNascimento() == null ||
+                    atleta.getPais() == null || atleta.getPais().isEmpty()) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Atleta Inválida", "O atleta " + atleta.getNome() + ", possui campos vazios ou inválidos!! Verifique e insira o XML novamente.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            if (!atletaDAOImp.getPais(atleta.getPais())) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "País inválido", "A sigla do país do atleta " + atleta.getNome() + " não é válida.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            int alturaMinima = 120;
+
+            if(atleta.getAltura() <= alturaMinima){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Altura inválida","A altura do atleta " + atleta.getNome() + " não é válida! O atleta deve possuir uma altura superior a " + alturaMinima + "cm.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            int pesoMinimo = 20;
+
+            if(atleta.getPeso() <= pesoMinimo){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Peso inválida","O peso do atleta " + atleta.getNome() + " não é válido! O atleta deve possuir um peso superior a " + pesoMinimo + "kg.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            Date dataNascimento = atleta.getDataNascimento();
+
+            //Converto o objeto Date dataNascimento em um Objeto LocalDate
+            LocalDate localDateNascimento = dataNascimento.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            //Data Atual Menos 200 Anos
+            LocalDate dataLimite = LocalDate.now().minusYears(200);
+
+            if (localDateNascimento.isBefore(dataLimite)) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento do atleta " + atleta.getNome() + " não pode ser anterior a 200 anos atrás.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            if (atleta.getDataNascimento().after(Date.from(Instant.now()))) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento do atleta " + atleta.getNome() + " não pode ser maior que a data de hoje.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             atletaDAOImp.save(atleta);
             iterator.remove();
         }
 
         if(lst.size() < quantAtletas){
 
-            AlertHandler alertHandler;
             alertHandler = new AlertHandler(Alert.AlertType.INFORMATION, "Sucesso", "Atleta/s insirado/s com Sucesso!");
             alertHandler.getAlert().showAndWait();
 
@@ -527,7 +550,7 @@ public class InsercaoXMLController {
     /**
      * Insere a lista de equipas na base de dados.
      *
-     * @param lst      A lista de equipas a ser inserida.
+     * @param lst A lista de equipas a ser inserida.
      * @throws SQLException Se ocorrer um erro ao acessar a base de dados.
      */
     private void InserirEquipas(List<Equipa> lst) throws SQLException {
@@ -544,6 +567,15 @@ public class InsercaoXMLController {
         while (iterator.hasNext()) {
             Equipa equipa = iterator.next();
 
+            if(equipa.getNome() == null || equipa.getNome().trim().isEmpty() ||
+                    equipa.getPais() == null || equipa.getPais().trim().isEmpty() ||
+                    equipa.getGenero() == null || equipa.getGenero().trim().isEmpty() ||
+                    equipa.getDesporto() == null || equipa.getDesporto().trim().isEmpty()){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Equipa Inválida", "A equipa " + equipa.getNome() + ", possui campos vazios ou inválidos!! Verifique e insira o XML novamente.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
             ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
             List<Modalidade> modalidadeList = modalidadeDAOImp.getAll();
 
@@ -552,6 +584,12 @@ public class InsercaoXMLController {
                     equipa.setModalidadeID(modalidade.getId());
                     break;
                 }
+            }
+
+            if (equipa.getModalidadeID() == 0) {
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar!!");
+                alertHandler.getAlert().showAndWait();
+                continue;
             }
 
             Optional<Equipa> equipaExiste = equipaDAOImp.get(equipa.getNome());
@@ -578,16 +616,9 @@ public class InsercaoXMLController {
                 continue;
             }
 
-            if (equipa.getModalidadeID() == 0) {
-                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Não Encontrada", "A equipa " + equipa.getNome() + ", não possui uma modalidade em que possa participar no evento selecionado!!");
-                alertHandler.getAlert().showAndWait();
-                continue;
-            }
-
             equipaDAOImp.save(equipa);
             iterator.remove();
         }
-
 
         if(lst.size() < quantEquipas){
 
@@ -605,15 +636,33 @@ public class InsercaoXMLController {
     }
 
     /**
-     * Insere a lista de modalidades na base de dados.
+     * Insere a lista de equipas na base de dados.
      *
-     * @param lst      A lista de modalidades a ser inserida.
-     * @param IDEvento
+     * @param lst A lista de equipas a ser inserida.
      * @throws SQLException Se ocorrer um erro ao acessar a base de dados.
      */
-    private void InserirModalidades(List<Modalidade> lst, int IDEvento) throws SQLException {
+    private void InserirModalidades(List<Modalidade> lst) throws SQLException {
         ConnectionBD conexaoBD = ConnectionBD.getInstance();
         Connection conexao = conexaoBD.getConexao();
+
+        EventosDAOImp eventosDAOImp = new EventosDAOImp(conexao);
+        List<Evento> eventoList = eventosDAOImp.getAll();
+
+        LocaisDAOImp locaisDAOImp = new LocaisDAOImp(conexao);
+        List<Local> localList = locaisDAOImp.getAll();
+
+        for (Local local : localList) {
+
+            localMap.put(local.getNome(), local);
+
+            for (Evento evento : eventoList) {
+
+                if (local.getId() == evento.getLocal_id()) {
+                    EventoMap.put(local.getNome() + " - " + evento.getAno_edicao(), evento);
+                }
+
+            }
+        }
 
         int quantModalidades = lst.size();
 
@@ -626,25 +675,35 @@ public class InsercaoXMLController {
         while (iterator.hasNext()) {
             Modalidade modalidade = iterator.next();
 
-            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo());
+            if(modalidade.getNome() == null || modalidade.getNome().trim().isEmpty() ||
+                    modalidade.getGenero() == null || modalidade.getGenero().trim().isEmpty() ||
+                    modalidade.getTipo() == null || modalidade.getTipo().trim().isEmpty() ||
+                    modalidade.getOneGame() == null || modalidade.getOneGame().trim().isEmpty() ||
+                    modalidade.getMedida() == null || modalidade.getMedida().trim().trim().isEmpty() ||
+                    modalidade.getDescricao() == null || modalidade.getDescricao().trim().isEmpty() ||
+                    modalidade.getRegras() == null || modalidade.getRegras().trim().isEmpty()){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Inválida", "A modalidade " + modalidade.getNome() + ", possui campos vazios ou inválidos!! Verifique e insira o XML novamente.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            if(modalidade.getMinParticipantes() <= 1){
+                alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Participantes Insuficientes", "A Modalidade " + modalidade.getNome() + " deve ter um minimo de 2 ou mais participantes.");
+                alertHandler.getAlert().showAndWait();
+                continue;
+            }
+
+            Modalidade ModalidadeExistente = modalidadeDAOImp.getModalidadeByNomeGeneroTipo(modalidade.getNome(), modalidade.getGenero(), modalidade.getTipo(), modalidade.getMinParticipantes());
 
             if (ModalidadeExistente != null) {
-                if (ModalidadeExistente.getListEventosID().contains(IDEvento)) {
-                    alertHandler = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
-                    alertHandler.getAlert().showAndWait();
-                    continue;
-                }
-
-                modalidadeDAOImp.saveEventos_Modalidades(IDEvento, ModalidadeExistente.getId());
-                iterator.remove();
+                SaveEventosModalidades(conexao, ModalidadeExistente);
                 continue;
             }
 
             modalidadeDAOImp.save(modalidade);
-            modalidadeDAOImp.saveEventos_Modalidades(IDEvento, modalidade.getId());
+            SaveEventosModalidades(conexao, modalidade);
             iterator.remove();
         }
-
 
         if(lst.size() < quantModalidades){
 
@@ -660,7 +719,6 @@ public class InsercaoXMLController {
             historicoXMLDAOImp.save(new HistoricoXML(gestorSingleton.getGestor().getId(), LocalDateTime.now(), inserçãoXMLSingleton.getTipoXML(), getSelectedFile()));
         }
     }
-
 
     /**
      * Verifica se o ficheiro XML fornecido é válido em relação ao ficheiro XSD.
@@ -679,6 +737,313 @@ public class InsercaoXMLController {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Este método permite registar uma modalidade num evento, solicitando ao utilizador que insira informações como o local, a data,
+     * a hora de início e a duração da modalidade.
+     *
+     * @param conexao A conexão com a base de dados que será utilizada para realizar as operações de salvamento.
+     * @param modalidade A modalidade que será associada ao evento.
+     */
+    public void SaveEventosModalidades(Connection conexao, Modalidade modalidade){
+
+        AlertHandler alertHandler;
+
+        ChoiceBox<String> EventoChoice = new ChoiceBox<>();
+
+        if(EventoMap.isEmpty()){
+            alertHandler = new AlertHandler(Alert.AlertType.WARNING,"Eventos Inexistentes", "Não existem eventos disponiveis para inserir modalidades!!");
+            alertHandler.getAlert().showAndWait();
+            return;
+        }
+
+        EventoChoice.setItems(FXCollections.observableArrayList(EventoMap.keySet()));
+        EventoChoice.getItems().add("-------");
+        EventoChoice.setValue("-------");
+
+
+        DatePicker DataPicker = new DatePicker();
+
+        TextField HoraInicio = new TextField();
+        HoraInicio.setPromptText("HH:mm:ss");
+
+        TextField Duracao = new TextField();
+        Duracao.setPromptText("HH:mm:ss");
+
+        DataPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Dia
+            }
+            if (length > 2) {
+                masked.append("/");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Mês
+            }
+            if (length > 4) {
+                masked.append("/");
+                masked.append(sanitized.substring(4, Math.min(length, 8))); // Ano
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                DataPicker.getEditor().setText(masked.toString());
+                DataPicker.getEditor().positionCaret(masked.length());
+            }
+        });
+
+        Duracao.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Horas
+            }
+            if (length > 2) {
+                masked.append(":");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Minutos
+            }
+            if (length > 4) {
+                masked.append(":");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Segundos
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                Duracao.setText(masked.toString());
+                Duracao.positionCaret(masked.length());
+            }
+        });
+
+        HoraInicio.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 2))); // Horas
+            }
+            if (length > 2) {
+                masked.append(":");
+                masked.append(sanitized.substring(2, Math.min(length, 4))); // Minutos
+            }
+            if (length > 4) {
+                masked.append(":");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Segundos
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                HoraInicio.setText(masked.toString());
+                HoraInicio.positionCaret(masked.length());
+            }
+        });
+
+        Button OKButton = new Button("OK");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.add(new Label("Modalidade a Inserir Horário:"), 0, 0);
+        grid.add(new Label(modalidade.getNome()), 1, 0);
+
+        grid.add(new Label("Evento:"), 0, 1);
+        grid.add(EventoChoice, 1, 1);
+
+        grid.add(new Label("Data:"), 0, 2);
+        grid.add(DataPicker, 1, 2);
+
+        grid.add(new Label("Hora de Início:"), 0, 3);
+        grid.add(HoraInicio, 1, 3);
+
+        grid.add(new Label("Duração:"), 0, 4);
+        grid.add(Duracao, 1, 4);
+
+        grid.add(OKButton, 1, 6);
+
+        Stage HorarioStage = new Stage();
+        HorarioStage.setScene(new Scene(grid, 350, 250));
+        HorarioStage.setTitle("Inserir Horário");
+
+        OKButton.setOnAction(e -> {
+            AlertHandler alertHandler2;
+
+            if(EventoChoice.getValue().equals("-------")){
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING,"Selecione um Evento!!!", "Para inserir a modalidade deve selecionar um evento!!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            Evento evento = EventoMap.get(EventoChoice.getValue());
+
+            if (modalidade.getListEventosID().contains(evento.getId())) {
+
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Modalidade Existente", "A Modalidade " + modalidade.getNome() + ", Género: " + modalidade.getGenero() + " já encontra-se registada no evento selecionado!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            if (DataPicker.getValue() == null) {
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A Data de início da modalidade deve ser uma Data válida!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            if(DataPicker.getValue().getYear() != evento.getAno_edicao()){
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Ano Inválido", "O ano selecionado na data de início não corresponde ao ano de edição do evento.");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            if(DataPicker.getValue().isBefore(LocalDate.now())){
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Data Inválida", "A Data de Início da Modalidade não deve ser anterior ao dia de hoje!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            if (!HoraInicio.getText().matches("^([01]?[0-9]|2[0-3])(:([0-5]?[0-9])){0,2}$")) {
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Hora de Início Inválida", "A Hora de Início inserida é inválida! As horas devem ser entre 00 e 23, e os minutos e segundos entre 00 e 59.");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            if (!Duracao.getText().matches("^([01]?[0-9]|2[0-3])(:([0-5]?[0-9])){0,2}$")) {
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Duração Inválida", "A Duração inserida é inválida! As horas devem ser entre 00 e 23, e os minutos e segundos entre 00 e 59.");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            LocalDateTime dataHora = LocalDateTime.of(DataPicker.getValue(), LocalTime.parse(HoraInicio.getText()));
+            LocalTime duracao = LocalTime.parse(Duracao.getText());
+
+            LocalTime duracaoMinima = LocalTime.of(1,0,0);
+
+            if(duracao.isBefore(duracaoMinima)){
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Duração Inválida", "A duração deve ser superior a 1 hora!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+            HashMap<String, Local> LocaisDisponiveis = VerificarConflito(dataHora,duracao, modalidadeDAOImp.getAllHorarioModalidade(), new HashMap<>(localMap), evento);
+
+            if(LocaisDisponiveis == null || LocaisDisponiveis.isEmpty()){
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponivel", "Conflito de horários: não existe locais disponíveis para o horário inserido!!");
+                alertHandler2.getAlert().showAndWait();
+                return;
+            }
+
+            alertHandler2 = new AlertHandler(Alert.AlertType.CONFIRMATION, "Selecione um Local!!", "Selecione 1 dos locais disponiveis para este horário:");
+
+            ChoiceBox<String> locaisChoice = new ChoiceBox<>();
+            locaisChoice.setItems(FXCollections.observableArrayList(LocaisDisponiveis.keySet()));
+            locaisChoice.getItems().add("-------");
+            locaisChoice.setValue("-------");
+
+            VBox vBox = new VBox();
+            vBox.getChildren().add(locaisChoice);
+
+            alertHandler2.getAlert().getDialogPane().setContent(vBox);
+
+            Optional<ButtonType> result = alertHandler2.getAlert().showAndWait();
+
+            if (result.isPresent()) {
+
+                ButtonType clickedButton = result.get();
+
+                if (clickedButton != ButtonType.OK) {
+                    return;
+                }
+
+                if(!LocaisDisponiveis.containsKey(locaisChoice.getValue())){
+                    alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Local Inválido", "Deve inserir um local válido para poder inserir a modalidade!");
+                    alertHandler2.getAlert().showAndWait();
+                    return;
+                }
+
+                Local local = LocaisDisponiveis.get(locaisChoice.getValue());
+
+                modalidadeDAOImp.saveEventos_Modalidades(evento.getId(), modalidade.getId(), dataHora, duracao, local.getId());
+
+                HorarioStage.close();
+            }
+        });
+
+        HorarioStage.showAndWait();
+    }
+
+    /**
+     * Verifica se há conflitos de horários para um local específico com base em uma lista de horários existentes.
+     *
+     * @param dataHoraInicio A data e hora de início da nova modalidade.
+     * @param duracao A duração da nova modalidade.
+     * @param listaHorarios Uma lista de horários já registados para outras modalidades.
+     * @param locais Um mapa de locais disponíveis, onde a chave é o nome do local e o valor é o objeto {@link Local}.
+     * @param evento O evento associado à modalidade, que contém informações como o país.
+     * @return Um mapa de locais que não apresentam conflitos de horário com a nova modalidade. Se todos os locais apresentarem conflito ou a lista de horários/locais for nula ou vazia, retorna {@code null}
+     *
+     * Este método verifica se o intervalo de tempo definido por dataHoraInicio e a duração da nova modalidade
+     * entra em conflito com os intervalos de tempo das modalidades existentes associadas ao mesmo local.
+     *
+     * Um conflito ocorre quando:
+     * - O início do novo horário está dentro do intervalo de um horário existente.
+     * - O fim do novo horário está dentro do intervalo de um horário existente.
+     * - O início de um horário existente está dentro do intervalo do novo horário.
+     * - O fim de um horário existente está dentro do intervalo do novo horário.
+     *
+     * Se a lista de horários for nula ou estiver vazia, considera-se que não há conflitos.
+     */
+    public HashMap<String, Local> VerificarConflito(LocalDateTime dataHoraInicio, LocalTime duracao, List<HorarioModalidade> listaHorarios, HashMap<String, Local> locais, Evento evento){
+
+        if(listaHorarios == null || listaHorarios.isEmpty() ||
+                locais == null || locais.isEmpty()){
+            return locais;
+        }
+
+        Iterator<Map.Entry<String, Local>> iterator = locais.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Local> entry = iterator.next();
+
+            Local local = entry.getValue();
+
+            if (!local.getPais().equals(evento.getPais())) {
+                iterator.remove();
+            }
+
+            LocalDateTime dataHoraFim = dataHoraInicio.plusSeconds(duracao.toSecondOfDay());
+
+            for (HorarioModalidade horario : listaHorarios) {
+
+                if (local.getId() != horario.getLocalID()) {
+                    continue;
+                }
+
+                LocalDateTime horarioInicio = horario.getDataHora();
+                LocalDateTime horarioFim = horarioInicio.plusSeconds(horario.getDuracao().toSecondOfDay());
+
+            /* Verifica se o horário da modalidade a ser inserida não se sobrepõe ao intervalo do horário da modalidade que está a ser verificada,
+               assim como também verifica que o horário da modalidade existente não entra em conflito com o horário da modalidade a ser inserida. */
+                if ((dataHoraInicio.isAfter(horarioInicio) && dataHoraInicio.isBefore(horarioFim)) ||
+                        (dataHoraFim.isAfter(horarioInicio) && dataHoraFim.isBefore(horarioFim)) ||
+                        (horarioInicio.isAfter(dataHoraInicio) && horarioInicio.isBefore(dataHoraFim)) ||
+                        (horarioFim.isAfter(dataHoraInicio) && horarioFim.isBefore(dataHoraFim)) ||
+                        dataHoraInicio.equals(horarioInicio) || dataHoraInicio.equals(horarioFim) ||
+                        dataHoraFim.equals(horarioInicio) || dataHoraFim.equals(horarioFim)) {
+                    //Detetou Conflito de Horários
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+
+        return locais;
     }
 
     /**

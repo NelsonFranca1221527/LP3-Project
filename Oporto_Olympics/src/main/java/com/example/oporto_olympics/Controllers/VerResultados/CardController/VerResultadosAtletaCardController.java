@@ -8,7 +8,9 @@ import javafx.scene.control.Label;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-/****/
+/**
+ * Controlador para exibição dos resultados de um atleta.
+ */
 public class VerResultadosAtletaCardController {
     /**
      * Rótulo para mostrar a data do resultado.

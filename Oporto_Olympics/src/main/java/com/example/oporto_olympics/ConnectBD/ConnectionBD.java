@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.sql.*;
 
 /**
- * Uma classe singleton para gerenciar uma conexão de banco de dados com um banco de dados SQL Server.
+ * Uma classe singleton para gerenciar uma conexão de base de dados com um base de dados SQL Server.
  */
 public class ConnectionBD {
     /**
@@ -19,8 +19,8 @@ public class ConnectionBD {
     private Connection conexao = null;
 
     /**
-     * Construtor privado para criar uma conexão de banco de dados.
-     * @throws SQLException se ocorrer um erro de conexão com o banco de dados.
+     * Construtor privado para criar uma conexão de base de dados.
+     * @throws SQLException se ocorrer um erro de conexão com o base de dados.
      */
     private ConnectionBD() throws SQLException {
 

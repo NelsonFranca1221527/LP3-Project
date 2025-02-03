@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oporto_olympics.Controllers.Atleta.InserirAtletaController">
    <children>
@@ -67,5 +68,6 @@
       <TextField fx:id="Data_nasc" accessibleRole="DATE_PICKER" layoutX="383.0" layoutY="386.0" />
       <TextField fx:id="Peso" layoutX="527.0" layoutY="317.0" />
       <TextField fx:id="Altura" layoutX="272.0" layoutY="317.0" />
+      <Text fill="#000000cd" layoutX="540.0" layoutY="403.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YYYY-MM-DD" />
    </children>
 </AnchorPane>

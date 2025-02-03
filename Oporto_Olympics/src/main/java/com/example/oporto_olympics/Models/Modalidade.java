@@ -8,32 +8,54 @@ import java.util.List;
  * o tipo de modalidade, o género, o nome, a descrição, os participantes mínimos, a medida usada,
  * a regra do "One Game", o evento relacionado, os recordes olímpicos e os vencedores olímpicos.
  */
-
-
 public class Modalidade {
-
+    /**
+     * Identificador único da modalidade.
+     */
     private int id;
-
+    /**
+     * Tipo da modalidade (por exemplo, individual).
+     */
     private String tipo;
-
+    /**
+     * Género associado à modalidade (por exemplo, masculino, feminino, misto).
+     */
     private String genero;
-
+    /**
+     * Nome da modalidade.
+     */
     private String nome;
-
+    /**
+     * Descrição detalhada da modalidade.
+     */
     private String descricao;
-
+    /**
+     * Número mínimo de participantes exigido para a modalidade.
+     */
     private int minParticipantes;
-
+    /**
+     * Unidade de medida associada à modalidade.
+     */
     private String medida;
-
+    /**
+     * Indica se a modalidade é realizada em apenas um jogo.
+     */
     private String OneGame;
-
+    /**
+     * Lista de identificadores de eventos associados à modalidade.
+     */
     private List<Integer> ListEventosID;
-
+    /**
+     * Recorde olímpico registado para a modalidade.
+     */
     private RegistoOlimpico recordeOlimpico;
-
+    /**
+     * Vencedor olímpico atual da modalidade.
+     */
     private RegistoOlimpico vencedorOlimpico;
-
+    /**
+     * Regras oficiais da modalidade.
+     */
     private String regras;
 
     /**

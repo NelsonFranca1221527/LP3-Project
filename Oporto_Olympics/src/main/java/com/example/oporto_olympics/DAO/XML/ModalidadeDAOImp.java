@@ -1,11 +1,15 @@
 package com.example.oporto_olympics.DAO.XML;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.Models.Evento;
+import com.example.oporto_olympics.Models.HorarioModalidade;
 import com.example.oporto_olympics.Models.Modalidade;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -57,16 +61,19 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
-
                     case "Pontos":
-                        RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
+                        RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("recorde_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
@@ -85,52 +92,68 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      */
     @Override
     public void save(Modalidade modalidade) {
+        try (CallableStatement cs = conexao.prepareCall("{CALL SaveModalidade(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
 
-        try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO modalidades (nome , tipo, descricao, min_participantes, pontuacao, jogo_unico, regras, recorde_olimpico_ano, recorde_olimpico_resultado, recorde_olimpico_nome, vencedor_olimpico_ano, vencedor_olimpico_resultado, vencedor_olimpico_nome, genero) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-
-            ps.setString(1, modalidade.getNome());
-            ps.setString(2, modalidade.getTipo());
-            ps.setString(3, modalidade.getDescricao());
-            ps.setInt(4, modalidade.getMinParticipantes());
-            ps.setString(5, modalidade.getMedida());
-
-            ps.setInt(6, modalidade.getOneGame().equals("One") ? 1 : 0);
-            ps.setString(7, modalidade.getRegras());
+            // Definir os parâmetros do procedimento armazenado
+            cs.setString(1, modalidade.getNome());
+            cs.setString(2, modalidade.getTipo());
+            cs.setString(3, modalidade.getDescricao());
+            cs.setInt(4, modalidade.getMinParticipantes());
+            cs.setString(5, modalidade.getMedida());
+            cs.setBoolean(6, modalidade.getOneGame().equals("One"));
+            cs.setString(7, modalidade.getRegras());
+            cs.setInt(8, modalidade.getRecordeOlimpico().getAno());
 
             if (modalidade.getMedida().equals("Tempo")) {
-                ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
-                ps.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
-                ps.setString(10, modalidade.getRecordeOlimpico().getVencedor());
-                ps.setInt(11, modalidade.getVencedorOlimpico().getAno());
-                ps.setString(12, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
-                ps.setString(13, modalidade.getVencedorOlimpico().getVencedor());
-            } else if (modalidade.getMedida().equals("Pontos")) {
-                ps.setInt(8, modalidade.getRecordeOlimpico().getAno());
-                ps.setString(9, modalidade.getRecordeOlimpico().getMedalhas());
-                ps.setString(10, modalidade.getRecordeOlimpico().getVencedor());
-                ps.setInt(11, modalidade.getVencedorOlimpico().getAno());
-                ps.setString(12, modalidade.getVencedorOlimpico().getMedalhas());
-                ps.setString(13, modalidade.getVencedorOlimpico().getVencedor());
+                cs.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
+            } else if (modalidade.getMedida().equals("Distância")) {
+                cs.setString(9, String.valueOf(modalidade.getRecordeOlimpico().getDistancia()));
+            } else {
+                cs.setNull(9, java.sql.Types.VARCHAR);
             }
 
-            ps.setString(14, modalidade.getGenero());
-            ps.executeUpdate();
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    modalidade.setId(generatedKeys.getInt(1)); // Atualiza o ID da Modalidade
-                } else {
-                    throw new SQLException("Erro ao obter o ID gerado para a Modalidade.");
-                }
+            if (modalidade.getRecordeOlimpico().getMedalhas() != null) {
+                cs.setInt(10, Integer.parseInt(modalidade.getRecordeOlimpico().getMedalhas()));
+            } else {
+                cs.setNull(10, java.sql.Types.INTEGER);
             }
 
-            ps.close();
+            cs.setString(11, modalidade.getRecordeOlimpico().getVencedor());
+            cs.setInt(12, modalidade.getVencedorOlimpico().getAno());
+
+            if (modalidade.getMedida().equals("Tempo")) {
+                cs.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
+            } else if (modalidade.getMedida().equals("Distância")) {
+                cs.setString(13, String.valueOf(modalidade.getVencedorOlimpico().getDistancia()));
+            } else {
+                cs.setNull(13, java.sql.Types.VARCHAR);
+            }
+
+            if (modalidade.getVencedorOlimpico().getMedalhas() != null &&
+                    !modalidade.getVencedorOlimpico().getMedalhas().isEmpty()) {
+                cs.setString(14, modalidade.getVencedorOlimpico().getMedalhas());
+            } else {
+                cs.setNull(14, java.sql.Types.VARCHAR);
+            }
+
+            cs.setString(15, modalidade.getVencedorOlimpico().getVencedor());
+            cs.setString(16, modalidade.getGenero());
+
+            // Registrar o parâmetro de saída
+            cs.registerOutParameter(17, java.sql.Types.INTEGER);
+
+            // Executar o procedimento
+            cs.execute();
+
+            // Recuperar o ID gerado
+            int newId = cs.getInt(17);
+            modalidade.setId(newId); // Atualiza o ID da Modalidade
 
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao inserir a modalidade: " + ex.getMessage());
+            throw new RuntimeException("Erro ao inserir a modalidade: " + ex.getMessage(), ex);
         }
     }
+
 
     /**
      * Atualiza os dados de uma modalidade na base de dados.
@@ -173,12 +196,13 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
      *         ou null se não for encontrada nenhuma modalidade correspondente.
      * @throws RuntimeException Se ocorrer um erro na consulta à base de dados.
      */
-    public Modalidade getModalidadeByNomeGeneroTipo(String nome, String genero, String tipo) {
+    public Modalidade getModalidadeByNomeGeneroTipo(String nome, String genero, String tipo, int minParticipantes) {
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE modalidades.nome = ? and modalidades.genero = ? and modalidades.tipo = ?");
+            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM modalidades WHERE modalidades.nome = ? and modalidades.genero = ? and modalidades.tipo = ? and modalidades.min_participantes = ?");
             ps.setString(1, nome);
             ps.setString(2, genero);
             ps.setString(3, tipo);
+            ps.setInt(4, minParticipantes);
             ResultSet rs = ps.executeQuery();
 
             Modalidade modalidade = null;
@@ -198,8 +222,9 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
 
@@ -207,6 +232,11 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
                         RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
@@ -247,18 +277,59 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
     }
 
     /**
+     * Obtém todos os horários das modalidades da base de dados.
+     *
+     * Este método realiza uma consulta à tabela `eventos_modalidades` para obter os campos
+     * `data_modalidade`, `duracao` e `local_id`. Os dados são convertidos para objetos da classe
+     * {@link HorarioModalidade} e retornados numa lista.
+     * Registos com valores inválidos (data ou duração nula, ou `local_id` igual a 0) são ignorados.
+     *
+     * @return Uma lista de objetos {@link HorarioModalidade} contendo os dados dos horários
+     *         das modalidades presentes na base de dados.
+     * @throws RuntimeException Se ocorrer um erro durante a execução da consulta SQL.
+     */
+    public List<HorarioModalidade> getAllHorarioModalidade() {
+        try {
+
+            PreparedStatement ps = conexao.prepareStatement("SELECT data_modalidade, duracao, local_id FROM eventos_modalidades");
+            ResultSet rs = ps.executeQuery();
+
+            List<HorarioModalidade> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
+                }
+
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+            }
+
+                return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao inserir a evento_modalidade: " + ex.getMessage());
+        }
+    }
+
+    /**
      * Guarda a relação entre um evento e uma modalidade na base de dados.
      *
      * @param eventoID      ID do evento a ser associado.
      * @param modalidadeID  ID da modalidade a ser associada ao evento.
      * @throws RuntimeException Se ocorrer um erro ao inserir a relação na base de dados.
      */
-    public void saveEventos_Modalidades(int eventoID, int modalidadeID){
+    public void saveEventos_Modalidades(int eventoID, int modalidadeID, LocalDateTime dataTempo, LocalTime duracao, int local_id){
         try {
-            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id) VALUES(?,?)");
+            PreparedStatement ps = conexao.prepareStatement("INSERT INTO eventos_modalidades (evento_id , modalidade_id, data_modalidade, duracao, local_id) VALUES(?,?,?,?,?)");
 
             ps.setInt(1, eventoID);
             ps.setInt(2, modalidadeID);
+            ps.setTimestamp(3, Timestamp.valueOf(dataTempo));
+            ps.setTime(4, Time.valueOf(duracao));
+            ps.setInt(5, local_id);
             ps.executeUpdate();
             ps.close();
 
@@ -456,16 +527,19 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
 
                 switch (pontuacao) {
                     case "Tempo":
-
-                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")));
-                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")));
+                        RegistoTempo recordeTempo = new RegistoTempo(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), parseTime(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoTempo vencedorTempo = new RegistoTempo(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), parseTime(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeTempo, vencedorTempo, rs.getString("regras"));
                         break;
-
                     case "Pontos":
                         RegistoPontos recordePontos = new RegistoPontos(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         RegistoPontos vencedorPontos = new RegistoPontos(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), rs.getString("vencedor_olimpico_resultado"));
                         modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordePontos, vencedorPontos, rs.getString("regras"));
+                        break;
+                    case "Distância":
+                        RegistoDistancia recordeDistancia = new RegistoDistancia(rs.getString("recorde_olimpico_nome"), rs.getInt("recorde_olimpico_ano"), Double.valueOf(rs.getString("recorde_olimpico_resultado")), String.valueOf(rs.getInt("recorde_olimpico_medalhas")));
+                        RegistoDistancia vencedorDistancia = new RegistoDistancia(rs.getString("vencedor_olimpico_nome"), rs.getInt("vencedor_olimpico_ano"), Double.valueOf(rs.getString("vencedor_olimpico_resultado")), rs.getString("vencedor_olimpico_medalhas"));
+                        modalidade = new Modalidade(rs.getInt("id"), rs.getString("tipo"), rs.getString("genero"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("min_participantes"), pontuacao, Onegame, ListeventoID, recordeDistancia, vencedorDistancia, rs.getString("regras"));
                         break;
                 }
 
@@ -567,5 +641,104 @@ public class ModalidadeDAOImp implements DAOXML<Modalidade> {
         }
 
         return equipas;
+    }
+
+    /**
+     * Obtém os detalhes do horário de uma modalidade específica com base no seu ID.
+     *
+     * @param modalidadeId O ID da modalidade para a qual se pretende obter o horário.
+     * @return Um objeto {@link HorarioModalidade} contendo os detalhes do horário da modalidade.
+     * @throws SQLException Caso ocorra um erro ao executar a consulta à base de dados.
+     */
+    public HorarioModalidade getHorarioModalidadeById(int modalidadeId, int eventoId) throws SQLException {
+        HorarioModalidade horariomodalidade = null;
+        String query = "SELECT data_modalidade, duracao, local_id FROM eventos_modalidades WHERE modalidade_id = ? AND evento_id = ?";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(query)) {
+            stmt.setInt(1, modalidadeId);
+            stmt.setInt(2, eventoId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                LocalDateTime dataHora = rs.getTimestamp("data_modalidade") != null
+                        ? rs.getTimestamp("data_modalidade").toLocalDateTime()
+                        : null;
+
+                LocalTime duracao = rs.getTime("duracao") != null
+                        ? rs.getTime("duracao").toLocalTime()
+                        : null;
+
+                Integer localId = rs.getInt("local_id");
+                if (rs.wasNull()) {
+                    localId = null;
+                }
+
+                if (dataHora != null && duracao != null && localId != null) {
+                    horariomodalidade = new HorarioModalidade(dataHora, duracao, localId);
+                }
+            }
+        }
+
+        return horariomodalidade; // Retorna null se os valores necessários forem nulos ou não existirem.
+    }
+
+    /**
+     * Obtém uma lista de horários de todas as modalidades em que uma equipa específica está inscrita.
+     *
+     * @param equipaId O ID da equipa cujos horários de modalidades devem ser obtidos.
+     * @return Uma lista de objetos {@link HorarioModalidade} representando os horários das modalidades em que a equipa está inscrita.
+     * @throws RuntimeException Caso ocorra um erro ao executar a consulta à base de dados.
+     */
+    public List<HorarioModalidade> getAllHorarioModalidadeByEquipa(int equipaId) {
+        try {
+
+            PreparedStatement ps = conexao.prepareStatement("select m.data_modalidade, m.duracao, m.local_id from eventos_modalidades as m JOIN equipa_modalidade as em ON em.modalidade_id = m.modalidade_id where em.evento_id=m.evento_id AND em.equipa_id= ? ");
+            ps.setInt(1, equipaId);
+            ResultSet rs = ps.executeQuery();
+
+            List<HorarioModalidade> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                if (rs.getTimestamp("data_modalidade") == null ||
+                        rs.getTime("duracao") == null ||
+                        rs.getInt("local_id") == 0) {
+                    continue;
+                }
+
+                list.add(new HorarioModalidade(rs.getTimestamp("data_modalidade").toLocalDateTime(), rs.getTime("duracao").toLocalTime(), rs.getInt("local_id")));
+            }
+
+            return list;
+
+        } catch(SQLException ex){
+            throw new RuntimeException("Erro ao listar Horarios pela Equipa: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Associa um identificador de jogo (gameID) a uma modalidade específica na base de dados.
+     *
+     * Este método insere um registo na tabela "modalidade_gameID", que relaciona a modalidade fornecida
+     * com o identificador do jogo passado como argumento.
+     *
+     * @param modalidade a modalidade a ser associada, representada por um objeto da classe {@link Modalidade}.
+     *                   Este objeto deve conter um identificador válido que será utilizado na operação.
+     * @param gameID o identificador único do jogo a ser associado à modalidade.
+     *
+     * @throws RuntimeException se ocorrer uma falha na associação do identificador do jogo à modalidade.
+     *                          A mensagem de erro original será incluída na exceção lançada.
+     */
+    public void saveGameID(Modalidade modalidade, String gameID) throws SQLException {
+        try {
+            PreparedStatement ps = conexao.prepareStatement("Insert into modalidade_gameID (modalidade_id, game_id) Values (?,?)");
+            ps.setInt(1, modalidade.getId());
+            ps.setString(2, gameID);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro em associar o Jogo à modalidade: " + ex.getMessage());
+        }
     }
 }

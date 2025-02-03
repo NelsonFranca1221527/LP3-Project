@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 /**
  * Controlador responsável pela criação de um novo atleta.
  * Esta classe lida com a interface gráfica de inserção de dados de um atleta,
@@ -92,10 +95,43 @@ public class InserirAtletaController {
             alert.show();
         }
 
-        // Preencher o ChoiceBox de Gênero
         GeneroChoice.getItems().addAll("Men", "Women");
-        GeneroChoice.setValue("Men"); // Valor default, pode mudar se necessário
+        GeneroChoice.setValue("Men");
+
+        addDateMask(Data_nasc);
     }
+
+    /**
+     * Adiciona uma máscara ao campo de texto para garantir o formato yyyy-MM-dd.
+     *
+     * @param textField O campo de texto onde a máscara será aplicada.
+     */
+    private void addDateMask(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            String sanitized = newValue.replaceAll("[^0-9]", "");
+            int length = sanitized.length();
+
+            StringBuilder masked = new StringBuilder();
+            if (length > 0) {
+                masked.append(sanitized.substring(0, Math.min(length, 4))); // Ano
+            }
+            if (length > 4) {
+                masked.append("-");
+                masked.append(sanitized.substring(4, Math.min(length, 6))); // Mês
+            }
+            if (length > 6) {
+                masked.append("-");
+                masked.append(sanitized.substring(6, Math.min(length, 8))); // Dia
+            }
+
+            if (!masked.toString().equals(newValue)) {
+                textField.setText(masked.toString());
+                textField.positionCaret(masked.length());
+            }
+        });
+    }
+
 
     /**
      * Método associado ao botão de criação de atleta. Este método é acionado ao clicar no botão de "Criar Atleta"
@@ -116,18 +152,26 @@ public class InserirAtletaController {
     @FXML
     public void OnClickCriarAtletaButton() {
         String nome = Nome.getText();
-        String pais = Pais.getText();
-        String altura = Altura.getText();
-        String peso = Peso.getText();
+        String pais = Pais.getText().trim();
+        String altura = Altura.getText().trim();
+        String peso = Peso.getText().trim();
         String dataNasc = Data_nasc.getText();
         String genero = GeneroChoice.getValue().toString();
 
-        if (nome.isEmpty() || pais.isEmpty() || altura.isEmpty() || peso.isEmpty() || dataNasc.isEmpty() || genero.isEmpty()) {
+        if (nome.trim().isEmpty() || pais.trim().isEmpty() || altura.trim().isEmpty() || peso.trim().isEmpty() || dataNasc.trim().isEmpty() || genero.trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Campos obrigatórios", "Todos os campos devem ser preenchidos.");
             return;
         }
         if (!dao.getPais(pais)) {
             showAlert(Alert.AlertType.WARNING, "País inválido", "A sigla do país inserido não é válida.");
+            return;
+        }
+        if(Integer.parseInt(altura) < 120){
+            showAlert(Alert.AlertType.WARNING, "Altura inválida","A altura que inseriu não é válida!");
+            return;
+        }
+        if(Integer.parseInt(peso) < 20){
+            showAlert(Alert.AlertType.WARNING, "Peso inválida","O peso que inseriu não é válido!");
             return;
         }
 
@@ -145,6 +189,14 @@ public class InserirAtletaController {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             dataNascimento = LocalDate.parse(dataNasc, formatter);
+
+            //Data Atual Menos 200 Anos
+            LocalDate dataLimite = LocalDate.now().minusYears(200);
+
+            if (dataNascimento.isBefore(dataLimite)) {
+                showAlert(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser anterior a 200 anos atrás.");
+                return;
+            }
 
             if (dataNascimento.isAfter(LocalDate.now())) {
                 showAlert(Alert.AlertType.WARNING, "Data inválida", "A data de nascimento não pode ser maior que a data de hoje.");
@@ -182,18 +234,16 @@ public class InserirAtletaController {
         GeneroChoice.setValue("Men");
     }
     /**
-     * Trata o evento de ação desencadeado ao clicar no botão "Voltar".
+     * Evento para o botão "Voltar". Este método é chamado quando o utilizador clica no
+     * botão, permitindo assim ao utilizador voltar para a página anterior.
      *
-     * Este método obtém a janela (stage) atual a partir da cena do botão e redireciona
-     * o utilizador para o menu principal do gestor utilizando o {@link RedirecionarHelper}.
-     *
-     * @param event o {@link ActionEvent} desencadeado pelo clique no botão
+     * @param event O evento de ação que desencadeia o método, gerado pelo clique no botão.
      */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuInsercoes().switchScene(s);
     }
     /**
      * Mostra um alerta com o tipo, título e mensagem especificados.

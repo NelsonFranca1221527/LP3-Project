@@ -10,7 +10,9 @@ import javafx.scene.control.Label;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-/****/
+/**
+ * Controlador para mostar o top 10.
+ */
 public class VerTopTenCardController {
 
     /**
@@ -18,6 +20,11 @@ public class VerTopTenCardController {
      */
     @FXML
     private Label resultadoLabel;
+    /**
+     * Rótulo para mostrar a medida.
+     */
+    @FXML
+    private Label medidaLabel;
     /**
      * Rótulo para mostrar o nome do atleta.
      */
@@ -56,5 +63,6 @@ public class VerTopTenCardController {
 
         resultadoLabel.setText(String.valueOf(resultado.getResultado()));
 
+        medidaLabel.setText(resultado.getTipo());
     }
 }

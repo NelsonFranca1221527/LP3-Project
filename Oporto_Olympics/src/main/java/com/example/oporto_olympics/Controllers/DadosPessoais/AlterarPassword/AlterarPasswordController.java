@@ -27,16 +27,24 @@ import java.sql.SQLException;
  * da palavra-passe e interação com a base de dados.
  */
 public class AlterarPasswordController {
-
+    /**
+     * Campo para a confirmação da nova palavra-passe.
+     */
     @FXML
     private PasswordField ConfirmPasswordField;
-
+    /**
+     * Campo para introduzir a nova palavra-passe.
+     */
     @FXML
     private PasswordField NewPasswordField;
-
+    /**
+     * Botão para confirmar a alteração da palavra-passe.
+     */
     @FXML
     private Button ChangePasswordBtn;
-
+    /**
+     * Botão para voltar à tela anterior.
+     */
     @FXML
     private Button VoltarBtn;
 
@@ -67,15 +75,26 @@ public class AlterarPasswordController {
             Atleta atleta = AtletaSingle.getAtleta();
             Encriptacao encrypt = new Encriptacao();
 
-            if (!NewPasswordField.getText().isEmpty() && !ConfirmPasswordField.getText().isEmpty()){
+            if(NewPasswordField.getText().trim().length() < 3) {
+                AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Password demasiado curta...");
+                alertHandler.getAlert().show();
 
-                if (!NewPasswordField.getText().isEmpty() || !ConfirmPasswordField.getText().isEmpty()) {
-                    String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText());
+                NewPasswordField.clear();
+                ConfirmPasswordField.clear();
+                return;
+            }
+
+            if (!NewPasswordField.getText().trim().isEmpty() && !ConfirmPasswordField.getText().trim().isEmpty()){
+
+                if (!NewPasswordField.getText().trim().isEmpty() || !ConfirmPasswordField.getText().trim().isEmpty()) {
+                    String SenhaEncriptada = encrypt.StringtoHash(NewPasswordField.getText().replaceAll("\\s+",""));
 
                     if (atleta != null) {
-                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                            dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
-                            RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+                        if (NewPasswordField.getText().trim().equals(ConfirmPasswordField.getText().trim())) {
+                            if(!dao.VerificarPasswordIgual(SenhaEncriptada, atleta.getId())){
+                                dao.UpdatePassword(atleta.getId(), SenhaEncriptada);
+                                RedirecionarHelper.GotoDadosPessoais().switchScene(s);
+                            }
                         } else {
                             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
                             alertHandler.getAlert().show();
@@ -83,9 +102,11 @@ public class AlterarPasswordController {
                     }
 
                     if (gestor != null) {
-                        if (NewPasswordField.getText().equals(ConfirmPasswordField.getText())) {
-                            dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
-                            RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
+                        if (NewPasswordField.getText().trim().equals(ConfirmPasswordField.getText().trim())) {
+                            if(!dao.VerificarPasswordIgual(SenhaEncriptada, gestor.getId())){
+                                dao.UpdatePassword(gestor.getId(), SenhaEncriptada);
+                                RedirecionarHelper.GotoDadosPessoaisGestor().switchScene(s);
+                            }
                         } else {
                             AlertHandler alertHandler = new AlertHandler(Alert.AlertType.ERROR, "Erro", "Verifique se as passwords estão iguais..");
                             alertHandler.getAlert().show();

@@ -41,6 +41,30 @@ public class RedirecionarHelper {
         }
     }
     /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu das Listagens.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu das Listagens.
+     */
+    public static RedirecionarHelper GotoSubMenuListagens(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Listagens.fxml","Listagens");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu das Inserções.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu das Inserções.
+     */
+    public static RedirecionarHelper GotoSubMenuInsercoes(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Insercoes.fxml","Inserções");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu do XML.
+     *
+     * @return Um {@link RedirecionarHelper} para o subMenu do XML.
+     */
+    public static RedirecionarHelper GotoSubMenuXML(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-XML.fxml","XML");}
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para o subMenu do cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a subMenu do Cliente.
+     */
+    public static RedirecionarHelper GotoSubMenuCliente(){return new RedirecionarHelper("Views/MenuPrincipal-Gestor/Sub-menus/SubMenuGestor-Cliente.fxml","Cliente");}
+    /**
      * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de login.
      *
      * @return Um {@link RedirecionarHelper} para a página de login.
@@ -231,5 +255,78 @@ public class RedirecionarHelper {
      */
     public static RedirecionarHelper GotoAprovarAtletaEvento() {
         return new RedirecionarHelper("Views/AprovarInscricaoEvento/AprovarInscricaoEvento.fxml", "Atletas Eventos");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inserção de gestor.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de inserção de gestor.
+     */
+    public static RedirecionarHelper GotoInserirGestor() {
+        return new RedirecionarHelper("Views/Gestor/InserirGestor.fxml", "Inserir Gestores");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página do calendário do Atleta.
+     *
+     * @return Um {@link RedirecionarHelper} para a página do calendário do Atleta.
+     */
+    public static RedirecionarHelper GotoCalendario() {
+        return new RedirecionarHelper("Views/Atleta/CalendarioAtleta.fxml", "Calendário");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página inicial do Cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a página inicial do cliente.
+     */
+    public static RedirecionarHelper GotoHomeClient() {
+        return new RedirecionarHelper("Views/MenuPrincipal-Cliente/MenuPrincipalCliente.fxml", "Home Page");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de inserir um Cliente.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de inserir um cliente.
+     */
+    public static RedirecionarHelper GotoInsertClient() {
+        return new RedirecionarHelper("Views/Cliente/InserirClient.fxml", "Inserir Cliente");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de Clientes.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de listagem de clientes.
+     */
+    public static RedirecionarHelper GotoListClient() {
+        return new RedirecionarHelper("Views/Cliente/ListagemClientes.fxml", "Listagem Clientes");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de Jogos.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de listagem de jogos.
+     */
+    public static RedirecionarHelper GotoListagemJogos() {
+        return new RedirecionarHelper("Views/ListagemJogos/ListagemJogos.fxml", "Listagem Jogos");
+    }
+    /**
+     * Retorna um {@link RedirecionarHelper} configurado para redirecionar para a página de listagem de Tickets.
+     *
+     * @return Um {@link RedirecionarHelper} para a página de listagem de tickets.
+     */
+    public static RedirecionarHelper GotoListagemTickets() {
+        return new RedirecionarHelper("Views/ListagemTickets/ListagemTickets.fxml", "Listagem Tickets");
+    }
+    /**
+     * Redireciona o utilizador para a página de perfil do cliente.
+     *
+     * @return Uma instância de {@link RedirecionarHelper} configurada para carregar a vista do perfil do cliente.
+     */
+    public static RedirecionarHelper GotoProfileCliente() {
+        return new RedirecionarHelper("Views/Cliente/Perfil.fxml", "Perfil");
+    }
+
+    /**
+     * Redireciona o utilizador para a página de alteração de palavra-passe.
+     *
+     * @return Uma instância de {@link RedirecionarHelper} configurada para carregar a vista de alteração de palavra-passe do cliente.
+     */
+    public static RedirecionarHelper GotoUpdatePasswordClient() {
+        return new RedirecionarHelper("Views/Cliente/AlterarPasswordCliente.fxml", "Alterar Password");
     }
 }

@@ -6,10 +6,21 @@ package com.example.oporto_olympics.Models;
  *
  */
 public class ResultadosEquipa {
-
+    /**
+     * Identificador único da entrada de resultados.
+     */
     private int id;
+    /**
+     * Identificador único da equipa associada ao resultado.
+     */
     private int equipa_id;
+    /**
+     * Ano em que o resultado foi alcançado.
+     */
     private int ano;
+    /**
+     * Resultado obtido pela equipa (por exemplo, posição final ou conquista específica).
+     */
     private String resultado;
     /**
      * Constrói um novo objeto <code>ResultadosEquipa</code> com os valores fornecidos.

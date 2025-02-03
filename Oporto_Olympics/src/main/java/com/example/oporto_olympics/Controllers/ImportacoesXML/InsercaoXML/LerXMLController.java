@@ -1,6 +1,7 @@
 package com.example.oporto_olympics.Controllers.ImportacoesXML.InsercaoXML;
 
 import com.example.oporto_olympics.Models.*;
+import com.example.oporto_olympics.Models.RegistoModalidades.RegistoDistancia;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoPontos;
 import com.example.oporto_olympics.Models.RegistoModalidades.RegistoTempo;
 import org.w3c.dom.Document;
@@ -179,6 +180,9 @@ public class LerXMLController {
             LocalTime tempoRecorde = null;
             LocalTime tempoVencedor = null;
 
+            Double distanciaRecorde = 0.0;
+            Double distanciaVencedor = 0.0;
+
             Modalidade modalidade = null;
 
             NodeList olympicRecords = lineItemElement.getElementsByTagName("olympicRecord");
@@ -187,17 +191,24 @@ public class LerXMLController {
             Element olympicRecord = null;
             Element olympicWinner = null;
 
-            if(olympicRecords.getLength() > 0 && olympicWinners.getLength() > 0) {
+            int medalhasRecorde = 0;
+            String medalhaVencedor = "";
 
-                olympicRecord = (Element) olympicRecords.item(0);
-                olympicWinner = (Element) olympicWinners.item(0);
+                if(olympicRecords.getLength() > 0 && olympicWinners.getLength() > 0) {
 
-                anoRecorde = getIntValueFromElement(olympicRecord, "year");
-                vencedorRecorde = getElementTextContent(olympicRecord, "holder");
+                    olympicRecord = (Element) olympicRecords.item(0);
+                    olympicWinner = (Element) olympicWinners.item(0);
 
-                anoOlimpico = getIntValueFromElement(olympicWinner, "year");
-                vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
-            }
+                    anoRecorde = getIntValueFromElement(olympicRecord, "year");
+                    vencedorRecorde = getElementTextContent(olympicRecord, "holder");
+
+                    anoOlimpico = getIntValueFromElement(olympicWinner, "year");
+                    vencedorOlimpico = getElementTextContent(olympicWinner, "holder");
+
+                    medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
+                    medalhaVencedor = getElementTextContent(olympicWinner, "medal");
+
+                }
 
                 switch (medida) {
                     case "Time":
@@ -215,20 +226,39 @@ public class LerXMLController {
                             tempoVencedor = parseTime(tempoVencedorString);
                         }
 
-                        RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde);
-                        RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor);
+                        RegistoTempo recordeolimpicoTempo = new RegistoTempo(vencedorRecorde, anoRecorde, tempoRecorde, String.valueOf(medalhasRecorde));
+                        RegistoTempo vencedorolimpicoTempo = new RegistoTempo(vencedorOlimpico, anoOlimpico, tempoVencedor, medalhaVencedor);
                         modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoTempo, vencedorolimpicoTempo, regras);
                         break;
 
                     case "Points":
                         medida = "Pontos";
-                        int medalhasRecorde = getIntValueFromElement(olympicRecord, "medals");
-                        String medalhaVencedor = getElementTextContent(olympicWinner, "medal");
 
                         RegistoPontos recordeolimpicoPontos = new RegistoPontos(vencedorRecorde, anoRecorde, String.valueOf(medalhasRecorde));
                         RegistoPontos vencedorolimpicoPontos = new RegistoPontos(vencedorOlimpico, anoOlimpico, medalhaVencedor);
                         modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoPontos, vencedorolimpicoPontos, regras);
                         break;
+
+                    case "Distance":
+                        medida = "Distância";
+
+                        String distanciaRecordeString = getElementTextContent(olympicRecord, "distance");
+
+                        if (distanciaRecordeString != null && !distanciaRecordeString.trim().isEmpty()) {
+                            distanciaRecorde = Double.parseDouble(distanciaRecordeString);
+                        }
+
+                        String distanciaVencedorString = getElementTextContent(olympicWinner, "distance");
+
+                        if (distanciaVencedorString != null && !distanciaVencedorString.trim().isEmpty()) {
+                            distanciaVencedor = Double.parseDouble(distanciaVencedorString);
+                        }
+
+                        RegistoDistancia recordeolimpicoDistancia = new RegistoDistancia(vencedorRecorde, anoRecorde, distanciaRecorde, String.valueOf(medalhasRecorde));
+                        RegistoDistancia vencedorolimpicoDistancia = new RegistoDistancia(vencedorOlimpico, anoOlimpico, distanciaVencedor,medalhaVencedor);
+                        modalidade = new Modalidade(0, tipo, genero, nome, descricao, minParticipantes, medida, oneGame, null, recordeolimpicoDistancia, vencedorolimpicoDistancia, regras);
+                        break;
+
                 }
                     lst.add(modalidade);
         }
@@ -293,6 +323,12 @@ public class LerXMLController {
 
     }
 
+    /**
+     * Analisa uma string representando um tempo e converte-a para um objeto LocalTime.
+     *
+     * @param timeString A string representando o tempo a ser analisada.
+     * @return O objeto LocalTime correspondente ao tempo analisado ou null se houver erro.
+     */
     private LocalTime parseTime(String timeString) {
         DateTimeFormatter formatterWithMillis = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
         DateTimeFormatter formatterWithoutMillis = DateTimeFormatter.ofPattern("HH:mm:ss");

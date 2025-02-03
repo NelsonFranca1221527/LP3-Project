@@ -5,19 +5,33 @@ package com.example.oporto_olympics.Models;
  * (ouro, prata e bronze) em um evento específico.
  */
 public class Resultados {
-
+    /**
+     * Identificador único da participação.
+     */
     private int id;
-
+    /**
+     * Identificador único do atleta.
+     */
     private int atleta_id;
-
+    /**
+     * Identificador único do evento.
+     */
     private int evento_id;
-
+    /**
+     * Ano em que a participação ocorreu.
+     */
     private int ano;
-
+    /**
+     * Número de medalhas de ouro conquistadas na participação.
+     */
     private int medalhas_ouro;
-
+    /**
+     * Número de medalhas de prata conquistadas na participação.
+     */
     private int medalhas_prata;
-
+    /**
+     * Número de medalhas de bronze conquistadas na participação.
+     */
     private int medalhas_bronze;
     /**
      * Construtor para a classe {@link Resultados}.

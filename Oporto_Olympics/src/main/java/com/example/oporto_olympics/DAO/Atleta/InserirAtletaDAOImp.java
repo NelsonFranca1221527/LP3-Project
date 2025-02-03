@@ -14,7 +14,9 @@ import java.time.LocalDate;
  * e converter strings para um hash utilizando o algoritmo SHA-256.
  */
 public class InserirAtletaDAOImp implements InserirAtletaDAO{
-
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection conexao;
 
     /**
@@ -86,7 +88,7 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
                 int userId = rs4.getInt("id");
 
 
-                String updateAtletaQuery = "UPDATE atletas SET nome = ?, data_nascimento = ?, genero = ?, altura_cm = ?, peso_kg = ?, pais_sigla = ? WHERE user_id = ?";
+                String updateAtletaQuery = "INSERT INTO atletas (nome, data_nascimento, genero, altura_cm, peso_kg , pais_sigla, user_id) VALUES(?,?,?,?,?,?,?)";
                 try (PreparedStatement ps5 = conexao.prepareStatement(updateAtletaQuery)) {
                     ps5.setString(1, nome);
                     ps5.setDate(2, Date.valueOf(dataNascimento));
@@ -124,7 +126,11 @@ public class InserirAtletaDAOImp implements InserirAtletaDAO{
             ps.setString(1, sigla);
             ResultSet rs = ps.executeQuery();
 
-            return rs.next();
+            if(rs.next()){
+                return true;
+            }
+
+            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();

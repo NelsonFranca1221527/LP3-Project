@@ -16,6 +16,9 @@ import java.util.List;
  * Esta classe utiliza uma conexão com a base de dados para recuperar as informações das equipas.
  */
 public class ListarEquipasDAOImp implements ListarEquipasDAO {
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private Connection connection;
 
     /**
@@ -78,7 +81,12 @@ public class ListarEquipasDAOImp implements ListarEquipasDAO {
         return equipas;
     }
 
-
+    /**
+     * Recupera o histórico de resultados de uma equipa com base no seu ID.
+     *
+     * @param equipaId o ID da equipa
+     * @return uma lista de objetos {@link ResultadosEquipa} com o histórico de resultados
+     */
     @Override
     public List<ResultadosEquipa> getHistorico(int equipaId) {
         List<ResultadosEquipa> resultados = new ArrayList<>();

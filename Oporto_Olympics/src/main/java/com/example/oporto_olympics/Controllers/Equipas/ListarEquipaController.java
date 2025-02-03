@@ -39,7 +39,9 @@ public class ListarEquipaController {
      * Instância do objeto responsável pela listagem das equipas.
      */
     private ListarEquipasDAO dao;
-
+    /**
+     * Campo de texto para realizar pesquisas.
+     */
     @FXML
     private TextField searchfield;
 
@@ -283,6 +285,6 @@ public class ListarEquipaController {
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
     }
 }

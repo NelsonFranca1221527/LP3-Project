@@ -95,25 +95,28 @@ public class ModalidadeCardController {
         OneGame.setText(modalidade.getOneGame());
         Regras.setText(modalidade.getRegras());
 
+        VencedorTitular.setText(modalidade.getVencedorOlimpico().getVencedor());
+        VencedorAno.setText(String.valueOf(modalidade.getVencedorOlimpico().getAno()));
+
+        RecordeTitular.setText(modalidade.getRecordeOlimpico().getVencedor());
+        RecordeAno.setText(String.valueOf(modalidade.getRecordeOlimpico().getAno()));
+
         switch (modalidade.getMedida()) {
             case "Tempo":
-                VencedorTitular.setText(modalidade.getVencedorOlimpico().getVencedor());
-                VencedorAno.setText(String.valueOf(modalidade.getVencedorOlimpico().getAno()));
                 VencedorResultado.setText(String.valueOf(modalidade.getVencedorOlimpico().getTempo()));
 
-                RecordeTitular.setText(modalidade.getRecordeOlimpico().getVencedor());
-                RecordeAno.setText(String.valueOf(modalidade.getRecordeOlimpico().getAno()));
                 RecordeResultado.setText(String.valueOf(modalidade.getRecordeOlimpico().getTempo()));
                 break;
 
             case "Pontos":
-                VencedorTitular.setText(modalidade.getVencedorOlimpico().getVencedor());
-                VencedorAno.setText(String.valueOf(modalidade.getVencedorOlimpico().getAno()));
                 VencedorResultado.setText(String.valueOf(modalidade.getVencedorOlimpico().getMedalhas()));
 
-                RecordeTitular.setText(modalidade.getRecordeOlimpico().getVencedor());
-                RecordeAno.setText(String.valueOf(modalidade.getRecordeOlimpico().getAno()));
                 RecordeResultado.setText(String.valueOf(modalidade.getRecordeOlimpico().getMedalhas()));
+                break;
+            case "Distância":
+                VencedorResultado.setText(String.valueOf(modalidade.getVencedorOlimpico().getDistancia()));
+
+                RecordeResultado.setText(String.valueOf(modalidade.getRecordeOlimpico().getDistancia()));
                 break;
         }
     }

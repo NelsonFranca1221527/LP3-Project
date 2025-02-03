@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.Optional;
 
 /**
@@ -58,7 +59,7 @@ public class InserirEventosOlimpicosController {
      * Campo de texto para introdução do ano da edição do evento.
      */
     @FXML
-    private TextField anoedicaoField;
+    private DatePicker anoedicaoPicker;
     /**
      * Caixa de combinação para escolher o local do evento.
      */
@@ -100,11 +101,6 @@ public class InserirEventosOlimpicosController {
         // Adicionar os nomes dos locais à ComboBox
         locaisDAO.getAll().forEach(local -> localCombo.getItems().add(local.getNome()));
 
-        // Permitir apenas números no campo anoedicaoField
-        anoedicaoField.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches("\\d*")) ? change : null
-        ));
-
         // Limitar o paisField para 3 caracteres
         paisField.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().length() <= 3) ? change : null
@@ -144,12 +140,18 @@ public class InserirEventosOlimpicosController {
 
         int localId = localSelecionado.get().getId();
         String pais = paisField.getText();
-        int anoEdicao;
 
-        try {
-            anoEdicao = Integer.parseInt(anoedicaoField.getText());
-        } catch (NumberFormatException e) {
-            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de Edição Inválido", "O ano de edição deve ser um número.");
+        if(anoedicaoPicker.getValue() == null){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "Tem selecionar um ano..");
+            AH1.getAlert().show();
+            return;
+        }
+
+        int anoEdicao = Integer.parseInt(String.valueOf(anoedicaoPicker.getValue().getYear()));
+        Year thisYear = Year.now();
+
+        if(anoEdicao < Integer.valueOf(String.valueOf(thisYear))){
+            AlertHandler AH1 = new AlertHandler(Alert.AlertType.ERROR, "Ano de edição Inválido", "O ano de edição deve ser superior ao ano atual.");
             AH1.getAlert().show();
             return;
         }
@@ -266,17 +268,25 @@ public class InserirEventosOlimpicosController {
             }
         }
     }
-
+    /**
+     * Método chamado ao clicar no botão para redirecionar para a tela de inserir local.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void onClickLocalRedirectButton(ActionEvent event) {
         Stage s = (Stage) LocalRedirectButton.getScene().getWindow();
         RedirecionarHelper.GotoInserirLocal().switchScene(s);
     }
-
+    /**
+     * Método chamado ao clicar no botão para voltar ao menu principal do gestor.
+     *
+     * @param event o evento associado ao clique no botão
+     */
     @FXML
     void OnClickVoltarButton(ActionEvent event) {
         Stage s = (Stage) VoltarButton.getScene().getWindow();
 
-        RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+        RedirecionarHelper.GotoSubMenuInsercoes().switchScene(s);
     }
 }

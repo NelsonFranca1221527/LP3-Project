@@ -1,9 +1,12 @@
 package com.example.oporto_olympics.Controllers.ListagemEventos.CardController;
 
 import com.example.oporto_olympics.ConnectBD.ConnectionBD;
+import com.example.oporto_olympics.DAO.Equipas.AprovarInscricaoEquipaDAOImp;
 import com.example.oporto_olympics.DAO.Equipas.ListarEquipasDAOImp;
+import com.example.oporto_olympics.DAO.Eventos.EventosDAOImp;
 import com.example.oporto_olympics.DAO.Eventos.InscricaonoEventoDAOImp;
 import com.example.oporto_olympics.DAO.Locais.LocaisDAOImp;
+import com.example.oporto_olympics.DAO.XML.AtletaDAOImp;
 import com.example.oporto_olympics.DAO.XML.EquipaDAOImp;
 import com.example.oporto_olympics.DAO.XML.ModalidadeDAOImp;
 import com.example.oporto_olympics.Misc.AlertHandler;
@@ -25,11 +28,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -69,6 +79,18 @@ public class ListagemEventosCardController {
      */
     @FXML
     private Button InscreverEquipasButton;
+
+    /**
+     * Botão para alterar foto do Logotipo.
+     */
+    @FXML
+    private Button AlterarLogoBtn;
+
+    /**
+     * Botão para alterar foto da Mascote.
+     */
+    @FXML
+    private Button AlterarMascoteBtn;
 
     /**
      * Representa um evento específico de um card.
@@ -155,6 +177,10 @@ public class ListagemEventosCardController {
         if(GestorSingle.getGestor() == null && AtletaSingle.getAtleta() != null){
             InscreverEquipasButton.setDisable(true);
             InscreverEquipasButton.setVisible(false);
+            AlterarLogoBtn.setDisable(true);
+            AlterarLogoBtn.setVisible(false);
+            AlterarMascoteBtn.setDisable(true);
+            AlterarMascoteBtn.setVisible(false);
         }
 
         if(GestorSingle.getGestor() != null && AtletaSingle.getAtleta() == null){
@@ -184,6 +210,8 @@ public class ListagemEventosCardController {
         Evento evento = getEventoEspecifico();
 
         ModalidadeDAOImp modalidadeDAOImp = new ModalidadeDAOImp(conexao);
+
+        AprovarInscricaoEquipaDAOImp aprovarInscricaoEquipaDAOImp = new AprovarInscricaoEquipaDAOImp(conexao);
 
         EquipaDAOImp equipaDAOImp = new EquipaDAOImp(conexao);
 
@@ -389,13 +417,52 @@ public class ListagemEventosCardController {
 
             Modalidade modalidade = ModalidadesHashMap.get(choiceBox.getValue());
 
-            //Associa todas as equipas selecionadas ao evento e modalidade escolhidas
-            for(int equipaId : EquipasHashMap.values()){
-                modalidadeDAOImp.saveParticipantesColetivo(equipaId,evento.getId(), modalidade.getId());
+            // Lista para armazenar equipas com conflitos de horário
+            List<String> equipasComConflitos = new ArrayList<>();
+
+            // Iterar sobre as equipas selecionadas
+            for (int equipaId : EquipasHashMap.values()) {
+                HorarioModalidade horariomodalidade;
+                InscricaoEquipas equipa;
+
+                try {
+                    horariomodalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), evento.getId());
+                    equipa = aprovarInscricaoEquipaDAOImp.getEquipa(equipaId);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                // Verificar se existe conflito de horário
+                if (VerificarConflito(
+                        horariomodalidade.getDataHora(),
+                        horariomodalidade.getDuracao(),
+                        modalidadeDAOImp.getAllHorarioModalidadeByEquipa(equipaId))) {
+                    // Adicionar o nome da equipa à lista de conflitos
+                    equipasComConflitos.add(equipa.getNome());
+                } else {
+                    // Inscrever a equipa se não houver conflito
+                    modalidadeDAOImp.saveParticipantesColetivo(equipaId, evento.getId(), modalidade.getId());
+                }
             }
 
-            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION,"Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
+            // Verificar se houve conflitos
+            if (!equipasComConflitos.isEmpty()) {
+                // Construir uma mensagem com todas as equipas com conflitos
+                StringBuilder mensagem = new StringBuilder("As seguintes equipas têm conflitos de horário:\n");
+                for (String nomeEquipa : equipasComConflitos) {
+                    mensagem.append("- ").append(nomeEquipa).append("\n");
+                }
+                alertHandler2 = new AlertHandler(Alert.AlertType.WARNING, "Horário Indisponível", mensagem.toString());
+                alertHandler2.getAlert().showAndWait();
+
+                // Retornar aqui para evitar a mensagem de sucesso
+                return;
+            }
+
+            // Se não houve conflitos, exibir a mensagem de sucesso
+            alertHandler2 = new AlertHandler(Alert.AlertType.INFORMATION, "Inscrições Bem Sucedidas", "As Equipas foram inscritas com Sucesso!!");
             alertHandler2.getAlert().showAndWait();
+
 
             inscreverEquipasStage.close();
         });
@@ -492,6 +559,14 @@ public class ListagemEventosCardController {
                     int eventoId = evento.getId();
 
                     try {
+                        HorarioModalidade horariomodalidade;
+
+                        try {
+                            horariomodalidade = modalidadeDAOImp.getHorarioModalidadeById(modalidade.getId(), evento.getId());
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
                         if (inscreverEvento.existeInscricaoPendente(atletaId, eventoId, modalidadeId)) {
                             Alert pendenteAlert = new Alert(Alert.AlertType.WARNING, "Já existe um pedido pendente para esta modalidade.");
                             pendenteAlert.show();
@@ -499,14 +574,20 @@ public class ListagemEventosCardController {
                             Alert aprovadoAlert = new Alert(Alert.AlertType.WARNING, "Você já está inscrito nesta modalidade.");
                             aprovadoAlert.show();
                         } else {
-                            String estado = "Pendente";
-                            inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
+                            if (!VerificarConflito(horariomodalidade.getDataHora(), horariomodalidade.getDuracao(), inscreverEvento.getAllHorarioModalidadeByAtleta(atletaId))) {
+                                String estado = "Pendente";
 
-                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
-                            successAlert.showAndWait();
+                                inscreverEvento.inserirInscricao(estado, eventoId, atletaId, modalidadeId);
 
-                            // Opcional: remover a modalidade da tabela após inscrição
-                            getTableView().getItems().remove(modalidade);
+                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Inscrição pendente criada com sucesso. Aguarde aprovação.");
+                                successAlert.showAndWait();
+
+                                // Opcional: remover a modalidade da tabela após inscrição
+                                getTableView().getItems().remove(modalidade);
+                            } else {
+                                Alert successAlert = new Alert(Alert.AlertType.WARNING, "Inscrição não foi criada porque já tem uma inscrição feita no mesmo horário.");
+                                successAlert.showAndWait();
+                            }
                         }
                     } catch (RuntimeException ex) {
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erro ao realizar inscrição: " + ex.getMessage());
@@ -539,4 +620,150 @@ public class ListagemEventosCardController {
         inscreverStage.show();
     }
 
+    /**
+     * Manipulador de eventos para o botão "Alterar Logo".
+     *
+     * Este método é chamado quando o utilizador clica no botão para alterar o Logotipo de um evento.
+     * Ele permite que o utilizador selecione uma nova imagem através de um explorador de ficheiros,
+     * converte a imagem selecionada em um array de bytes e atualiza a base de dados com o novo Logotipo.
+     * Além disso, a interface gráfica é atualizada para exibir o novo Logotipo.
+     *
+     */
+    @FXML
+    void OnAlterarLogoButton() {
+        Evento evento = getEventoEspecifico();
+
+        // Abrir explorador de ficheiros
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecione uma imagem");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(AlterarLogoBtn.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                // Converter imagem para byte[]
+                byte[] fotoLogo = Files.readAllBytes(selectedFile.toPath());
+
+                // Atualizar no modelo Atleta
+                evento.setLogo(fotoLogo);
+
+                // Atualizar na base de dados
+                ConnectionBD conexaoBD = ConnectionBD.getInstance();
+                Connection conexao = conexaoBD.getConexao();
+                EventosDAOImp EventosDAO = new EventosDAOImp(conexao);
+                EventosDAO.updateLogotipo(evento.getId(), fotoLogo);
+
+                // Atualizar na interface
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(fotoLogo);
+                Image novaImagem = new Image(inputStream);
+                img_logo.setImage(novaImagem);
+
+                // Notificar sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Logotipo atualizado com sucesso!");
+                alert.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar a imagem: " + e.getMessage());
+                alert.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao atualizar a imagem na base de dados: " + e.getMessage());
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nenhuma imagem foi selecionada.");
+            alert.show();
+        }
+    }
+
+    /**
+     * Manipulador de eventos para o botão "Alterar Mascote".
+     *
+     * Este método é chamado quando o utilizador clica no botão para alterar a Mascote de um evento.
+     * Ele permite que o utilizador selecione uma nova imagem através de um explorador de ficheiros,
+     * converte a imagem selecionada em um array de bytes e atualiza a base de dados com a nova foto/mascote.
+     * Além disso, a interface gráfica é atualizada para exibir a nova mascote.
+     *
+     */
+    @FXML
+    void OnAlterarMascoteButton() {
+        Evento evento = getEventoEspecifico();
+
+        // Abrir explorador de ficheiros
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecione uma imagem");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(AlterarMascoteBtn.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                // Converter imagem para byte[]
+                byte[] mascote = Files.readAllBytes(selectedFile.toPath());
+
+                // Atualizar no modelo Atleta
+                evento.setMascote(mascote);
+
+                // Atualizar na base de dados
+                ConnectionBD conexaoBD = ConnectionBD.getInstance();
+                Connection conexao = conexaoBD.getConexao();
+                EventosDAOImp EventosDAO = new EventosDAOImp(conexao);
+                EventosDAO.updateMascote(evento.getId(), mascote);
+
+                // Atualizar na interface
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(mascote);
+                Image novaMascote = new Image(inputStream);
+                img_mascote.setImage(novaMascote);
+
+                // Notificar sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Mascote atualizado com sucesso!");
+                alert.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao carregar a imagem: " + e.getMessage());
+                alert.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao atualizar a imagem na base de dados: " + e.getMessage());
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nenhuma imagem foi selecionada.");
+            alert.show();
+        }
+    }
+
+    /**
+     * Verifica se o horário da modalidade que a equipa está a ser inscrita entra em conflito com modalidades que ela já esteja inscrita.
+     *
+     * @param inicioModalidade A data e hora de início da modalidade a ser verificada.
+     * @param duracaoModalidade A duração da modalidade a ser verificada.
+     * @param listaHorarios A lista de horários de outras modalidades para verificar possíveis conflitos.
+     * @return {@code true} se for encontrado um conflito de horários; {@code false} caso contrário.
+     */
+    public boolean VerificarConflito(LocalDateTime inicioModalidade, LocalTime duracaoModalidade, List<HorarioModalidade> listaHorarios) {
+        LocalDateTime dataHoraFim = inicioModalidade.plus(Duration.ofHours(duracaoModalidade.getHour())
+                .plusMinutes(duracaoModalidade.getMinute())
+                .plusSeconds(duracaoModalidade.getSecond()));
+
+        for (HorarioModalidade horario : listaHorarios) {
+            LocalDateTime horarioInicio = horario.getDataHora();
+            LocalDateTime horarioFim = horarioInicio.plus(Duration.ofHours(horario.getDuracao().getHour())
+                    .plusMinutes(horario.getDuracao().getMinute())
+                    .plusSeconds(horario.getDuracao().getSecond()));
+
+            // Ajustes nos horários
+            LocalDateTime horarioInicioAjustado = horarioInicio.minusHours(2);
+            LocalDateTime horarioFimAjustado = horarioFim.plusHours(2);
+
+            // Verificação de conflito
+            if ((inicioModalidade.isBefore(horarioFimAjustado) && dataHoraFim.isAfter(horarioInicioAjustado))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.oporto_olympics.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * A classe {@link Equipa} representa uma equipa desportiva com informações sobre
@@ -7,22 +8,38 @@ import java.util.List;
  * ano de fundação e lista de participações em eventos desportivos.
  */
 public class Equipa {
-
+    /**
+     * Identificador único da equipa.
+     */
     private int id;
-
+    /**
+     * Nome da equipa.
+     */
     private String nome;
-
+    /**
+     * País de origem da equipa.
+     */
     private String pais;
-
+    /**
+     * Género predominante dos membros da equipa.
+     */
     private String genero;
-
+    /**
+     * Desporto praticado pela equipa.
+     */
     private String desporto;
-
+    /**
+     * Identificador único da modalidade associada.
+     */
     private int modalidadeID;
-
+    /**
+     * Ano de fundação da equipa.
+     */
     private int anoFundacao;
-
-    private List<ParticipaocesEquipa> participaocesEquipa;
+    /**
+     * Lista de participações da equipa em competições.
+     */
+    private List<ParticipaçõesEquipa> participaçõesEquipa;
     /**
      * Construtor para a classe {@link Equipa}, que inicializa todos os atributos da equipa.
      *
@@ -33,9 +50,9 @@ public class Equipa {
      * @param desporto            Tipo de desporto praticado pela equipa.
      * @param modalidadeID        Identificador da modalidade associada à equipa.
      * @param anoFundacao         Ano de fundação da equipa.
-     * @param participaocesEquipa Lista das participações da equipa em competições.
+     * @param participaçõesEquipa Lista das participações da equipa em competições.
      */
-    public Equipa(int id, String nome, String pais, String genero, String desporto, int modalidadeID, int anoFundacao, List<ParticipaocesEquipa> participaocesEquipa) {
+    public Equipa(int id, String nome, String pais, String genero, String desporto, int modalidadeID, int anoFundacao, List<ParticipaçõesEquipa> participaçõesEquipa) {
         this.id = id;
         this.nome = nome;
         this.pais = pais;
@@ -43,7 +60,7 @@ public class Equipa {
         this.desporto = desporto;
         this.modalidadeID = modalidadeID;
         this.anoFundacao = anoFundacao;
-        this.participaocesEquipa = participaocesEquipa;
+        this.participaçõesEquipa = participaçõesEquipa;
     }
     /**
      * Obtém o identificador único da equipa.
@@ -162,15 +179,15 @@ public class Equipa {
      *
      * @return A lista de participações da equipa.
      */
-    public List<ParticipaocesEquipa> getParticipaçõesEquipa() {
-        return participaocesEquipa;
+    public List<ParticipaçõesEquipa> getParticipaçõesEquipa() {
+        return participaçõesEquipa;
     }
     /**
      * Define a lista de participações da equipa em competições.
      *
-     * @param participaocesEquipa A nova lista de participações da equipa.
+     * @param participaçõesEquipa A nova lista de participações da equipa.
      */
-    public void setParticipaçõesEquipa(List<ParticipaocesEquipa> participaocesEquipa) {
-        this.participaocesEquipa = participaocesEquipa;
+    public void setParticipaçõesEquipa(List<ParticipaçõesEquipa> participaçõesEquipa) {
+        this.participaçõesEquipa = participaçõesEquipa;
     }
 }

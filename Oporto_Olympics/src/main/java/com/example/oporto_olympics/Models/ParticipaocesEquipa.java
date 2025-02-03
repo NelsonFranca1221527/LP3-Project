@@ -1,21 +1,26 @@
 package com.example.oporto_olympics.Models;
 /**
- * A classe {@link ParticipaocesEquipa} representa as participações de uma equipa em competições olímpicas,
+ * A classe {@link ParticipaçõesEquipa} representa as participações de uma equipa em competições olímpicas,
  * incluindo o ano da participação e o resultado obtido pela equipa.
  */
-public class ParticipaocesEquipa {
-
+public class ParticipaçõesEquipa {
+    /**
+     * Ano em que ocorreu a participação.
+     */
     private int AnoParticipacao;
 
+    /**
+     * Resultado obtido na participação.
+     */
     private String Resultado;
     /**
-     * Construtor da classe {@link ParticipaocesEquipa} que inicializa os atributos de ano de participação
+     * Construtor da classe {@link ParticipaçõesEquipa} que inicializa os atributos de ano de participação
      * e o resultado da competição.
      *
      * @param anoParticipacao O ano da participação da equipa na competição.
      * @param resultado       O resultado obtido pela equipa (ex: "Ouro", "Prata", "Bronze", "Eliminada").
      */
-    public ParticipaocesEquipa(int anoParticipacao, String resultado) {
+    public ParticipaçõesEquipa(int anoParticipacao, String resultado) {
         AnoParticipacao = anoParticipacao;
         Resultado = resultado;
     }

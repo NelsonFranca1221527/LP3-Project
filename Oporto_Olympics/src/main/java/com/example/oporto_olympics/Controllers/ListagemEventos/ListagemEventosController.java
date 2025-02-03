@@ -89,7 +89,7 @@ public class ListagemEventosController {
         }
 
         if(GestorSingle.getGestor() != null){
-            RedirecionarHelper.GotoMenuPrincipalGestor().switchScene(s);
+            RedirecionarHelper.GotoSubMenuListagens().switchScene(s);
         }
     }
 }

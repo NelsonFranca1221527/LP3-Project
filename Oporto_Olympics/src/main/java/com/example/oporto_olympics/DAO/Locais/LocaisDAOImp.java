@@ -13,6 +13,9 @@ import java.util.Optional;
  * Esta classe fornece métodos para interagir com a base de dados e manipular as informações dos locais.
  */
 public class LocaisDAOImp implements DAO<Local> {
+    /**
+     * Objeto de conexão com a base de dados.
+     */
     private static Connection connection;
     private ConnectionBD database;
     /**
@@ -38,7 +41,7 @@ public class LocaisDAOImp implements DAO<Local> {
             while (rs.next()) {
                 lst.add(new Local(rs.getInt("id"), rs.getString("nome"),
                         rs.getString("tipo"), rs.getString("morada") , rs.getString("cidade") ,
-                        rs.getString("pais_sigla") , rs.getInt("capacidade") , rs.getInt("ano_construcao")));
+                        rs.getString("pais_sigla") , rs.getInt("capacidade") , rs.getDate(  "data_construcao")));
             }
             return lst;
         } catch (SQLException ex) {
@@ -54,20 +57,58 @@ public class LocaisDAOImp implements DAO<Local> {
     @Override
     public void save(Local local) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO locais (nome, tipo, morada, cidade, capacidade, ano_construcao, pais_sigla) VALUES(?,?,?,?,?,?,?)");
-            ps.setString(1, local.getNome());
-            ps.setString(2, local.getTipo());
-            ps.setString(3, local.getMorada());
-            ps.setString(4, local.getCidade());
-            ps.setInt(5, local.getCapacidade());
-            ps.setInt(6, local.getAno_construcao());
-            ps.setString(7, local.getPais());
-            ps.executeUpdate();
-            ps.close();
+
+            String tipoLocal = local.getTipo();
+            System.out.println("Tipo de local: " + tipoLocal);
+
+            if (tipoLocal == null || tipoLocal.trim().isEmpty()) {
+                System.out.println("O tipo de local é nulo ou vazio!");
+                throw new IllegalArgumentException("Tipo de local não pode ser nulo ou vazio.");
+            }
+
+            CallableStatement cs;
+
+            if ("interior".equalsIgnoreCase(tipoLocal)) {
+                cs = connection.prepareCall("{CALL SaveInteriorLocal(?, ?, ?, ?, ?, ?, ?)}");
+
+                cs.setString(1, local.getNome());
+                cs.setString(2, local.getTipo());
+                cs.setString(3, local.getMorada());
+                cs.setString(4, local.getCidade());
+                cs.setInt(5, local.getCapacidade());
+
+                String anoConstrucaoString = String.valueOf(local.getAno_construcao());
+                java.sql.Date anoConstrucaoDate = java.sql.Date.valueOf(anoConstrucaoString);
+                cs.setDate(6, anoConstrucaoDate);
+
+                cs.setString(7, local.getPais());
+
+            } else if ("exterior".equalsIgnoreCase(tipoLocal)) {
+                cs = connection.prepareCall("{CALL SaveExteriorLocal(?, ?, ?, ?, ?)}");
+
+                cs.setString(1, local.getNome());
+                cs.setString(2, local.getTipo());
+                cs.setString(3, local.getMorada());
+                cs.setString(4, local.getCidade());
+                cs.setString(5, local.getPais());
+
+            } else {
+
+                System.out.println("Tipo de local inválido: " + tipoLocal);
+                throw new IllegalArgumentException("Tipo de local inválido: " + tipoLocal);
+            }
+
+            cs.executeUpdate();
+            cs.close();
         } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao inserir o local: " + ex.getMessage());
+            throw new RuntimeException("Erro ao inserir o local usando a stored procedure: " + ex.getMessage());
         }
     }
+
+
+
+
+
     /**
      * Atualiza um local na base de dados.
      *
@@ -158,6 +199,34 @@ public class LocaisDAOImp implements DAO<Local> {
         }
     }
     /**
+     * Exclui um local da base de dados.
+     *
+     * @param nome o nome do local a ser excluído.
+     * @param tipo o tipo do local a ser excluído.
+     * @param morada a morada do local a ser excluído.
+     * @param cidade a cidade do local a ser excluído.
+     * @param pais o pais do local a ser excluído.
+     */
+    public void deleteByLocal(String nome, String tipo, String morada, String cidade, String pais) {
+        String query = "DELETE FROM locais WHERE nome = ? AND tipo = ? AND morada = ? AND cidade = ? AND pais_sigla = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, nome);
+            ps.setString(2, tipo);
+            ps.setString(3, morada);
+            ps.setString(4, cidade);
+            ps.setString(5, pais);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Nenhum local encontrado com o nome: " + nome);
+            }
+
+            System.out.println("Local com o nome " + nome + " foi apagado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao apagar local com o nome " + nome + ": " + e.getMessage(), e);
+        }
+    }
+    /**
      * Obtém um local com base no seu ID.
      *
      * @param i o ID do local a ser obtido.
@@ -165,6 +234,22 @@ public class LocaisDAOImp implements DAO<Local> {
      */
     @Override
     public Optional<Local> get(int i) {
-        return Optional.empty();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM locais WHERE id = ?");
+            ps.setInt(1, i);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return Optional.of(new Local(rs.getInt("id"), rs.getString("nome"),
+                        rs.getString("tipo"), rs.getString("morada"), rs.getString("cidade"),
+                        rs.getString("pais_sigla"), rs.getInt("capacidade"), rs.getDate("data_construcao")));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro ao obter o local: " + ex.getMessage());
+        }
+        return Optional.empty();  // Retorna Optional.empty() se o local não for encontrado
     }
 }

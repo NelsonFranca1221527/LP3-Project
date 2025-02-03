@@ -5,9 +5,13 @@ package com.example.oporto_olympics.Models;
  * como o nome.
  */
 public class Gestor {
-
+    /**
+     * Identificador único.
+     */
     private int id;
-
+    /**
+     * Nome associado ao objeto.
+     */
     private String nome;
 
     /**

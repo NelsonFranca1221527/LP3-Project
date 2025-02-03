@@ -8,23 +8,41 @@ import java.util.List;
  * uma lista de participações em eventos olímpicos.
  */
 public class Atleta {
-
+    /**
+     * Identificador único do atleta.
+     */
     private int id;
-
+    /**
+     * Nome do atleta.
+     */
     private String nome;
-
+    /**
+     * País do atleta.
+     */
     private String pais;
-
+    /**
+     * Género do atleta.
+     */
     private String genero;
-
+    /**
+     * Altura do atleta em centímetros.
+     */
     private int altura;
-
+    /**
+     * Peso do atleta em quilogramas.
+     */
     private int peso;
-
+    /**
+     * Data de nascimento do atleta.
+     */
     private Date dataNascimento;
-
-    private List<ParticipacoesAtleta> participacoesAtletas;
-
+    /**
+     * Lista de participações do atleta em competições.
+     */
+    private List<ParticipaçõesAtleta> participaçõesAtletas;
+    /**
+     * Fotografia de perfil do atleta armazenada como um array de bytes.
+     */
     private byte[] fotoPerfil;
     /**
      * Construtor para a classe {@link Atleta}, inicializando todos os atributos do atleta.
@@ -36,9 +54,9 @@ public class Atleta {
      * @param altura                 Altura do atleta em centímetros.
      * @param peso                   Peso do atleta em quilogramas.
      * @param dataNascimento         Data de nascimento do atleta.
-     * @param participacoesAtletas   Lista de participações do atleta em eventos.
+     * @param participaçõesAtletas   Lista de participações do atleta em eventos.
      */
-    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipacoesAtleta> participacoesAtletas, byte[] fotoPerfil) {
+    public Atleta(int id, String nome, String pais, String genero, int altura, int peso, Date dataNascimento, List<ParticipaçõesAtleta> participaçõesAtletas, byte[] fotoPerfil) {
         this.id = id;
         this.nome = nome;
         this.pais = pais;
@@ -46,7 +64,7 @@ public class Atleta {
         this.altura = altura;
         this.peso = peso;
         this.dataNascimento = dataNascimento;
-        this.participacoesAtletas = participacoesAtletas;
+        this.participaçõesAtletas = participaçõesAtletas;
         this.fotoPerfil = fotoPerfil;
     }
     /**
@@ -166,16 +184,16 @@ public class Atleta {
      *
      * @return A lista de participações do atleta.
      */
-    public List<ParticipacoesAtleta> getParticipaçõesAtletas() {
-        return participacoesAtletas;
+    public List<ParticipaçõesAtleta> getParticipaçõesAtletas() {
+        return participaçõesAtletas;
     }
     /**
      * Define a lista de participações do atleta em eventos.
      *
-     * @param participacoesAtletas A nova lista de participações do atleta.
+     * @param participaçõesAtletas A nova lista de participações do atleta.
      */
-    public void setParticipaçõesAtletas(List<ParticipacoesAtleta> participacoesAtletas) {
-        this.participacoesAtletas = participacoesAtletas;
+    public void setParticipaçõesAtletas(List<ParticipaçõesAtleta> participaçõesAtletas) {
+        this.participaçõesAtletas = participaçõesAtletas;
     }
     /**
      * Obtém a foto de perfil do atleta.

@@ -65,6 +65,61 @@ public class EventosDAOImp implements DAO<Evento> {
             throw new RuntimeException("Erro ao verificar o ano de edição: " + ex.getMessage());
         }
     }
+
+    /**
+     * Verifica se todas as modalidades associadas a um evento estão ativas.
+     *
+     * O método executa uma consulta SQL para obter o estado (`modalidade_status`) de todas as modalidades
+     * associadas a um evento, identificado pelo seu ID. O estado 0 indica que a modalidade está inativa.
+     *
+     * @param eventoId o identificador único do evento cujas modalidades serão verificadas.
+     * @return {@code true} se todas as modalidades associadas ao evento estiverem ativas (nenhuma com `modalidade_status` igual a 0),
+     *         {@code false} caso contrário.
+     * @throws RuntimeException se ocorrer um erro de SQL ao tentar verificar as modalidades.
+     */
+    public boolean verficarModalidades(int eventoId) {
+        try{
+            PreparedStatement ps = connection.prepareStatement("SELECT modalidade_status FROM eventos_modalidades WHERE evento_id = ?");
+            ps.setInt(1, eventoId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("modalidade_status") == 0) {
+                    return false;
+                }
+            }
+
+            return true;
+        }catch (SQLException e){
+            throw new RuntimeException("Erro ao verificar modalidades: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Atualiza o estado de um evento para "fechado" no sistema.
+     *
+     * O método utiliza uma instrução SQL para alterar o valor do campo `evento_status` na tabela `eventos`,
+     * definindo-o como 1 (indicando que o evento está fechado), com base no ID do evento fornecido.
+     *
+     * @param eventoId o identificador único do evento que se deseja fechar.
+     * @return {@code true} se a atualização foi bem-sucedida (ou seja, exatamente uma linha foi afetada),
+     *         {@code false} caso contrário.
+     * @throws RuntimeException se ocorrer um erro de SQL ao tentar atualizar o estado do evento.
+     */
+    public boolean fecharEvento(int eventoId){
+        try {
+            PreparedStatement ps2 = connection.prepareStatement("UPDATE eventos SET evento_status = 1 WHERE evento_id = ?");
+            ps2.setInt(1, eventoId);
+            int rs2 = ps2.executeUpdate();
+            if (rs2 == 1) {
+                return true;
+            }
+
+            return false;
+        }catch (SQLException e){
+            throw new RuntimeException("Erro ao fechar evento: " + e.getMessage());
+        }
+    }
+
     /**
      * Atualiza um evento na base de dados.
      *
@@ -82,6 +137,26 @@ public class EventosDAOImp implements DAO<Evento> {
     @Override
     public void delete(Evento evento) {
 
+    }
+    /**
+     * Exclui um evento da base de dados pelo ano.
+     *
+     * @param anoEdicao o ano do evento a ser excluído.
+     */
+    public void deleteByAno(int anoEdicao) {
+        String query = "DELETE FROM eventos WHERE ano_edicao = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, anoEdicao);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Nenhum evento encontrado com o ano de edição: " + anoEdicao);
+            }
+
+            System.out.println("Evento com ano de edição " + anoEdicao + " foi apagado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao apagar evento com ano de edição " + anoEdicao + ": " + e.getMessage(), e);
+        }
     }
     /**
      * Obtém um evento a partir do seu ID.
@@ -105,7 +180,7 @@ public class EventosDAOImp implements DAO<Evento> {
         try {
 
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * from eventos");
+            ResultSet rs = stmt.executeQuery("Select * from eventos where evento_status = 0 ORDER BY ano_edicao DESC");
             while (rs.next()) {
                 lst.add(new Evento(rs.getInt("id"),rs.getInt("ano_edicao"),rs.getString("pais_anfitriao_sigla"), rs.getBytes("logo"),rs.getBytes("mascote"),rs.getInt("local_id")));
             }
@@ -167,6 +242,44 @@ public class EventosDAOImp implements DAO<Evento> {
 
         } catch (SQLException ex) {
             throw new RuntimeException("Erro em mostrar a sigla: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Atualiza o logotipo de um evento na base de dados.
+     *
+     * Este método recebe o ID do evento e o novo array de bytes do logotipo,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param eventoId   o ID do evento cujo registo será atualizado.
+     * @param logo o array de bytes representando o novo logotipo do evento.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateLogotipo(int eventoId, byte[] logo) throws SQLException {
+        String sql = "UPDATE eventos SET logo = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBytes(1, logo);
+            stmt.setInt(2, eventoId);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Atualiza a mascote de um evento na base de dados.
+     *
+     * Este método recebe o ID do evento e o novo array de bytes da mascote,
+     * e atualiza o registo correspondente na tabela de utilizadores.
+     *
+     * @param eventoId   o ID do evento cujo registo será atualizado.
+     * @param mascote o array de bytes representando a nova imagem da mascote.
+     * @throws SQLException se ocorrer um erro durante a execução da query SQL.
+     */
+    public void updateMascote(int eventoId, byte[] mascote) throws SQLException {
+        String sql = "UPDATE eventos SET mascote = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBytes(1, mascote);
+            stmt.setInt(2, eventoId);
+            stmt.executeUpdate();
         }
     }
 }
